@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.comment.TDynamicmsgMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.comment.TDynamicmsg">
+		<id column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="content" property="content" />
+		<result column="classId" property="classId" />
+		<result column="classLessonId" property="classLessonId" />
+		<result column="imgUrlIds" property="imgUrlIds" />
+		<result column="videoId" property="videoId" />
+		<result column="jurisdiction" property="jurisdiction" />
+		<result column="createTime" property="createTime" />
+		<result column="createPlace" property="createPlace" />
+		<result column="coordinate" property="coordinate" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>

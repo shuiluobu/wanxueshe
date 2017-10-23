@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.course.TStudentCourseMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.course.TStudentCourse">
+		<id column="id" property="id" />
+		<result column="studentId" property="studentId" />
+		<result column="userId" property="userId" />
+		<result column="organizationId" property="organizationId" />
+		<result column="coursesId" property="coursesId" />
+		<result column="status" property="status" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+	<select id="getCoursesIds" parameterType="map" resultType="java.lang.String">
+		SELECT group_concat(coursesId) FROM t_student_course WHERE  `status` = 0
+		<if test="studentId !=null">
+			AND studentId = #{studentId}
+		</if>
+		<if test="userId !=null">
+			AND userId = #{userId}
+		</if>
+		<if test="organizationId !=null">
+			AND organizationId = #{organizationId}
+		</if>
+	</select>
+
+</mapper>

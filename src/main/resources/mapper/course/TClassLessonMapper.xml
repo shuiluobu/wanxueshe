@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.course.TClassLessonMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.course.TClassLesson">
+		<id column="id" property="id" />
+		<result column="lessonSeq" property="lessonSeq" />
+		<result column="courseId" property="courseId" />
+		<result column="beginTime" property="beginTime" />
+		<result column="endTime" property="endTime" />
+		<result column="shouldQty" property="shouldQty" />
+		<result column="realQty" property="realQty" />
+		<result column="content" property="content" />
+		<result column="shouldTearcherId" property="shouldTearcherId" />
+		<result column="realTearcherId" property="realTearcherId" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<select id="queryLessionByCourse" resultType="java.util.HashMap">
+		SELECT beginTime,endTime,lessonSeq
+		<if test="studentId !=null">
+			,condition
+		</if>
+		FROM `t_class_lesson` l
+		<if test="studentId !=null">
+			LEFT  JOIN  (SELECT * FROM t_student_lessones where studentId=#{studentId}) s
+			ON l.lessonId=s.id
+		</if>
+		 WHERE l.courseId=#{courseId}
+	</select>
+
+	<select id="selectLessionByParm" parameterType="com.wxs.entity.course.TClassLesson" resultType="com.wxs.entity.course.TClassLesson">
+		SELECT beginTime,endTime,lessonSeq FROM `t_class_lesson` WHERE 1=1
+		<if test="id != null  ">
+			AND id = #{id}
+		</if>
+		<if test="courseId != null  ">
+			AND courseId = #{courseId}
+		</if>
+		<if test="lessonSeq != null  ">
+			AND lessonSeq = #{lessonSeq}
+		</if>
+		<if test="status != null ">
+			AND status = #{status}
+		</if>
+	</select>
+
+</mapper>

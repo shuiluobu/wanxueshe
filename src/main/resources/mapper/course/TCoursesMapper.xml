@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.course.TCoursesMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.course.TCourses">
+		<id column="id" property="id" />
+		<result column="organizationId" property="organizationId" />
+		<result column="courseCode" property="courseCode" />
+		<result column="courseName" property="courseName" />
+		<result column="courseRemark" property="courseRemark" />
+		<result column="marketPrice" property="marketPrice" />
+		<result column="preferenPrice" property="preferenPrice" />
+		<result column="preferStartTime" property="preferStartTime" />
+		<result column="preferEndTime" property="preferEndTime" />
+		<result column="canQty" property="canQty" />
+		<result column="categoryCode" property="categoryCode" />
+		<result column="categoryName" property="categoryName" />
+		<result column="beginTime" property="beginTime" />
+		<result column="endTime" property="endTime" />
+		<result column="createTime" property="createTime" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<select id="selectOneCourseById" parameterType="java.lang.Long"  resultMap="BaseResultMap">
+		SELECT * FROM t_courses WHERE id = #{coursesId}
+	</select>
+
+	<select id="selectCoursesByIds" parameterType="java.util.List"  resultType="java.util.HashMap">
+		SELECT
+		organizationId,courseCode,courseName,courseRemark,marketPrice,preferenPrice,
+		canQty,categoryCode,categoryName
+		 FROM t_courses WHERE id =
+		<foreach item="coursesId" collection="cIdList" separator="," open="(" close=")" index="">
+		#{coursesId}
+		</foreach>
+	</select>
+</mapper>

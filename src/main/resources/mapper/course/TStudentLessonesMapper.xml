@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.course.TStudentLessonesMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.course.TStudentLessones">
+		<id column="id" property="id" />
+		<result column="studentId" property="studentId" />
+		<result column="lessonId" property="lessonId" />
+		<result column="status" property="status" />
+		<result column="createTime" property="createTime" />
+		<result column="condition" property="condition" />
+		<result column="courseId" property="courseId" />
+		<result column="oldId" property="oldId" />
+	</resultMap>
+
+</mapper>

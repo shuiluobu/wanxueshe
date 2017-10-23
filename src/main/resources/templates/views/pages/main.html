@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html">
+	<link rel="stylesheet" href="/css/main.css" media="all" />
+</head>
+<body class="childrenBody">
+	<div class="panel_box row">
+
+		<!--<div class="panel col">-->
+			<!--<a href="javascript:;" data-url="page/message/message.html">-->
+				<!--<div class="panel_icon">-->
+					<!--<i class="layui-icon" data-icon="&#xe63a;">&#xe63a;</i>-->
+				<!--</div>-->
+				<!--<div class="panel_word newMessage">-->
+					<!--<span></span>-->
+					<!--<cite>新消息</cite>-->
+				<!--</div>-->
+			<!--</a>-->
+		<!--</div>-->
+		<!--<div class="panel col">-->
+			<!--<a href="javascript:;" data-url="page/user/allUsers.html">-->
+				<!--<div class="panel_icon" style="background-color:#FF5722;">-->
+					<!--<i class="iconfont icon-dongtaifensishu" data-icon="icon-dongtaifensishu"></i>-->
+				<!--</div>-->
+				<!--<div class="panel_word userAll">-->
+					<!--<span></span>-->
+					<!--<cite>新增人数</cite>-->
+				<!--</div>-->
+			<!--</a>-->
+		<!--</div>-->
+		<!--<div class="panel col">-->
+			<!--<a href="javascript:;" data-url="page/user/allUsers.html">-->
+				<!--<div class="panel_icon" style="background-color:#009688;">-->
+					<!--<i class="layui-icon" data-icon="&#xe613;">&#xe613;</i>-->
+				<!--</div>-->
+				<!--<div class="panel_word userAll">-->
+					<!--<span></span>-->
+					<!--<cite>用户总数</cite>-->
+				<!--</div>-->
+			<!--</a>-->
+		<!--</div>-->
+
+	</div>
+	
+	<div class="row">
+		<div class="col">
+			<blockquote class="layui-elem-quote title">系统介绍</blockquote>
+			<div class="layui-elem-quote layui-quote-nm">
+				<#list ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"] as x>
+					${x}
+				</#list>
+
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<blockquote class="layui-elem-quote title">技术架构</blockquote>
+			<div class="layui-elem-quote layui-quote-nm">
+				<p>前台: Layui,Jquery</p>
+				<p>后台: SpringMVC、Mybatis、Mybatis-plus、Freemarker</p>
+				<p>数据库: Mysql</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/layui/layui.js"></script>
+	<script type="text/javascript" src="/js/main.js"></script>
+</body>
+</html>

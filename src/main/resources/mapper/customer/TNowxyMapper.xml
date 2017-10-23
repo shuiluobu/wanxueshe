@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.customer.TNowxyMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TNowxy">
+		<id column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="createTime" property="createTime" />
+		<result column="longitude" property="longitude" />
+		<result column="dimension" property="dimension" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>

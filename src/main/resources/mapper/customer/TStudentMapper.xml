@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.customer.TStudentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TStudent">
+		<id column="id" property="id" />
+		<result column="parentId" property="parentId" />
+		<result column="birthDay" property="birthDay" />
+		<result column="nickName" property="nickName" />
+		<result column="realName" property="realName" />
+		<result column="sex" property="sex" />
+		<result column="parentType" property="parentType" />
+		<result column="headImg" property="headImg" />
+		<result column="createTime" property="createTime" />
+		<result column="introduce" property="introduce" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>
