@@ -35,11 +35,8 @@ public class TOrganization extends Model<TOrganization> {
     private String coordinate;
     private Integer leval;
     private String introduce;
-    /**
-     * 登录信息
-     */
-//	private Long userId;
-    private Date setUpTime;
+
+
     private Date createTime; //创建时间
     private Integer status;
     private Long createUser;
@@ -138,14 +135,6 @@ public class TOrganization extends Model<TOrganization> {
         this.introduce = introduce;
     }
 
-//	public Long getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(Long userId) {
-//		this.userId = userId;
-//	}
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -184,14 +173,6 @@ public class TOrganization extends Model<TOrganization> {
 
     public void setOrganRemark(String organRemark) {
         this.organRemark = organRemark;
-    }
-
-    public Date getSetUpTime() {
-        return setUpTime;
-    }
-
-    public void setSetUpTime(Date setUpTime) {
-        this.setUpTime = setUpTime;
     }
 
     @Override

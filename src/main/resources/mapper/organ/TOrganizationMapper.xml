@@ -15,7 +15,6 @@
 		<result column="coordinate" property="coordinate" />
 		<result column="leval" property="leval" />
 		<result column="introduce" property="introduce" />
-		<!--<result column="userId" property="userId" />-->
 		<result column="createTime" property="createTime" />
 		<result column="status" property="status" />
 		<result column="createUser" property="createUser" />
