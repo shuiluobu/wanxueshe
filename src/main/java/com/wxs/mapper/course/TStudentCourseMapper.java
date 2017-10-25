@@ -16,4 +16,6 @@ import java.util.Map;
 public interface TStudentCourseMapper extends BaseMapper<TStudentCourse> {
     //获取个人的课程集合
     public String getCoursesIds(Map<String,Object> map);
+
+    public Map<String,Object> getMyCourse(Long userId);
 }

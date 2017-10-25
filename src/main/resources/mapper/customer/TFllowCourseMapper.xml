@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.customer.TFllowCourseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wxs.entity.customer.TFllowCourse">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="courseCateId" property="courseCateId"/>
+        <result column="organId" property="organId"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <select id="getFllowCoursesByUser" parameterType="java.lang.Long" resultType="hashmap">
+		SELECT
+		c.courseCategoryCode courseCode,
+		c.courseCategoryName courseName,
+		c.alreadyStudySum
+		FROM
+		t_fllow_course f,t_course_category c
+		WHERE f.courseCateId=c.id
+	</select>
+
+</mapper>

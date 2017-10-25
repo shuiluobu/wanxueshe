@@ -2,24 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wxs.mapper.customer.TTeacherMapper">
 
-	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TTeacher">
-		<id column="id" property="id" />
-		<result column="userId" property="userId" />
-		<result column="organizationId" property="organizationId" />
-		<result column="realName" property="realName" />
-		<result column="mobilePhone" property="mobilePhone" />
-		<result column="telePhone" property="telePhone" />
-		<result column="idCode" property="idCode" />
-		<result column="sex" property="sex" />
-		<result column="age" property="age" />
-		<result column="teachRemark" property="teachRemark" />
-		<result column="introduce" property="introduce" />
-		<result column="createTime" property="createTime" />
-		<result column="status" property="status" />
-	</resultMap>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wxs.entity.customer.TTeacher">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="organizationId" property="organizationId"/>
+        <result column="realName" property="realName"/>
+        <result column="mobilePhone" property="mobilePhone"/>
+        <result column="telePhone" property="telePhone"/>
+        <result column="idCode" property="idCode"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="teachRemark" property="teachRemark"/>
+        <result column="introduce" property="introduce"/>
+        <result column="createTime" property="createTime"/>
+        <result column="status" property="status"/>
+    </resultMap>
 
-	<select id="selectTeacherById" parameterType="java.lang.Long"  resultType="java.util.HashMap">
+    <select id="selectTeacherById" resultType="java.util.HashMap">
 		SELECT * FROM t_teacher WHERE id = #{tid}
 	</select>
+    <select id="getClassByTeacher" parameterType="java.lang.Long" resultType="java.util.HashMap">
+         SELECT
+         y.courseCategoryCode courseCode,
+         y.courseCategoryName courseName,
+         y.canQty,
+         y.alreadyStudySum
+         FROM t_class c,t_courses r,t_course_category y
+         WHERE
+         c.courseId=r.id
+         AND r.courseCode=y.courseCategoryCode
+         AND c.teacherId = #{tid}
+    </select>
 </mapper>

@@ -27,7 +27,6 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
 
     @Override
     public List<TCourseCategory> getAllCategoryOfOrgan(Long organId) {
-
         return courseCategoryMapper.getAllCategoryOfOrgan(organId);
     }
 }

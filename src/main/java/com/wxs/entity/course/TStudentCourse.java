@@ -36,6 +36,8 @@ public class TStudentCourse extends Model<TStudentCourse> {
      * 状态
      */
 	private Integer status;
+
+	private Integer isEnd; //0：未完成，1：已完成 课程是否完成
 	private Date createTime;
 
 
@@ -89,6 +91,14 @@ public class TStudentCourse extends Model<TStudentCourse> {
 
 	public Date getCreateTime() {
 		return createTime;
+	}
+
+	public Integer getIsEnd() {
+		return isEnd;
+	}
+
+	public void setIsEnd(Integer isEnd) {
+		this.isEnd = isEnd;
 	}
 
 	public void setCreateTime(Date createTime) {
