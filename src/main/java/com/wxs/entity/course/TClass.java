@@ -11,7 +11,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author skyer
- * @since 2017-09-21
+ * @since 2017-10-25
  */
 @TableName("t_class")
 public class TClass extends Model<TClass> {
@@ -24,10 +24,6 @@ public class TClass extends Model<TClass> {
      * 班级名称
      */
 	private String className;
-    /**
-     * 所属课程
-     */
-	private Long courseId;
     /**
      * 授课老师
      */
@@ -44,16 +40,16 @@ public class TClass extends Model<TClass> {
      * 最多容纳人容量
      */
 	private Integer capacity;
-    /**
-     * 剩余课时
-     */
-	private Integer surplusClassLesson;
 	private Date createTime;
     /**
      * 是否结束
      */
 	private Integer isEnd;
 	private Integer status;
+    /**
+     * 实际容纳学生
+     */
+	private Integer realQty;
 
 
 	public Long getId() {
@@ -78,14 +74,6 @@ public class TClass extends Model<TClass> {
 
 	public void setClassName(String className) {
 		this.className = className;
-	}
-
-	public Long getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
 	}
 
 	public Long getTeacherId() {
@@ -120,14 +108,6 @@ public class TClass extends Model<TClass> {
 		this.capacity = capacity;
 	}
 
-	public Integer getSurplusClassLesson() {
-		return surplusClassLesson;
-	}
-
-	public void setSurplusClassLesson(Integer surplusClassLesson) {
-		this.surplusClassLesson = surplusClassLesson;
-	}
-
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -150,6 +130,14 @@ public class TClass extends Model<TClass> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getRealQty() {
+		return realQty;
+	}
+
+	public void setRealQty(Integer realQty) {
+		this.realQty = realQty;
 	}
 
 	@Override

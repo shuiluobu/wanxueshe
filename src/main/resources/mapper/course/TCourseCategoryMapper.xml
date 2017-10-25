@@ -14,7 +14,13 @@
 		<result column="createTime" property="createTime" />
 		<result column="alreadyStudySum" property="alreadyStudySum" />
 		<result column="wishStudySum" property="wishStudySum" />
-
+		<result column="marketPrice" property="marketPrice" />
+		<result column="preferenPrice" property="preferenPrice" />
+		<result column="preferStartTime" property="preferStartTime" />
+		<result column="preferEndTime" property="preferEndTime" />
+		<result column="courseRemark" property="courseRemark" />
+		<result column="courseType" property="courseType" />
+		<result column="categoryType" property="categoryType" />
+		<result column="cover" property="cover" />
 	</resultMap>
-
 </mapper>

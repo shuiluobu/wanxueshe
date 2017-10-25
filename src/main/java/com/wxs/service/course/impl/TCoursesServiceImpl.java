@@ -1,10 +1,9 @@
 package com.wxs.service.course.impl;
 
 import com.google.common.collect.Maps;
-import com.wxs.entity.course.TCourses;
+import com.wxs.entity.course.TClassCourses;
 import com.wxs.mapper.course.TClassLessonMapper;
 import com.wxs.mapper.course.TCoursesMapper;
-import com.wxs.mapper.course.TStudentCourseMapper;
 import com.wxs.mapper.course.TStudentLessonesMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.course.ITCoursesService;
@@ -25,7 +24,7 @@ import java.util.Map;
  * @since 2017-09-21
  */
 @Service
-public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourses> implements ITCoursesService {
+public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TClassCourses> implements ITCoursesService {
 
     @Autowired
     private TCoursesMapper coursesMapper; //课程基本信息
@@ -38,8 +37,8 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourses> i
 
 
     @Override
-    public TCourses getMyCourseInfo(Long coursesId) {
-        TCourses course = coursesMapper.selectOneCourseById(coursesId);
+    public TClassCourses getMyCourseInfo(Long coursesId) {
+        TClassCourses course = coursesMapper.selectOneCourseById(coursesId);
         course.setOrganization(organizationMapper.selectById(course.getOrganizationId()));
         return course;
     }

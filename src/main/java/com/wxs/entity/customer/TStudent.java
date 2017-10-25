@@ -22,6 +22,10 @@ public class TStudent extends Model<TStudent> {
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
+	/**
+	 * 学号
+	 */
+	private String studentCode;
     /**
      * 学生家长ID
      */
@@ -125,6 +129,14 @@ public class TStudent extends Model<TStudent> {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getStudentCode() {
+		return studentCode;
+	}
+
+	public void setStudentCode(String studentCode) {
+		this.studentCode = studentCode;
 	}
 
 	public String getIntroduce() {

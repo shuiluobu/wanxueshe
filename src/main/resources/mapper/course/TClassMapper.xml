@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wxs.mapper.course.TClassMapper">
-
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wxs.entity.course.TClass">
+	<resultMap id="BaseResultMap" type="com.wxs.course.entity.TClass">
 		<id column="id" property="id" />
 		<result column="classCode" property="classCode" />
 		<result column="className" property="className" />
-		<result column="courseId" property="courseId" />
 		<result column="teacherId" property="teacherId" />
 		<result column="organId" property="organId" />
 		<result column="leval" property="leval" />
 		<result column="capacity" property="capacity" />
-		<result column="surplusClassLesson" property="surplusClassLesson" />
 		<result column="createTime" property="createTime" />
 		<result column="isEnd" property="isEnd" />
 		<result column="status" property="status" />
+		<result column="realQty" property="realQty" />
 	</resultMap>
 
 </mapper>
