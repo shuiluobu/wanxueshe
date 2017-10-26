@@ -39,6 +39,7 @@ public class TStudentCourse extends Model<TStudentCourse> {
 
 	private Integer isEnd; //0：未完成，1：已完成 课程是否完成
 	private Date createTime;
+	private Double coursePrice; //学生实际购买课程的价格
 
 
 	public Long getId() {
@@ -103,6 +104,14 @@ public class TStudentCourse extends Model<TStudentCourse> {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Double getCoursePrice() {
+		return coursePrice;
+	}
+
+	public void setCoursePrice(Double coursePrice) {
+		this.coursePrice = coursePrice;
 	}
 
 	@Override
