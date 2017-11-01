@@ -49,7 +49,7 @@ public class MpGenerator {
 		StrategyConfig strategy = new StrategyConfig();
 		//strategy.setTablePrefix("beautiful_");// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-		strategy.setInclude(new String[] { "t_course_category" }); // 需要生成的表
+		strategy.setInclude(new String[] { "t_handle" }); // 需要生成的表
 
 		mpg.setStrategy(strategy);
 		// 包配置

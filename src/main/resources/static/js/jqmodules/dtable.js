@@ -16,7 +16,7 @@ layui.define(['jquery', 'laytpl', 'layer', 'modal', 'ajax', 'laypage', 'form'], 
         tpl = layui.laytpl,
         modal = layui.modal,
         ajax = layui.ajax,
-        form = layui.form(),
+        form = layui.form,
         laypage = layui.laypage,
         dtable = function() {
             this.options = {

@@ -1,5 +1,5 @@
 
-layui.define(['jquery', 'tags', 'layedit', 'jqform', 'upload'], function(exports) {
+layui.define(['jquery', 'tags', 'layedit', 'upload','jqform'], function(exports) {
     var $ = layui.jquery,
         layedit = layui.layedit,
         box = "",
@@ -26,7 +26,7 @@ layui.define(['jquery', 'tags', 'layedit', 'jqform', 'upload'], function(exports
     tags.init();
 
     //上传文件设置
-    layui.upload({
+    layui.upload.render({
         url: '/file/upload',
         before: function(input) {
             box = $(input).parent('form').parent('div').parent('.layui-input-block');

@@ -7,7 +7,7 @@
 var tabFilter,menu=[],liIndex,curNav,delMenu;
 layui.define(["element","jquery","layer"],function(exports){
 	
-	var element = layui.element(),
+	var element = layui.element,
 		$ = layui.jquery,
 		layer = layui.layer,
 		layId,

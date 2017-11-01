@@ -43,8 +43,7 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 	@Autowired
     private ISysUserRoleService sysUserRoleService;
 	
-	
-	@Resource("listUser")
+
 	@ResponseBody
 	@RequestMapping("/page")
 	public Rest page(
@@ -56,22 +55,21 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 			ew.like("userName", keyword);
 		}
 		Page<SysUser> pageData = sysUserService.selectPage(new Page<SysUser>(page, size),ew);
-		
-		return Rest.okData(pageData);	
+		System.out.println(Rest.okData(pageData));
+		return Rest.okPageData(pageData.getRecords(),pageData.getPages());
 		
 	}
-	
-	@Override
+
+	@RequestMapping("/add")
 	public String add(Model model){
 		List<SysRole> roleList = sysRoleService.selectList(new EntityWrapper<SysRole>().eq("roleState",1).orderBy("createTime"));
 		model.addAttribute("roleList",roleList);
 		return "user/add";
 	}
-	
-	@Log("新增用户")
-	@Resource("addUser")
-	@ResponseBody
+
+
 	@RequestMapping("/doAdd")
+	@ResponseBody
 	public Rest doAdd(@Valid SysUser user, String password2, @RequestParam(value = "roleIds[]",required=false)String[] roleIds, BindingResult result){
 		
 		if(result.hasErrors()){
@@ -90,11 +88,10 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 		sysUserService.addUser(user,roleIds);
 		return Rest.ok("添加成功!");
 	}
-	
-	@Log("更新用户状态")
-	@Resource("updateStateUser")
-	@ResponseBody
+
+
 	@RequestMapping("/userState")
+	@ResponseBody
 	public Rest userState(String id,@RequestParam(value="userState") Boolean bool){
 		
 		SysUser user = sysUserService.selectById(id);
@@ -108,10 +105,8 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 	 * @param id
 	 * @return
 	 */
-	@Log("删除用户")
-	@Resource("deleteUser")
-	@ResponseBody
 	@RequestMapping("/delete")
+	@ResponseBody
 	public Rest delete(String[] id){
 		
 		if(ArrayUtils.isEmpty(id)){
@@ -125,7 +120,7 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 	 * 编辑
 	 * @return
 	 */
-	@Override
+	@RequestMapping("/edit")
 	public String edit(String id,Model model){
 		
 		model.addAttribute("user",sysUserService.selectById(id));
@@ -140,10 +135,9 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 	 * @param result
 	 * @return
 	 */
-	@Log("编辑用户")
-	@Resource("editUser")
-	@ResponseBody
+
 	@RequestMapping("/doEdit")
+	@ResponseBody
 	public Rest doEdit(SysUser user, String password2, @RequestParam(value = "roleIds[]",required=false) String[] roleIds, BindingResult result){
 		
 		if(StringUtils.isBlank(user.getPassword()) && StringUtils.isBlank(password2)){

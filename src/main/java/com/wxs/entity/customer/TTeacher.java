@@ -25,6 +25,7 @@ public class TTeacher extends Model<TTeacher> {
 	private Long userId;
 	private Long organizationId;
 	private String realName;
+	private String teacherCode;
 	private String mobilePhone;
 	private String telePhone;
 	private String idCode;
@@ -138,6 +139,14 @@ public class TTeacher extends Model<TTeacher> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getTeacherCode() {
+		return teacherCode;
+	}
+
+	public void setTeacherCode(String teacherCode) {
+		this.teacherCode = teacherCode;
 	}
 
 	@Override

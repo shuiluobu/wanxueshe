@@ -2,6 +2,8 @@ package com.wxs.app.controller;
 
 import com.wxs.service.customer.impl.TStudentServiceImpl;
 import com.wxs.util.Result;
+import net.bytebuddy.asm.Advice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("app/homePage")
 public class MyHomePageController {
+    @Autowired
     private TStudentServiceImpl studentService;
 
     @RequestMapping(value = "/follow")

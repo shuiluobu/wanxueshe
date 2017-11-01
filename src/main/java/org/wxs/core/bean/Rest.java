@@ -1,5 +1,7 @@
 package org.wxs.core.bean;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,7 @@ public class Rest {
 	private boolean render;
 	
 	private String msg;
-	
+
 	private Object data;
 	
 	private Integer pages;
@@ -24,6 +26,10 @@ public class Rest {
 	private String url;
 	
 	private String details;
+
+	private String code;
+
+	private int count;
 
 	public int getStatus() {
 		return status;
@@ -81,6 +87,22 @@ public class Rest {
 		this.details = details;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public Rest(int status, boolean render, String msg, Object data, Integer pages, String url, String details) {
 		super();
 		this.status = status;
@@ -131,6 +153,14 @@ public class Rest {
 		rest.setData(data);
 		return rest;
 	}
+
+	public static Rest okPageData(Object data,int count){
+		Rest rest = ok();
+		rest.setCode("0");
+		rest.setCount(count);
+		rest.setData(data);
+		return rest;
+	}
 	
 	public static Rest okList(List<?> list,int pages){
 		Rest rest = ok();
@@ -149,7 +179,7 @@ public class Rest {
 		rest.setDetails(details);
 		return rest;
 	}
-	
+
 	public static Rest failure(String msg){
 		Rest rest = new Rest();
 		rest.setStatus(500);

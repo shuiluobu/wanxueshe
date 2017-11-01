@@ -51,6 +51,7 @@ public class LoginController{
 		if(StringUtils.isBlank(username) || StringUtils.isBlank(password)){
 			throw new RuntimeException("用户名或密码不能为空");
 		}
+		System.out.println( WebUtil.MD5(password));
 		SysUser user = sysUserService.selectOne(new EntityWrapper<SysUser>().eq("userName",username).eq("password", WebUtil.MD5(password)));
 		if(user == null){
 			throw new RuntimeException("用户名或密码错误");

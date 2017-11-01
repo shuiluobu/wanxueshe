@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wxs.mapper.course.TClassMapper">
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wxs.course.entity.TClass">
+	<resultMap id="BaseResultMap" type="com.wxs.entity.course.TClass">
 		<id column="id" property="id" />
 		<result column="classCode" property="classCode" />
 		<result column="className" property="className" />

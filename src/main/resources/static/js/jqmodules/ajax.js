@@ -8,7 +8,7 @@
 layui.define(['jquery', 'form', 'layer'], function(exports) {
     var $ = layui.jquery,
         layer = layui.layer,
-        form = layui.form(),
+        form = layui.form,
         ajax = function() {
             this.options = {
                 "close": false,

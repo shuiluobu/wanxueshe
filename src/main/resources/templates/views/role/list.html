@@ -5,7 +5,6 @@
 </head>
 <body class="childrenBody">
 	<blockquote class="layui-elem-quote news_search">
-		<form class="layui-form form" action="/role/page" method="get">
 		<div class="layui-inline">
 			<a class="layui-btn modal-iframe"  data-params='{"content": "/role/add", "title": "添加角色","full":false,"area":"600px,350px"}'>新增</a>
 		</div>
@@ -18,54 +17,100 @@
 		    </div>
 		    <button lay-submit class="layui-btn" lay-filter="search">查找</button>
 		</div>
-		</form>
 	</blockquote>
 	<div class="layui-form links_list">
-	  	<table class="layui-table">
-		    <colgroup>
-				<col width="50">
-				<col width="30%">
-				<col>
-				<col>
-				<col width="16%">
-		    </colgroup>
-		    <thead>
-				<tr>
-					<th><input type="checkbox" id="checkall" data-name="id" lay-filter="check" lay-skin="primary"></th>
-					<th style="text-align:left;">名称</th>
-					<th>描述</th>
-					<th>状态</th>
-					<th>操作</th>
-				</tr> 
-		    </thead>
-		    <tbody id="list"></tbody>
-		</table>
+	  	<table class="layui-table" id="roleTable"  lay-filter="roleTable"></table>
 	</div>
-	<div id="page"></div>
-	
-    <script id="list-tpl" type="text/html" data-params='{"url":"/role/page","pageid":"#page"}'>
-	{{#  layui.each(d, function(index, it){ }}
-	<tr>
-		<td><input type="checkbox" name="id" value="{{ it.id}}" lay-skin="primary" ></td>
-		<td align="left">{{it.roleName}}</td>
-		<td align="left">{{it.roleDesc}}</td>
-		<td align="left"><input type="checkbox" name="roleState" lay-skin="switch" lay-text="启用|禁止" {{#if (parseInt(it.roleState)==1){ }}checked="checked" value="true" {{# } }} lay-filter="ajax" 
-		 data-params='{"url":"/role/roleState","data":"id={{it.id}}"}'></td>
-		<td align="left">
-			<a class="layui-btn layui-btn-mini modal-iframe" data-params='{"content": "/role/edit?id={{it.id}}", "title": "编辑角色","full":false,"area":"600px,350px"}'><i class="iconfont icon-edit"></i> 编辑</a>
-			<a class="layui-btn layui-btn-mini modal-iframe" data-params='{"content": "/role/auth?id={{it.id}}", "title": "分配权限-[<font color=\"red\">{{it.roleName}}</font>]","full":false,"area":"600px,400px"}'><i class="iconfont icon-quanxian1"></i> 权限</a>
-			<a class="layui-btn layui-btn-danger layui-btn-mini ajax" data-params='{"url": "/role/delete","confirm":true,"data":"id={{it.id}}","complete":"reloadTab"}'><i class="layui-icon">&#xe640;</i> 删除</a>
-		</td>
-	</tr>
-	{{#  }); }}
+	<script type="text/html" id="btn-tpl">
+		<a class="layui-btn layui-btn-mini" lay-event="edit">编辑角色</a>
+		<a class="layui-btn layui-btn-mini" lay-event="auth">分配角色</a>
+		<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除角色</a>
+	</script>
 
-	{{#  if(d.length == 0){ }}
-	  <tr><td colspan='5' align='left' style='color:#999999;'>未查到任何数据</td></tr>
-	{{#  } }}
+	<script type="text/html" id="roleState-tpl">
+		{{#  if(d.roleState == "1"){ }}
+		  <input type="checkbox" name="{{d.roleState}}" lay-skin="switch" lay-text="有效" checked disabled>
+		{{#  } else { }}
+          <input type="checkbox" name="{{d.roleState}}" lay-skin="switch" lay-text="无效"  >
+		{{#  } }}
 	</script>
 	<#include "/common/version.html">
 	<script type="text/javascript">
-		layui.use('list');
+        layui.use('table',function(){
+            var table = layui.table;//表格对象
+            table.render({
+                    //渲染对象
+                    elem: '#roleTable',
+                    //表格高度
+                    height: 360,
+                    //开启隔行背景
+                    even: true,
+                    //请求接口地址
+                    url: "/role/page",
+                    //开启分页
+                    page: true,
+                    //分页层级
+                    limits: [10, 20, 30, 40, 50],
+                    //分页大小
+                    limit: 10,
+                    //设置容器唯一ID
+                    id: 'roleTableID',
+                    //表头选项
+                    cols: [[
+                        //列头复选框
+                        {field: 'id', title: 'ID',checkbox: true},
+                        {field: 'roleName', title: '名称', width: 100},
+                        {field: 'roleDesc', title: '描述', width: 200, sort: true},
+                        {field: 'roleState', title: '状态', width: 100, templet: '#roleState-tpl'},
+                        {field: 'experience', fixed: 'right',title: '操作', width: 350, templet: '#btn-tpl'}
+                    ]]
+                }
+            );
+
+            //监听工具条
+            table.on('tool(roleTable)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'edit') {
+                    layer.open({
+                        type: 2, //此处以iframe举例
+                        title: '编辑角色',
+                        area: ['450px', '400px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/role/edit?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //重点2
+                        }
+                    });
+                } else if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'auth') {
+                    layer.open({
+                        type: 2, //此处以iframe举例
+                        title: '编辑角色',
+                        full: false,
+                        area: ['450px', '350px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/role/auth?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //重点2
+                        }
+                    });
+                }
+            });
+        });
 	</script>
 </body>
 </html>

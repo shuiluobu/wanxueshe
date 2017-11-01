@@ -50,16 +50,16 @@ public abstract class CrudController<T extends Serializable,S extends IService<T
     public  String add(Model model){
     	return getViewName() + "/add" ;
     }
-	
+
     /**
      * 编辑
      * @param id
      * @param model
      * @return
      */
-    @GetMapping("/edit")  
+    @GetMapping("/edit")
     public  String edit(String id,Model model){
-		
+
     	if(StringUtils.isBlank((String)id)){
 			throw new RuntimeException("参数{id}不能为空");
 		}
@@ -70,7 +70,7 @@ public abstract class CrudController<T extends Serializable,S extends IService<T
 		}
 		throw new NotFindDataException(String.format("id为[%s]的对象不存在",id));
     }
-    
+
 	/**
 	 * 删除对象,可批量删除
 	 * @param id

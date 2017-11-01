@@ -9,12 +9,12 @@ var navs = [{
 	"href" : "",
 	"spread" : false,
 	"children" : [
-		{
-			"title" : "用户管理",
-			"icon" : "icon-yonghu",
-			"href" : "/user/list",
-			"spread" : false
-		},
+		// {
+		// 	"title" : "用户管理",
+		// 	"icon" : "icon-yonghu",
+		// 	"href" : "/user/list",
+		// 	"spread" : false
+		// },
 		{
 			"title" : "角色管理",
 			"icon" : "icon-jiaose",

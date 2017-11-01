@@ -13,8 +13,8 @@ layui.define(['form', 'layer', 'element'], function(exports) {
     "use strict";
 
     var $ = layui.jquery,
-        element = layui.element(),
-        forms = layui.form(),
+        element = layui.element,
+        forms = layui.form,
         layer = layui.layer,
         MOD_NAME = 'jqform',
         ELEM = '.layui-form',

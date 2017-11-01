@@ -13,7 +13,7 @@
 layui.define(['jquery', 'layer', 'form'], function(exports) {
     var $ = layui.jquery,
         layer = layui.layer,
-        form = layui.form(),
+        form = layui.form,
         modal = function() {
             this.options = {
                 type: 1,

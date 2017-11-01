@@ -8,6 +8,7 @@
         <result column="userId" property="userId"/>
         <result column="organizationId" property="organizationId"/>
         <result column="realName" property="realName"/>
+        <result column="teacherCode" property="teacherCode"/>
         <result column="mobilePhone" property="mobilePhone"/>
         <result column="telePhone" property="telePhone"/>
         <result column="idCode" property="idCode"/>
