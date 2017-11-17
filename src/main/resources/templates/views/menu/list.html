@@ -21,68 +21,95 @@
 		</form>
 	</blockquote>
 	<div class="layui-form links_list">
-	  	<table class="layui-table">
-		    <colgroup>
-				<col width="50">
-				<col>
-				<col>
-				<col>
-				<col>
-				<col>
-				<col>
-				<col>
-				<col width="15%">
-		    </colgroup>
-		    <thead>
-				<tr>
-					<th><input type="checkbox" id="checkall" data-name="id" lay-filter="check" lay-skin="primary"></th>
-					<th>编码</th>
-					<th>菜单名称</th>
-					<th>URL</th>
-					<th>动作</th>
-					<th>图标</th>
-					<th>排序</th>
-					<th>深度</th>
-					<th>操作</th>
-				</tr> 
-		    </thead>
-		    <tbody id="list"></tbody>
-		</table>
-	</div>
-	<div id="page"></div>
-	
-    <script id="list-tpl" type="text/html" data-params='{"url":"/menu/page","pageid":"#page"}'>
-	{{#  layui.each(d, function(index, it){ }}
-	<tr>
-		<td><input type="checkbox" name="id" value="{{ it.id}}" lay-skin="primary" ></td>
-		<td align="left">{{it.code}}</td>
-		<td align="left">
-            {{#  
-				for(var i=0;i<it.code.length;i++){ }}
-					&nbsp;
-			{{#  } }}
-			├{{it.menuName}}
-		</td>
-		<td align="left">{{it.url}}</td>
-		<td align="left">{{it.resource}}</td>
-		<td align="left">{{it.icon}} <i class="iconfont {{it.icon}}"></i></td>
-		<td align="left">{{it.sort}}</td>
-		<td align="left">{{it.deep}}</td>
-		<td align="left">
-			<a class="layui-btn layui-btn-mini modal-iframe" data-params='{"content": "/menu/edit?id={{it.id}}", "title": "编辑菜单","full":false,"area":"600px,480px"}'><i class="iconfont icon-edit"></i> 编辑</a>
-			<a class="layui-btn layui-btn-mini modal-iframe" data-params='{"content": "/menu/addItem?id={{it.id}}", "title": "添加子菜单","full":false,"area":"600px,480px"}'><i class="iconfont icon-edit"></i> 添加子菜单</a>
-			<a class="layui-btn layui-btn-danger layui-btn-mini ajax" data-params='{"url": "/menu/delete","confirm":true,"data":"id={{it.id}}","complete":"reloadTab"}'><i class="layui-icon">&#xe640;</i> 删除</a>
-		</td>
-	</tr>
-	{{#  }); }}
+	  	<table class="layui-table" id="menuTable" lay-filter="menuTable">
 
-	{{#  if(d.length == 0){ }}
-	  <tr><td colspan='9' align='left' style='color:#999999;'>未查到任何数据</td></tr>
-	{{#  } }}
-	</script>
+		</table>
+		<script type="text/html" id="btn-tpl">
+			<a class="layui-btn layui-btn-mini modal-iframe" lay-event="edit">编辑</a>
+			<a class="layui-btn layui-btn-mini modal-iframe" lay-event="addItem">添加子菜单</a>
+			<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+		</script>
 	<#include "/common/version.html">
 	<script type="text/javascript">
-		layui.use('list');
+        layui.use('table',function(){
+            var table = layui.table;//表格对象
+            table.render({
+                    //渲染对象
+                    elem: '#menuTable',
+                    //表格高度
+                    height: 460,
+                    //开启隔行背景
+                    even: true,
+                    //请求接口地址
+                    url: "/menu/page",
+                    //开启分页
+                    page: true,
+                    //分页层级
+                    limits: [10, 20, 30, 40, 50],
+                    //分页大小
+                    limit: 10,
+                    //设置容器唯一ID
+                    id: 'menuTable',
+                    //表头选项
+                    cols: [[
+                        //列头复选框
+                        {field: 'id',checkbox: true},
+                        {field: 'code', title: '编码', width: 100},
+                        {field: 'menuName', title: '菜单名称', width: 150, sort: true},
+                        {field: 'url', title: 'URL', width: 200},
+                        {field: 'resource', title: '动作', width: 100 },
+                        {field: 'icon', title: '图标', width: 90},
+                        {field: 'sort', title: '排序', width: 100},
+                        {field: 'deep', title: '深度', width: 100},
+                        {field: 'experience', fixed: 'right',title: '操作', width: 140, templet: '#btn-tpl'}
+                    ]]
+                }
+            );
+            //监听工具条
+            table.on('tool(roleTable)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'edit') {
+                    layer.open({
+                        type: 2, //此处以iframe举例
+                        title: '编辑菜单',
+                        full: false,
+                        area: ['390px', '300px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/menu/edit?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //重点2
+                        }
+                    });
+                } else if (obj.event === 'addItem') {
+                    layer.open({
+                        type: 2, //此处以iframe举例
+                        title: '添加子菜单',
+                        full: false,
+                        area: ['390px', '300px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/menu/addItem?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //重点2
+                        }
+                    });
+                } else if (obj.event === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                }
+            });
+        });
 	</script>
 </body>
 </html>
