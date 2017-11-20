@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:c="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <form class="layui-form form" action="/user/page" method="get">
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input type="text" name="keyword" value=""  jq-verify="required" placeholder="用户名" class="layui-input search_input">
+            </div>
+            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+        </div>
+    </form>
+</blockquote>
+<div class="layui-form links_list">
+    <table id="studentTable">
+
+    </table>
+</div>
+<div id="page"></div>
+<script type="text/html" id="headImg-tpl">
+    <img src='{{d.headImg}}' width='40px' style=' border-radius:200px;'>
+</script>
+<script type="text/html" id="sex-tpl">
+    <span style="text-align: center">
+        <c:if test=" {{d.sex}} == 1 ">男</c:if>
+        <!--<c:if test=" {{d.sex}} == 0 ">女</c:if>-->
+    </span>
+    <!--if({{d.sex}}=='1'){-->
+    <!--男-->
+    <!--}else if({{d.sex}}=='0'){-->
+    <!--女-->
+    <!--}-->
+</script>
+<#include "/common/version.html">
+    <script type="text/javascript">
+        layui.use('table',function () {
+            var table = layui.table;
+            //执行渲染
+            table.render({
+                //渲染对象
+                elem: '#studentTable', //指定原始表格元素选择器（推荐id选择器）
+                //表格高度
+                height: 315, //容器高度
+                //开启隔行背景
+                even: true,
+                //请求接口地址
+                url:'/student/page',
+                //开启分页
+                page: true,
+                //分页层级
+                limits: [10, 20, 30, 40, 50],
+                //分页大小
+                limit: 10,//默认采用60
+                //设置容器唯一ID
+                id: 'studentTableID',
+                //表头选项
+                cols: [[ //标题栏
+                    {field: 'studentCode', title: '学生编号', width: 100,sort:true},
+                    {field: 'nickName', title: '昵称', width: 120}, //rowspan即纵向跨越的单元格数
+                    {field: 'realName', title: '姓名', width: 100,align:'center'},
+                    {field: 'headImg', title: '头像', width: 100,templet:'#headImg-tpl'},
+                    {field: 'sex', title: '性别', width: 80},
+                    {field: 'birthDay', title: '出生日期', width: 110}
+                ]] ,
+                initSort: {
+                field: 'id', //排序字段，对应 cols 设定的各字段名
+                type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            ,request: {
+                pageName: 'page', //页码的参数名称，默认：page
+                limitName: 'limit' //每页数据量的参数名，默认：limit
+            },
+            done:function (res, page, count) {
+                    //如果是异步请求数据方式，res即为你接口返回的信息。
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+
+                    //分类显示中文名称
+                    $("[data-field='sex']").children().each(function(){
+                        if($(this).text().trim() == '1'){
+                            $(this).text("男")
+                        }else if($(this).text().trim() == '0'){
+                            $(this).text("女")
+                        }
+                    })
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
