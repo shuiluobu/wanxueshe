@@ -56,8 +56,8 @@ public class RoleController extends CrudController<SysRole, ISysRoleService>{
 			ew.like("roleName", keyword);
 		}
 		Page<SysRole> pageData = sysRoleService.selectPage(new Page<SysRole>(page, size),ew);
-		
-		return Rest.okPageData(pageData.getRecords(),pageData.getPages());
+		Integer pages = sysRoleService.selectCount(ew);
+		return Rest.okPageData(pageData.getRecords(),pages);
 		
 	}
 	

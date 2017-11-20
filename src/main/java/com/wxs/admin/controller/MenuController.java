@@ -47,7 +47,8 @@ public class MenuController extends CrudController<SysMenu, ISysMenuService>{
 			ew.like("menuName", keyword);
 		}
 		Page<SysMenu> pageData = sysMenuService.selectPage(new Page<SysMenu>(page, size),ew);
-		return Rest.okPageData(pageData.getRecords(),pageData.getPages());
+		Integer pages = sysMenuService.selectCount(ew);
+		return Rest.okPageData(pageData.getRecords(),pages);
 		
 	}
 	
