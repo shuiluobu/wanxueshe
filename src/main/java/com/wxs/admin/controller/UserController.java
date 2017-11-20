@@ -55,8 +55,8 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 			ew.like("userName", keyword);
 		}
 		Page<SysUser> pageData = sysUserService.selectPage(new Page<SysUser>(page, size),ew);
-		System.out.println(Rest.okData(pageData));
-		return Rest.okPageData(pageData.getRecords(),pageData.getPages());
+		Integer pages = sysUserService.selectCount(ew);
+		return Rest.okPageData(pageData.getRecords(),pages);
 		
 	}
 
