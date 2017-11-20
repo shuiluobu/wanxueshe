@@ -48,15 +48,15 @@ public class UserController extends CrudController<SysUser, ISysUserService>{
 	@RequestMapping("/page")
 	public Rest page(
             @RequestParam(required = true,defaultValue="1") Integer page,
-            @RequestParam(defaultValue="10")Integer size, String keyword, Model model){
+            @RequestParam(defaultValue="10")Integer limit, String keyword, Model model){
 		
 		EntityWrapper<SysUser> ew = new EntityWrapper<SysUser>();
 		if(StringUtils.isNotBlank(keyword)){
 			ew.like("userName", keyword);
 		}
-		Page<SysUser> pageData = sysUserService.selectPage(new Page<SysUser>(page, size),ew);
+		Page<SysUser> pageData = sysUserService.selectPage(new Page<SysUser>(page, limit),ew);
 		System.out.println(Rest.okData(pageData));
-		return Rest.okPageData(pageData.getRecords(),pageData.getPages());
+		return Rest.okPageData(pageData.getRecords(),pageData.getTotal());
 		
 	}
 
