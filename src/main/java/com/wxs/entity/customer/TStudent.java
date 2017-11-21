@@ -44,6 +44,9 @@ public class TStudent extends Model<TStudent> {
      * 真实姓名
      */
 	private String realName;
+	/**
+	 * 性别 1:男，0:女
+	 */
 	private Integer sex;
     /**
      * 1:儿子，2：女儿，3：我自己
@@ -53,11 +56,17 @@ public class TStudent extends Model<TStudent> {
      * 头像
      */
 	private String headImg;
+	/**
+	 * 创建时间
+	 */
 	private Date createTime;
     /**
      * 简介
      */
 	private String introduce;
+	/**
+	 * 状态 1:启用，0:禁止
+	 */
 	private Integer status;
 
 
