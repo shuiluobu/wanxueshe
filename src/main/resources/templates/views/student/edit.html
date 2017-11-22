@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+	<form class="layui-form form" id="editFrom" action="#" method="post" onsubmit="return false">
+		<input type="hidden" id="id" name="id" value="${student.id}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">学号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="studentCode" name="studentCode" value="${student.studentCode}" placeholder="请输入学号">
+			</div>
+			<label class="layui-form-label">家长ID:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="parentId" name="parentId" value="${student.parentId!}" placeholder="请输入家长ID">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">姓名:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="realName" name="realName"  value="${student.realName}"  placeholder="请输入姓名">
+			</div>
+			<label class="layui-form-label">昵称:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="nickName" name="nickName"  value="${student.nickName!}"  placeholder="请输入昵称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">出生日期:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="birthDay" name="birthDay"  value="${student.birthDay?string('yyyy-MM-hh')}" placeholder="请输入出生日期">
+			</div>
+			<label class="layui-form-label">性别:</label>
+			<div class="layui-input-inline">
+				<#if student.sex==1>
+					<input type="radio" name="sex" value="1" title="男" checked>
+					<input type="radio" name="sex" value="0" title="女" >
+					<#else>
+						<input type="radio" name="sex" value="1" title="男" >
+						<input type="radio" name="sex" value="0" title="女" checked>
+				</#if>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态:</label>
+			<div class="layui-input-inline">
+				<#if student.status==1>
+					<input type="radio" name="status" value="1" title="启用" checked>
+					<input type="radio" name="status" value="0" title="禁止" >
+				<#else>
+					<input type="radio" name="status" value="1" title="启用" >
+					<input type="radio" name="status" value="0" title="禁止" checked>
+				</#if>
+			</div>
+			<label class="layui-form-label">关系:</label>
+			<div class="layui-input-inline" id="parentType">
+				<#if student.parentType==1>
+					<input type="radio" name="parentType" value="1" title="儿子" checked>
+					<input type="radio" name="parentType" value="2" title="女儿" >
+					<input type="radio" name="parentType" value="3" title="本人" >
+				</#if>
+				<#if student.parentType==2>
+						<input type="radio" name="parentType" value="1" title="儿子" >
+						<input type="radio" name="parentType" value="2" title="女儿" checked>
+						<input type="radio" name="parentType" value="3" title="本人" >
+				</#if>
+				<#if student.parentType==3>
+					<input type="radio" name="parentType" value="1" title="儿子" >
+					<input type="radio" name="parentType" value="2" title="女儿" >
+					<input type="radio" name="parentType" value="3" title="本人" checked>
+				</#if>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">头像:</label>
+			<div class="layui-input-block">
+				<input type="hidden" id="headImg" name="headImg" value="${student.headImg!}">
+				<button type="button" class="layui-btn" id="imgFile" name="imgFile">
+					<i class="layui-icon">&#xe67c;</i>上传头像
+				</button>
+				<div class="layui-upload-list">
+					<img class="layui-upload-img" id="preview" src="${student.headImg!}">
+					<p id="errText"></p>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">描述:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入描述" id="introduce" name="introduce" class="layui-textarea">${student.introduce!}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button  class="layui-btn" id="save-btn" onclick="save()"><i class="iconfont icon-submit"></i> 提交</button>
+				<!--<button class="layui-btn" jq-submit lay-filter="submit"><i class="iconfont icon-submit"></i> 提交</button>-->
+				<button type="reset" class="layui-btn fds"><i class="iconfont icon-reset"></i> 重置</button>
+		    </div>
+		</div>
+	</form>
+	<#include "/common/version.html"/>
+	<script type="text/javascript">
+
+
+        layui.use(['form','laydate'], function(){
+            //初始化form
+            var form = layui.form;
+            //初始化 laydate
+            var laydate = layui.laydate;
+            //渲染出生日期
+            laydate.render({
+                elem: '#birthDay', //渲染的元素
+                type:'date' //默认，可不填
+            });
+        });
+
+		//初始化 上传文件 功能
+        layui.use('upload', function(){
+            var $ = layui.jquery;
+            upload = layui.upload;
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#imgFile',
+                url: '/student/uploadHeadImg',
+//				auto:false,
+				data:{id:$("#id").val()},
+//                size: 60,//大小限制
+                before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#preview').attr('src', result); //图片链接（base64）
+                    });
+                }
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功,将返回路径赋值给 headImg button
+					$("#headImg").val(res.msg);
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var errText = $('#errText');
+                    errText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    errText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+        
+        //用ajax提交表单
+        function save() {
+            //学生编号
+            var studentCode = $("#studentCode").val().trim();
+            if(studentCode == "" || studentCode.length == 0){
+                layer.msg("学生编号不能为空!");
+                return;
+            }
+            //姓名
+            var realName = $("#realName").val().trim();
+            if(realName == "" || realName.length == 0){
+                layer.msg("姓名不能为空!");
+                return;
+            }
+            //出生日期
+            var birthDay = $("#birthDay").val().trim();
+            if(birthDay == "" || birthDay.length == 0){
+                layer.msg("出生日期不能为空!");
+                return;
+            }
+            //关系
+            var parentType = $("#parentType input[name='parentType']:checked").val().trim();
+            //只有关系里选择的是 非本人时，才必填
+            if(parentType != 3){
+                //家长Id
+                var parentId = $("#parentId").val().trim();
+                if(parentId == "" || parentId.length == 0){
+                    layer.msg("家长Id不能为空!");
+                    return;
+                }
+            }
+            $.ajax({
+                type:"post",
+                url:"/student/doEdit",
+                data: $("#editFrom").serialize(),//表单数据
+				dataType:"json",
+                success:function(json){
+                    if(json.status == 200){
+                        parent.layer.msg(json.msg,{time:1500});//保存成功提示
+                        parent.table.reload("dataReload");//刷新table
+                    }else{
+                        parent.layer.msg('保存异常!');
+					}
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            });
+        }
+
+	</script>
+</body>
+</html>
