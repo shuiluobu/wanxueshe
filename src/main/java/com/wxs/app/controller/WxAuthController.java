@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.wxs.core.anno.PassLogin;
 import org.wxs.core.util.AES;
 
 import java.io.UnsupportedEncodingException;
@@ -23,7 +24,8 @@ import java.util.Map;
  * @author xiaoqiang
  *
  */
-@RestController("wx")
+@RestController
+@RequestMapping("/wx")
 public class WxAuthController{
 	@Autowired
 	private WxService wxService;
@@ -35,6 +37,7 @@ public class WxAuthController{
 	 * @param wxCode	小程序登录时获取的code
 	 * @return
 	 */
+	@PassLogin
 	@RequestMapping(value = "/getSession", method = RequestMethod.GET, produces = "application/json")
 	public Map<String,Object> createSssion(@RequestParam(required = true,value = "code")String wxCode){
 		Map<String,Object> wxSessionMap = wxService.getWxSession(wxCode);
@@ -48,9 +51,9 @@ public class WxAuthController{
 		String wxOpenId = (String)wxSessionMap.get("openid");
 		String wxSessionKey = (String)wxSessionMap.get("session_key");
 		System.out.println(wxSessionKey);
-		Integer expires = Integer.parseInt(String.valueOf(wxSessionMap.get("expires_in")));
+		Integer expires = 60;
 		String thirdSession = wxService.create3rdSession(wxOpenId, wxSessionKey, expires);
-		return rtnParam(0, ImmutableMap.of("sessionId",thirdSession));
+		return rtnParam(0, thirdSession);
 	}
 
 	/**

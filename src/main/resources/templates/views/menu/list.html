@@ -5,20 +5,20 @@
 </head>
 <body class="childrenBody">
 	<blockquote class="layui-elem-quote news_search">
-		<form class="layui-form form" action="/menu/page" method="get">
+
 		<div class="layui-inline">
-			<a class="layui-btn modal-iframe"  data-params='{"content": "/menu/add", "title": "添加菜单","full":false,"area":"600px,480px"}'>新增</a>
+			<a class="layui-btn modal-iframe" id="btn-add">新增</a>
 		</div>
 		<div class="layui-inline">
-			<a class="layui-btn layui-btn-danger batchDel ajax-all"  data-name="id" data-params='{"url": "/menu/delete","data":"","confirm":"true","complete":"reloadTab"}'>批量删除</a>
+			<a class="layui-btn layui-btn-danger batchDel ajax-all"  data-name="id" id="btn-batch-del">批量删除</a>
 		</div>
 		<div class="layui-inline">
 		    <div class="layui-input-inline">
-		    	<input type="text" value="" name="keyword" placeholder="菜单名称" class="layui-input search_input">
+		    	<input type="text" value="" name="keyword" id="keyword" placeholder="菜单名称" class="layui-input search_input">
 		    </div>
-		    <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+		    <button lay-submit class="layui-btn" id="btn-search">查找</button>
 		</div>
-		</form>
+
 	</blockquote>
 	<div class="layui-form links_list">
 	  	<table class="layui-table" id="menuTable" lay-filter="menuTable">
@@ -108,6 +108,37 @@
                         layer.close(index);
                     });
                 }
+            });
+            $("#btn-search").bind("click",function () {
+                table.reload('menuTable', {
+                    url: '/menu/page'
+                    ,where: {keyword:$("#keyword").val()} //设定异步数据接口的额外参数
+                });
+            });
+			$("#btn-add").bind("click",function () {
+                layer.open({
+                    type: 2, //此处以iframe举例
+                    title: '添加菜单',
+                    full: false,
+                    area: ['600px', '480px'],
+                    shade: 0,
+                    maxmin: true,
+                    content: "/menu/add" ,
+                    btn2: function () {
+                        layer.closeAll();
+                    },
+                    success: function (layero) {
+                        layer.setTop(layero); //重点2
+                    }
+                });
+			});
+            $("#btn-batch-del").bind("click",function () {
+                $.post('/menu/delete', {id:100000}, function(result){
+                    layer.open({
+                        type: 1,
+                        content: result.msg //注意，如果str是object，那么需要字符拼接。
+                    });
+                });
             });
         });
 	</script>
