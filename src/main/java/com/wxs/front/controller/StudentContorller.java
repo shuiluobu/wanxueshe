@@ -129,7 +129,6 @@ public class StudentContorller extends CrudController<TStudent,ITStudentService>
     @ResponseBody
     public Rest doEdit(TStudent student){
         try{
-            System.out.println(1);
             studentService.updateById(student);
         }catch (Exception e){
             logger.error(BaseUtil.getExceptionStackTrace(e));
