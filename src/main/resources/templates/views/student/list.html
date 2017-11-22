@@ -243,6 +243,10 @@
             $(".batchDel").click(function () {
                 var checkStatus = table.checkStatus('dataReload');
                 var data = checkStatus.data;
+                if(data.length == 0){
+                    layer.msg("请选择要删除的数据!");
+                    return;
+                }
                 var ids="";
                 for(var i=0;i<data.length;i++){
                     ids += data[i].id+",";
