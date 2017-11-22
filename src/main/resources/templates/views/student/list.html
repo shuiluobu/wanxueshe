@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns:c="http://www.w3.org/1999/XSL/Transform">
 <head>
     <#include "/common/header.html"/>
 </head>
@@ -45,9 +44,35 @@
     </table>
 </div>
 <div id="page"></div>
+<!-- 状态渲染模板-->
+<script type="text/html" id="sex-tpl">
+    {{#  if(d.status == 1){ }}
+    <span style="color: deepskyblue;">男</span>
+    {{#  } else { }}
+    <span style="color: deeppink;">女</span>
+    {{#  } }}
+</script>
 <!-- 图片渲染模板-->
 <script type="text/html" id="headImg-tpl">
     <img src='{{d.headImg}}' width='40px' style=' border-radius:200px'>
+</script>
+<!-- 状态渲染模板-->
+<script type="text/html" id="status-tpl">
+    {{#  if(d.status == 1){ }}
+        <span style="color: green;">启用</span>
+    {{#  } else { }}
+        <span style="color: red;">禁止</span>
+    {{#  } }}
+</script>
+<!-- 关系渲染模板-->
+<script type="text/html" id="parentType-tpl">
+    {{#  if(d.parentType == 1){ }}
+        <span style="color: deepskyblue;">儿子</span>
+    {{#  } else if(d.parentType == 2){ }}
+        <span style="color: deeppink;">女儿</span>
+    {{#  } else { }}
+        <span style="color: limegreen;">本人</span>
+    {{#  } }}
 </script>
 <!-- 操作渲染模板-->
 <script type="text/html" id="btn-tpl">
@@ -95,15 +120,15 @@
                     //列头复选框
                     {checkbox: true},
                     {field: 'id', title: 'ID',align:'center'},
-                    {field: 'studentCode', title: '学生编号', width: 125,align:'center'},
+                    {field: 'studentCode', title: '学生编号', width: 125,align:'center',sort:true},
                     {field: 'parentId', title: '学生家长ID', width: 110,align:'center'},
-                    {field: 'sex', title: '性别', width: 80,align:'center'},
-                    {field: 'parentType', title: '关系', width: 110,align:'center'},
+                    {field: 'sex', title: '性别', width: 80,align:'center',templet:'#sex-tpl'},
+                    {field: 'parentType', title: '关系', width: 110,align:'center',templet:'#parentType-tpl'},
                     {field: 'realName', title: '姓名', width: 100,align:'center'},
                     {field: 'nickName', title: '昵称', width: 120,align:'center'}, //rowspan即纵向跨越的单元格数
                     {field: 'headImg', title: '头像', width: 100,align:'center',templet:'#headImg-tpl'},
-                    {field: 'birthDay', title: '出生日期', width: 110,align:'center'},
-                    {field: 'status', title: '状态', width: 60,align:'center'},
+                    {field: 'birthDay', title: '出生日期', width: 110,align:'center',sort:true},
+                    {field: 'status', title: '状态', width: 60,align:'center',templet:'#status-tpl'},
                     {field: 'operation', fixed: 'right',title: '操作', width: 200,align:'center', templet: '#btn-tpl'}
                 ]] ,
                 initSort: {
@@ -114,44 +139,22 @@
                 pageName: 'page', //页码的参数名称，默认：page
                 limitName: 'limit' //每页数据量的参数名，默认：limit
             },
+            //数据加载后执行的方法,一般用户渲染数据
             done:function (res, page, count) {
 
                 //如果是异步请求数据方式，res即为你接口返回的信息。
                 //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
 
-                //性别渲染
-                $("[data-field='sex']").children().each(function(){
-                    if($(this).text().trim() == '1'){
-                        $(this).text("男");
-                        $(this).css("color","deepskyblue");
-                    }else if($(this).text().trim() == '0'){
-                        $(this).text("女");
-                        $(this).css("color","deeppink");
-                    }
-                });
-                //状态渲染
-                $("[data-field='status']").children().each(function(){
-                    if($(this).text().trim() == '1'){
-                        $(this).text("启用");
-                        $(this).css("color","green");
-                    }else if($(this).text().trim() == '0'){
-                        $(this).text("禁止");
-                        $(this).css("color","red");
-                    }
-                });
-                //关系渲染
-                $("[data-field='parentType']").children().each(function(){
-                    if($(this).text().trim() == '1'){
-                        $(this).text("儿子");
-                        $(this).css("color","deepskyblue");
-                    }else if($(this).text().trim() == '2'){
-                        $(this).text("女儿");
-                        $(this).css("color","deeppink");
-                    }else if($(this).text().trim() == '3'){
-                        $(this).text("本人");
-                        $(this).css("color","limegreen");
-                    }
-                });
+//                //性别渲染
+//                $("[data-field='sex']").children().each(function(){
+//                    if($(this).text().trim() == '1'){
+//                        $(this).text("男");
+//                        $(this).css("color","deepskyblue");
+//                    }else if($(this).text().trim() == '0'){
+//                        $(this).text("女");
+//                        $(this).css("color","deeppink");
+//                    }
+//                });
                 }
             });
 
