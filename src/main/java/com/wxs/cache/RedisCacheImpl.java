@@ -22,13 +22,13 @@ public class RedisCacheImpl implements ICache {
     }
     /**
      * expireDate是到这个时间点过期
-     * 例：cache.putCache("test", "testValue", new Date(System.currentTimeMillis() + 5*1000));
+     * 例：cache.putCache("test", "testValue", new Date(System.currentTimeMillis() + 5));
      * 说明过期时间是从现在时间向后的5秒，这5秒包含当前的1秒，所以 如果想要5秒后需要
-     * cache.putCache("test", "testValue", new Date(System.currentTimeMillis() + (5+1)*1000));
+     * cache.putCache("test", "testValue", new Date(System.currentTimeMillis() + (5+1)));
      */
     @Override
     public void putCache(final String key, final Object value, final int seconds) {
-        redisClient.setObject(keyPreFix + ":" + key,value,seconds);
+        redisClient.setObject(keyPreFix + ":" + key,value,seconds * 1000);
     }
 
     @Override
