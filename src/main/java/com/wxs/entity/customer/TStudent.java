@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 
@@ -85,6 +86,7 @@ public class TStudent extends Model<TStudent> {
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	public Date getBirthDay() {
 		return birthDay;
@@ -133,6 +135,7 @@ public class TStudent extends Model<TStudent> {
 	public void setHeadImg(String headImg) {
 		this.headImg = headImg;
 	}
+	@DateTimeFormat(pattern ="yyyy-MM-dd  HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
