@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <input type="text" id="organCode" jq-verify="required" placeholder="机构编号" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="organName" jq-verify="required" placeholder="机构名称" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="linkman" jq-verify="required" placeholder="联系人" class="layui-input search_input">
+    </div>
+    </br>
+    <div class="layui-inline">
+        <input type="text" id="mobilePhone" jq-verify="required" placeholder="手机号" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="number" id="leval" jq-verify="required" placeholder="等级" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <button class="layui-btn  layui-btn-normal" lay-filter="search" id="search"><i class="layui-icon">&#x1002;</i>搜索</button>
+    </div>
+    </br>
+    <div class="layui-inline">
+        <a class="layui-btn modal-iframe" id="btn-insert-operator"><i class="layui-icon">&#xe608;</i> 添加</a>
+    </div>
+    <div class="layui-inline">
+        <a class="layui-btn layui-btn-danger batchDel ajax-all" ><i class="layui-icon">&#xe640;</i>批量删除</a>
+    </div>
+</blockquote>
+<div class="layui-form links_list">
+    <table class="layui-table" id="list" lay-filter="list">
+    </table>
+</div>
+<div id="page"></div>
+<!-- 图片渲染模板-->
+<script type="text/html" id="logoImg-tpl">
+    <img src='{{d.logoImg}}' width='40px' style=' border-radius:200px'>
+</script>
+<!-- 状态渲染模板-->
+<script type="text/html" id="status-tpl">
+    {{#  if(d.status == 1){ }}
+        <span style="color: green;">启用</span>
+    {{#  } else { }}
+        <span style="color: red;">禁止</span>
+    {{#  } }}
+</script>
+<!-- 操作渲染模板-->
+<script type="text/html" id="btn-tpl">
+    <a class="layui-btn layui-btn-normal layui-btn-small" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-small" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-small" lay-event="del">删除</a>
+</script>
+<#include "/common/version.html"/>
+    <script type="text/javascript">
+
+        //初始化 laydate
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+            //渲染出生日期
+            laydate.render({
+                elem: '#birthDay', //渲染的元素
+                type:'date' //默认，可不填
+            });
+        });
+        //全局变量 table,用于弹出框 执行后修改刷新table
+        var table;
+        //初始化 table
+        layui.use('table',function () {
+            table = layui.table;
+            //渲染table
+            table.render({
+                //渲染对象
+                elem: '#list', //指定原始表格元素选择器（推荐id选择器）
+                //表格高度
+                height: 471, //容器高度
+                //开启隔行背景
+                even: true,
+                //请求接口地址
+                url:'/organization/page',
+                //开启分页
+                page: true,
+                //分页层级
+                limits: [10, 20, 30, 40, 50],
+                //分页大小
+                limit: 10,//默认采用60
+                //设置容器唯一ID
+                id: 'dataReload',
+                //表头选项
+                cols: [[
+                    //列头复选框
+                    {checkbox: true},
+                    {field: 'organCode', title: '机构编号', width: 100,align:'center'},
+                    {field: 'organName', title: '机构名称', width: 100,align:'center'},
+                    {field: 'province', title: '所在省', width: 95,align:'center'},
+                    {field: 'city', title: '所在市', width: 105,align:'center'},
+                    {field: 'linkman', title: '联系人', width: 80,align:'center'},
+                    {field: 'telePhone', title: '座机', width: 120,align:'center'},
+                    {field: 'mobilePhone', title: '手机', width: 125,align:'center'},
+                    {field: 'logoImg', title: '图标', width: 100,align:'center',templet:'#logoImg-tpl'},
+                    {field: 'leval', title: '等级', width: 65,align:'center'},
+                    {field: 'status', title: '状态', width: 60,align:'center',templet:'#status-tpl'},
+                    {field: 'operation', fixed: 'right',title: '操作', width: 200,align:'center', templet: '#btn-tpl'}
+                ]],
+            request: {
+                pageName: 'page', //页码的参数名称，默认：page
+                limitName: 'limit' //每页数据量的参数名，默认：limit
+            }
+
+            });
+
+            //监听工具条
+            table.on('tool(list)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    layer.open({
+                        type: 2, //iframe
+                        title: '查看教育机构详情',
+                        full: false,
+                        area: ['750px', '500px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/organization/toDetail?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //置顶当前窗口
+                        }
+                    });
+//                    layer.msg('ID：' + data.id + ' 的查看操作');
+                } else if (obj.event === 'del') {
+                    layer.confirm('确定要删除该条数据吗?', function (index) {
+                        $.ajax({
+                            url:"/organization/delete",
+                            type:"post",
+                            data:{id:data.id},
+                            dataType:"json",
+                            success:function(json){
+                                table.reload("dataReload");
+                                layer.msg(json.msg);
+                            }
+
+                        });
+                    });
+                } else if (obj.event === 'edit') {
+                    layer.open({
+                        type: 2, //iframe
+                        title: '编辑教育机构',
+                        full: false,
+                        area: ['750px', '500px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/organization/toEdit?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //置顶当前窗口
+                        }
+                    });
+                }
+            });
+
+            //表刷新方法
+            var reloadTable = function (item) {
+                table.reload("dataReload", { //此处是上文提到的 初始化标识id
+                    where: {
+                        organCode: $("#organCode").val(),
+                        organName: $('#organName').val(),
+                        linkman: $('#linkman').val(),
+                        mobilePhone: $('#mobilePhone').val(),
+                        leval: $('#leval').val()
+                    }
+                });
+            };
+
+            //为 搜索 按钮 附上 点击事件  查询
+            $("#search").click(function(){
+                reloadTable();
+            })
+
+            // 添加
+            $("#btn-insert-operator").click(function(){
+                layer.open({
+                    type: 2, //iframe
+                    title: '添加用户',
+                    full: false,
+                    area: ['750px', '500px'],
+                    shade: 0,
+                    maxmin: true,
+                    content: "/organization/toAdd",
+                    btn: ['关闭'], //只是为了演示
+                    btn2: function () {
+                        layer.closeAll();
+                    },
+                    success: function (layero) {
+                        layer.setTop(layero); //置顶当前窗口
+                    }
+                });
+            })
+
+            //批量删除
+            $(".batchDel").click(function () {
+                var checkStatus = table.checkStatus('dataReload');
+                var data = checkStatus.data;
+                if(data.length == 0){
+                    layer.msg("请选择要删除的数据!");
+                    return;
+                }
+                var ids="";
+                for(var i=0;i<data.length;i++){
+                    ids += data[i].id+",";
+                }
+                ids = ids.substr(0,ids.length-1)
+                layer.confirm('确定要删除这些数据吗?', function (index) {
+                    $.ajax({
+                        url:"/organization/delete",
+                        type:"post",
+                        data:{id:ids},
+                        dataType:"json",
+                        success:function(json){
+                            table.reload("dataReload");
+                            layer.msg(json.msg);
+                        }
+
+                    });
+                });
+            });
+
+        });
+
+
+    </script>
+</body>
+</html>

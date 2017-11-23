@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+	<form class="layui-form form" id="addFrom" action="#" method="post" onsubmit="return false">
+		<div class="layui-form-item">
+			<label class="layui-form-label">机构编号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="organCode" name="organCode" jq-verify="required|organCode" placeholder="请输入机构编号">
+			</div>
+			<label class="layui-form-label">机构名称:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="organName" name="organName" placeholder="请输入机构名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">联系人:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="linkman" name="linkman" jq-verify="required|linkman"  placeholder="请输入联系人">
+			</div>
+			<label class="layui-form-label">用户ID:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="userId" name="userId" jq-verify="required|userId" placeholder="请输入用户ID">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">座机号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="telePhone" name="telePhone" jq-verify="required|telePhone"  placeholder="请输入座机号">
+			</div>
+			<label class="layui-form-label">手机号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="mobilePhone" name="mobilePhone" jq-verify="required|mobilePhone"  placeholder="请输入座机号">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">所在省:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="province" name="province" jq-verify="required|province"  placeholder="请输入所在省">
+			</div>
+			<label class="layui-form-label">所在城市:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="city" name="city" jq-verify="required|city"  placeholder="请输入所在城市">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">所在市分区:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="cityarea" name="cityarea" jq-verify="required|cityarea"  placeholder="请输入市分区">
+			</div>
+			<label class="layui-form-label">详细地址:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="address" name="address" jq-verify="required|address"  placeholder="请输入详细地址">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">等级:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="leval" name="leval" jq-verify="required|leval"  placeholder="请输入等级">
+			</div>
+			<label class="layui-form-label">状态:</label>
+			<div class="layui-input-inline">
+				<input type="radio" name="status" value="1" title="启用" checked>
+				<input type="radio" name="status" value="0" title="禁止" >
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">图标:</label>
+			<div class="layui-input-block">
+				<input type="hidden" id="logoImg" name="logoImg" >
+				<button type="button" class="layui-btn" id="imgFile" name="imgFile">
+					<i class="layui-icon">&#xe67c;</i>上传图标
+				</button>
+				<div class="layui-upload-list">
+					<img class="layui-upload-img" id="preview" >
+					<p id="errText"></p>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">机构备注:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入机构备注" id="organRemark" name="organRemark" class="layui-textarea"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">机构描述:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入机构描述" id="introduce" name="introduce" class="layui-textarea"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" onclick="save()"><i class="iconfont icon-submit"></i> 提交</button>
+				<!--<button class="layui-btn" jq-submit lay-filter="submit"><i class="iconfont icon-submit"></i> 提交</button>-->
+				<button type="reset" class="layui-btn fds"><i class="iconfont icon-reset"></i> 重置</button>
+		    </div>
+		</div>
+	</form>
+	<#include "/common/version.html"/>
+	<script type="text/javascript">
+
+        layui.use(['form','laydate'], function(){
+            //初始化form
+            var form = layui.form;
+			//初始化 laydate
+            var laydate = layui.laydate;
+            //渲染出生日期
+            laydate.render({
+                elem: '#birthDay', //渲染的元素
+                type:'date' //默认，可不填
+            });
+            //自定义验证规则
+            form.verify({
+                studentCode: function(value){
+                    value = value.trim();
+                    if(value == null || value.length == 0){
+                        return '学生编号不能为空!';
+                    }
+                }
+//                ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+//                ,content: function(value){
+//                    layedit.sync(editIndex);
+//                }
+            });
+        });
+
+		//初始化 上传文件 功能
+        layui.use('upload', function(){
+            var $ = layui.jquery;
+            upload = layui.upload;
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#imgFile',
+                url: '/organization/uploadLogoImg',
+//				auto:false,
+				data:{id:$("#id").val()},
+//                size: 60,//大小限制
+                before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#preview').attr('src', result); //图片链接（base64）
+                    });
+                }
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功,将返回路径赋值给 logoImg button
+					$("#logoImg").val(res.msg);
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var errText = $('#errText');
+                    errText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    errText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+
+        //用ajax提交表单
+        function save() {
+            //机构编号
+			var organCode = $("#organCode").val().trim();
+            if(organCode == "" || organCode.length == 0){
+                layer.msg("机构编号不能为空!");
+                return;
+            }
+            //机构名称
+            var organName = $("#organName").val().trim();
+            if(organName == "" || organName.length == 0){
+                layer.msg("机构名称不能为空!");
+                return;
+            }
+            //联系人
+            var linkman = $("#linkman").val().trim();
+            if(linkman == "" || linkman.length == 0){
+                layer.msg("联系人不能为空!");
+                return;
+            }
+            //座机,可不填
+            var telePhone = $("#telePhone").val().trim();
+            //中国国家长途代码（区号）+座机号码+分机号码(国内地区长途代码（区号）)
+            var telePhoneReg = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)?(\d{7,8})(-(\d{3,}))?$/;
+            // or  "^(0\\d{2}-\\d{8}(-\\d{1,4})?)|(0\\d{3}-\\d{7,8}(-\\d{1,4})?)$"
+            if( telePhone != "" && !telePhoneReg.test(telePhone)){
+                layer.msg("座机格式不对!");
+                return;
+            }
+            //手机
+            var mobilePhone = $("#mobilePhone").val().trim();
+            var mobilePhoneReg = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
+            // or  /^[1][3,4,5,7,8][0-9]{9}$/
+            if( !mobilePhone.match(mobilePhoneReg) ){
+                layer.msg("手机号格式不对!");
+                return;
+            }
+            //所在省
+            var province = $("#province").val().trim();
+            if(province == "" || province.length == 0){
+                layer.msg("所在省不能为空!");
+                return;
+            }
+            //所在市
+            var city = $("#city").val().trim();
+            if(city == "" || city.length == 0){
+                layer.msg("所在市不能为空!");
+                return;
+            }
+            //等级
+            var leval = $("#leval").val().trim();
+            if(leval == "" || leval.length == 0){
+                layer.msg("等级不能为空!");
+                return;
+            }
+            $.ajax({
+                type:"post",
+                url:"/organization/doAdd",
+                data: $("#addFrom").serialize(),//表单数据
+                dataType:"json",
+                success:function(json){
+                    if(json.status == 200){
+                        parent.layer.msg(json.msg,{time:1500});//保存成功提示
+                        parent.table.reload("dataReload");//刷新table
+                    }else{
+                        parent.layer.msg('保存异常!');
+                    }
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            });
+        }
+
+
+
+	</script>
+</body>
+</html>
