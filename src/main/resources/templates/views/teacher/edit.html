@@ -5,46 +5,46 @@
 </head>
 <body class="childrenBody">
 	<form class="layui-form form" id="addFrom" action="#" method="post" onsubmit="return false">
-		<input type="hidden" id="id" name="id" value="${teacher.id}">
+		<input type="hidden" id="id" name="id" value="${teacher.id!}">
 		<div class="layui-form-item">
 			<label class="layui-form-label">教师编号:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="teacherCode" name="teacherCode" value="${teacher.teacherCode}" jq-verify="required|teacherCode" placeholder="请输入教师编号">
+				<input type="text" class="layui-input" id="teacherCode" name="teacherCode" value="${teacher.teacherCode!}" jq-verify="required|teacherCode" placeholder="请输入教师编号">
 			</div>
 			<label class="layui-form-label">用户ID:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="userId" name="userId" value="${teacher.userId}" placeholder="请输入用户ID">
+				<input type="text" class="layui-input" id="userId" name="userId" value="${teacher.userId!}" placeholder="请输入用户ID">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">教师姓名:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="realName" name="realName" value="${teacher.realName}" jq-verify="required|realName"  placeholder="请输入姓名">
+				<input type="text" class="layui-input" id="realName" name="realName" value="${teacher.realName!}" jq-verify="required|realName"  placeholder="请输入姓名">
 			</div>
 			<label class="layui-form-label">所属教育机构:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="organizationId" name="organizationId" value="${teacher.organizationId}"  placeholder="请输入所属教育机构">
+				<input type="text" class="layui-input" id="organizationId" name="organizationId" value="${teacher.organizationId!}"  placeholder="请输入所属教育机构">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">座机:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="telePhone" name="telePhone" value="${teacher.telePhone}" jq-verify="required|telePhone"  placeholder="请输入座机">
+				<input type="text" class="layui-input" id="telePhone" name="telePhone" value="${teacher.telePhone!}" jq-verify="required|telePhone"  placeholder="请输入座机">
 			</div>
 			<label class="layui-form-label">手机:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="mobilePhone" name="mobilePhone" value="${teacher.mobilePhone}" jq-verify="required|mobilePhone"  placeholder="请输入手机">
+				<input type="text" class="layui-input" id="mobilePhone" name="mobilePhone" value="${teacher.mobilePhone!}" jq-verify="required|mobilePhone"  placeholder="请输入手机">
 			</div>
 
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">身份证号:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="idCode" name="idCode" value="${teacher.idCode}" jq-verify="required|idCode"  placeholder="请输入身份证号">
+				<input type="text" class="layui-input" id="idCode" name="idCode" value="${teacher.idCode!}" jq-verify="required|idCode"  placeholder="请输入身份证号">
 			</div>
 			<label class="layui-form-label">年龄:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="age" name="age" value="${teacher.age}" jq-verify="required|age"  placeholder="请输入年龄">
+				<input type="text" class="layui-input" id="age" name="age" value="${teacher.age!}" jq-verify="required|age"  placeholder="请输入年龄">
 			</div>
 
 		</div>
@@ -74,13 +74,13 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">备注:</label>
 			<div class="layui-input-block">
-				<textarea placeholder="请输入备注" id="teachRemark" name="teachRemark" class="layui-textarea">${teacher.teachRemark}</textarea>
+				<textarea placeholder="请输入备注" id="teachRemark" name="teachRemark" class="layui-textarea">${teacher.teachRemark!}</textarea>
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">描述:</label>
 			<div class="layui-input-block">
-				<textarea placeholder="请输入描述" id="introduce" name="introduce" class="layui-textarea">${teacher.introduce}</textarea>
+				<textarea placeholder="请输入描述" id="introduce" name="introduce" class="layui-textarea">${teacher.introduce!}</textarea>
 			</div>
 		</div>
 		<div class="layui-form-item">
