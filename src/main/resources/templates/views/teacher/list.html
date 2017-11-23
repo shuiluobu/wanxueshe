@@ -96,22 +96,23 @@
                 cols: [[ //标题栏
                     //列头复选框
                     {checkbox: true},
-                    {field: 'id', title: 'ID',align:'center'},
-                    {field: 'teacherCode', title: '教师编号', width: 100,align:'center'},
+//                    {field: 'id', title: 'ID',align:'center'},
+                    {field: 'userId', title: '用户ID', width: 80,align:'center'},
+                    {field: 'teacherCode', title: '教师编号', width: 90,align:'center'},
                     {field: 'organizationId', title: '所属教育机构', width: 120,align:'center'},
-                    {field: 'realName', title: '教师姓名', width: 110,align:'center'},
-                    {field: 'sex', title: '性别', width: 80,align:'center',templet:'#sex-tpl'},
-                    {field: 'age', title: '年龄', width: 80,align:'center'},
+                    {field: 'realName', title: '教师姓名', width: 90,align:'center'},
+                    {field: 'sex', title: '性别', width: 60,align:'center',templet:'#sex-tpl'},
+                    {field: 'age', title: '年龄', width: 60,align:'center'},
                     {field: 'telePhone', title: '座机', width: 140,align:'center'},
                     {field: 'mobilePhone', title: '手机', width: 140,align:'center'},
                     {field: 'idCode', title: '身份证号', width: 170,align:'center'},
                     {field: 'status', title: '状态', width: 60,align:'center',templet:'#status-tpl'},
                     {field: 'operation', fixed: 'right',title: '操作', width: 200,align:'center', templet: '#btn-tpl'}
-                ]] ,
-                initSort: {
-                    field: 'id', //排序字段，对应 cols 设定的各字段名
-                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
-                }
+                ]]
+//                initSort: {
+//                    field: 'id', //排序字段，对应 cols 设定的各字段名
+//                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+//                }
                 ,request: {
                     pageName: 'page', //页码的参数名称，默认：page
                     limitName: 'limit' //每页数据量的参数名，默认：limit
