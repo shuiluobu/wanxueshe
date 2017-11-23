@@ -120,7 +120,7 @@
                 cols: [[ //标题栏
                     //列头复选框
                     {checkbox: true},
-                    {field: 'id', title: 'ID',align:'center'},
+//                    {field: 'id', title: 'ID',align:'center'},
                     {field: 'studentCode', title: '学生编号', width: 125,align:'center',sort:true},
                     {field: 'parentId', title: '学生家长ID', width: 110,align:'center'},
                     {field: 'sex', title: '性别', width: 80,align:'center',templet:'#sex-tpl'},
@@ -131,11 +131,11 @@
                     {field: 'birthDay', title: '出生日期', width: 110,align:'center',sort:true},
                     {field: 'status', title: '状态', width: 60,align:'center',templet:'#status-tpl'},
                     {field: 'operation', fixed: 'right',title: '操作', width: 200,align:'center', templet: '#btn-tpl'}
-                ]] ,
-                initSort: {
-                field: 'id', //排序字段，对应 cols 设定的各字段名
-                type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
-            }
+                ]]
+//                initSort: {
+//                    field: 'id', //排序字段，对应 cols 设定的各字段名
+//                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+//                }
             ,request: {
                 pageName: 'page', //页码的参数名称，默认：page
                 limitName: 'limit' //每页数据量的参数名，默认：limit
