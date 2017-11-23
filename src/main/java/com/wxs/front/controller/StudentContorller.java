@@ -3,6 +3,7 @@ package com.wxs.front.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.wxs.entity.customer.TStudent;
+import com.wxs.entity.sys.SysUser;
 import com.wxs.service.customer.ITStudentService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import org.wxs.core.controller.CrudController;
 import org.wxs.core.util.BaseUtil;
 import org.wxs.core.util.OsppyUtil;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
@@ -147,9 +149,14 @@ public class StudentContorller extends CrudController<TStudent,ITStudentService>
     @ResponseBody
     public Rest uploadHeadImg(
             @RequestParam(required = false,defaultValue = "") MultipartFile file,
-            @RequestParam(required = false,defaultValue = "") String id){
+            @RequestParam(required = false,defaultValue = "") String id, HttpSession session){
         String loadPath = "";
         try{
+            //如果Id为空，即用户创建时候就上传图片就为空,  用 创建人id代替
+            if(id.trim().equals("undefined")){
+                SysUser sysUser = (SysUser)session.getAttribute("session_user");
+                id = sysUser.getId().toString();
+            }
             //文件后缀
             String fileName = file.getOriginalFilename();
             String suffix = fileName.substring(fileName.indexOf(".")+1);
