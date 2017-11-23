@@ -119,10 +119,18 @@ public class MenuController extends CrudController<SysMenu, ISysMenuService>{
 			throw new RuntimeException("未查询到要编辑的菜单");
 		}
 		model.addAttribute("menu", sysMenu);
+		System.out.println(sysMenu.getDeep());
 		if(sysMenu.getDeep() == 1){
 			return "menu/edit";
 		}else{
-			model.addAttribute("pmenu",sysMenuService.selectById(sysMenu.getPid()));
+			SysMenu pmenu = new SysMenu();
+			if(sysMenu.getPid().trim().equals("0")){
+				pmenu.setId("0");
+				pmenu.setMenuName("主菜单");
+			}else{
+				pmenu = sysMenuService.selectById(sysMenu.getPid());
+			}
+			model.addAttribute("pmenu",pmenu);
 			return "menu/edit_item";
 		}
 	}
