@@ -5,6 +5,9 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
@@ -19,13 +22,18 @@ import java.io.Serializable;
 public class TParent extends Model<TParent> {
 
     private static final long serialVersionUID = 1L;
-
+	/**
+	 * 主键，自增
+	 */
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
     /**
      * 登录用户ID
      */
 	private Long userId;
+	/**
+	 * 手机号
+	 */
 	private String mobilePhone;
     /**
      * 家长真实姓名
@@ -36,18 +44,24 @@ public class TParent extends Model<TParent> {
      */
 	private String idCode;
     /**
-     * 手机
+     * 座机号
      */
 	private String telePhone;
     /**
      * 微信号
      */
 	private String wxCode;
+	/**
+	 * 性别： 1：男，0：女
+	 */
 	private Integer sex;
     /**
      * 所在城市
      */
 	private String city;
+	/**
+	 * 介绍
+	 */
 	private String introduce;
     /**
      * 家庭收入
@@ -57,7 +71,13 @@ public class TParent extends Model<TParent> {
      * 年龄
      */
 	private Integer age;
+	/**
+	 * 创建时间
+	 */
 	private Date createTime;
+	/**
+	 * 状态： 1：启用，0：禁止
+	 */
 	private Integer status;
 
 
@@ -156,7 +176,8 @@ public class TParent extends Model<TParent> {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
-
+	@DateTimeFormat(pattern ="yyyy-MM-dd  HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}
