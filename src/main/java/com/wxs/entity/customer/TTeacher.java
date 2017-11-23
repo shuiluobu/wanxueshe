@@ -24,20 +24,20 @@ public class TTeacher extends Model<TTeacher> {
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
-	private Long id;
-	private Long userId;
-	private Long organizationId;
-	private String realName;
-	private String teacherCode;
-	private String mobilePhone;
-	private String telePhone;
-	private String idCode;
-	private Integer sex;
-	private Integer age;
-	private String teachRemark;
-	private String introduce;
-	private Date createTime;
-	private Integer status;
+	private Long id;               //主键，自增
+	private Long userId;          //用户id
+	private Long organizationId; //所属教育机构
+	private String realName;     //姓名
+	private String teacherCode;  //教师编号
+	private String mobilePhone;  //手机号码
+	private String telePhone;		//座机号码
+	private String idCode;        //身份证
+	private Integer sex;			//性别  1:男, 0:女
+	private Integer age;			//年龄
+	private String teachRemark;   //备注
+	private String introduce;    //介绍
+	private Date createTime;     //创建时间
+	private Integer status;      //状态 1:启用，0：禁止
 
 
 	public Long getId() {
