@@ -5,11 +5,11 @@
 </head>
 <body class="childrenBody">
 	<form class="layui-form form" id="editFrom" action="#" method="post" onsubmit="return false">
-		<input type="hidden" id="id" name="id" value="${student.id}">
+		<input type="hidden" id="id" name="id" value="${student.id!}">
 		<div class="layui-form-item">
 			<label class="layui-form-label">学号:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="studentCode" name="studentCode" value="${student.studentCode}" placeholder="请输入学号">
+				<input type="text" class="layui-input" id="studentCode" name="studentCode" value="${student.studentCode!}" placeholder="请输入学号">
 			</div>
 			<label class="layui-form-label">家长ID:</label>
 			<div class="layui-input-inline">
@@ -19,7 +19,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">姓名:</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input" id="realName" name="realName"  value="${student.realName}"  placeholder="请输入姓名">
+				<input type="text" class="layui-input" id="realName" name="realName"  value="${student.realName!}"  placeholder="请输入姓名">
 			</div>
 			<label class="layui-form-label">昵称:</label>
 			<div class="layui-input-inline">
