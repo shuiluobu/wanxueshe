@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/app/organ")
-public class OrganizationController {
+public class OrganController {
 
     @Autowired
     private ITOrganizationService organizationService;

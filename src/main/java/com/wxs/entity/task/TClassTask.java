@@ -30,6 +30,11 @@ public class TClassTask extends Model<TClassTask> {
      * 课程Id，课程可以查询到
      */
 	private Long classId;
+	/**
+	 * 作业标题
+	 */
+	private String title;
+
     /**
      * 作业说明
      */
@@ -115,6 +120,14 @@ public class TClassTask extends Model<TClassTask> {
 
 	public Date getCreateTime() {
 		return createTime;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setCreateTime(Date createTime) {

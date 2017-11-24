@@ -24,6 +24,7 @@ public class TStudentTaskComment extends Model<TStudentTaskComment> {
 	private Long id;
 	private Long studentWorkId;
 	private Long fromUserId;
+	private String fromNickName;
 	private Long toUserId;
 	private String content;
 	private Date createTime;
@@ -80,6 +81,14 @@ public class TStudentTaskComment extends Model<TStudentTaskComment> {
 
 	public Integer getStatus() {
 		return status;
+	}
+
+	public String getFromNickName() {
+		return fromNickName;
+	}
+
+	public void setFromNickName(String fromNickName) {
+		this.fromNickName = fromNickName;
 	}
 
 	public void setStatus(Integer status) {

@@ -1,5 +1,6 @@
 package com.wxs.entity.task;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -40,6 +41,8 @@ public class TStudentTask extends Model<TStudentTask> {
 	private Date createTime;
 	private String createUserId;
 	private Integer status;
+	@TableField(exist = false)
+	private TClassTask classTask;
 
 
 	public Long getId() {
@@ -120,6 +123,14 @@ public class TStudentTask extends Model<TStudentTask> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public TClassTask getClassTask() {
+		return classTask;
+	}
+
+	public void setClassTask(TClassTask classTask) {
+		this.classTask = classTask;
 	}
 
 	@Override

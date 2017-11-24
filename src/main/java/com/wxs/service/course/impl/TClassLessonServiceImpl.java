@@ -1,4 +1,5 @@
 package com.wxs.service.course.impl;
+import com.google.common.collect.Maps;
 import com.wxs.entity.course.TClassLesson;
 import com.wxs.mapper.course.TClassLessonMapper;
 import com.wxs.mapper.course.TCoursesMapper;
@@ -25,10 +26,11 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
 
     @Override
     public Map<String, Object> getOneClassLession(Long lessionId) {
+        Map<String,Object> result = Maps.newHashMap();
         try{
             TClassLesson lesson = this.selectById(lessionId);
             Map<String,Object> course = coursesMapper.selectMap(lesson.getCourseId());
-            Map<String,Object> result = BaseUtil.convertBeanToMap(lesson);
+             result = BaseUtil.convertBeanToMap(lesson);
             result.put("beginTime",BaseUtil.toString(lesson.getBeginTime(),"HH:mm:ss"));
             result.put("endTime",BaseUtil.toString(lesson.getEndTime(),"HH:mm:ss"));
             result.put("day",BaseUtil.toString(lesson.getEndTime(),"yyyy-MM-dd"));
@@ -36,11 +38,10 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
             result.put("courseName",course.get("courseName"));
             result.put("teacherName",course.get("teacherName"));
             result.put("organName",course.get("organName"));
-
+            return result;
         }catch (Exception e){
 
         }
-
-        return null;
+        return result;
     }
 }
