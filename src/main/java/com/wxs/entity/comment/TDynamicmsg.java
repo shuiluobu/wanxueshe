@@ -32,6 +32,10 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
      * 关联的课时
      */
 	private Long classLessonId;
+	/**
+	 * 机构Id
+	 */
+	private Long organId;
     /**
      * 图片或视频ID集合
      */
@@ -143,6 +147,14 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 
 	public Integer getStatus() {
 		return status;
+	}
+
+	public Long getOrganId() {
+		return organId;
+	}
+
+	public void setOrganId(Long organId) {
+		this.organId = organId;
 	}
 
 	public void setStatus(Integer status) {

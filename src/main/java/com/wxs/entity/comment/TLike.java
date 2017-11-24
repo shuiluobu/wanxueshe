@@ -20,13 +20,14 @@ public class TLike extends Model<TLike> {
 
 	private Long id;
 	private Long createUserId;
+	private Long dynamicId;
 	private String createUserName;
     /**
      * 坐标
      */
 	private String coordinate;
 	private Date createTime;
-	private String status;
+	private Integer status=0;
 
 
 	public Long getId() {
@@ -69,11 +70,19 @@ public class TLike extends Model<TLike> {
 		this.createTime = createTime;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public Long getDynamicId() {
+		return dynamicId;
+	}
+
+	public void setDynamicId(Long dynamicId) {
+		this.dynamicId = dynamicId;
+	}
+
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

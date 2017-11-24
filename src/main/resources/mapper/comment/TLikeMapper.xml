@@ -6,6 +6,7 @@
 	<resultMap id="BaseResultMap" type="com.wxs.entity.comment.TLike">
 		<id column="id" property="id" />
 		<result column="createUserId" property="createUserId" />
+		<result column="dynamicId" property="dynamicId" />
 		<result column="createUserName" property="createUserName" />
 		<result column="coordinate" property="coordinate" />
 		<result column="createTime" property="createTime" />
