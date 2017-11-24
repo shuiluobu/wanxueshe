@@ -1,6 +1,6 @@
 package com.wxs.service.course;
 
-import com.wxs.entity.course.TStudentCourse;
+import com.wxs.entity.course.TStudentClass;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author skyer
  * @since 2017-09-23
  */
-public interface ITStudentCourseService extends IService<TStudentCourse> {
+public interface ITStudentCourseService extends IService<TStudentClass> {
 
 }

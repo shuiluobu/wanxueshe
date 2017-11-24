@@ -17,8 +17,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-10-25
  */
-@TableName("t_class_courses")
-public class TClassCourses extends Model<TClassCourses> {
+@TableName("t_course")
+public class TCourse extends Model<TCourse> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,7 +48,7 @@ public class TClassCourses extends Model<TClassCourses> {
 	 * 大课程类型Code
 	 */
 	private String courseCateId;
-	private Long classId;
+	//private Long classId;
 	/**
 	 * 剩余课时
 	 */
@@ -145,13 +145,13 @@ public class TClassCourses extends Model<TClassCourses> {
 		this.courseCateId = courseCateId;
 	}
 
-	public Long getClassId() {
-		return classId;
-	}
-
-	public void setClassId(Long classId) {
-		this.classId = classId;
-	}
+//	public Long getClassId() {
+//		return classId;
+//	}
+//
+//	public void setClassId(Long classId) {
+//		this.classId = classId;
+//	}
 
 	public Integer getSurplusClassLesson() {
 		return surplusClassLesson;

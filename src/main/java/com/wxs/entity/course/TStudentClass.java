@@ -13,8 +13,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-23
  */
-@TableName("t_student_course")
-public class TStudentCourse extends Model<TStudentCourse> {
+@TableName("t_student_class")
+public class TStudentClass extends Model<TStudentClass> {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,6 +32,10 @@ public class TStudentCourse extends Model<TStudentCourse> {
      * 课程Id
      */
 	private Long coursesId;
+    /**
+     * 课堂，班级ID
+     */
+	private Long classId;
     /**
      * 状态
      */
@@ -114,7 +118,15 @@ public class TStudentCourse extends Model<TStudentCourse> {
 		this.coursePrice = coursePrice;
 	}
 
-	@Override
+    public Long getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
+    }
+
+    @Override
 	protected Serializable pkVal() {
 		return this.id;
 	}

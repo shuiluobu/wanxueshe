@@ -23,6 +23,10 @@ public class TClassLesson extends Model<TClassLesson> {
      * 课时编号
      */
 	private Integer lessonSeq;
+	/**
+	 * 课时名称
+	 */
+	private String lessonName;
     /**
      * 所属课程
      */
@@ -159,6 +163,14 @@ public class TClassLesson extends Model<TClassLesson> {
 
 	public void setStatus(Long status) {
 		this.status = status;
+	}
+
+	public String getLessonName() {
+		return lessonName;
+	}
+
+	public void setLessonName(String lessonName) {
+		this.lessonName = lessonName;
 	}
 
 	@Override

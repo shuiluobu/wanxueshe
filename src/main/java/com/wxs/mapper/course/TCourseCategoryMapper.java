@@ -4,6 +4,7 @@ import com.wxs.entity.course.TCourseCategory;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -20,6 +21,13 @@ import java.util.Map;
 public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
 
     @Select("SELECT * FROM t_course_category WHERE organId =#{organId} ")
-    @ResultMap("BaseResultMap")
+    @ResultType(TCourseCategory.class)
     public List<TCourseCategory> getAllCategoryOfOrgan(@Param("organId") Long organId);
+
+    @Select("SELECT * from t_course_category y  INNER JOIN t_class_courses c on y.id=c.courseCateId\n" +
+            "INNER JOIN t_class s on s.id=c.classId where s.teacherId =#{teacherId} ")
+    @ResultType(TCourseCategory.class)
+    public List<TCourseCategory> getAllCategoryByTeacher(@Param("teacherId") Long teacherId );
+
+
 }

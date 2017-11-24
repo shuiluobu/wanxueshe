@@ -6,6 +6,7 @@
 		<id column="id" property="id" />
 		<result column="classCode" property="classCode" />
 		<result column="className" property="className" />
+		<result column="courseId" property="courseId" />
 		<result column="teacherId" property="teacherId" />
 		<result column="organId" property="organId" />
 		<result column="leval" property="leval" />

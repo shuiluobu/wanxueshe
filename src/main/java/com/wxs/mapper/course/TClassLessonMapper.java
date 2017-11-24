@@ -20,4 +20,5 @@ public interface TClassLessonMapper extends BaseMapper<TClassLesson> {
     List<TClassLesson> selectLessionByParm(TClassLesson classLesson);
     //获取一个课程下面所有课时信息
     List<Map<String,Object>> queryLessionByCourse(@Param("courseId") Long courseId,@Param("studentId") Long studentId);
+
 }

@@ -1,7 +1,7 @@
 package com.wxs.mapper.course;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.wxs.entity.course.TClassCourses;
+import com.wxs.entity.course.TCourse;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,10 +15,12 @@ import java.util.Map;
  * @author skyer
  * @since 2017-09-21
  */
-public interface TCoursesMapper extends BaseMapper<TClassCourses> {
+public interface TCoursesMapper extends BaseMapper<TCourse> {
 
-    TClassCourses selectOneCourseById(@Param("coursesId") Long coursesId);
+    TCourse selectOneCourseById(@Param("coursesId") Long coursesId);
 
     List<Map<String,Object>> selectCoursesByIds (List cIdList);
+
+    Map<String,Object> selectMap(Long coursesId);
 
 }

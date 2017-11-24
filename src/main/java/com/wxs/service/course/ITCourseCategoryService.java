@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface ITCourseCategoryService extends IService<TCourseCategory> {
     public List<TCourseCategory> getAllCategoryOfOrgan(Long organId);
+    public List<TCourseCategory> getAllCategoryByTeacher(Long teacherId);
 }

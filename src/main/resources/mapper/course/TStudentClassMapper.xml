@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wxs.mapper.course.TStudentCourseMapper">
+<mapper namespace="com.wxs.mapper.course.TStudentClassMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.wxs.entity.course.TStudentCourse">
+    <resultMap id="BaseResultMap" type="com.wxs.entity.course.TStudentClass">
         <id column="id" property="id"/>
         <result column="studentId" property="studentId"/>
         <result column="userId" property="userId"/>
@@ -13,7 +13,7 @@
         <result column="createTime" property="createTime"/>
     </resultMap>
     <select id="getCoursesIds" parameterType="map" resultType="java.lang.String">
-        SELECT group_concat(coursesId) FROM t_student_course WHERE `status` = 0
+        SELECT group_concat(coursesId) FROM t_student_class WHERE `status` = 0
         <if test="studentId !=null">
             AND studentId = #{studentId}
         </if>
@@ -34,7 +34,7 @@
 	s.userId,
 	s.studentId
 	      FROM
-	t_student_course s,
+	t_student_class s,
 	t_courses c,
 	t_course_category y
 	      WHERE

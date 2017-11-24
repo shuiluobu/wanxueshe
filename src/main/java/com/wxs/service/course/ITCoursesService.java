@@ -1,7 +1,7 @@
 package com.wxs.service.course;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.wxs.entity.course.TClassCourses;
+import com.wxs.entity.course.TCourse;
 
 import java.util.Map;
 
@@ -13,13 +13,13 @@ import java.util.Map;
  * @author skyer
  * @since 2017-09-21
  */
-public interface ITCoursesService extends IService<TClassCourses> {
+public interface ITCoursesService extends IService<TCourse> {
     /**
      * 课程基本信息
      * @param coursesId
      * @return
      */
-    public TClassCourses getMyCourseInfo(Long coursesId);
+    public TCourse getMyCourseInfo(Long coursesId);
 
     /**
      * 获取课程的所有课时，如果订阅了该课程，则显示课时状态

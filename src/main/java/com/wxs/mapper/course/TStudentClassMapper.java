@@ -1,6 +1,6 @@
 package com.wxs.mapper.course;
 
-import com.wxs.entity.course.TStudentCourse;
+import com.wxs.entity.course.TStudentClass;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @author skyer
  * @since 2017-09-23
  */
-public interface TStudentCourseMapper extends BaseMapper<TStudentCourse> {
+public interface TStudentClassMapper extends BaseMapper<TStudentClass> {
     //获取个人的课程集合
     public String getCoursesIds(Map<String,Object> map);
 

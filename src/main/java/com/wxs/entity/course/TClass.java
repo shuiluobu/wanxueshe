@@ -24,6 +24,10 @@ public class TClass extends Model<TClass> {
      * 班级名称
      */
 	private String className;
+	/**
+	 * 课程ID
+	 */
+	private Long courseId;
     /**
      * 授课老师
      */
@@ -138,6 +142,14 @@ public class TClass extends Model<TClass> {
 
 	public void setRealQty(Integer realQty) {
 		this.realQty = realQty;
+	}
+
+	public Long getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
 	}
 
 	@Override
