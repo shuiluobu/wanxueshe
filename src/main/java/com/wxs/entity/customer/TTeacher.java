@@ -1,10 +1,15 @@
 package com.wxs.entity.customer;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
+
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.wxs.entity.organ.TOrganization;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,7 +17,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author skyer
@@ -23,58 +28,61 @@ public class TTeacher extends Model<TTeacher> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="id", type= IdType.AUTO)
-	private Long id;               //主键，自增
-	private Long userId;          //用户id
-	private Long organizationId; //所属教育机构
-	private String realName;     //姓名
-	private String teacherCode;  //教师编号
-	private String mobilePhone;  //手机号码
-	private String telePhone;		//座机号码
-	private String idCode;        //身份证
-	private Integer sex;			//性别  1:男, 0:女
-	private Integer age;			//年龄
-	private String teachRemark;   //备注
-	private String introduce;    //介绍
-	private Date createTime;     //创建时间
-	private Integer status;      //状态 1:启用，0：禁止
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+    private Long userId;
+    private String teacherName;
+    private Long organizationId;
+    private String realName;
+    private String teacherCode;
+    private String mobilePhone;
+    private String telePhone;
+    private String idCode;
+    private Integer sex;
+    private Integer age;
+    private String teachRemark;
+    private String introduce;
+    private Date createTime;
+    private Integer status;
+    @TableField(exist = false)
+    private TOrganization organization;
 
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getUserId() {
-		return userId;
-	}
+    public Long getUserId() {
+        return userId;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public Long getOrganizationId() {
-		return organizationId;
-	}
+    public Long getOrganizationId() {
+        return organizationId;
+    }
 
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
-	}
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
 
-	public String getRealName() {
-		return realName;
-	}
+    public String getRealName() {
+        return realName;
+    }
 
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
 
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
 
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
@@ -116,6 +124,14 @@ public class TTeacher extends Model<TTeacher> {
 		return teachRemark;
 	}
 
+	public String getTeacherName() {
+		return teacherName;
+	}
+
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
+	}
+
 	public void setTeachRemark(String teachRemark) {
 		this.teachRemark = teachRemark;
 	}
@@ -151,6 +167,14 @@ public class TTeacher extends Model<TTeacher> {
 
 	public void setTeacherCode(String teacherCode) {
 		this.teacherCode = teacherCode;
+	}
+
+	public TOrganization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(TOrganization organization) {
+		this.organization = organization;
 	}
 
 	@Override

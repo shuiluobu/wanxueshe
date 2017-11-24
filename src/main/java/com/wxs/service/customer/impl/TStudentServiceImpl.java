@@ -1,17 +1,14 @@
 package com.wxs.service.customer.impl;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import com.wxs.entity.course.TStudentCourse;
 import com.wxs.entity.customer.TStudent;
-import com.wxs.mapper.course.TStudentCourseMapper;
+import com.wxs.mapper.course.TStudentClassMapper;
 import com.wxs.mapper.customer.TFllowCourseMapper;
 import com.wxs.mapper.customer.TFollowTeacherMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.mapper.organ.TFllowOrganMapper;
 import com.wxs.service.customer.ITStudentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.wxs.service.organ.ITFllowOrganService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +28,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     private TFllowOrganMapper fllowOrganMapper;
     private TFollowTeacherMapper followTeacherMapper;
     private TFllowCourseMapper fllowCourseMapper;
-    private TStudentCourseMapper studentCourseMapper; //我的课程
+    private TStudentClassMapper studentCourseMapper; //我的课程
 
     private static String MY_FOLLOW_ORGAN = "我关注的机构";
     private static String MY_FOLLOW_TEACHER = "我关注的老师";
