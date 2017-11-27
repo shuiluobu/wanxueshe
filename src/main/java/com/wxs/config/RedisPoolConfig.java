@@ -29,6 +29,9 @@ public class RedisPoolConfig {
 	@Value("${spring.redis.port}")
 	private int port;
 
+	@Value("${spring.redis.password}")
+	private int password;
+
 	@Value("${spring.redis.timeout}")
 	private int timeout;
 
@@ -37,6 +40,7 @@ public class RedisPoolConfig {
 
 	@Value("${spring.redis.pool.max-wait}")
 	private long maxWaitMillis;
+
 
 
 	@Bean(name="jedisPoolConfig")
