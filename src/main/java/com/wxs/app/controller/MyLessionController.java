@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("clession")
-public class LessionController {
+public class MyLessionController {
     @Autowired
     private ITClassLessonService classLessonService;
 

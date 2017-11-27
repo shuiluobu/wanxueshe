@@ -33,5 +33,10 @@ public class MyCourseController extends BaseController {
         return null;
     }
 
+    @RequestMapping(value = "addMyCourse")
+    public Result addMyCourse(@ModelAttribute TCourse course){
+        return null;
+    }
+
 
 }
