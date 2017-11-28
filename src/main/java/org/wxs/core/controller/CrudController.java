@@ -3,6 +3,10 @@ package org.wxs.core.controller;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import com.wxs.service.course.ITClassService;
+import com.wxs.service.course.ITCoursesService;
+import com.wxs.service.customer.ITTeacherService;
+import com.wxs.service.organ.ITOrganizationService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.wxs.core.bean.Rest;
@@ -24,6 +28,20 @@ import com.baomidou.mybatisplus.service.IService;
  * 
  */
 public abstract class CrudController<T extends Serializable,S extends IService<T>> {
+
+
+	@Autowired
+	protected ITOrganizationService organizationService;  //教育机构
+
+	@Autowired
+	protected ITTeacherService teacherService;     //教师
+
+	@Autowired
+	protected ITClassService tClassService; //班级
+
+	@Autowired
+	protected ITCoursesService coursesService; //班级
+
 	/**
 	 * 注入服务层
 	 */
