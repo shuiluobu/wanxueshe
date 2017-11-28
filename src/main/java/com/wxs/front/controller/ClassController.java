@@ -59,7 +59,7 @@ public class ClassController extends CrudController<TClass,ITClassService> {
         //所有教育机构
         model.addAttribute("organizations",organizationService.selectList(new EntityWrapper<TOrganization>()));
         //所有课程
-        model.addAttribute("courses",coursesService.selectList(new EntityWrapper<TCourse>()));
+        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TCourse>()));
         return "tClass/add";
     }
 
@@ -93,7 +93,7 @@ public class ClassController extends CrudController<TClass,ITClassService> {
         //所有教育机构
         model.addAttribute("organizations",organizationService.selectList(new EntityWrapper<TOrganization>()));
         //所有课程
-        model.addAttribute("courses",coursesService.selectList(new EntityWrapper<TCourse>()));
+        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TCourse>()));
         model.addAttribute("tClass",tClassService.selectById(id));
         return "tClass/edit";
     }
