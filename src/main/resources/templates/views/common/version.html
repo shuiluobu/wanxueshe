@@ -18,4 +18,56 @@
        echarts: 'lib/echarts',
        webuploader: 'lib/webuploader'
    })
+   /**授课老师**/
+   var teachers =[];
+   var teacherCodes = {};
+   /**教育机构**/
+   var organizations =[];
+   var organizationCodes = {};
+   /**课程**/
+   var courses =[];
+   var courseCodes = {};
+
+    $(function () {
+        //获取所有的授课老师
+        $.ajax("/teacher/page",{
+            data:{page:1},
+            success:function(json){
+                $.each(json.data,function(i){
+                    teachers[i]={"key":this.id,"value":this.teacherName};
+                    teacherCodes[this.teacherCode] = this.teacherName;
+                });
+            },
+            async : false,
+            type: 'get',
+            dataType: 'json'
+        });
+        //获取所有的教育机构
+        $.ajax("/organization/page",{
+            data:{page:1},
+            success:function(json){
+                $.each(json.data,function(i){
+                    organizations[i]={"key":this.id,"value":this.organName};
+                    organizationCodes[this.organCode] = this.organName;
+                });
+            },
+            async : false,
+            type: 'get',
+            dataType: 'json'
+        });
+
+        //获取所有的课程
+        $.ajax("/courses/page",{
+            data:{page:1},
+            success:function(json){
+                $.each(json.data,function(i){
+                    courses[i]={"key":this.id,"value":this.courseName};
+                    courseCodes[this.courseCode] = this.courseName;
+                });
+            },
+            async : false,
+            type: 'get',
+            dataType: 'json'
+        });
+    })
 </script>
