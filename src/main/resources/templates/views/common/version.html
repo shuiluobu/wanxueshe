@@ -57,7 +57,7 @@
         });
 
         //获取所有的课程
-        $.ajax("/courses/page",{
+        $.ajax("/course/page",{
             data:{page:1},
             success:function(json){
                 $.each(json.data,function(i){
