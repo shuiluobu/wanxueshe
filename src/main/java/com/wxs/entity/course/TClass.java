@@ -2,12 +2,18 @@ package com.wxs.entity.course;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 班级 ,一个班级由一个老师，一个课程组成
  * </p>
  *
  * @author skyer
@@ -17,8 +23,14 @@ import java.io.Serializable;
 public class TClass extends Model<TClass> {
 
     private static final long serialVersionUID = 1L;
-
+	/**
+	 * 主键,自增
+	 */
+	@TableId(value = "id",type = IdType.AUTO)
 	private Long id;
+	/**
+	 * 班级编号
+	 */
 	private String classCode;
     /**
      * 班级名称
@@ -29,7 +41,7 @@ public class TClass extends Model<TClass> {
 	 */
 	private Long courseId;
     /**
-     * 授课老师
+     * 授课老师Id
      */
 	private Long teacherId;
     /**
@@ -39,21 +51,41 @@ public class TClass extends Model<TClass> {
     /**
      * 班级等级
      */
-	private Integer leval;
+	private Integer level;
     /**
      * 最多容纳人容量
      */
 	private Integer capacity;
+	/**
+	 * 创建时间
+	 */
 	private Date createTime;
     /**
-     * 是否结束
+     * 是否结束 1：是，0：否
      */
 	private Integer isEnd;
+	/**
+	 * 状态 1:启用，0：禁止
+	 */
 	private Integer status;
     /**
      * 实际容纳学生
      */
 	private Integer realQty;
+
+	//-----额外字段
+	@TableField(exist = false)
+	private String teacherName; //授课老师名字
+	@TableField(exist = false)
+	private String courseName;  //课程名称
+	@TableField(exist = false)
+	private String organName;   //所属教育机构名称
+	@TableField(exist = false)
+	private Integer page = 1;       //分页查询  页码
+	@TableField(exist = false)
+	private Integer limit = 10;  //分页查询  每页条数
+	@TableField(exist = false)
+	private Integer pageStartIndex; //分页查询 起始下表
 
 
 	public Long getId() {
@@ -96,12 +128,12 @@ public class TClass extends Model<TClass> {
 		this.organId = organId;
 	}
 
-	public Integer getLeval() {
-		return leval;
+	public Integer getLevel() {
+		return level;
 	}
 
-	public void setLeval(Integer leval) {
-		this.leval = leval;
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 
 	public Integer getCapacity() {
@@ -111,7 +143,8 @@ public class TClass extends Model<TClass> {
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -150,6 +183,54 @@ public class TClass extends Model<TClass> {
 
 	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
+	}
+
+	public String getTeacherName() {
+		return teacherName;
+	}
+
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public String getOrganName() {
+		return organName;
+	}
+
+	public void setOrganName(String organName) {
+		this.organName = organName;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public Integer getPageStartIndex() {
+		return pageStartIndex;
+	}
+
+	public void setPageStartIndex(Integer pageStartIndex) {
+		this.pageStartIndex = pageStartIndex;
 	}
 
 	@Override
