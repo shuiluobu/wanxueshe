@@ -30,7 +30,7 @@ public class RedisPoolConfig {
 	private int port;
 
 	@Value("${spring.redis.password}")
-	private int password;
+	private String password;
 
 	@Value("${spring.redis.timeout}")
 	private int timeout;
@@ -73,7 +73,7 @@ public class RedisPoolConfig {
 			@Qualifier("jedisPoolConfig")JedisPoolConfig jedisPoolConfig){
 		List<JedisShardInfo> shards = new ArrayList<>();
 		JedisShardInfo jedisShardInfo = new JedisShardInfo(host, port);
-		//jedisShardInfo.setPassword(password);
+		jedisShardInfo.setPassword(password);
 		shards.add(jedisShardInfo);
 		return new ShardedJedisPool(jedisPoolConfig, shards);
 	}

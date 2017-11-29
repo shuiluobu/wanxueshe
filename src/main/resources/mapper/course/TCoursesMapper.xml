@@ -22,6 +22,44 @@
         <result column="status" property="status"/>
     </resultMap>
 
+    <select id="pageData" parameterType="TCourse" resultMap="BaseResultMap">
+        select t.*,a.organName,b.courseCategoryName
+        from t_class_course t
+        left join t_organization a on a.id = t.organizationId
+        left join t_course_category b on b.id = t.courseCateId
+        <where>
+            1=1
+            <if test=" courseCode != null and !''.equals(courseCode)">
+                and t.courseCode = #{courseCode}
+            </if>
+            <if test=" courseName != null and !''.equals(courseName)">
+                and t.courseName = #{courseName}
+            </if>
+            <if test=" beginTime != null and !''.equals(beginTime)">
+                and t.beginTime  &gt; #{beginTime}
+            </if>
+            <if test=" endTime != null and !''.equals(endTime)">
+                and t.endTime &lt; #{endTime}
+            </if>
+            <if test=" canQty != null and !''.equals(canQty)">
+                and t.canQty = #{canQty}
+            </if>
+            <if test=" surplusClassLesson != null and !''.equals(surplusClassLesson)">
+                and t.surplusClassLesson = #{surplusClassLesson}
+            </if>
+            <if test=" courseCateId != null and !''.equals(courseCateId)">
+                and t.courseCateId = #{courseCateId}
+            </if>
+            <if test=" organizationId != null and !''.equals(organizationId)">
+                and t.organizationId = #{organizationId}
+            </if>
+            <if test=" status != null and !''.equals(status)">
+                and t.status = #{status}
+            </if>
+        </where>
+        limit #{pageStartIndex},#{limit}
+    </select>
+
     <select id="selectOneCourseById" parameterType="java.lang.Long" resultMap="BaseResultMap">
 		SELECT * FROM t_class_courses WHERE id = #{coursesId}
 	</select>

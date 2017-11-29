@@ -9,12 +9,54 @@
 		<result column="courseId" property="courseId" />
 		<result column="teacherId" property="teacherId" />
 		<result column="organId" property="organId" />
-		<result column="leval" property="leval" />
+		<result column="level" property="level" />
 		<result column="capacity" property="capacity" />
 		<result column="createTime" property="createTime" />
 		<result column="isEnd" property="isEnd" />
 		<result column="status" property="status" />
 		<result column="realQty" property="realQty" />
 	</resultMap>
+	
+	<select id="pageData" parameterType="TClass" resultMap="BaseResultMap">
+		select t.*,a.teacherName,b.courseName,l.organName
+		from t_class t
+		left join t_teacher a on a.id = t.teacherId
+		left join t_class_course b on b.id = t.courseId
+		left join t_organization l on l.id = t.organId
+		<where>
+			1=1
+			<if test=" classCode != null and !''.equals(classCode)">
+				and t.classCode = #{classCode}
+			</if>
+			<if test=" className != null and !''.equals(className)">
+				and t.className = #{className}
+			</if>
+			<if test=" teacherId != null and !''.equals(teacherId)">
+				and t.teacherId = #{teacherId}
+			</if>
+			<if test=" courseId != null and !''.equals(courseId)">
+				and t.courseId = #{courseId}
+			</if>
+			<if test=" organId != null and !''.equals(organId)">
+				and t.organId = #{organId}
+			</if>
+			<if test=" level != null and !''.equals(level)">
+				and t.level = #{level}
+			</if>
+			<if test=" capacity != null and !''.equals(capacity)">
+				and t.capacity = #{capacity}
+			</if>
+			<if test=" realQty != null and !''.equals(realQty)">
+				and t.realQty = #{realQty}
+			</if>
+			<if test=" isEnd != null and !''.equals(isEnd)">
+				and t.isEnd = #{isEnd}
+			</if>
+			<if test=" status != null and !''.equals(status)">
+				and t.status = #{status}
+			</if>
+		</where>
+			limit #{pageStartIndex},#{limit}
+	</select>
 
 </mapper>

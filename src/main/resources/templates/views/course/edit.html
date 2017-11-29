@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+	<form class="layui-form form" id="addFrom" action="#" method="post" onsubmit="return false">
+		<input type="hidden" id="id" name="id" value="${course.id!}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">课程编号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="courseCode" name="courseCode" value="${course.courseCode!}" jq-verify="required|courseCode" placeholder="请输入课程编号">
+			</div>
+			<label class="layui-form-label">课程名称:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="courseName" name="courseName" value="${course.courseName!}" placeholder="请输入课程名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">课程类型:</label>
+			<div class="layui-input-inline">
+				<select id="courseCateId" name="courseCateId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择课程类型</option>
+					<#list courseCategorys as list >
+						<#if list.id == course.courseCateId>
+							<option value="${list.id}" selected>${list.courseCategoryName}</option>
+							<#else>
+								<option value="${list.id}" >${list.courseCategoryName}</option>
+						</#if>
+					</#list>
+				</select>
+			</div>
+			<label class="layui-form-label">所属教育机构:</label>
+			<div class="layui-input-inline">
+				<select id="organizationId" name="organizationId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择所属教育机构</option>
+					<#list organizations as list >
+						<#if list.id == course.organizationId>
+							<option value="${list.id}" selected >${list.organName}</option>
+							<#else>
+								<option value="${list.id}" >${list.organName}</option>
+						</#if>
+					</#list>
+				</select>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">开始时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="beginTime" name="beginTime" value="${course.beginTime?string('yyyy-MM-hh HH:mm:ss')}" jq-verify="required|beginTime"  placeholder="请输入开始时间">
+			</div>
+			<label class="layui-form-label">结束时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="endTime" name="endTime" value="${course.endTime?string('yyyy-MM-hh HH:mm:ss')}" jq-verify="required|endTime"  placeholder="请输入结束时间">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">课时数量:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="canQty" name="canQty" value="${course.canQty!}" jq-verify="required|canQty"  placeholder="请输入课时数量">
+			</div>
+			<label class="layui-form-label">剩余课时:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="surplusClassLesson" name="surplusClassLesson" value="${course.surplusClassLesson!}" jq-verify="required|surplusClassLesson"  placeholder="请输入剩余课时">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态:</label>
+			<div class="layui-input-inline">
+				<#if course.status == 1>
+					<input type="radio" name="status" value="1" title="启用" checked>
+					<input type="radio" name="status" value="0" title="禁止" >
+					<#else>
+					<input type="radio" name="status" value="1" title="启用" >
+					<input type="radio" name="status" value="0" title="禁止" checked>
+				</#if>
+
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" onclick="save()"><i class="iconfont icon-submit"></i> 提交</button>
+				<!--<button class="layui-btn" jq-submit lay-filter="submit"><i class="iconfont icon-submit"></i> 提交</button>-->
+				<button type="reset" class="layui-btn fds"><i class="iconfont icon-reset"></i> 重置</button>
+		    </div>
+		</div>
+	</form>
+	<#include "/common/version.html"/>
+	<script type="text/javascript">
+
+        layui.use(['form','laydate'], function(){
+            //初始化form
+            var form = layui.form;
+            //初始化laydate
+            var laydate = layui.laydate;
+            //渲染 开始时间
+            laydate.render({
+                elem: '#beginTime',
+                type:'datetime'
+            });
+			//渲染 结束时间
+            laydate.render({
+                elem: '#endTime',
+                type:'datetime'
+            });
+        });
+
+        //用ajax提交表单
+        function save() {
+            //课程编号
+			var courseCode = $("#courseCode").val().trim();
+            if(courseCode == "" || courseCode.length == 0){
+                layer.msg("课程编号不能为空!");
+                return;
+            }
+            //课程名称
+            var courseName = $("#courseName").val().trim();
+            if(courseName == "" || courseName.length == 0){
+                layer.msg("课程名称不能为空!");
+                return;
+            }
+            //所属教育机构
+            var organizationId = $("#organizationId").val().trim();
+            if(organizationId == "" || organizationId.length == 0){
+                layer.msg("所属教育机构不能为空!");
+                return;
+            }
+            //大课程类型Code
+            var courseCateId = $("#courseCateId").val().trim();
+            if(courseCateId == "" || courseCateId.length == 0){
+                layer.msg("大课程类型Code不能为空!");
+                return;
+            }
+            //开始时间
+            var beginTime = $("#beginTime").val().trim();
+            if(beginTime == "" || beginTime.length == 0){
+                layer.msg("开始时间不能为空!");
+                return;
+            }
+            //结束时间
+            var endTime = $("#endTime").val().trim();
+            if(endTime == "" || endTime.length == 0){
+                layer.msg("结束时间不能为空!");
+                return;
+            }
+            $.ajax({
+                type:"post",
+                url:"/course/doEdit",
+                data: $("#addFrom").serialize(),//表单数据
+                dataType:"json",
+                success:function(json){
+                    if(json.status == 200){
+                        parent.layer.msg(json.msg,{time:1500});//保存成功提示
+                        parent.table.reload("dataReload");//刷新table
+                    }else{
+                        parent.layer.msg('保存异常!');
+                    }
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            });
+        }
+
+	</script>
+</body>
+</html>

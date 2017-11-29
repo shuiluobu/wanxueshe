@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <input type="text" id="classCode" jq-verify="required" placeholder="班级编号" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="className" jq-verify="required" placeholder="班级名称" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <select id="teacherId" name="teacherId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+            <option value="">请选择授课老师</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <select id="courseId" name="courseId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+            <option value="">请选择课程名称</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <select id="organId" name="organId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+            <option value="">请选择教育机构</option>
+        </select>
+    </div>
+    </br>
+    <div class="layui-inline">
+        <input type="text" id="capacity" jq-verify="required" placeholder="最多容纳人数" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="realQty" jq-verify="required" placeholder="实际容纳人数" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <label>班级等级: </label>
+        <select id="level" class="layui-select" style="width: 60px;text-align: center" lay-verify="required" lay-search="">
+            <option value="">全部</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <label>是否结束: </label>
+        <select id="isEnd" class="layui-select" style="width: 60px;text-align: center" lay-verify="required" lay-search="">
+            <option value="">全部</option>
+            <option value="1">是</option>
+            <option value="0">否</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <label>状态: </label>
+        <select id="status" class="layui-select" style="width: 60px;text-align: center" lay-verify="required" lay-search="">
+            <option value="">全部</option>
+            <option value="1">启用</option>
+            <option value="0">禁止</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <button class="layui-btn  layui-btn-normal" lay-filter="search" id="search"><i class="layui-icon">&#x1002;</i>搜索</button>
+    </div>
+    </br>
+    <div class="layui-inline">
+        <a class="layui-btn modal-iframe" id="btn-insert-operator"><i class="layui-icon">&#xe608;</i> 添加</a>
+    </div>
+    <div class="layui-inline">
+        <a class="layui-btn layui-btn-danger batchDel ajax-all" ><i class="layui-icon">&#xe640;</i>批量删除</a>
+    </div>
+</blockquote>
+<div class="layui-form links_list">
+    <table id="list"  lay-filter="list">
+    </table>
+</div>
+<div id="page"></div>
+<!-- 状态渲染模板-->
+<script type="text/html" id="status-tpl">
+    {{#  if(d.status == 1){ }}
+    <span style="color: green;">启用</span>
+    {{#  } else { }}
+    <span style="color: red;">禁止</span>
+    {{#  } }}
+</script>
+<!-- 是否已结束 渲染模板-->
+<script type="text/html" id="isEnd-tpl">
+    {{#  if(d.isEnd == 1){ }}
+    <span style="color: green;">是</span>
+    {{#  } else { }}
+    <span style="color: red;">否</span>
+    {{#  } }}
+</script>
+<!-- 操作渲染模板-->
+<script type="text/html" id="btn-tpl">
+    <!--<a class="layui-btn layui-btn-normal layui-btn-small" lay-event="detail">查看</a>-->
+    <a class="layui-btn layui-btn-small" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-small" lay-event="del">删除</a>
+</script>
+<#include "/common/version.html"/>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //教师 查询 下拉选 初始化
+            $.each(teachers, function (i) {
+                $("#teacherId").append('<option value="' + this.key + '">' + this.value + '</option>');
+            });
+
+            //教育机构 查询 下拉选 初始化
+            $.each(organizations, function (i) {
+                $("#organId").append('<option value="' + this.key + '">' + this.value + '</option>');
+            });
+
+            //教育机构 查询 下拉选 初始化
+            $.each(courses, function (i) {
+                $("#courseId").append('<option value="' + this.key + '">' + this.value + '</option>');
+            });
+
+        });
+
+        //初始化 table
+        var table;
+        layui.use('table',function () {
+            table = layui.table;
+            //执行渲染
+            table.render({
+                //渲染对象
+                elem: '#list', //指定原始表格元素选择器（推荐id选择器）
+                //表格高度
+                height: 471, //容器高度
+                //开启隔行背景
+                even: true,
+                //请求接口地址
+                url:'/tClass/page',
+                //开启分页
+                page: true,
+                //分页层级
+                limits: [10, 20, 30, 40, 50],
+                //分页大小
+                limit: 10,//默认采用60
+                //设置容器唯一ID
+                id: 'dataReload',
+                cols: [[ //标题栏
+                    //列头复选框
+                    {checkbox: true},
+                    {field: 'classCode', title: '班级编号', width: 120,align:'center'},
+                    {field: 'className', title: '班级姓名', width: 120,align:'center'},
+                    {field: 'teacherName', title: '授课老师', width: 120,align:'center'},
+                    {field: 'courseName', title: '课程名称', width: 120,align:'center'},
+                    {field: 'organName', title: '所属教育机构', width: 120,align:'center'},
+                    {field: 'level', title: '班级等级', width: 95,align:'center',sort:true},
+                    {field: 'capacity', title: '最多容纳人数', width: 120,align:'center',sort:true},
+                    {field: 'realQty', title: '实际容纳人数', width: 120,align:'center',sort:true},
+                    {field: 'isEnd', title: '是否结束', width: 90,align:'center',templet:'#isEnd-tpl'},
+                    {field: 'status', title: '状态', width: 60,align:'center',templet:'#status-tpl'},
+                    {field: 'operation', fixed: 'right',title: '操作', width: 200,align:'center', templet: '#btn-tpl'}
+                ]]
+//                initSort: {
+//                    field: 'id', //排序字段，对应 cols 设定的各字段名
+//                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+//                }
+                ,request: {
+                    pageName: 'page', //页码的参数名称，默认：page
+                    limitName: 'limit' //每页数据量的参数名，默认：limit
+                }
+            });
+
+            //监听工具条
+            table.on('tool(list)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    layer.msg('ID：' + data.id + ' 的查看操作');
+                } else if (obj.event === 'del') {
+                    layer.confirm('确定要删除该条数据吗?', function (index) {
+                        $.ajax({
+                            url:"/tClass/delete",
+                            type:"post",
+                            data:{id:data.id},
+                            dataType:"json",
+                            success:function(json){
+                                table.reload("dataReload");
+                                layer.msg(json.msg);
+                            }
+
+                        });
+//                        obj.del();//table上删除,数据库不会变
+//                        layer.close(index);//table上删除,数据库不会变
+                    });
+                } else if (obj.event === 'edit') {
+                    layer.open({
+                        type: 2, //iframe
+                        title: '编辑教师',
+                        full: false,
+                        area: ['750px', '500px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/tClass/toEdit?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //置顶当前窗口
+                        }
+                    });
+                }
+            });
+
+            //表刷新方法
+            var reloadTable = function (item) {
+                table.reload("dataReload", { //此处是上文提到的 初始化标识id
+                    where: {
+                        classCode: $("#classCode").val(),
+                        className: $('#className').val(),
+                        teacherId: $('#teacherId').val(),
+                        courseId: $('#courseId').val(),
+                        organId: $('#organId').val(),
+                        level: $('#level').val(),
+                        capacity: $('#capacity').val(),
+                        realQty: $('#realQty').val(),
+                        isEnd: $('#isEnd').val(),
+                        status: $('#status').val()
+                    }
+                });
+            };
+
+            //为 搜索 按钮 附上 点击事件  查询
+            $("#search").click(function(){
+                reloadTable();
+            })
+
+
+            // 添加
+            $("#btn-insert-operator").click(function(){
+                layer.open({
+                    type: 2, //iframe
+                    title: '添加用户',
+                    full: false,
+                    area: ['750px', '500px'],
+                    shade: 0,
+                    maxmin: true,
+                    content: "/tClass/toAdd",
+                    btn: ['关闭'], //只是为了演示
+                    btn2: function () {
+                        layer.closeAll();
+                    },
+                    success: function (layero) {
+                        layer.setTop(layero); //置顶当前窗口
+                    }
+                });
+            })
+
+            //批量删除
+            $(".batchDel").click(function () {
+                var checkStatus = table.checkStatus('dataReload');
+                var data = checkStatus.data;
+                if(data.length == 0){
+                    layer.msg("请选择要删除的数据!");
+                    return;
+                }
+                var ids="";
+                for(var i=0;i<data.length;i++){
+                    ids += data[i].id+",";
+                }
+                ids = ids.substr(0,ids.length-1)
+                layer.confirm('确定要删除这些数据吗?', function (index) {
+                    $.ajax({
+                        url:"/tClass/delete",
+                        type:"post",
+                        data:{id:ids},
+                        dataType:"json",
+                        success:function(json){
+                            table.reload("dataReload");
+                            layer.msg(json.msg);
+                        }
+
+                    });
+                });
+            });
+
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+	<form class="layui-form form" id="addFrom" action="#" method="post" onsubmit="return false">
+		<input type="hidden" id="id" name="id" value="${tClass.id!}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">班级编号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="classCode" name="classCode" value="${tClass.classCode!}" jq-verify="required|classCode" placeholder="请输入班级编号">
+			</div>
+			<label class="layui-form-label">班级名称:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="className" name="className" value="${tClass.className!}" placeholder="请输入班级名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">授课老师:</label>
+			<div class="layui-input-inline">
+				<select id="teacherId" name="teacherId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择授课老师</option>
+					<#list teachers as list >
+						<#if list.id == tClass.teacherId>
+							<option value="${list.id}" selected >${list.teacherName}</option>
+							<#else>
+								<option value="${list.id}" >${list.teacherName}</option>
+						</#if>
+					</#list>
+				</select>
+			</div>
+			<label class="layui-form-label">课程Id:</label>
+			<div class="layui-input-inline">
+				<select id="courseId" name="courseId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择课程</option>
+					<#list courses as list >
+						<#if list.id == tClass.courseId>
+							<option value="${list.id}" selected >${list.courseName}</option>
+							<#else>
+								<option value="${list.id}" >${list.courseName}</option>
+						</#if>
+					</#list>
+				</select>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">所属教育机构:</label>
+			<div class="layui-input-inline">
+				<select id="organId" name="organId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择所属教育机构</option>
+					<#list organizations as list >
+						<#if list.id == tClass.organId>
+							<option value="${list.id}" selected >${list.organName}</option>
+							<#else>
+								<option value="${list.id}" >${list.organName}</option>
+						</#if>
+					</#list>
+				</select>
+			</div>
+			<label class="layui-form-label">班级等级:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="level" name="level" value="${tClass.level!}" jq-verify="required|level"  placeholder="请输入班级等级">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">最多容纳人数:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="capacity" name="capacity" value="${tClass.capacity!}" jq-verify="required|idCode"  placeholder="请输入最多容纳人数">
+			</div>
+			<label class="layui-form-label">实际容纳人数:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="realQty" name="realQty" value="${tClass.realQty!}" jq-verify="required|age"  placeholder="请输入实际容纳人数">
+			</div>
+
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">是否结束:</label>
+			<div class="layui-input-inline">
+				<#if tClass.isEnd == 1>
+					<input type="radio" name="sex" value="1" title="是" checked>
+					<input type="radio" name="sex" value="0" title="否" >
+					<#else>
+						<input type="radio" name="sex" value="1" title="是" >
+						<input type="radio" name="sex" value="0" title="否" checked>
+				</#if>
+			</div>
+			<label class="layui-form-label">状态:</label>
+			<div class="layui-input-inline">
+				<#if tClass.status == 1>
+					<input type="radio" name="status" value="1" title="启用" checked>
+					<input type="radio" name="status" value="0" title="禁止" >
+					<#else>
+						<input type="radio" name="status" value="1" title="启用">
+						<input type="radio" name="status" value="0" title="禁止" checked>
+				</#if>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" onclick="save()"><i class="iconfont icon-submit"></i> 提交</button>
+				<!--<button class="layui-btn" jq-submit lay-filter="submit"><i class="iconfont icon-submit"></i> 提交</button>-->
+				<button type="reset" class="layui-btn fds"><i class="iconfont icon-reset"></i> 重置</button>
+		    </div>
+		</div>
+	</form>
+	<#include "/common/version.html"/>
+	<script type="text/javascript">
+
+        layui.use('form', function(){
+            //初始化form
+            var form = layui.form;
+        });
+
+        //用ajax提交表单
+        function save() {
+            //班级编号
+			var classCode = $("#classCode").val().trim();
+            if(classCode == "" || classCode.length == 0){
+                layer.msg("班级编号不能为空!");
+                return;
+            }
+            //班级名称
+            var className = $("#className").val().trim();
+            if(className == "" || className.length == 0){
+                layer.msg("班级名称不能为空!");
+                return;
+            }
+            //授课老师Id
+            var teacherId = $("#teacherId").val().trim();
+            if(teacherId == "" || teacherId.length == 0){
+                layer.msg("授课老师Id不能为空!");
+                return;
+            }
+            //课程ID
+            var courseId = $("#courseId").val().trim();
+            if(courseId == "" || courseId.length == 0){
+                layer.msg("课程ID不能为空!");
+                return;
+            }
+            //所属教育机构
+            var organId = $("#organId").val().trim();
+            if(organId == "" || organId.length == 0){
+                layer.msg("所属教育机构不能为空!");
+                return;
+            }
+            //班级等级
+            var level = $("#level").val().trim();
+            if(level == "" || level.length == 0){
+                layer.msg("班级等级不能为空!");
+                return;
+            }
+            //最多容纳人数
+            var capacity = $("#capacity").val().trim();
+            if(capacity == "" || capacity.length == 0){
+                layer.msg("最多容纳人数不能为空!");
+                return;
+            }
+            //实际容纳人数
+            var realQty = $("#realQty").val().trim();
+            if(realQty == "" || realQty.length == 0){
+                layer.msg("实际容纳人数不能为空!");
+                return;
+            }
+            $.ajax({
+                type:"post",
+                url:"/tClass/doEdit",
+                data: $("#addFrom").serialize(),//表单数据
+                dataType:"json",
+                success:function(json){
+                    if(json.status == 200){
+                        parent.layer.msg(json.msg,{time:1500});//保存成功提示
+                        parent.table.reload("dataReload");//刷新table
+                    }else{
+                        parent.layer.msg('保存异常!');
+                    }
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            });
+        }
+
+	</script>
+</body>
+</html>
