@@ -17,10 +17,14 @@ import java.util.Map;
  */
 public interface TCoursesMapper extends BaseMapper<TCourse> {
 
+    //分页+混合条件 查询课程
+    List<TCourse> pageData(TCourse course);
+
     TCourse selectOneCourseById(@Param("coursesId") Long coursesId);
 
     List<Map<String,Object>> selectCoursesByIds (List cIdList);
 
     Map<String,Object> selectMap(Long coursesId);
+
 
 }

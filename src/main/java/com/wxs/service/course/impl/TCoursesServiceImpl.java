@@ -37,6 +37,11 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
 
 
     @Override
+    public List<TCourse> pageData(TCourse course) {
+        return coursesMapper.pageData(course);
+    }
+
+    @Override
     public TCourse getMyCourseInfo(Long coursesId) {
         TCourse course = coursesMapper.selectOneCourseById(coursesId);
         course.setOrganization(organizationMapper.selectById(course.getOrganizationId()));
