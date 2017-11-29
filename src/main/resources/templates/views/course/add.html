@@ -104,16 +104,16 @@
                 layer.msg("课程名称不能为空!");
                 return;
             }
+            //课程类型
+            var courseCateId = $("#courseCateId").val().trim();
+            if(courseCateId == "" || courseCateId.length == 0){
+                layer.msg("课程类型不能为空!");
+                return;
+            }
             //所属教育机构
             var organizationId = $("#organizationId").val().trim();
             if(organizationId == "" || organizationId.length == 0){
                 layer.msg("所属教育机构不能为空!");
-                return;
-            }
-            //大课程类型Code
-            var courseCateId = $("#courseCateId").val().trim();
-            if(courseCateId == "" || courseCateId.length == 0){
-                layer.msg("大课程类型Code不能为空!");
                 return;
             }
             //开始时间
