@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+	<form class="layui-form form" id="addFrom" action="#" method="post" onsubmit="return false">
+		<input type="hidden" id="id" name="id" value="${courseCategory.id!}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">分类编号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="courseCategoryCode" name="courseCategoryCode" value="${courseCategory.courseCategoryCode?c}" jq-verify="required|courseCategoryCode" placeholder="请输入分类编号">
+			</div>
+			<label class="layui-form-label">分类名称:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="courseCategoryName" name="courseCategoryName" value="${courseCategory.courseCategoryName!}" placeholder="请输入分类名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">所属教育机构:</label>
+			<div class="layui-input-inline">
+				<select id="organId" name="organId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择所属教育机构</option>
+					<#list organizations as list >
+						<#if list.id == courseCategory.organId>
+							<option value="${list.id}" selected>${list.organName}</option>
+							<#else>
+								<option value="${list.id}" >${list.organName}</option>
+						</#if>
+
+					</#list>
+				</select>
+			</div>
+			<label class="layui-form-label">课时数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="canQty" name="canQty" value="${courseCategory.canQty?c}" placeholder="请输入课时数">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">期望招生数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="wishStudySum" name="wishStudySum" value="${courseCategory.wishStudySum?c}" jq-verify="required|wishStudySum"  placeholder="请输入期望招生数">
+			</div>
+			<label class="layui-form-label">已招生数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="alreadyStudySum" name="alreadyStudySum" value="${courseCategory.alreadyStudySum?c}" jq-verify="required|alreadyStudySum"  placeholder="请输入已招生数">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">市场价格:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="marketPrice" name="marketPrice" value="${courseCategory.marketPrice?c}" jq-verify="required|marketPrice"  placeholder="请输入市场价格">
+			</div>
+			<label class="layui-form-label">优惠价格:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="preferenPrice" name="preferenPrice" value="${courseCategory.preferenPrice?c}" value="${courseCategory.courseCategoryCode!}" jq-verify="required|preferenPrice"  placeholder="请输入优惠价格">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">优惠开始时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="preferStartTime" name="preferStartTime" value="${courseCategory.preferStartTime?string('yyyy-MM-dd HH:mm:ss')}" jq-verify="required|preferStartTime"  placeholder="请输入优惠开始时间">
+			</div>
+			<label class="layui-form-label">优惠结束时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="preferEndTime" name="preferEndTime" value="${courseCategory.preferEndTime?string('yyyy-MM-dd HH:mm:ss')}" jq-verify="required|preferEndTime"  placeholder="请输入优惠结束时间">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态:</label>
+			<div class="layui-input-inline">
+				<#if courseCategory.status == 1>
+					<input type="radio" name="status" value="1" title="启用" checked>
+					<input type="radio" name="status" value="0" title="禁止" >
+					<#else>
+						<input type="radio" name="status" value="1" title="启用" >
+						<input type="radio" name="status" value="0" title="禁止" checked>
+				</#if>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">封面:</label>
+			<div class="layui-input-block">
+				<input type="hidden" id="cover" name="cover" value="${courseCategory.cover!}">
+				<button type="button" class="layui-btn" id="imgFile" name="imgFile">
+					<i class="layui-icon">&#xe67c;</i>上传封面
+				</button>
+				<div class="layui-upload-list">
+					<img class="layui-upload-img" id="preview" src="${courseCategory.cover!}" >
+					<p id="errText"></p>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">简单说明:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入简单说明" id="explain" name="explain" class="layui-textarea">${courseCategory.explain!}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">课程介绍:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入课程介绍" id="courseRemark" name="courseRemark" class="layui-textarea">${courseCategory.courseRemark!}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" onclick="save()"><i class="iconfont icon-submit"></i> 提交</button>
+				<!--<button class="layui-btn" jq-submit lay-filter="submit"><i class="iconfont icon-submit"></i> 提交</button>-->
+				<button type="reset" class="layui-btn fds"><i class="iconfont icon-reset"></i> 重置</button>
+		    </div>
+		</div>
+	</form>
+	<#include "/common/version.html"/>
+	<script type="text/javascript">
+
+        layui.use(['form','laydate'], function(){
+            //初始化form
+            var form = layui.form;
+            //初始化laydate
+            var laydate = layui.laydate;
+            //渲染 优惠开始时间
+            laydate.render({
+                elem: '#preferStartTime',
+                type:'datetime'
+            });
+			//渲染 优惠结束时间
+            laydate.render({
+                elem: '#preferEndTime',
+                type:'datetime'
+            });
+        });
+
+        //初始化 上传文件 功能
+        layui.use('upload', function(){
+            var $ = layui.jquery;
+            upload = layui.upload;
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#imgFile',
+                url: '/courseCategory/uploadCover',
+//				auto:false,
+                data:{id:$("#id").val()},
+//                size: 60,//大小限制
+                before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#preview').attr('src', result); //图片链接（base64）
+                    });
+                }
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功,将返回路径赋值给 headImg button
+                    $("#cover").val(res.msg);
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var errText = $('#errText');
+                    errText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    errText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+
+        
+        //用ajax提交表单
+        function save() {
+            //分类编号
+			var courseCategoryCode = $("#courseCategoryCode").val().trim();
+            if(courseCategoryCode == "" || courseCategoryCode.length == 0){
+                layer.msg("分类编号不能为空!");
+                return;
+            }
+            //分类名称
+            var courseCategoryName = $("#courseCategoryName").val().trim();
+            if(courseCategoryName == "" || courseCategoryName.length == 0){
+                layer.msg("分类名称不能为空!");
+                return;
+            }
+            //所属教育机构
+            var organId = $("#organId").val();
+            if(organId == "" || organId.length == 0){
+                layer.msg("所属教育机构不能为空!");
+                return;
+            }
+            //课时数
+            var canQty = $("#canQty").val().trim();
+            if(canQty == "" || canQty.length == 0){
+                layer.msg("课时数不能为空!");
+                return;
+            }
+            //期望招生数
+            var wishStudySum = $("#wishStudySum").val().trim();
+            if(wishStudySum == "" || wishStudySum.length == 0){
+                layer.msg("期望招生数不能为空!");
+                return;
+            }
+            //已招生数
+            var alreadyStudySum = $("#alreadyStudySum").val().trim();
+            if(alreadyStudySum == "" || alreadyStudySum.length == 0){
+                layer.msg("已招生数不能为空!");
+                return;
+            }
+
+            //市场价格
+            var marketPrice = $("#marketPrice").val().trim();
+            if(marketPrice == "" || marketPrice.length == 0){
+                layer.msg("市场价格不能为空!");
+                return;
+            }
+            //优惠价格
+            var preferenPrice = $("#preferenPrice").val().trim();
+            if(preferenPrice == "" || preferenPrice.length == 0){
+                layer.msg("优惠价格不能为空!");
+                return;
+            }
+            //优惠开始时间
+            var preferStartTime = $("#preferStartTime").val().trim();
+            if(preferStartTime == "" || preferStartTime.length == 0){
+                layer.msg("优惠开始时间不能为空!");
+                return;
+            }
+            //优惠结束时间
+            var preferEndTime = $("#preferEndTime").val().trim();
+            if(preferEndTime == "" || preferEndTime.length == 0){
+                layer.msg("优惠结束时间不能为空!");
+                return;
+            }
+            //简单说明
+            var explain = $("#explain").val().trim();
+            if(explain == "" || explain.length == 0){
+                layer.msg("简单说明不能为空!");
+                return;
+            }
+            //课程介绍
+            var courseRemark = $("#courseRemark").val().trim();
+            if(courseRemark == "" || courseRemark.length == 0){
+                layer.msg("课程介绍不能为空!");
+                return;
+            }
+            $.ajax({
+                type:"post",
+                url:"/courseCategory/doEdit",
+                data: $("#addFrom").serialize(),//表单数据
+                dataType:"json",
+                success:function(json){
+                    if(json.status == 200){
+                        parent.layer.msg(json.msg,{time:1500});//保存成功提示
+                        parent.table.reload("dataReload");//刷新table
+                    }else{
+                        parent.layer.msg('保存异常!');
+                    }
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            });
+        }
+
+	</script>
+</body>
+</html>

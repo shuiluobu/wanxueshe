@@ -1,15 +1,19 @@
 package com.wxs.entity.course;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 课程分类
  * </p>
  *
  * @author skyer
@@ -19,10 +23,18 @@ import java.io.Serializable;
 public class TCourseCategory extends Model<TCourseCategory> {
 
     private static final long serialVersionUID = 1L;
-
+	/**
+	 * 主键,自增
+	 */
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
+	/**
+	 *课程分类名称
+	 */
 	private String courseCategoryName;
+	/**
+	 * 课程分类编号
+	 */
 	private Integer courseCategoryCode;
     /**
      * 课时数量
@@ -33,10 +45,16 @@ public class TCourseCategory extends Model<TCourseCategory> {
      */
 	private String explain;
     /**
-     * 所属机构
+     * 所属机构Id
      */
 	private Long organId;
+	/**
+	 * 状态 1：启用，0：禁止
+	 */
 	private Integer status;
+	/**
+	 * 创建时间
+	 */
 	private Date createTime;
     /**
      * 已经招多少人
@@ -55,13 +73,16 @@ public class TCourseCategory extends Model<TCourseCategory> {
      */
 	private Double preferenPrice;
     /**
-     * 优惠时间
+     * 优惠开始时间
      */
 	private Date preferStartTime;
     /**
-     * 课程介绍
+     * 优惠结束时间
      */
 	private Date preferEndTime;
+	/**
+	 * 课程介绍
+	 */
 	private String courseRemark;
     /**
      * 课程类型
@@ -75,6 +96,17 @@ public class TCourseCategory extends Model<TCourseCategory> {
      * 封面
      */
 	private String cover;
+
+	//-----额外字段
+	@TableField(exist = false)
+	private String organName;   //所属教育机构名称
+	@TableField(exist = false)
+	private Integer page = 1;       //分页查询  页码
+	@TableField(exist = false)
+	private Integer limit = 10;  //分页查询  每页条数
+	@TableField(exist = false)
+	private Integer pageStartIndex; //分页查询 起始下表
+
 
 
 	public Long getId() {
@@ -132,7 +164,8 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -172,7 +205,8 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	public void setPreferenPrice(Double preferenPrice) {
 		this.preferenPrice = preferenPrice;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getPreferStartTime() {
 		return preferStartTime;
 	}
@@ -180,7 +214,8 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	public void setPreferStartTime(Date preferStartTime) {
 		this.preferStartTime = preferStartTime;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getPreferEndTime() {
 		return preferEndTime;
 	}
@@ -219,6 +254,38 @@ public class TCourseCategory extends Model<TCourseCategory> {
 
 	public void setCover(String cover) {
 		this.cover = cover;
+	}
+
+	public String getOrganName() {
+		return organName;
+	}
+
+	public void setOrganName(String organName) {
+		this.organName = organName;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public Integer getPageStartIndex() {
+		return pageStartIndex;
+	}
+
+	public void setPageStartIndex(Integer pageStartIndex) {
+		this.pageStartIndex = pageStartIndex;
 	}
 
 	@Override
