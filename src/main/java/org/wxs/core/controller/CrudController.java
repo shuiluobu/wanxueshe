@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import com.wxs.service.course.ITClassService;
+import com.wxs.service.course.ITCourseCategoryService;
 import com.wxs.service.course.ITCoursesService;
 import com.wxs.service.customer.ITTeacherService;
 import com.wxs.service.organ.ITOrganizationService;
@@ -41,6 +42,9 @@ public abstract class CrudController<T extends Serializable,S extends IService<T
 
 	@Autowired
 	protected ITCoursesService courseService; //课程
+
+	@Autowired
+	protected ITCourseCategoryService courseCategoryService; //课程类型
 
 	/**
 	 * 注入服务层
