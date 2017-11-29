@@ -27,6 +27,9 @@
    /**课程**/
    var courses =[];
    var courseCodes = {};
+   /**课程类型**/
+   var courseCategorys =[];
+   var courseCategoryCodes = {};
 
     $(function () {
         //获取所有的授课老师
@@ -63,6 +66,20 @@
                 $.each(json.data,function(i){
                     courses[i]={"key":this.id,"value":this.courseName};
                     courseCodes[this.courseCode] = this.courseName;
+                });
+            },
+            async : false,
+            type: 'get',
+            dataType: 'json'
+        });
+
+        //获取所有的课程类型
+        $.ajax("/courseCategory/page",{
+            data:{page:1},
+            success:function(json){
+                $.each(json.data,function(i){
+                    courseCategorys[i]={"key":this.id,"value":this.courseCategoryName};
+                    courseCategoryCodes[this.courseCategoryCode] = this.courseCategoryName;
                 });
             },
             async : false,
