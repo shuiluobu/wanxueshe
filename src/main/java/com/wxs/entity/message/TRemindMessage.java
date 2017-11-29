@@ -36,6 +36,13 @@ public class TRemindMessage extends Model<TRemindMessage> {
      * 消息提醒类型
      */
 	private String remindType;
+
+	private String jmsType; //点对点通知还是广播
+
+	private String messageContent; //消息主题
+
+	private Integer readStatus; //是否已读
+
 	private Date createTime;
 	private Integer status;
 
@@ -102,6 +109,30 @@ public class TRemindMessage extends Model<TRemindMessage> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getJmsType() {
+		return jmsType;
+	}
+
+	public void setJmsType(String jmsType) {
+		this.jmsType = jmsType;
+	}
+
+	public String getMessageContent() {
+		return messageContent;
+	}
+
+	public void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
+	}
+
+	public Integer getReadStatus() {
+		return readStatus;
+	}
+
+	public void setReadStatus(Integer readStatus) {
+		this.readStatus = readStatus;
 	}
 
 	@Override

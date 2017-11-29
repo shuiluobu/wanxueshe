@@ -45,7 +45,24 @@ public class TOrganization extends Model<TOrganization> {
     private Integer status;         //状态 1:启用，0：禁止
     private Long createUser;        //添加该 机构的 用户Id(userId)
     private String logoImg;         //图标
+    private double latitude; //经度
+    private double longitude; //维度
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public Long getId() {
         return id;
