@@ -18,7 +18,51 @@
 		<result column="updateTime" property="updateTime" />
 		<result column="status" property="status" />
 	</resultMap>
-	
+	<select id="pageData" parameterType="TClassLesson" resultMap="BaseResultMap">
+		select t.*,a.courseName,
+		(select teacherName from t_teacher where id = t.shouldTearcherId) as shouldTearcherName,
+		(select teacherName from t_teacher where id = t.realTearcherId) as realTearcherName
+		from t_class_lesson t
+		left join t_class_course a on a.id = t.courseId
+		<where>
+			1=1
+			<if test=" lessonSeq != null and !''.equals(lessonSeq)">
+				and t.lessonSeq = #{lessonSeq}
+			</if>
+			<if test=" lessonName != null and !''.equals(lessonName)">
+				and t.lessonName = #{lessonName}
+			</if>
+			<if test=" courseId != null and !''.equals(courseId)">
+				and t.courseId = #{courseId}
+			</if>
+			<if test=" content != null and !''.equals(content)">
+				and t.content like concat('%',#{content},'%')
+			</if>
+			<if test=" beginTime != null and !''.equals(beginTime)">
+				and t.beginTime  &gt; #{beginTime}
+			</if>
+			<if test=" endTime != null and !''.equals(endTime)">
+				and t.endTime &lt; #{endTime}
+			</if>
+			<if test=" shouldQty != null and !''.equals(shouldQty)">
+				and t.shouldQty = #{shouldQty}
+			</if>
+			<if test=" realQty != null and !''.equals(realQty)">
+				and t.realQty = #{realQty}
+			</if>
+			<if test=" shouldTearcherId != null and !''.equals(shouldTearcherId)">
+				and t.shouldTearcherId = #{shouldTearcherId}
+			</if>
+			<if test=" realTearcherId != null and !''.equals(realTearcherId)">
+				and t.realTearcherId = #{realTearcherId}
+			</if>
+			<if test=" status != null and !''.equals(status)">
+				and t.status = #{status}
+			</if>
+		</where>
+		limit #{pageStartIndex},#{limit}
+	</select>
+
 	<select id="queryLessionByCourse" resultType="java.util.HashMap">
 		SELECT beginTime,endTime,lessonSeq
 		<if test="studentId !=null">

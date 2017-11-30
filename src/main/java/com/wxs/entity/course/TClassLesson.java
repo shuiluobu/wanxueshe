@@ -2,12 +2,18 @@ package com.wxs.entity.course;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 课时
  * </p>
  *
  * @author skyer
@@ -17,7 +23,10 @@ import java.io.Serializable;
 public class TClassLesson extends Model<TClassLesson> {
 
     private static final long serialVersionUID = 1L;
-
+	/**
+	 * 主键,自增
+	 */
+	@TableId(value = "id",type = IdType.AUTO)
 	private Long id;
     /**
      * 课时编号
@@ -47,6 +56,9 @@ public class TClassLesson extends Model<TClassLesson> {
      * 实到人数
      */
 	private Integer realQty;
+	/**
+	 * 讲课内容
+	 */
 	private String content;
     /**
      * 应该上课老师
@@ -56,9 +68,32 @@ public class TClassLesson extends Model<TClassLesson> {
      * 实际上课老师
      */
 	private Long realTearcherId;
+	/**
+	 * 创建时间
+	 */
 	private Date createTime;
+	/**
+	 * 最后更新时间
+	 */
 	private Date updateTime;
+	/**
+	 * 状态 1:启用，0：禁止
+	 */
 	private Long status;
+
+	//------额外字段
+	@TableField(exist = false)
+	private String courseName;    //所属课程名称
+	@TableField(exist = false)
+	private String shouldTearcherName; //应上课老师姓名
+	@TableField(exist = false)
+	private String realTearcherName; //实际上课老师姓名
+	@TableField(exist = false)
+	private Integer page = 1;       //分页查询  页码
+	@TableField(exist = false)
+	private Integer limit = 10;  //分页查询  每页条数
+	@TableField(exist = false)
+	private Integer pageStartIndex; //分页查询 起始下表
 
 
 	public Long getId() {
@@ -84,7 +119,8 @@ public class TClassLesson extends Model<TClassLesson> {
 	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getBeginTime() {
 		return beginTime;
 	}
@@ -92,7 +128,8 @@ public class TClassLesson extends Model<TClassLesson> {
 	public void setBeginTime(Date beginTime) {
 		this.beginTime = beginTime;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -140,7 +177,8 @@ public class TClassLesson extends Model<TClassLesson> {
 	public void setRealTearcherId(Long realTearcherId) {
 		this.realTearcherId = realTearcherId;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -148,7 +186,8 @@ public class TClassLesson extends Model<TClassLesson> {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getUpdateTime() {
 		return updateTime;
 	}
@@ -171,6 +210,54 @@ public class TClassLesson extends Model<TClassLesson> {
 
 	public void setLessonName(String lessonName) {
 		this.lessonName = lessonName;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public String getShouldTearcherName() {
+		return shouldTearcherName;
+	}
+
+	public void setShouldTearcherName(String shouldTearcherName) {
+		this.shouldTearcherName = shouldTearcherName;
+	}
+
+	public String getRealTearcherName() {
+		return realTearcherName;
+	}
+
+	public void setRealTearcherName(String realTearcherName) {
+		this.realTearcherName = realTearcherName;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public Integer getPageStartIndex() {
+		return pageStartIndex;
+	}
+
+	public void setPageStartIndex(Integer pageStartIndex) {
+		this.pageStartIndex = pageStartIndex;
 	}
 
 	@Override

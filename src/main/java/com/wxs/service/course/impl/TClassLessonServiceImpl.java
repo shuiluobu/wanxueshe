@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wxs.core.util.BaseUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +24,13 @@ import java.util.Map;
 public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TClassLesson> implements ITClassLessonService {
     @Autowired
     private TCoursesMapper coursesMapper;
+    @Autowired
+    private TClassLessonMapper classLessonMapper;
+
+    @Override
+    public List<TClassLesson> pageData(TClassLesson classLesson) {
+        return classLessonMapper.pageData(classLesson);
+    }
 
     @Override
     public Map<String, Object> getOneClassLession(Long lessionId) {

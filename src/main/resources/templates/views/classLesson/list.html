@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+    <div class="layui-inline">
+        <input type="text" id="lessonSeq" jq-verify="required" placeholder="课时编号" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="lessonName" jq-verify="required" placeholder="课时名称" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="content" jq-verify="required" placeholder="讲课内容" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="beginTime" jq-verify="required" placeholder="上课开始时间" class="layui-input search_input">
+    </div>
+    至
+    <div class="layui-inline">
+        <input type="text" id="endTime" jq-verify="required" placeholder="上课结束时间" class="layui-input search_input">
+    </div>
+    </br>
+    <div class="layui-inline">
+        <input type="text" id="shouldQty" jq-verify="required" placeholder="应到人数" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <input type="text" id="realQty" jq-verify="required" placeholder="实到人数" class="layui-input search_input">
+    </div>
+    <div class="layui-inline">
+        <select id="courseId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+            <option value="">请选择所属课程</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <select id="shouldTearcherId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+            <option value="">请选择应该上课老师</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <select id="realTearcherId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+            <option value="">请选择实际上课老师</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <label>状态: </label>
+        <select id="status" class="layui-select" style="width: 60px;text-align: center" lay-verify="required" lay-search="">
+            <option value="">全部</option>
+            <option value="1">启用</option>
+            <option value="0">禁止</option>
+        </select>
+    </div>
+    <div class="layui-inline">
+        <button class="layui-btn  layui-btn-normal" lay-filter="search" id="search"><i class="layui-icon">&#x1002;</i>搜索</button>
+    </div>
+    </br>
+    <div class="layui-inline">
+        <a class="layui-btn modal-iframe" id="btn-insert-operator"><i class="layui-icon">&#xe608;</i> 添加</a>
+    </div>
+    <div class="layui-inline">
+        <a class="layui-btn layui-btn-danger batchDel ajax-all" ><i class="layui-icon">&#xe640;</i>批量删除</a>
+    </div>
+</blockquote>
+<div class="layui-form links_list">
+    <table id="list"  lay-filter="list">
+    </table>
+</div>
+<div id="page"></div>
+<!-- 状态渲染模板-->
+<script type="text/html" id="status-tpl">
+    {{#  if(d.status == 1){ }}
+    <span style="color: green;">启用</span>
+    {{#  } else { }}
+    <span style="color: red;">禁止</span>
+    {{#  } }}
+</script>
+<!-- 是否已结束 渲染模板-->
+<script type="text/html" id="isEnd-tpl">
+    {{#  if(d.isEnd == 1){ }}
+    <span style="color: green;">是</span>
+    {{#  } else { }}
+    <span style="color: red;">否</span>
+    {{#  } }}
+</script>
+<!-- 操作渲染模板-->
+<script type="text/html" id="btn-tpl">
+    <!--<a class="layui-btn layui-btn-normal layui-btn-small" lay-event="detail">查看</a>-->
+    <a class="layui-btn layui-btn-small" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-small" lay-event="del">删除</a>
+</script>
+<#include "/common/version.html"/>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //所属课程查询 下拉选 初始化
+            $.each(courses, function (i) {
+                $("#courseId").append('<option value="' + this.key + '">' + this.value + '</option>');
+            });
+
+            //应该上课老师 查询 下拉选 初始化
+            $.each(teachers, function (i) {
+                $("#shouldTearcherId").append('<option value="' + this.key + '">' + this.value + '</option>');
+            });
+
+            //实际上课老师 查询 下拉选 初始化
+            $.each(teachers, function (i) {
+                $("#realTearcherId").append('<option value="' + this.key + '">' + this.value + '</option>');
+            });
+
+
+        });
+
+        //初始化 table
+        var table;
+        layui.use(['table','laydate'],function () {
+            table = layui.table;
+            var laydate = layui.laydate;
+            //渲染 开始时间
+            laydate.render({
+                elem: '#beginTime',
+                type:'datetime'
+            });
+            //渲染 结束时间
+            laydate.render({
+                elem: '#endTime',
+                type:'datetime'
+            });
+            //执行渲染
+            table.render({
+                //渲染对象
+                elem: '#list', //指定原始表格元素选择器（推荐id选择器）
+                //表格高度
+                height: 471, //容器高度
+                //开启隔行背景
+                even: true,
+                //请求接口地址
+                url:'/classLesson/page',
+                //开启分页
+                page: true,
+                //分页层级
+                limits: [10, 20, 30, 40, 50],
+                //分页大小
+                limit: 10,//默认采用60
+                //设置容器唯一ID
+                id: 'dataReload',
+                cols: [[ //标题栏
+                    //列头复选框
+                    {checkbox: true},
+                    {field: 'lessonSeq', title: '课时编号', width: 90,align:'center'},
+                    {field: 'lessonName', title: '课时名称', width: 95,align:'center'},
+                    {field: 'courseName', title: '所属课时', width: 115,align:'center'},
+                    {field: 'content', title: '讲课内容', width: 120,align:'center'},
+                    {field: 'beginTime', title: '开始时间', width: 165,align:'center',sort:true},
+                    {field: 'endTime', title: '结束时间', width: 165,align:'center',sort:true},
+                    {field: 'shouldQty', title: '应到人数', width: 95,align:'center',sort:true},
+                    {field: 'realQty', title: '实到人数', width: 95,align:'center',sort:true},
+                    {field: 'shouldTearcherName', title: '应该上课老师', width: 115,align:'center'},
+                    {field: 'realTearcherName', title: '实际上课老师', width: 115,align:'center'},
+                    {field: 'status', title: '状态', width: 60,align:'center',templet:'#status-tpl'},
+                    {field: 'operation', fixed: 'right',title: '操作', width: 200,align:'center', templet: '#btn-tpl'}
+                ]],
+                initSort: {
+                    field: 'lessonSeq', //排序字段，对应 cols 设定的各字段名
+                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                }
+                ,request: {
+                    pageName: 'page', //页码的参数名称，默认：page
+                    limitName: 'limit' //每页数据量的参数名，默认：limit
+                }
+            });
+
+            //监听工具条
+            table.on('tool(list)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    layer.msg('ID：' + data.id + ' 的查看操作');
+                } else if (obj.event === 'del') {
+                    layer.confirm('确定要删除该条数据吗?', function (index) {
+                        $.ajax({
+                            url:"/classLesson/delete",
+                            type:"post",
+                            data:{id:data.id},
+                            dataType:"json",
+                            success:function(json){
+                                table.reload("dataReload");
+                                layer.msg(json.msg);
+                            }
+
+                        });
+//                        obj.del();//table上删除,数据库不会变
+//                        layer.close(index);//table上删除,数据库不会变
+                    });
+                } else if (obj.event === 'edit') {
+                    layer.open({
+                        type: 2, //iframe
+                        title: '编辑课时',
+                        full: false,
+                        area: ['750px', '500px'],
+                        shade: 0,
+                        maxmin: true,
+                        content: "/classLesson/toEdit?id=" + data.id,
+                        btn: ['关闭'], //只是为了演示
+                        btn2: function () {
+                            layer.closeAll();
+                        },
+                        success: function (layero) {
+                            layer.setTop(layero); //置顶当前窗口
+                        }
+                    });
+                }
+            });
+
+            //表刷新方法
+            var reloadTable = function (item) {
+                table.reload("dataReload", { //此处是上文提到的 初始化标识id
+                    where: {
+                        lessonSeq: $("#lessonSeq").val(),
+                        lessonName: $('#lessonName').val(),
+                        courseId: $('#courseId').val(),
+                        beginTime: $('#beginTime').val(),
+                        endTime: $('#endTime').val(),
+                        shouldQty: $('#shouldQty').val(),
+                        realQty: $('#realQty').val(),
+                        content: $('#content').val(),
+                        shouldTearcherId: $('#shouldTearcherId').val(),
+                        realTearcherId: $('#realTearcherId').val(),
+                        status: $('#status').val()
+                    }
+                });
+            };
+
+            //为 搜索 按钮 附上 点击事件  查询
+            $("#search").click(function(){
+                reloadTable();
+            })
+
+
+            // 添加
+            $("#btn-insert-operator").click(function(){
+                layer.open({
+                    type: 2, //iframe
+                    title: '添加课时',
+                    full: false,
+                    area: ['750px', '500px'],
+                    shade: 0,
+                    maxmin: true,
+                    content: "/classLesson/toAdd",
+                    btn: ['关闭'], //只是为了演示
+                    btn2: function () {
+                        layer.closeAll();
+                    },
+                    success: function (layero) {
+                        layer.setTop(layero); //置顶当前窗口
+                    }
+                });
+            })
+
+            //批量删除
+            $(".batchDel").click(function () {
+                var checkStatus = table.checkStatus('dataReload');
+                var data = checkStatus.data;
+                if(data.length == 0){
+                    layer.msg("请选择要删除的数据!");
+                    return;
+                }
+                var ids="";
+                for(var i=0;i<data.length;i++){
+                    ids += data[i].id+",";
+                }
+                ids = ids.substr(0,ids.length-1)
+                layer.confirm('确定要删除这些数据吗?', function (index) {
+                    $.ajax({
+                        url:"/classLesson/delete",
+                        type:"post",
+                        data:{id:ids},
+                        dataType:"json",
+                        success:function(json){
+                            table.reload("dataReload");
+                            layer.msg(json.msg);
+                        }
+
+                    });
+                });
+            });
+
+        });
+
+    </script>
+</body>
+</html>

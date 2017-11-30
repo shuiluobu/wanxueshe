@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+	<form class="layui-form form" id="addFrom" action="#" method="post" onsubmit="return false">
+		<div class="layui-form-item">
+			<label class="layui-form-label">课时编号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="lessonSeq" name="lessonSeq" placeholder="请输入课时编号">
+			</div>
+			<label class="layui-form-label">课时名称:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="lessonName" name="lessonName" placeholder="请输入课时名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">所属课程:</label>
+			<div class="layui-input-inline">
+				<select id="courseId" name="courseId" class="layui-select" style="width: auto;text-align: center"  lay-search="">
+					<option value="">请选择所属课程</option>
+					<#list courses as list >
+						<option value="${list.id}" >${list.courseName}</option>
+					</#list>
+				</select>
+			</div>
+			<label class="layui-form-label">讲课内容:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="content" name="content" placeholder="请输入讲课内容">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">开始时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="beginTime" name="beginTime" placeholder="请输入开始时间">
+			</div>
+			<label class="layui-form-label">结束时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" id="endTime" name="endTime" placeholder="请输入结束时间">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">应到人数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="shouldQty" name="shouldQty" placeholder="请输入应到人数">
+			</div>
+			<label class="layui-form-label">实到人数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" id="realQty" name="realQty" value="0" placeholder="请输入实到人数">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">应该上课老师:</label>
+			<div class="layui-input-inline">
+				<select id="shouldTearcherId" name="shouldTearcherId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择应该上课老师</option>
+					<#list teachers as list >
+						<option value="${list.id}" >${list.teacherName}</option>
+					</#list>
+				</select>
+			</div>
+			<label class="layui-form-label">实际上课老师:</label>
+			<div class="layui-input-inline">
+				<select  id="realTearcherId"  name="realTearcherId" class="layui-select" style="width: auto;text-align: center" lay-verify="required" lay-search="">
+					<option value="">请选择实际上课老师</option>
+					<#list teachers as list >
+						<option value="${list.id}" >${list.teacherName}</option>
+					</#list>
+				</select>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态:</label>
+			<div class="layui-input-inline">
+				<input type="radio" name="status" value="1" title="启用" checked>
+				<input type="radio" name="status" value="0" title="禁止" >
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" onclick="save()"><i class="iconfont icon-submit"></i> 提交</button>
+				<!--<button class="layui-btn" jq-submit lay-filter="submit"><i class="iconfont icon-submit"></i> 提交</button>-->
+				<button type="reset" class="layui-btn fds"><i class="iconfont icon-reset"></i> 重置</button>
+		    </div>
+		</div>
+	</form>
+	<#include "/common/version.html"/>
+	<script type="text/javascript">
+
+        layui.use(['form','laydate'], function(){
+            //初始化form
+            var form = layui.form;
+            //初始化laydate
+            var laydate = layui.laydate;
+            //渲染 上课开始时间
+            laydate.render({
+                elem: '#beginTime',
+                type:'datetime'
+            });
+			//渲染 上课结束时间
+            laydate.render({
+                elem: '#endTime',
+                type:'datetime'
+            });
+        });
+
+        //用ajax提交表单
+        function save() {
+            //课时编号
+			var lessonSeq = $("#lessonSeq").val().trim();
+            if(lessonSeq == "" || lessonSeq.length == 0){
+                layer.msg("课时编号不能为空!");
+                return;
+            }
+            //课时名称
+            var lessonName = $("#lessonName").val().trim();
+            if(lessonName == "" || lessonName.length == 0){
+                layer.msg("课时名称不能为空!");
+                return;
+            }
+            //所属课程
+            var courseId = $("#courseId").val().trim();
+            if(courseId == "" || courseId.length == 0){
+                layer.msg("所属课程不能为空!");
+                return;
+            }
+            //讲课内容
+            var content = $("#content").val().trim();
+            if(content == "" || content.length == 0){
+                layer.msg("讲课内容不能为空!");
+                return;
+            }
+            //上课开始时间
+            var beginTime = $("#beginTime").val().trim();
+            if(beginTime == "" || beginTime.length == 0){
+                layer.msg("上课开始时间不能为空!");
+                return;
+            }
+            //上课结束时间
+            var endTime = $("#endTime").val().trim();
+            if(endTime == "" || endTime.length == 0){
+                layer.msg("上课结束时间不能为空!");
+                return;
+            }
+            //应到人数
+            var shouldQty = $("#shouldQty").val().trim();
+            if(shouldQty == "" || shouldQty.length == 0){
+                layer.msg("应到人数不能为空!");
+                return;
+            }
+            //应该上课老师
+            var shouldTearcherId = $("#shouldTearcherId").val().trim();
+            if(shouldTearcherId == "" || shouldTearcherId.length == 0){
+                layer.msg("应该上课老师不能为空!");
+                return;
+            }
+            $.ajax({
+                type:"post",
+                url:"/classLesson/doAdd",
+                data: $("#addFrom").serialize(),//表单数据
+                dataType:"json",
+                success:function(json){
+                    if(json.status == 200){
+                        parent.layer.msg(json.msg,{time:1500});//保存成功提示
+                        parent.table.reload("dataReload");//刷新table
+                    }else{
+                        parent.layer.msg('保存异常!');
+                    }
+                    parent.layer.closeAll('iframe');//关闭弹窗
+                }
+            });
+        }
+
+	</script>
+</body>
+</html>
