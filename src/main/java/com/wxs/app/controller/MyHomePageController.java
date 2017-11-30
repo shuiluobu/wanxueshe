@@ -31,5 +31,11 @@ public class MyHomePageController {
         return Result.of(studentService.getMyCourse(userId));
     }
 
+    @RequestMapping(value = "/myRemind")
+    public Result myRemind() {
+        //我的提醒
+        return  null;
+    }
+
 
 }

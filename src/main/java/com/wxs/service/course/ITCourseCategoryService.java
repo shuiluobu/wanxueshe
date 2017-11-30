@@ -20,4 +20,5 @@ public interface ITCourseCategoryService extends IService<TCourseCategory> {
 
     public List<TCourseCategory> getAllCategoryOfOrgan(Long organId);
     public List<TCourseCategory> getAllCategoryByTeacher(Long teacherId);
+    public List<TCourseCategory> getNearByCategorys(double latitude,double  longitude);
 }

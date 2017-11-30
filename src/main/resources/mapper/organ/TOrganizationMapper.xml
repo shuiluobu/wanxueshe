@@ -23,6 +23,9 @@
 		<result column="createUser" property="createUser" />
 		<result column="logoImg" property="logoImg" />
 		<result column="organRemark" property="organRemark" />
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+
 	</resultMap>
 
 </mapper>

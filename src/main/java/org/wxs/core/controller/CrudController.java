@@ -46,6 +46,7 @@ public abstract class CrudController<T extends Serializable,S extends IService<T
 	@Autowired
 	protected ITCourseCategoryService courseCategoryService; //课程类型
 
+
 	/**
 	 * 注入服务层
 	 */

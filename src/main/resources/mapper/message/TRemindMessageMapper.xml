@@ -10,6 +10,9 @@
 		<result column="tile" property="tile" />
 		<result column="dyMsgId" property="dyMsgId" />
 		<result column="remindType" property="remindType" />
+		<result column="jmsType" property="jmsType" />
+		<result column="messageContent" property="messageContent" />
+		<result column="readStatus" property="readStatus" />
 		<result column="createTime" property="createTime" />
 		<result column="status" property="status" />
 	</resultMap>
