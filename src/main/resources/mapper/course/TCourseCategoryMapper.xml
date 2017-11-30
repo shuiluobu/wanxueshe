@@ -23,4 +23,47 @@
 		<result column="categoryType" property="categoryType" />
 		<result column="cover" property="cover" />
 	</resultMap>
+
+	<select id="pageData" parameterType="TCourseCategory" resultMap="BaseResultMap">
+		select t.*,a.organName
+		from t_course_category t
+		left join t_organization a on a.id = t.organId
+		<where>
+			1=1
+			<if test=" courseCategoryCode != null and !''.equals(courseCategoryCode)">
+				and t.courseCategoryCode = #{courseCategoryCode}
+			</if>
+			<if test=" courseCategoryName != null and !''.equals(courseCategoryName)">
+				and t.courseCategoryName = #{courseCategoryName}
+			</if>
+			<if test=" marketPrice != null and !''.equals(marketPrice)">
+				and t.marketPrice = #{marketPrice}
+			</if>
+			<if test=" preferenPrice != null and !''.equals(preferenPrice)">
+				and t.preferenPrice = #{preferenPrice}
+			</if>
+			<if test=" preferStartTime != null and !''.equals(preferStartTime)">
+				and t.preferStartTime  &gt; #{preferStartTime}
+			</if>
+			<if test=" preferEndTime != null and !''.equals(preferEndTime)">
+				and t.preferEndTime &lt; #{preferEndTime}
+			</if>
+			<if test=" wishStudySum != null and !''.equals(wishStudySum)">
+				and t.wishStudySum = #{wishStudySum}
+			</if>
+			<if test=" alreadyStudySum != null and !''.equals(alreadyStudySum)">
+				and t.alreadyStudySum = #{alreadyStudySum}
+			</if>
+			<if test=" organId != null and !''.equals(organId)">
+				and t.organId = #{organId}
+			</if>
+			<if test=" canQty != null and !''.equals(canQty)">
+				and t.canQty = #{canQty}
+			</if>
+			<if test=" status != null and !''.equals(status)">
+				and t.status = #{status}
+			</if>
+		</where>
+		limit #{pageStartIndex},#{limit}
+	</select>
 </mapper>

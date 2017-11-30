@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/header.html"/>
+</head>
+<body class="childrenBody">
+	<form class="layui-form form" id="addFrom" action="#" method="post" onsubmit="return false">
+		<input type="hidden" id="id" name="id" value="${courseCategory.id!}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">分类编号:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" disabled id="courseCategoryCode" name="courseCategoryCode" value="${courseCategory.courseCategoryCode?c}" jq-verify="required|courseCategoryCode" placeholder="请输入分类编号">
+			</div>
+			<label class="layui-form-label">分类名称:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" disabled id="courseCategoryName" name="courseCategoryName" value="${courseCategory.courseCategoryName!}" placeholder="请输入分类名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">所属教育机构:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" disabled id="organName" name="organName" value="${courseCategory.organName!}" placeholder="请输入分类名称">
+			</div>
+			<label class="layui-form-label">课时数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" disabled id="canQty" name="canQty" value="${courseCategory.canQty?c}" placeholder="请输入课时数">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">期望招生数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" disabled id="wishStudySum" name="wishStudySum" value="${courseCategory.wishStudySum?c}" jq-verify="required|wishStudySum"  placeholder="请输入期望招生数">
+			</div>
+			<label class="layui-form-label">已招生数:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" disabled id="alreadyStudySum" name="alreadyStudySum" value="${courseCategory.alreadyStudySum?c}" jq-verify="required|alreadyStudySum"  placeholder="请输入已招生数">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">市场价格:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" disabled id="marketPrice" name="marketPrice" value="${courseCategory.marketPrice?c}" jq-verify="required|marketPrice"  placeholder="请输入市场价格">
+			</div>
+			<label class="layui-form-label">优惠价格:</label>
+			<div class="layui-input-inline">
+				<input type="number" class="layui-input" disabled id="preferenPrice" name="preferenPrice" value="${courseCategory.preferenPrice?c}" value="${courseCategory.courseCategoryCode!}" jq-verify="required|preferenPrice"  placeholder="请输入优惠价格">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">优惠开始时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" disabled id="preferStartTime" name="preferStartTime" value="${courseCategory.preferStartTime?string('yyyy-MM-dd HH:mm:ss')}" jq-verify="required|preferStartTime"  placeholder="请输入优惠开始时间">
+			</div>
+			<label class="layui-form-label">优惠结束时间:</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" disabled id="preferEndTime" name="preferEndTime" value="${courseCategory.preferEndTime?string('yyyy-MM-dd HH:mm:ss')}" jq-verify="required|preferEndTime"  placeholder="请输入优惠结束时间">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态:</label>
+			<div class="layui-input-inline">
+				<#if courseCategory.status == 1>
+					<input type="radio" name="status" value="1" title="启用" checked>
+					<#else>
+						<input type="radio" name="status" value="0" title="禁止" checked>
+				</#if>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">封面:</label>
+			<div class="layui-input-block">
+				<input type="hidden" disabled id="cover" name="cover" value="${courseCategory.cover!}">
+				<!--<button type="button" class="layui-btn" id="imgFile" name="imgFile">-->
+					<!--<i class="layui-icon">&#xe67c;</i>上传封面-->
+				<!--</button>-->
+				<div class="layui-upload-list">
+					<img class="layui-upload-img" id="preview" src="${courseCategory.cover!}" >
+					<p id="errText"></p>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">简单说明:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入简单说明" disabled id="explain" name="explain" class="layui-textarea">${courseCategory.explain!}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">课程介绍:</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入课程介绍" disabled id="courseRemark" name="courseRemark" class="layui-textarea">${courseCategory.courseRemark!}</textarea>
+			</div>
+		</div>
+	</form>
+	<#include "/common/version.html"/>
+	<script type="text/javascript">
+        layui.use('form', function(){
+            //初始化form
+            var form = layui.form;
+        });
+
+	</script>
+</body>
+</html>

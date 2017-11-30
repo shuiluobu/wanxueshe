@@ -20,6 +20,9 @@ import java.util.Map;
  */
 public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
 
+    //分页+混合条件 查询 班级
+    public List<TCourseCategory> pageData(TCourseCategory courseCategory);
+
     @Select("SELECT * FROM t_course_category WHERE organId =#{organId} ")
     @ResultType(TCourseCategory.class)
     public List<TCourseCategory> getAllCategoryOfOrgan(@Param("organId") Long organId);
