@@ -202,7 +202,7 @@
             <groupId>com.qcloud.cmq</groupId>
             <artifactId>cmq</artifactId>
             <version>1.0.2-topic</version>
-            <systemPath>${project.basedir}/library/cmq-1.0.2-topic.jar
+            <systemPath>${project.basedir}/librarys/cmq-1.0.2-topic.jar
             </systemPath>
         </dependency>
     </dependencies>
