@@ -197,6 +197,14 @@
             <version>4.3.10.RELEASE</version>
         </dependency>
 
+        <!--腾讯的mq消息队列-->
+        <dependency>
+            <groupId>com.qcloud.cmq</groupId>
+            <artifactId>cmq</artifactId>
+            <version>1.0.2-topic</version>
+            <systemPath>${project.basedir}/library/cmq-1.0.2-topic.jar
+            </systemPath>
+        </dependency>
     </dependencies>
 
     <build>
