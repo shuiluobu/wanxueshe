@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * <p>
- * 服务实现类
+ *  服务实现类
  * </p>
  *
  * @author skyer
@@ -28,6 +28,13 @@ import java.util.Map;
 public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TClassLesson> implements ITClassLessonService {
     @Autowired
     private TCoursesMapper coursesMapper;
+    @Autowired
+    private TClassLessonMapper classLessonMapper;
+
+    @Override
+    public List<TClassLesson> pageData(TClassLesson classLesson) {
+        return classLessonMapper.pageData(classLesson);
+    }
     @Autowired
     private TStudentMapper studentMapper;
 

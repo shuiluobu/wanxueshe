@@ -27,8 +27,24 @@ import java.io.Serializable;
 public class TTeacher extends Model<TTeacher> {
 
     private static final long serialVersionUID = 1L;
-
     @TableId(value = "id", type = IdType.AUTO)
+    private Long id;  				//主键,自增
+    private Long userId;			//用户Id
+    private String teacherName;	//姓名
+    private Long organizationId;	//所属教育机构Id
+    private String realName;		//真实姓名
+    private String teacherCode;   //教师编号
+    private String mobilePhone;	//手机号
+    private String telePhone;		//座机
+    private String idCode;			//身份证号
+    private Integer sex;			//性别  1：男，0：女
+    private Integer age;			//年龄
+    private String teachRemark;	//备注
+    private String introduce;		//介绍
+    private Date createTime;		//创建时间
+    private Integer status;		//状态 1：启用，0：禁止
+
+	//-----额外字段
     private Long id;
     private Long userId;
     private String teacherName;

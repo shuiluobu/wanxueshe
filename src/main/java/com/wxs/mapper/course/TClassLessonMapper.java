@@ -16,6 +16,8 @@ import java.util.Map;
  * @since 2017-09-21
  */
 public interface TClassLessonMapper extends BaseMapper<TClassLesson> {
+    //分页+混合条件 查询课时
+    List<TClassLesson> pageData(TClassLesson classLesson);
     //根据条件查询课时
     List<TClassLesson> selectLessionByParm(TClassLesson classLesson);
     //获取一个课程下面所有课时信息
