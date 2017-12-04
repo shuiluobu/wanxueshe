@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author skyer
@@ -34,8 +34,16 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
     public List<TCourseCategory> getAllCategoryOfOrgan(Long organId) {
         return courseCategoryMapper.getAllCategoryOfOrgan(organId);
     }
+
     @Override
-    public List<TCourseCategory> getAllCategoryByTeacher(Long teacherId){
-        return  courseCategoryMapper.getAllCategoryByTeacher(teacherId);
+    public List<TCourseCategory> getAllCategoryByTeacher(Long teacherId) {
+        return courseCategoryMapper.getAllCategoryByTeacher(teacherId);
+    }
+
+    @Override
+    public List<TCourseCategory> getNearByCategorys(double latitude, double longitude) {
+        //用sql查找5公里范围内的
+        return courseCategoryMapper.getNearByCategorys(latitude, longitude, 5);
+
     }
 }

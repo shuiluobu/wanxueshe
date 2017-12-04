@@ -227,6 +227,8 @@ public class RedisClientTemplate {
 		}
 		return result;
 	}
+
+
 	/**
 	 * 删除key
 	 * @author skyer
