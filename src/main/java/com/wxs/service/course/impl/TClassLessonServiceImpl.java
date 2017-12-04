@@ -35,6 +35,12 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
     public List<TClassLesson> pageData(TClassLesson classLesson) {
         return classLessonMapper.pageData(classLesson);
     }
+
+    @Override
+    public Map<String, Object> getOneClassLession(Long lessionId) {
+        return null;
+    }
+
     @Autowired
     private TStudentMapper studentMapper;
 

@@ -46,6 +46,17 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
         return courseCategoryMapper.getAllCategoryByTeacher(teacherId);
     }
 
+
+    /**
+     * 老师教过的课程
+     * @param teacherId
+     * @return
+     */
+    public List<Map<String,Object>> getTeacherCourseList(Long teacherId){
+        return  courseCategoryMapper.getTeacherCourseList(teacherId);
+    }
+
+
     @Override
     public List<TCourseCategory> getNearByCategorys(double latitude, double longitude) {
         //用sql查找5公里范围内的

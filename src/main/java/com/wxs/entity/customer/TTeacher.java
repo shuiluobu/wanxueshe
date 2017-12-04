@@ -2,14 +2,11 @@ package com.wxs.entity.customer;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
-
 import java.util.Date;
-
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.wxs.entity.organ.TOrganization;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -43,25 +40,8 @@ public class TTeacher extends Model<TTeacher> {
     private String introduce;		//介绍
     private Date createTime;		//创建时间
     private Integer status;		//状态 1：启用，0：禁止
-
-	//-----额外字段
-    private Long id;
-    private Long userId;
-    private String teacherName;
-    private Long organizationId;
-    private String realName;
-    private String teacherCode;
-    private String mobilePhone;
-    private String telePhone;
+	private String headImg; //头像图片
     private Integer leval; //等级
-    private String idCode;
-    private Integer sex;
-    private Integer age;
-    private String teachRemark;
-    private String introduce;
-    private Date createTime;
-    private String headImg; //头像
-    private Integer status;
     @TableField(exist = false)
     private TOrganization organization;
 

@@ -59,7 +59,7 @@ public class MyTeacherController {
     public Result courseList(@PathVariable("teacherId") Long teacherId) {
         //根据教师查询，教师所教的课程列表
         TTeacher teacher = teacherService.selectById(teacherId);
-        return Result.of(courseCategoryService.getAllCategoryByTeacher(teacher.getUserId()));
+        return Result.of(courseCategoryService.getTeacherCourseList(teacher.getUserId()));
     }
 
     @RequestMapping(value = "classTask/{taskId}")

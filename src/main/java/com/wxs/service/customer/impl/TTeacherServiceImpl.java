@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
+import com.wxs.mapper.course.TCourseCategoryMapper;
 import com.wxs.mapper.customer.TFollowTeacherMapper;
 import com.wxs.mapper.customer.TTeacherMapper;
 import com.wxs.service.customer.ITTeacherService;
@@ -32,6 +33,8 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
     private TTeacherMapper teacherMapper; //课程基本信息
     @Autowired
     private TFollowTeacherMapper followTeacherMapper;
+    @Autowired
+    private TCourseCategoryMapper courseCategoryMapper;
 
     public Optional<Map> getTeacharInfoById(Long tId) {
         Map map = teacherMapper.selectTeacherById(tId);
