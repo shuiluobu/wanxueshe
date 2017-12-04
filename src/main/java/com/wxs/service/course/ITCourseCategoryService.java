@@ -4,6 +4,7 @@ import com.wxs.entity.course.TCourseCategory;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,6 +20,7 @@ public interface ITCourseCategoryService extends IService<TCourseCategory> {
     public List<TCourseCategory> pageData(TCourseCategory courseCategory);
 
     public List<TCourseCategory> getAllCategoryOfOrgan(Long organId);
+    List<Map<String,Object>> getOrganCourseList(Long organId);
     public List<TCourseCategory> getAllCategoryByTeacher(Long teacherId);
     public List<TCourseCategory> getNearByCategorys(double latitude,double  longitude);
 }

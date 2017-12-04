@@ -33,13 +33,14 @@ public class OrganController {
     @RequestMapping(value = "/{organId}")
     public Result organOne(@PathVariable("organId") Long organId){
         //机构基本信息
-        return Result.of(organizationService.selectById(organId));
+        Long userId = 0L;
+        return Result.of(organizationService.getOrganOutline(organId,userId));
     }
 
     @RequestMapping(value = "/course/{organId}")
     public Result courseOfOrgan(@PathVariable("organId") Long organId){
         //机构的课程信息
-        return Result.of(courseCategoryService.getAllCategoryOfOrgan(organId));
+        return Result.of(courseCategoryService.getOrganCourseList(organId));
     }
 
     @RequestMapping(value = "/activity/{organId}")

@@ -3,6 +3,8 @@ package com.wxs.mapper.customer;
 import com.wxs.entity.customer.TTeacher;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -20,5 +22,9 @@ public interface TTeacherMapper extends BaseMapper<TTeacher> {
     Map selectTeacherById(@Param("tid") Long tid);
 
     List<Map<String,Object>> getClassByTeacher(Long tid);
+
+    @Select("SELECT COUNT(s.studentId) from t_class c,t_student_class s  where c.teacherId=t.id and c.id=s.classId  and c.teacherId=#{teacherId} ")
+    @ResultType(int.class)
+    int getTeacherStudentCount(@Param("teacherId") Long teacherId);
 
 }

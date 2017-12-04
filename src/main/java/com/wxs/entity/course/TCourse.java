@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-10-25
  */
-@TableName("t_class_course")
+@TableName("t_course")
 public class TCourse extends Model<TCourse> {
 
 	private static final long serialVersionUID = 1L;

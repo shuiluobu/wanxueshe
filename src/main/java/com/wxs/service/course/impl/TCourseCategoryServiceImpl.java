@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -33,6 +34,11 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
     @Override
     public List<TCourseCategory> getAllCategoryOfOrgan(Long organId) {
         return courseCategoryMapper.getAllCategoryOfOrgan(organId);
+    }
+
+    @Override
+    public List<Map<String,Object>> getOrganCourseList(Long organId) {
+        return courseCategoryMapper.getOrganCourseList(organId);
     }
 
     @Override

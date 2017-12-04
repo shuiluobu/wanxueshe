@@ -1,10 +1,18 @@
 package com.wxs.service.organ.impl;
 
+import com.google.common.collect.Maps;
 import com.wxs.entity.organ.TOrganization;
+import com.wxs.mapper.course.TCoursesMapper;
+import com.wxs.mapper.course.TStudentClassMapper;
+import com.wxs.mapper.organ.TFllowOrganMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.organ.ITOrganizationService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wxs.core.util.BaseUtil;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -16,5 +24,49 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, TOrganization> implements ITOrganizationService {
-	
+    @Autowired
+    public TOrganizationMapper organizationMapper;
+
+    @Autowired
+    public TStudentClassMapper studentClassMapper;
+
+    @Autowired
+    public TCoursesMapper coursesMapper;
+
+    @Autowired
+    public TFllowOrganMapper fllowOrganMapper; //关注机构表
+
+
+    /**
+     * 机构概要
+     * @param organId
+     * @param userId
+     * @return
+     */
+   public Map<String,Object> getOrganOutline(Long organId, Long userId){
+       Map<String,Object> result = Maps.newHashMap();
+       TOrganization organization = organizationMapper.selectById(organId);
+       result.put("organId",organization.getId());
+       result.put("organName",organization.getOrganName());
+       result.put("logoImg",organization.getLogoImg());//logo头像
+       result.put("smallIntroduce",organization.getIntroduce()); //小介绍，个性签名
+       result.put("samllCount",smallCountOfOrgan(organId)); //小统计
+       result.put("ifFllow",fllowOrganMapper.getFllowByUserId(userId,organId)==null?false:true); //是否关注
+       result.put("levalDesc",organization.getLeval());
+       result.put("foundingTime", BaseUtil.toChinaDate(organization.getFoundingTime())); //成立时间
+       result.put("address",organization.getAddress());
+       result.put("organRemark",organization.getOrganRemark());
+       result.put("telePhone",organization.getTelePhone()==null?organization.getMobilePhone():organization.getTelePhone());
+
+       return result;
+   }
+
+
+   public String smallCountOfOrgan(Long organId){
+       //获取机构的小统计，主要统计多少学员，多少人关注，多少课程
+        int organFllowCount = fllowOrganMapper.getOrganFllowCount(organId);
+        int organStudentCount = studentClassMapper.getOrganStudentCount(organId);
+        int organCourseCount = coursesMapper.getOrganCourseCount(organId);
+        return  organFllowCount+"人关注，"+organStudentCount+"学员，"+organCourseCount+"课程";
+   }
 }

@@ -16,5 +16,6 @@ import java.util.Optional;
  */
 public interface ITTeacherService extends IService<TTeacher> {
     public Optional<Map> getTeacharInfoById(Long tId);
+   public Map<String,Object> getTeacherOutline(Long teacherId,Long userId) throws Exception;
 
 }

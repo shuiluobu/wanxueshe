@@ -157,6 +157,11 @@ public class BaseUtil {
         return (null == date) ? "" : df.format(date);
     }
 
+    public static String toChinaDate(Date date) {
+        DateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
+        return (null == date) ? "" : df.format(date);
+    }
+
     /**
      * 按字符串内容构\uFFFD?\uFFFD日期： <br>
      * 格式\uFFFD? “yyyy-mm-dd hh:mm:ss.fffffffff”，“yyyy-mm-dd hh:mm:ss\uFFFD?

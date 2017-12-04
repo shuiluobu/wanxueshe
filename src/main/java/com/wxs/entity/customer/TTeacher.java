@@ -37,12 +37,14 @@ public class TTeacher extends Model<TTeacher> {
     private String teacherCode;
     private String mobilePhone;
     private String telePhone;
+    private Integer leval; //等级
     private String idCode;
     private Integer sex;
     private Integer age;
     private String teachRemark;
     private String introduce;
     private Date createTime;
+    private String headImg; //头像
     private Integer status;
     @TableField(exist = false)
     private TOrganization organization;
@@ -80,7 +82,15 @@ public class TTeacher extends Model<TTeacher> {
         this.realName = realName;
     }
 
-    public String getMobilePhone() {
+	public Integer getLeval() {
+		return leval;
+	}
+
+	public void setLeval(Integer leval) {
+		this.leval = leval;
+	}
+
+	public String getMobilePhone() {
         return mobilePhone;
     }
 
@@ -114,6 +124,14 @@ public class TTeacher extends Model<TTeacher> {
 
 	public Integer getAge() {
 		return age;
+	}
+
+	public String getHeadImg() {
+		return headImg;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
 	}
 
 	public void setAge(Integer age) {

@@ -21,7 +21,7 @@
 		select t.*,a.teacherName,b.courseName,l.organName
 		from t_class t
 		left join t_teacher a on a.id = t.teacherId
-		left join t_class_course b on b.id = t.courseId
+		left join t_course b on b.id = t.courseId
 		left join t_organization l on l.id = t.organId
 		<where>
 			1=1

@@ -13,7 +13,6 @@
 		<result column="status" property="status" />
 		<result column="createTime" property="createTime" />
 		<result column="alreadyStudySum" property="alreadyStudySum" />
-		<result column="wishStudySum" property="wishStudySum" />
 		<result column="marketPrice" property="marketPrice" />
 		<result column="preferenPrice" property="preferenPrice" />
 		<result column="preferStartTime" property="preferStartTime" />
@@ -65,5 +64,12 @@
 			</if>
 		</where>
 		limit #{pageStartIndex},#{limit}
+	</select>
+
+	<select id="getOrganCourseList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT courseCategoryName courseName,canQty,alreadyStudySum,explain FROM t_course_category WHERE 1=1
+	  <if test="organId!=null">
+		  organId = #{organId}
+	  </if>
 	</select>
 </mapper>

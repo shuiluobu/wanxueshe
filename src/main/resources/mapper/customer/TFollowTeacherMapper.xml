@@ -12,4 +12,11 @@
 		<result column="status" property="status" />
 	</resultMap>
 
+	<select id="getOneFllowTeacherByUser" resultType="com.wxs.entity.customer.TFollowTeacher" >
+		SELECT f.* FROM t_follow_teacher f
+		   where f.teacherId = #{teacherId}
+		     and f.userId =#{userId}
+	</select>
+	
+
 </mapper>

@@ -35,7 +35,7 @@
 	s.studentId
 	      FROM
 	t_student_class s,
-	t_courses c,
+	t_course c,
 	t_course_category y
 	      WHERE
 	s.coursesId = c.id

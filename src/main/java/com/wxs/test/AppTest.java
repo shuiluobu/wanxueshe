@@ -1,4 +1,5 @@
 package com.wxs.test;
+import com.wxs.cache.IGeoRedisService;
 import com.wxs.service.course.ITCourseCategoryService;
 import com.wxs.service.organ.ITOrganizationService;
 import com.wxs.util.Result;
@@ -24,6 +25,25 @@ public class AppTest {
     public void test1(){
         Long organId = 1L;
        //System.out.println(BaseUtil.toJson(Result.of(organizationService.selectById(organId))));
-       System.out.println("==" +BaseUtil.toJson(Result.of(courseCategoryService.getAllCategoryOfOrgan(organId))));
+       System.out.println("==" +BaseUtil.toJson(courseCategoryService.getAllCategoryOfOrgan(organId)));
+    }
+
+    @Test
+    public void test3(){
+        System.out.println(BaseUtil.toJson(organizationService.getOrganOutline(1L,1L)));
+    }
+
+    @Autowired
+    private IGeoRedisService geoRedisService;
+    @Test
+    public void test2(){
+        geoRedisService.addGeo("wanxueshe_zhengzhou_organ","001",34.7668210000,113.7765420000); //绿地之窗
+        geoRedisService.addGeo("wanxueshe_zhengzhou_organ","002",34.7457240000,113.7551150000); //五洲小区
+        geoRedisService.addGeo("wanxueshe_zhengzhou_organ","003",34.7652430000,113.7855630000); //高铁站
+        geoRedisService.addGeo("wanxueshe_zhengzhou_organ","004",34.7029350000,113.6918770000);//南三环
+
+        System.out.println("高铁站与绿地之窗距离为："+ geoRedisService.geodist("wanxueshe_zhengzhou_organ","001","002"));
+
+
     }
 }

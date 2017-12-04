@@ -24,7 +24,7 @@
 
     <select id="pageData" parameterType="TCourse" resultMap="BaseResultMap">
         select t.*,a.organName,b.courseCategoryName
-        from t_class_course t
+        from t_course t
         left join t_organization a on a.id = t.organizationId
         left join t_course_category b on b.id = t.courseCateId
         <where>
@@ -61,7 +61,7 @@
     </select>
 
     <select id="selectOneCourseById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-		SELECT * FROM t_class_courses WHERE id = #{coursesId}
+		SELECT * FROM t_course WHERE id = #{coursesId}
 	</select>
 
     <select id="selectCoursesByIds" parameterType="java.util.List" resultType="java.util.HashMap">
@@ -76,7 +76,7 @@
 
     <select id="selectMap" parameterType="java.lang.Long" resultType="java.util.HashMap">
 		SELECT s.*,c.className,t.teacherName,o.organName
-		FROM t_courses s,t_class c,t_teacher t,t_organization o
+		FROM t_course s,t_class c,t_teacher t,t_organization o
         where c.course=s.id
         and c.teacherId=t.id
         and s.organizationId=o.id

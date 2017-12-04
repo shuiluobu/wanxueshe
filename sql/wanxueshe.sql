@@ -284,8 +284,8 @@ CREATE TABLE `t_class` (
 -- ----------------------------
 -- Table structure for t_class_courses
 -- ----------------------------
-DROP TABLE IF EXISTS `t_class_courses`;
-CREATE TABLE `t_class_courses` (
+DROP TABLE IF EXISTS `t_course`;
+CREATE TABLE `t_course` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `organizationId` bigint(20) DEFAULT NULL COMMENT '所属机构',
   `courseCode` varchar(50) DEFAULT NULL COMMENT '课程代码',

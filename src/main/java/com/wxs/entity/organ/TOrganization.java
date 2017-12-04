@@ -39,6 +39,7 @@ public class TOrganization extends Model<TOrganization> {
     private String mobilePhone;     //手机号
     private String coordinate;      //坐标
     private Integer leval;          //等级
+    private Date foundingTime;      //成立时间
     private String organRemark;     //机构备注
     private String introduce;       //机构介绍
     private Date createTime;        //创建时间
@@ -154,6 +155,14 @@ public class TOrganization extends Model<TOrganization> {
 
     public String getIntroduce() {
         return introduce;
+    }
+
+    public Date getFoundingTime() {
+        return foundingTime;
+    }
+
+    public void setFoundingTime(Date foundingTime) {
+        this.foundingTime = foundingTime;
     }
 
     public void setIntroduce(String introduce) {

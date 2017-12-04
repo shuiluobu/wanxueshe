@@ -2,6 +2,8 @@ package com.wxs.mapper.course;
 
 import com.wxs.entity.course.TStudentClass;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.ResultType;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Map;
 
@@ -18,4 +20,9 @@ public interface TStudentClassMapper extends BaseMapper<TStudentClass> {
     public String getCoursesIds(Map<String,Object> map);
 
     public Map<String,Object> getMyCourse(Long userId);
+
+    @Select("select count(1) from t_student_class c,t_student s where c.studentId=s.id and c.organizationId=#{organId} ")
+    @ResultType(int.class)
+    public int getOrganStudentCount(Long organId);
+
 }

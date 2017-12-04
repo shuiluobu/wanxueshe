@@ -27,8 +27,15 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
     @ResultType(TCourseCategory.class)
     public List<TCourseCategory> getAllCategoryOfOrgan(@Param("organId") Long organId);
 
-    @Select("SELECT * from t_course_category y  INNER JOIN t_class_courses c on y.id=c.courseCateId\n" +
-            "INNER JOIN t_class s on s.id=c.classId where s.teacherId =#{teacherId} ")
+
+    public List<Map<String,Object>> getOrganCourseList(@Param("organId") Long organId);
+
+
+
+    @Select("SELECT * from t_course_category y " +
+            "INNER JOIN t_course c on y.id=c.courseCateId\n" +
+            "INNER JOIN t_class s on s.id=c.classId where s.teacherId =#{teacherId} "
+    )
     @ResultType(TCourseCategory.class)
     public List<TCourseCategory> getAllCategoryByTeacher(@Param("teacherId") Long teacherId);
 

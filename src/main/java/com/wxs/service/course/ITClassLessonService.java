@@ -16,5 +16,5 @@ import java.util.Map;
  * @since 2017-09-21
  */
 public interface ITClassLessonService extends IService<TClassLesson> {
-	public Map<String,Object> getOneClassLession(Long lessionId);
+	public Map<String,Object> getOneClassLession(Long lessionId,Long userId);
 }

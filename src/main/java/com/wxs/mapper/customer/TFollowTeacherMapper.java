@@ -19,6 +19,17 @@ import java.util.Map;
  */
 public interface TFollowTeacherMapper extends BaseMapper<TFollowTeacher> {
 
-    @Select("SELECT t.* FROM t_follow_teacher f,t_teacher t where f.teacherId=t.id and f.userId =#{userId} ")
+    @Select("SELECT t.* FROM t_follow_teacher f,t_teacher t where f.teacherId=t.id  and f.userId =#{userId} ")
+    @ResultType(Map.class)
     List<Map<String,Object>> getFllowTeacherByUser(@Param("userId") Long userId);
+
+
+    TFollowTeacher getOneFllowTeacherByUser(@Param("userId") Long userId,@Param("userId") Long teacherId);
+
+
+
+    @Select("SELECT count(1) FROM t_follow_teacher f,t_teacher t where f.teacherId=t.id  and f.teacherId=#{teacherId} ")
+    @ResultType(int.class)
+    int getFllowTeacherByCount(@Param("teacherId") Long teacherId);
+
 }

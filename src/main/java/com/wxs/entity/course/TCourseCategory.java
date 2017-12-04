@@ -61,10 +61,6 @@ public class TCourseCategory extends Model<TCourseCategory> {
      */
 	private Integer alreadyStudySum;
     /**
-     * 希望招多少个学生
-     */
-	private Integer wishStudySum;
-    /**
      * 市场价格
      */
 	private Double marketPrice;
@@ -180,14 +176,6 @@ public class TCourseCategory extends Model<TCourseCategory> {
 
 	public void setAlreadyStudySum(Integer alreadyStudySum) {
 		this.alreadyStudySum = alreadyStudySum;
-	}
-
-	public Integer getWishStudySum() {
-		return wishStudySum;
-	}
-
-	public void setWishStudySum(Integer wishStudySum) {
-		this.wishStudySum = wishStudySum;
 	}
 
 	public Double getMarketPrice() {

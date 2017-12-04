@@ -3,6 +3,8 @@ package com.wxs.service.organ;
 import com.wxs.entity.organ.TOrganization;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2017-09-21
  */
 public interface ITOrganizationService extends IService<TOrganization> {
+
+    public Map<String,Object> getOrganOutline(Long organId,Long userId);
 	
 }

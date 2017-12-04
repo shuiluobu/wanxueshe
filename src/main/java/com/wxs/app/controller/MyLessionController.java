@@ -22,6 +22,7 @@ public class MyLessionController {
     @RequestMapping(value = "/view/{lessionId}")
     public Result view(@PathVariable("lessionId") Long lessionId) {
         //展示课时详情
-        return Result.of(classLessonService.getOneClassLession(lessionId));
+        Long userId = 0L;
+        return Result.of(classLessonService.getOneClassLession(lessionId,userId));
     }
 }

@@ -29,7 +29,7 @@
          y.courseCategoryName courseName,
          y.canQty,
          y.alreadyStudySum
-         FROM t_class c,t_courses r,t_course_category y
+         FROM t_class c,t_course r,t_course_category y
          WHERE
          c.courseId=r.id
          AND r.courseCode=y.courseCategoryCode
