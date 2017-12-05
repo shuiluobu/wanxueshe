@@ -27,4 +27,12 @@ public interface TOrganAgendaMapper extends BaseMapper<TOrganAgenda> {
             "and t.startTime > #{startTime} and t.startTime < #{endTime}")
     @ResultMap("BaseResultMap")
     public List<TOrganAgenda> organAgenda(@Param("userId") Long userId,@Param("startTime")String startTime,@Param("endTime")String endTime);
+
+    //根据用户名  搜索 待办
+    @Select(" select t.*,a.teacherName as userName  from t_organ_agenda t " +
+            "inner join t_teacher a on a.id = t.userId " +
+            "where ( a.teacherName like concat('%',#{userName},'%') or a.realName like  concat('%',#{userName},'%') ) "+
+            "and t.startTime > #{startTime} and t.startTime < #{endTime}")
+    @ResultMap("BaseResultMap")
+    public List<TOrganAgenda> getAgendaByUserName(@Param("userName") String userName,@Param("startTime")String startTime,@Param("endTime")String endTime);
 }

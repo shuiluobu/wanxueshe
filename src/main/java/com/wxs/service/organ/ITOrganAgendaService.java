@@ -15,4 +15,6 @@ public interface ITOrganAgendaService extends IService<TOrganAgenda> {
     public List<TOrganAgenda> myOrganAgenda(Long userId,String startTime,String endTime);
     //获取用户所属机构所有的待办
     public List<TOrganAgenda> organAgenda(Long userId,String startTime,String endTime);
+    //根据用户名  搜索 待办
+    public List<TOrganAgenda> getAgendaByUserName(String userName,String startTime,String endTime);
 }

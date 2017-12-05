@@ -49,20 +49,20 @@
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
             <!-- 搜索   start -->
-            <div class="weui-search-bar" id="searchBar">
-                <form class="weui-search-bar__form" id="search" action="">
-                    <div class="weui-search-bar__box">
-                        <i class="weui-icon-search"></i>
-                        <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
-                        <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
-                    </div>
-                    <label class="weui-search-bar__label" id="searchText">
-                        <i class="weui-icon-search"></i>
-                        <span>搜索</span>
-                    </label>
-                </form>
-                <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
-            </div>
+            <!--<div class="weui-search-bar" id="searchBar">-->
+                <!--<form class="weui-search-bar__form" id="search" action="">-->
+                    <!--<div class="weui-search-bar__box">-->
+                        <!--<i class="weui-icon-search"></i>-->
+                        <!--<input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">-->
+                        <!--<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>-->
+                    <!--</div>-->
+                    <!--<label class="weui-search-bar__label" id="searchText">-->
+                        <!--<i class="weui-icon-search"></i>-->
+                        <!--<span>搜索</span>-->
+                    <!--</label>-->
+                <!--</form>-->
+                <!--<a href="javascript:" class="weui-search-bar__cancel-btn" id="search_cancel">取消</a>-->
+            <!--</div>-->
             <!-- 搜索   end -->
 
             <!-- 日历   start -->
@@ -100,19 +100,19 @@
         </div>
         <div id="tab2" class="weui-tab__bd-item">
             <!-- 搜索   start -->
-            <div class="weui-search-bar" id="searchBar1">
-                <form class="weui-search-bar__form" id="search1" action="">
+            <div class="weui-search-bar" id="searchBar">
+                <form class="weui-search-bar__form" id="search" action="">
                     <div class="weui-search-bar__box">
                         <i class="weui-icon-search"></i>
-                        <input type="search" class="weui-search-bar__input" id="searchInput1" placeholder="搜索1" required="">
-                        <a href="javascript:" class="weui-icon-clear" id="searchClear1"></a>
+                        <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
+                        <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
                     </div>
-                    <label class="weui-search-bar__label" id="searchText1">
+                    <label class="weui-search-bar__label" id="searchText">
                         <i class="weui-icon-search"></i>
                         <span>搜索</span>
                     </label>
                 </form>
-                <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel1">取消</a>
+                <a href="javascript:" class="weui-search-bar__cancel-btn" id="search_cancel">取消</a>
             </div>
             <!-- 搜索   end -->
 
@@ -165,7 +165,6 @@
             data:{userId:userId},
             dataType:"json",
             success:function(json){
-                var list = json.data;
                 //今日待办
                 var todays = json.data.todays;
                 console.log(todays.length);
@@ -242,12 +241,19 @@
             data:{userId:userId},
             dataType:"json",
             success:function(json){
-                var list = json.data;
+                $("#organAgenda").empty();
                 //今日待办
                 var todays = json.data.todays;
-                console.log(todays.length);
                 //明日待办
                 var tomorrows = json.data.tomorrows;
+                //今日待办标题头
+                $("#organAgenda").append(
+                    '<a class="weui-cell weui-cell_access" href="javascript:;" style="background-color: #F2F2F2">'+
+                    '<div class="weui-cell__bd">'+
+                    '<p>近日待办</p>'+
+                    '</div>'+
+                    ' </a>'
+                );
                 //今日待办
                 for(var i=0;i<todays.length;i++){
                     if(todays[i].status == 0){
@@ -310,6 +316,94 @@
                 );
             }
 
+        });
+
+        //搜索功能
+        $("#searchInput").keyup(function () {
+           var userName = $("#searchInput").val();
+            console.log(userName);
+            $.ajax({
+                url:"/cOrganAgenda/getAgendaByUserName",
+                type:"post",
+                data:{userName:userName},
+                dataType:"json",
+                success:function(json){
+                    $("#organAgenda").empty();
+                    //今日待办
+                    var todays = json.data.todays;
+                    //明日待办
+                    var tomorrows = json.data.tomorrows;
+                    //今日待办标题头
+                    $("#organAgenda").append(
+                        '<a class="weui-cell weui-cell_access" href="javascript:;" style="background-color: #F2F2F2">'+
+                        '<div class="weui-cell__bd">'+
+                        '<p>近日待办</p>'+
+                        '</div>'+
+                        ' </a>'
+                    );
+                    //今日待办
+                    for(var i=0;i<todays.length;i++){
+                        if(todays[i].status == 0){
+                            var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
+                                '<div class="doneDiv">&radic;</div>'+
+                                '<div class="weui-cell__bd adendaDone">'+
+                                '<p>'+todays[i].content+'</p><p>'+todays[i].userName+" &bull; "+getHM(todays[i].startTime)+'-'+getHM(todays[i].endTime)+'</p>'+
+                                '</div>'+
+                                ' <div class="hint-val adendaDone">'+getAgendaType(todays[i].type)+'</div>'+
+                                '</a>';
+                            $("#organAgenda").append(done);
+                        }else{
+                            var notDone = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
+                                '<div class="notDoneDiv"></div>'+
+                                '<div class="weui-cell__bd">'+
+                                '<p>'+todays[i].content+'</p><p>'+todays[i].userName+" &bull; "+getHM(todays[i].startTime)+'-'+getHM(todays[i].endTime)+'</p>'+
+                                '</div>'+
+                                ' <div class="hint-val">'+getAgendaType(todays[i].type)+'</div>'+
+                                '</a>';
+                            $("#organAgenda").append(notDone);
+                        }
+                    }
+                    //明日待办 标题头
+                    $("#organAgenda").append(
+                        '<a class="weui-cell weui-cell_access" href="javascript:;" style="background-color: #F2F2F2">'+
+                        '<div class="weui-cell__bd">'+
+                        '<p>明日待办</p>'+
+                        '</div>'+
+                        ' </a>'
+                    );
+                    //明日待办
+                    for(var i=0;i<tomorrows.length;i++){
+                        if(tomorrows[i].status == 0){
+                            var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
+                                '<div class="doneDiv">&radic;</div>'+
+                                '<div class="weui-cell__bd adendaDone">'+
+                                '<p>'+tomorrows[i].content+'</p><p>'+tomorrows[i].userName+" &bull; "+getHM(tomorrows[i].startTime)+'-'+getHM(tomorrows[i].endTime)+'</p>'+
+                                '</div>'+
+                                ' <div class="hint-val adendaDone">'+getAgendaType(tomorrows[i].type)+'</div>'+
+                                '</a>';
+                            $("#organAgenda").append(done);
+                        }else{
+                            var notDone = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
+                                '<div class="notDoneDiv"></div>'+
+                                '<div class="weui-cell__bd">'+
+                                '<p>'+tomorrows[i].content+'</p><p>'+tomorrows[i].userName+" &bull; "+getHM(tomorrows[i].startTime)+'-'+getHM(tomorrows[i].endTime)+'</p>'+
+                                '</div>'+
+                                ' <div class="hint-val">'+getAgendaType(tomorrows[i].type)+'</div>'+
+                                '</a>';
+                            $("#organAgenda").append(notDone);
+                        }
+                    }
+                    //清除最后一行数据不显示bug
+                    $("#organAgenda").append(
+                        '<a class="weui-cell weui-cell_access" href="javascript:;" style="background-color: #F2F2F2">'+
+                        '<div class="weui-cell__bd">'+
+                        '<p>    </p>'+
+                        '</div>'+
+                        ' </a>'
+                    );
+
+                }
+            });
         });
     });
 

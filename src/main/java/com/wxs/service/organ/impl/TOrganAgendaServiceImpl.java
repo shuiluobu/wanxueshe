@@ -27,4 +27,9 @@ public class TOrganAgendaServiceImpl extends ServiceImpl<TOrganAgendaMapper,TOrg
     public List<TOrganAgenda> organAgenda(Long userId, String startTime, String endTime) {
         return organAgendaMapper.organAgenda(userId,startTime,endTime);
     }
+
+    @Override
+    public List<TOrganAgenda> getAgendaByUserName(String userName, String startTime, String endTime) {
+        return organAgendaMapper.getAgendaByUserName(userName,startTime,endTime);
+    }
 }
