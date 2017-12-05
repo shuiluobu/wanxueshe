@@ -167,7 +167,6 @@
             success:function(json){
                 //今日待办
                 var todays = json.data.todays;
-                console.log(todays.length);
                 //明日待办
                 var tomorrows = json.data.tomorrows;
                 //今日待办
@@ -321,7 +320,6 @@
         //搜索功能
         $("#searchInput").keyup(function () {
            var userName = $("#searchInput").val();
-            console.log(userName);
             $.ajax({
                 url:"/cOrganAgenda/getAgendaByUserName",
                 type:"post",
