@@ -24,7 +24,7 @@
 
     <select id="pageData" parameterType="TCourse" resultMap="BaseResultMap">
         select t.*,a.organName,b.courseCategoryName
-        from t_class_course t
+        from t_course t
         left join t_organization a on a.id = t.organizationId
         left join t_course_category b on b.id = t.courseCateId
         <where>
