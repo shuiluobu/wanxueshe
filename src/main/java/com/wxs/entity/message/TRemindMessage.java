@@ -41,10 +41,10 @@ public class TRemindMessage extends Model<TRemindMessage> {
 
 	private String messageContent; //消息主题
 
-	private Integer readStatus; //是否已读
+	private Integer readStatus=0; //是否已读
 
 	private Date createTime;
-	private Integer status;
+	private Integer status=0;
 
 
 	public Long getId() {
