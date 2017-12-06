@@ -1,10 +1,13 @@
 package com.wxs.service.course.impl;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.entity.course.TCourseCategory;
+import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TCourseCategoryMapper;
 import com.wxs.service.course.ITCourseCategoryService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +35,17 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
     }
 
     @Override
-    public List<TCourseCategory> getAllCategoryOfOrgan(Long organId) {
-        return courseCategoryMapper.getAllCategoryOfOrgan(organId);
+    public List<TCourseCategory> getCourseListByOrgan(Long organId) {
+        EntityWrapper<TCourseCategory> ew = new EntityWrapper<TCourseCategory>();
+        ew.eq("organId",organId);
+        return courseCategoryMapper.selectList(ew);
     }
 
     @Override
-    public List<Map<String,Object>> getOrganCourseList(Long organId) {
-        return courseCategoryMapper.getOrganCourseList(organId);
+    public List<TCourseCategory> getCourseListByType(String categoryType) {
+        EntityWrapper<TCourseCategory> ew = new EntityWrapper<TCourseCategory>();
+        ew.eq("categoryType",categoryType);
+        return courseCategoryMapper.selectList(ew);
     }
 
     @Override

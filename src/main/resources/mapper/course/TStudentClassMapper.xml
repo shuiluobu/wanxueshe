@@ -24,23 +24,27 @@
             AND organizationId = #{organizationId}
         </if>
     </select>
-    <select id="getMyCourse" parameterType="java.lang.Long" resultType="java.util.HashMap">
-		  SELECT
-	y.courseCategoryCode courseCode,
-	y.courseCategoryName courseName,
-	y.alreadyStudySum alreadyStudySum,
-	c.canQty,
-	s.coursesId,
-	s.userId,
-	s.studentId
-	      FROM
-	t_student_class s,
-	t_course c,
-	t_course_category y
-	      WHERE
-	s.coursesId = c.id
-	      AND y.courseCategoryCode = c.courseCode
-	      AND s.userId = #{userId}
-	</select>
+    <select id="getMyCourses" parameterType="java.lang.Long" resultType="java.util.HashMap">
+        SELECT
+        y.courseCategoryCode courseCode,
+        y.courseCategoryName courseName,
+        y.alreadyStudySum alreadyStudySum,
+        c.canQty,
+        s.coursesId,
+        s.userId,
+        s.studentId,
+        s.isEnd
+        FROM
+        t_student_class s,
+        t_course c,
+        t_course_category y
+        WHERE
+        s.coursesId = c.id
+        AND y.id = c.courseCateId
+        AND s.userId = #{userId}
+        <if test="isEnd!=null">
+            AND s.isEnd = #{isEnd}
+        </if>
+    </select>
 
 </mapper>

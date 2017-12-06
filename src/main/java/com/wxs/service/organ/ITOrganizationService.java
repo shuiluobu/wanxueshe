@@ -3,6 +3,7 @@ package com.wxs.service.organ;
 import com.wxs.entity.organ.TOrganization;
 import com.baomidou.mybatisplus.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface ITOrganizationService extends IService<TOrganization> {
 
     public Map<String,Object> getOrganOutline(Long organId,Long userId);
+
+    public List<TOrganization> getNearOrgans(double latitude, double longitude );
 	
 }

@@ -26,4 +26,6 @@ public class TOrganActivityServiceImpl extends ServiceImpl<TOrganActivityMapper,
     public List<TOrganActivity> getActivityOfOrgan(Long organId) {
         return organActivityMapper.getActivityOfOrgan(organId);
     }
+
+
 }

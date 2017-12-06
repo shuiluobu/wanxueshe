@@ -28,7 +28,7 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
     public List<TCourseCategory> getAllCategoryOfOrgan(@Param("organId") Long organId);
 
 
-    public List<Map<String,Object>> getOrganCourseList(@Param("organId") Long organId);
+    public List<Map<String,Object>> getCourseListByParam(@Param("organId") Long organId,@Param("categoryType") String categoryType);
 
     @Select("SELECT distinct y.courseCategoryName courseName,y.canQty,y.alreadyStudySum,y.explain " +
             "FROM t_course_category y,t_course c,t_class s where y.id=c.courseCateId " +

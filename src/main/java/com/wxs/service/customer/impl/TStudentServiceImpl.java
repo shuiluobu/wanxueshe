@@ -1,6 +1,7 @@
 package com.wxs.service.customer.impl;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.course.TStudentClassMapper;
 import com.wxs.mapper.customer.TFllowCourseMapper;
@@ -28,7 +29,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     private TFllowOrganMapper fllowOrganMapper;
     private TFollowTeacherMapper followTeacherMapper;
     private TFllowCourseMapper fllowCourseMapper;
-    private TStudentClassMapper studentCourseMapper; //我的课程
+    private TStudentClassMapper studentClassMapper; //我的课程
 
     private static String MY_FOLLOW_ORGAN = "我关注的机构";
     private static String MY_FOLLOW_TEACHER = "我关注的老师";
@@ -42,9 +43,20 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         return ImmutableMap.of(MY_FOLLOW_ORGAN, organs, MY_FOLLOW_TEACHER, teachers, MY_FOLLOW_COURSE, courses);
     }
 
-    public Map<String, Object> getMyCourse(Long userId) {
+    /**
+     * 个人首页，课程，我的课程
+     * @param userId
+     * @return
+     */
+    public Map<String, Object> getMyCourses(Long userId) {
         //我的课程
-        return studentCourseMapper.getMyCourse(userId);
+        Map<String,Object> result = Maps.newHashMap();
+        result.put("0", isEndMyCourses(userId,0)); //未完成课程
+        result.put("1", isEndMyCourses(userId,1)); //已完成课程
+        return result;
+    }
 
+    public List<Map<String,Object>> isEndMyCourses(Long userId,Integer isEnd){
+      return   studentClassMapper.getMyCourses(userId,isEnd);
     }
 }

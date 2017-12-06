@@ -5,6 +5,7 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TFrontUser">
 		<id column="id" property="id" />
+		<result column="openId" property="openId" />
 		<result column="nickName" property="nickName" />
 		<result column="userName" property="userName" />
 		<result column="passWord" property="passWord" />

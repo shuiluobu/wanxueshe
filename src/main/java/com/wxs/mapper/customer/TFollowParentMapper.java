@@ -12,5 +12,4 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2017-09-21
  */
 public interface TFollowParentMapper extends BaseMapper<TFollowParent> {
-
 }

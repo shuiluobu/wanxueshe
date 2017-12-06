@@ -66,10 +66,15 @@
 		limit #{pageStartIndex},#{limit}
 	</select>
 
-	<select id="getOrganCourseList" parameterType="java.util.Map" resultType="java.util.Map">
-		SELECT courseCategoryName courseName,canQty,alreadyStudySum,explain FROM t_course_category WHERE 1=1
+	<select id="getCourseListByParam" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT courseCategoryName courseName,canQty,alreadyStudySum,explain
+		 FROM t_course_category
+		WHERE 1=1
 	  <if test="organId!=null">
 		  organId = #{organId}
 	  </if>
+		<if test="categoryType!=null">
+			categoryType = #{categoryType}
+		</if>
 	</select>
 </mapper>

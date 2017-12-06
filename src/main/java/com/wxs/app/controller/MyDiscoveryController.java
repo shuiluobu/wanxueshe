@@ -1,7 +1,12 @@
 package com.wxs.app.controller;
 
 import com.google.common.collect.Lists;
+import com.wxs.entity.course.TCourseCategory;
+import com.wxs.mapper.organ.TOrganizationMapper;
+import com.wxs.service.course.ITCourseCategoryService;
+import com.wxs.service.organ.ITOrganizationService;
 import com.wxs.util.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +22,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("app/myDiscovery")
 public class MyDiscoveryController {
+    @Autowired
+    private ITCourseCategoryService courseCategoryService;
+
+    @Autowired
+    private ITOrganizationService organizationService;
+
+
     @RequestMapping(value = "/view")
     public Result view() {
         List<Object> list = Lists.newArrayList();
@@ -25,9 +37,22 @@ public class MyDiscoveryController {
     @RequestMapping(value = "/nearInformation")
     public Result nearInformation(@RequestParam double latitude,@RequestParam double longitude){
         //根据经纬度查找附近的课程
-        List<Object> list = Lists.newArrayList();
+        List<TCourseCategory> list = courseCategoryService.getNearByCategorys(latitude,longitude);
         return Result.of(list);
     }
+
+    @RequestMapping(value = "/nearOrgan")
+    public Result nearOrgan(@RequestParam double latitude,@RequestParam double longitude){
+        //根据经纬度查找附近机构
+        return Result.of(organizationService.getNearOrgans(latitude,longitude));
+    }
+
+    @RequestMapping(value = "/findCourse/{courseType}")
+    public Result nearOrgan(@RequestParam String courseType){
+        //根据经纬度查找附近机构
+        return Result.of(courseCategoryService.getCourseListByType(courseType));
+    }
+
 
 
 }

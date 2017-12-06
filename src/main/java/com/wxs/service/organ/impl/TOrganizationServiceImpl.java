@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wxs.core.util.BaseUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,23 +47,33 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
    public Map<String,Object> getOrganOutline(Long organId, Long userId){
        Map<String,Object> result = Maps.newHashMap();
        TOrganization organization = organizationMapper.selectById(organId);
-       result.put("organId",organization.getId());
-       result.put("organName",organization.getOrganName());
-       result.put("logoImg",organization.getLogoImg());//logo头像
-       result.put("smallIntroduce",organization.getIntroduce()); //小介绍，个性签名
-       result.put("samllCount",smallCountOfOrgan(organId)); //小统计
-       result.put("ifFllow",fllowOrganMapper.getFllowByUserId(userId,organId)==null?false:true); //是否关注
-       result.put("levalDesc",organization.getLeval());
-       result.put("foundingTime", BaseUtil.toChinaDate(organization.getFoundingTime())); //成立时间
-       result.put("address",organization.getAddress());
-       result.put("organRemark",organization.getOrganRemark());
-       result.put("telePhone",organization.getTelePhone()==null?organization.getMobilePhone():organization.getTelePhone());
+       return buildOrganInfo(organization,userId);
+   }
 
-       return result;
+    @Override
+    public List<TOrganization> getNearOrgans(double latitude, double longitude) {
+       //先搜索5公里之内的机构
+        return organizationMapper.getNearOrgans(latitude,longitude,5);
+    }
+
+    public Map<String,Object> buildOrganInfo(TOrganization organization,Long userId){
+        Map<String,Object> result = Maps.newHashMap();
+       result.put("organId",organization.getId());
+        result.put("organName",organization.getOrganName());
+        result.put("logoImg",organization.getLogoImg());//logo头像
+        result.put("smallIntroduce",organization.getIntroduce()); //小介绍，个性签名
+        result.put("samllCount",smallCountOfOrgan(organization.getId())); //小统计
+        result.put("ifFllow",fllowOrganMapper.getFllowByUserId(userId,organization.getId())==null?false:true); //是否关注
+        result.put("levalDesc",organization.getLeval());
+        result.put("foundingTime", BaseUtil.toChinaDate(organization.getFoundingTime())); //成立时间
+        result.put("address",organization.getAddress());
+        result.put("organRemark",organization.getOrganRemark());
+        result.put("telePhone",organization.getTelePhone()==null?organization.getMobilePhone():organization.getTelePhone());
+        return result;
    }
 
 
-   public String smallCountOfOrgan(Long organId){
+    public String smallCountOfOrgan(Long organId){
        //获取机构的小统计，主要统计多少学员，多少人关注，多少课程
         int organFllowCount = fllowOrganMapper.getOrganFllowCount(organId);
         int organStudentCount = studentClassMapper.getOrganStudentCount(organId);
