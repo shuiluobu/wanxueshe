@@ -26,6 +26,13 @@ public interface ITCoursesService extends IService<TCourse> {
     public TCourse getMyCourseInfo(Long coursesId);
 
     /**
+     * 获取关注该课程的所有用户
+     * @param coursesId
+     * @return
+     */
+    List<Map<String,Object>> getCourseFllowUserList(Long coursesId);
+
+    /**
      * 获取课程的所有课时，如果订阅了该课程，则显示课时状态
      * @param courseId
      * @param studentId

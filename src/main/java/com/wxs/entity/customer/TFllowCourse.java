@@ -27,7 +27,7 @@ public class TFllowCourse extends Model<TFllowCourse> {
 	private Long organId;
 	private Date createTime;
 	private Date updateTime;
-	private String status;
+	private Integer status=0;
 
 
 	public Long getId() {
@@ -78,11 +78,11 @@ public class TFllowCourse extends Model<TFllowCourse> {
 		this.updateTime = updateTime;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

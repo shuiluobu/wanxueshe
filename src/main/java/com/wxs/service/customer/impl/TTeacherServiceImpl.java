@@ -7,6 +7,7 @@ import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TCourseCategoryMapper;
 import com.wxs.mapper.customer.TFollowTeacherMapper;
 import com.wxs.mapper.customer.TTeacherMapper;
+import com.wxs.service.customer.ITParentService;
 import com.wxs.service.customer.ITTeacherService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
     @Autowired
     private TFollowTeacherMapper followTeacherMapper;
     @Autowired
-    private TCourseCategoryMapper courseCategoryMapper;
+    private ITParentService parentService;
 
     public Optional<Map> getTeacharInfoById(Long tId) {
         Map map = teacherMapper.selectTeacherById(tId);
@@ -56,6 +57,13 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
         }
         return result;
     }
+
+    @Override
+    public List<Map<String,Object>> getOrganFllowUserList(Long organId){
+        List<Long> userIds = followTeacherMapper.getFllowUserIdsOfTeacherId(organId);
+        return parentService.getFllowUsers(userIds);
+    }
+
 
     public List<Map<String, Object>> getClassByTeacher(Long tId) {
         List<Map<String, Object>> result = Lists.newArrayList();

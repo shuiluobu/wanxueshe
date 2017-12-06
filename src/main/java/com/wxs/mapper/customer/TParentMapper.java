@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface TParentMapper extends BaseMapper<TParent> {
 
+
+
 }

@@ -5,9 +5,11 @@ import com.wxs.entity.course.TCourse;
 import com.wxs.mapper.course.TClassLessonMapper;
 import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.course.TStudentLessonesMapper;
+import com.wxs.mapper.customer.TFllowCourseMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.wxs.service.customer.ITParentService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,10 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     private TOrganizationMapper organizationMapper; //培训机构mapper
     @Autowired
     private TStudentLessonesMapper studentLessonesMapper; //学生课时关联mapper
+    @Autowired
+    private TFllowCourseMapper fllowCourseMapper;
+    @Autowired
+    private ITParentService parentService;
 
 
     @Override
@@ -46,6 +52,13 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         TCourse course = coursesMapper.selectOneCourseById(coursesId);
         course.setOrganization(organizationMapper.selectById(course.getOrganizationId()));
         return course;
+    }
+
+    @Override
+    public List<Map<String,Object>> getCourseFllowUserList(Long coursesId) {
+        List<Long> userIds = fllowCourseMapper.getFllowUserIdsOfCourseId(coursesId);
+        return   parentService.getFllowUsers(userIds);
+
     }
 
     @Override

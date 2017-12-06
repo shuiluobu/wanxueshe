@@ -67,4 +67,10 @@ public class MyTeacherController {
         //根据taskId获取作业详情
         return Result.of(classTaskService.getClassTaskMap(taskId));
     }
+
+    @RequestMapping(value = "/fllowMe/{teacherId}")
+    public Result fllowMe(@PathVariable("teacherId") Long teacherId){
+        //关注机构的用户列表
+        return Result.of(teacherService.getOrganFllowUserList(teacherId));
+    }
 }

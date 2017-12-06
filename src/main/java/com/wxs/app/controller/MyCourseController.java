@@ -28,6 +28,12 @@ public class MyCourseController extends BaseController {
         return Result.of(coursesService.getLessesonByCourse(coursesId,studentId));
     }
 
+    @RequestMapping(value = "/fllowMe/{courseId}")
+    public Result fllowMe(@PathVariable("courseId") Long courseId){
+        //关注课程的用户列表
+        return Result.of(coursesService.getCourseFllowUserList(courseId));
+    }
+
     @RequestMapping(value = "editMyCourse")
     public Result editMyCourse(@ModelAttribute TCourse course){
         return null;

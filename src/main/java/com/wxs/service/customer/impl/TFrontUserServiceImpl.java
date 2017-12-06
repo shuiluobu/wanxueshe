@@ -82,6 +82,6 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
             tFriend.put("courseCount",studentClassMapper.getParentCourseCount(parent.getId()));
         });
         return list;
-
     }
+
 }

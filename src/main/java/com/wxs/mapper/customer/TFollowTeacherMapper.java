@@ -26,6 +26,9 @@ public interface TFollowTeacherMapper extends BaseMapper<TFollowTeacher> {
 
     TFollowTeacher getOneFllowTeacherByUser(@Param("userId") Long userId,@Param("userId") Long teacherId);
 
+    @Select("select userId from t_follow_teacher where status=0 and teacherId=#{teacherId}")
+    @ResultType(Long.class)
+    List<Long> getFllowUserIdsOfTeacherId(Long teacherId);
 
 
     @Select("SELECT count(1) FROM t_follow_teacher f,t_teacher t where f.teacherId=t.id  and f.teacherId=#{teacherId} ")

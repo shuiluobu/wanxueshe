@@ -60,6 +60,11 @@ public class MyHomePageController {
         Long parentId = 0L;
         return Result.of(parentService.getStudentByParent(parentId));
     }
+    @RequestMapping(value = "/fllowMe/{parentId}")
+    public Result fllowMe(@PathVariable("parentId") Long parentId){
+        //关注我的的用户列表
+        return Result.of(parentService.getParentFllowUserList(parentId));
+    }
 
 
 }

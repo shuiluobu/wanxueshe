@@ -6,6 +6,7 @@ import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.course.TStudentClassMapper;
 import com.wxs.mapper.organ.TFllowOrganMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
+import com.wxs.service.customer.ITParentService;
 import com.wxs.service.organ.ITOrganizationService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     @Autowired
     public TFllowOrganMapper fllowOrganMapper; //关注机构表
 
+    @Autowired
+    private ITParentService parentService;
+
 
     /**
      * 机构概要
@@ -54,6 +58,11 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     public List<TOrganization> getNearOrgans(double latitude, double longitude) {
        //先搜索5公里之内的机构
         return organizationMapper.getNearOrgans(latitude,longitude,5);
+    }
+    @Override
+    public List<Map<String,Object>> getOrganFllowUserList(Long organId){
+       List<Long> userIds = fllowOrganMapper.getFllowUserIdsOfOrganId(organId);
+       return parentService.getFllowUsers(userIds);
     }
 
     public Map<String,Object> buildOrganInfo(TOrganization organization,Long userId){

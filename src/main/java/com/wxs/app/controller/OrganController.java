@@ -44,6 +44,12 @@ public class OrganController {
         return Result.of(courseCategoryService.getCourseListByOrgan(organId));
     }
 
+    @RequestMapping(value = "/fllowMe/{organId}")
+    public Result fllowMe(@PathVariable("organId") Long organId){
+        //关注机构的用户列表
+        return Result.of(organizationService.getOrganFllowUserList(organId));
+    }
+
     @RequestMapping(value = "/activity/{organId}")
     public Result activityOfOrgan(@PathVariable("organId") Long organId){
         //机构的活动信息
