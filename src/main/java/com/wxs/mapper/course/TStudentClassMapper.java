@@ -35,4 +35,8 @@ public interface TStudentClassMapper extends BaseMapper<TStudentClass> {
     @ResultType(int.class)
     public int getStudentCourseCount(Long studentId);
 
+    @Select("select count(c.coursesId) from t_student_class c,t_student s where c.studentId=s.id and s.parentId=#{parentId} ")
+    @ResultType(int.class)
+    public int getParentCourseCount(Long parentId); //获取每个家长下所有学员总共课程
+
 }

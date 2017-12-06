@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.wxs.entity.customer.TWxUser;
 import org.wxs.core.util.BaseUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +19,7 @@ import java.util.Map;
 public interface ITFrontUserService extends IService<TFrontUser> {
 
     public TWxUser getUserByWx(String wxUserInfo,String sessionId);
+
+    public List<Map<String,Object>> getUserFriends(Long userId);
 	
 }

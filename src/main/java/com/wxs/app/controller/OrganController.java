@@ -1,5 +1,6 @@
 package com.wxs.app.controller;
 
+import com.wxs.entity.message.TOrganAdvice;
 import com.wxs.service.activity.ITOrganActivityService;
 import com.wxs.service.course.ITCourseCategoryService;
 import com.wxs.service.organ.ITOrganizationService;
@@ -48,5 +49,14 @@ public class OrganController {
         //机构的活动信息
         return Result.of(organActivityService.getActivityOfOrgan(organId));
     }
+
+    @RequestMapping(value = "/advice/{adviceId}")
+    public Result adviceOfOrgan(@PathVariable("adviceId") Long adviceId){
+        //机构的通知详情
+        TOrganAdvice organAdvice = new TOrganAdvice().selectById(adviceId);
+        return Result.of(organAdvice);
+    }
+
+
 
 }

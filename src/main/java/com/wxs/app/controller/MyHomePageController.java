@@ -1,7 +1,9 @@
 package com.wxs.app.controller;
 
+import com.wxs.service.customer.ITFrontUserService;
 import com.wxs.service.customer.ITParentService;
 import com.wxs.service.customer.impl.TStudentServiceImpl;
+import com.wxs.service.message.ITRemindMessageService;
 import com.wxs.util.Result;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,10 @@ public class MyHomePageController {
     private TStudentServiceImpl studentService;
     @Autowired
     private ITParentService parentService;
+    @Autowired
+    private ITRemindMessageService remindMessageService;
+    @Autowired
+    private ITFrontUserService frontUserService;
 
     @RequestMapping(value = "/follow/{sessionId}")
     public Result follow(String sessionId) {
@@ -37,20 +43,22 @@ public class MyHomePageController {
     @RequestMapping(value = "/myRemind/{sessionId}")
     public Result myRemind(String sessionId) {
         //我的提醒
-        return  null;
+        Long userId = 1L; //之后需要从session中获取
+        return Result.of(remindMessageService.getRemindMsgByFromUid(userId));
     }
 
     @RequestMapping(value = "/myFriend/{sessionId}")
     public Result myFriend(String sessionId) {
         //我的好友列表
-        return  null;
+        Long userId = 1L; //之后需要从session中获取
+        return Result.of(frontUserService.getUserFriends(userId));
     }
 
     @RequestMapping(value = "/myStudents/{sessionId}")
     public Result myStudents(String sessionId) {
         //我的学员
         Long parentId = 0L;
-        return  Result.of( parentService.getStudentByParent(parentId));
+        return Result.of(parentService.getStudentByParent(parentId));
     }
 
 
