@@ -1,0 +1,160 @@
+@charset "UTF-8";
+button{outline:0;}
+body,html{-webkit-user-select:none;-moz-user-select:none;user-select:none;height:100%; font-family: -apple-system-font, "Microsoft Yahei", sans-serif; background:#fff; color:#464646; margin:0;padding:0;}
+dd,dl,dt,li,p,ul,h2,h3,h4{margin:0;padding:0;list-style:none;}
+ul{list-style:none;}
+img{height:auto;vertical-align:middle;}
+a{color:#333;text-decoration:none;}
+a:link{-webkit-tap-highlight-color:transparent;-moz-tap-highlight-color:transparent;-webkit-touch-callout:none;-moz-touch-callout:none;}
+a,img{-webkit-touch-callout:none;-moz-touch-callout:none;}
+b,em,i{font-style:normal;}
+button,input,textarea{outline:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;appearance:none;-webkit-appearance:none;-moz-appearance:none; margin:0;padding:0;}
+h1,h2,h3{font-weight:400;}
+p{margin:0;padding:0;}
+strong{font-weight:normal;}
+select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:#fff;}
+
+/*清除浮动*/
+.clear:after{content:"";display:table;clear:both;font-size:1px;line-height:0;height:0;}
+
+/*字体大小*/
+.f12{ font-size: 12px!important; }
+.f13{ font-size: 13px!important; }
+.f14{ font-size: 14px!important; }
+.f15{ font-size: 15px!important; }
+.f16{ font-size: 16px!important; }
+.f17{ font-size: 17px!important; }
+.f18{ font-size: 18px!important; }
+.f20{ font-size: 20px!important; }
+.f24{ font-size: 24px!important; }
+.f26{ font-size: 26px!important; }
+
+/*padding*/
+.p0{ padding:0!important; }
+.p10{ padding:10px!important; }
+.p15{ padding:15px!important; }
+.ptb10{ padding:10px 0!important; }
+.plr10{ padding:0 10px!important; }
+.pl10{ padding-left: 10px!important; }
+.pr10{ padding-right: 10px!important; }
+.pt10{ padding-top: 10px!important; }
+.pb10{ padding-bottom:10px!important; }
+
+
+/*margin*/
+.m0{ margin:0!important; }
+.m10{ margin:10px!important; }
+.m15{ margin:15px!important; }
+.mtb10{ margin:10px 0!important; }
+.mlr10{ margin:0 10px!important; }
+.ml10{ margin-left: 10px!important; }
+.mr10{ margin-right: 10px!important; }
+.mt5{ margin-top: 5px!important; }
+.mt10{ margin-top: 10px!important; }
+.mb10{ margin-bottom:10px!important; }
+.mb66{ margin-bottom:66px!important; }
+.mt-1{ margin-top: -1px!important; }
+
+/*文字左中右对齐*/
+.tal{ text-align: left!important; }
+.tac{ text-align: center!important; }
+.tar{ text-align: right!important; }
+
+/*移除伪类边框*/
+.b-top:before,.b-top{ border-top: 0!important; }
+.b-btm:after,.b-btm{ border-bottom: 0!important; }
+.b-tb:before{ border-top: 0!important;  }
+.b-tb:after{border-bottom: 0!important;}
+
+/*左右浮动*/
+.fl{ float: left; }
+.fr{ float: right; }
+
+/*底部浮动导航*/
+.weui-fixed-btm{ position: fixed; left: 0; bottom:0; width: 100%; border-top:1px solid #D9D9D9; background:#fff; -webkit-box-sizing:border-box;}
+.weui-fixed-btm .weui-flex__item{ text-align: center; }
+.weui-fixed-btm .weui-fixed-btn{ padding:15px 15px; display: block; border-right:1px solid #D9D9D9; }
+
+/*按钮平分*/
+.weui-list-btm{ padding:10px 5px; }
+.weui-list-btm .weui-flex__item{  display: block; margin:0 5px;}
+
+/*解决弱提示不居中*/
+.weui-toast{-webkit-transform-origin: 0 0!important;-webkit-transform: scale(0.9) translate(-50%, -50%)!important;}
+
+
+
+/*收货地址*/
+.site-operation .weui-cell{
+	background:#fff;
+	padding:10px;
+	margin-bottom:1px;
+}
+.site-operation .weui-cell__bd{
+	padding:0 10px;
+}
+.site-operation .name{
+	font-size: 14px;
+	font-weight: bold;
+}
+.site-operation .name span{
+	color:#1AAD19;
+	border:1px solid #1AAD19;
+	font-size: 12px;
+	margin-left: 10px;
+	padding:0 5px;
+	font-weight: normal;
+}
+.site-operation .site{
+	font-size: 13px;
+}
+.site-operation .phone{
+	font-size: 13px;
+}
+.site-operation i{
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-right: 3px;
+	position: relative;
+	top: 6px;
+}
+.site-operation .compile i{
+	background:url(../images/icon31.png) no-repeat;
+	background-size: 24px;
+}
+
+.site-operation .delete i{
+	background:url(../images/icon32.png) no-repeat;
+	background-size: 24px;
+}
+.site-operation .weui-flex__item{
+	text-align: right;
+	padding-top: 5px;
+}
+
+.weui-fixed-btm .weui-btn{
+	display: block;
+	width: 100%;
+	-webkit-box-sizing:border-box;
+}
+.add-site .weui-input{
+	text-align: right;
+}
+
+/***************项目样式分隔线********************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

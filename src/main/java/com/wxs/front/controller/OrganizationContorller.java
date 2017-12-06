@@ -43,6 +43,11 @@ public class OrganizationContorller extends CrudController<TOrganization,ITOrgan
     @Autowired
     private  ITOrganizationService organizationService;
 
+    @RequestMapping("/toIndex")
+    public String toIndex(){
+        return "frontPages/organization/agenda";
+    }
+
     @RequestMapping("/page")
     @ResponseBody
     public Rest page(@RequestParam(required = true,defaultValue = "1")Integer page,
