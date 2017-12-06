@@ -2,6 +2,7 @@ package com.wxs.app.service;
 
 import com.wxs.app.bean.WxAuth;
 import com.wxs.cache.ICache;
+import com.wxs.entity.customer.TFrontUser;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class WxService {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<String,Object>getWxSession(String wxCode){
+	public Map<String,Object> getWxSession(String wxCode){
 		StringBuffer sb = new StringBuffer();
 		sb.append("appid=").append(wxAuth.getAppId());
 		sb.append("&secret=").append(wxAuth.getSecret());
@@ -47,5 +48,10 @@ public class WxService {
 		sb.append(wxSessionKey).append("#").append(wxOpenId);
 		cache.putCache(thirdSessionKey,sb.toString(),expires);
 		return thirdSessionKey;
+	}
+
+	public TFrontUser session2User(String sessionId){
+		TFrontUser user = cache.getCache(sessionId);
+		return user;
 	}
 }

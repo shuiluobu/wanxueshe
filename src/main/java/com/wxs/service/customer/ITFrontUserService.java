@@ -2,6 +2,10 @@ package com.wxs.service.customer;
 
 import com.wxs.entity.customer.TFrontUser;
 import com.baomidou.mybatisplus.service.IService;
+import com.wxs.entity.customer.TWxUser;
+import org.wxs.core.util.BaseUtil;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -12,5 +16,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2017-09-21
  */
 public interface ITFrontUserService extends IService<TFrontUser> {
+
+    public TWxUser getUserByWx(String wxUserInfo,String sessionId);
 	
 }
