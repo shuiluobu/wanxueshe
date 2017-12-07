@@ -40,7 +40,7 @@ public class TComment extends Model<TComment> {
      * 坐标
      */
 	private String coordinate;
-	private Integer status;
+	private Integer status=0;
 
 
 	public Long getId() {

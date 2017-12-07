@@ -28,6 +28,10 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
      * 动态关联的班级
      */
 	private Long classId;
+	/**
+	 * 课程类ID
+	 */
+	private  Long courseCateId;
     /**
      * 关联的课时
      */
@@ -36,6 +40,8 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 	 * 机构Id
 	 */
 	private Long organId;
+
+	private Long studentId;
     /**
      * 图片或视频ID集合
      */
@@ -46,6 +52,8 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
      */
 	private Integer jurisdiction;
 	private Date createTime;
+
+	private Integer power; //权限 0:公开，1：好友可看，2:仅自己
     /**
      * 创建地方
      */
@@ -53,8 +61,9 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
     /**
      * 坐标，经纬度
      */
-	private String coordinate;
-	private Integer status;
+	private double latitude; //经度
+	private double longitude; //维度
+	private Integer status=0;
 
 
 	public Long getId() {
@@ -105,6 +114,38 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 		this.imgUrlIds = imgUrlIds;
 	}
 
+	public Integer getPower() {
+		return power;
+	}
+
+	public void setPower(Integer power) {
+		this.power = power;
+	}
+
+	public Long getCourseCateId() {
+		return courseCateId;
+	}
+
+	public void setCourseCateId(Long courseCateId) {
+		this.courseCateId = courseCateId;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
 	public Long getVideoId() {
 		return videoId;
 	}
@@ -137,14 +178,6 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 		this.createPlace = createPlace;
 	}
 
-	public String getCoordinate() {
-		return coordinate;
-	}
-
-	public void setCoordinate(String coordinate) {
-		this.coordinate = coordinate;
-	}
-
 	public Integer getStatus() {
 		return status;
 	}
@@ -155,6 +188,14 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 
 	public void setOrganId(Long organId) {
 		this.organId = organId;
+	}
+
+	public Long getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
 	}
 
 	public void setStatus(Integer status) {

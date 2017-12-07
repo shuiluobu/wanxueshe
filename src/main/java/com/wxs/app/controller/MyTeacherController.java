@@ -52,7 +52,8 @@ public class MyTeacherController {
     public Result dynamicList(@PathVariable("teacherId") Long teacherId) {
         //教师动态基本信息
         TTeacher teacher = teacherService.selectById(teacherId);
-        return Result.of(dynamicmsgService.getDynamicmsgListByUserId(teacher.getUserId()));
+        Long userId = 0L;
+        return Result.of(dynamicmsgService.getDynamicmListByTeacherId(userId,teacherId));
     }
 
     @RequestMapping(value = "courseList/{teacherId}")

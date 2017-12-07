@@ -53,11 +53,6 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
         });
         return studentMapList;
     }
-    @Override
-    public List<Map<String,Object>> getParentFllowUserList(Long parentId){
-      List<Long> userIds =  followParentMapper.getFllowUserIdsOfFollowPid(parentId);
-      return  getFllowUsers(userIds);
-    }
 
     @Override
     public List<Map<String, Object>> getFllowUsers(List<Long> userIds) {

@@ -540,10 +540,10 @@ CREATE TABLE `t_follow_parent` (
 -- Table structure for t_follow_teacher
 -- ----------------------------
 DROP TABLE IF EXISTS `t_follow_teacher`;
-CREATE TABLE `t_follow_teacher` (
+CREATE TABLE `t_follow_user` (
   `id` bigint(20) NOT NULL,
   `userId` bigint(20) DEFAULT NULL,
-  `teacherId` bigint(20) DEFAULT NULL,
+  `fuserId` bigint(20) DEFAULT NULL,
   `createTime` datetime DEFAULT NULL,
   `updateTime` datetime DEFAULT NULL,
   `status` int(11) DEFAULT NULL,

@@ -7,6 +7,7 @@
         <id column="id" property="id"/>
         <result column="userId" property="userId"/>
         <result column="content" property="content"/>
+        <result column="courseCateId" property="courseCateId"/>
         <result column="classId" property="classId"/>
         <result column="classLessonId" property="classLessonId"/>
         <result column="imgUrlIds" property="imgUrlIds"/>
@@ -14,33 +15,72 @@
         <result column="jurisdiction" property="jurisdiction"/>
         <result column="createTime" property="createTime"/>
         <result column="createPlace" property="createPlace"/>
-        <result column="coordinate" property="coordinate"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="dynamicType" property="dynamicType"/>
+        <result column="studentId" property="studentId"/>
         <result column="status" property="status"/>
     </resultMap>
     <select id="getDynamicmsgByParam" resultType="java.util.HashMap" parameterType="map">
-		  SELECT d.userId,
-                 content,
-               d.imgUrlIds,
-               videoId,
-               jurisdiction,
-               createPlace,
-               d.createTime,
-               d.coordinate
-		    from t_dynamicmsg d
-            LEFT JOIN t_organization o on o.id=d.organId
-            where d.`status`=0
+        <include refid="querySql"></include>
+        INNER JOIN t_class f on f.id=d.classId
+        <where>
+             d.`status`=0
+            <if test="power!=null">
+                AND d.power in (#{power})
+            </if>
             <if test="userId!=null">
                 AND d.userId = #{userId}
             </if>
             <if test="classId!=null">
                 AND d.classId = #{classId}
             </if>
+            <if test="teacherId!=null">
+                AND f.teacherId = #{teacherId}
+            </if>
+            <if test="courseCateId!=null">
+                AND d.courseCateId = #{courseCateId}
+            </if>
             <if test="classLessonId!=null">
                 AND  d.classLessonId = #{classLessonId}
             </if>
-            <if test="organId!=null">
-                AND  d.organId = #{organId}
+            <if test="teacherId!=null">
+                AND  d.teacherId = #{teacherId}
             </if>
+        </where>
+         ORDER BY d.createTime DESC
+
 	</select>
 
+    <select id="getFriendDynamicmsgByUserId" resultType="java.util.HashMap" parameterType="java.lang.Long">
+        <include refid="querySql"></include>
+        INNER JOIN t_friend f on f.fuserId=d.userId
+        <where>
+            d.`status`=0
+            AND  power in (0,1)
+            <if test="muserId!=null">
+                AND d.muserId = #{muserId}
+            </if>
+        </where>
+        ORDER BY d.createTime DESC
+    </select>
+
+    <sql id="querySql">
+        SELECT
+        d.userId,
+        d.nickName,
+        content,
+        d.imgUrlIds,
+        videoId,
+        jurisdiction,
+        createPlace,
+        d.createTime,
+        d.dynamicType,
+        d.longitude,
+        d.latitude,
+        d.power
+        from t_dynamicmsg d
+        INNER JOIN t_front_user u where u.id = d.userId
+        LEFT JOIN t_organization o on o.id=d.organId
+    </sql>
 </mapper>

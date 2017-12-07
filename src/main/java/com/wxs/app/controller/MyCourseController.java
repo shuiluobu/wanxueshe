@@ -1,6 +1,8 @@
 package com.wxs.app.controller;
 
 import com.wxs.entity.course.TCourse;
+import com.wxs.entity.customer.TTeacher;
+import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.course.ITCoursesService;
 import com.wxs.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ public class MyCourseController extends BaseController {
 
     @Autowired
     private ITCoursesService coursesService;
+    @Autowired
+    private ITDynamicmsgService dynamicmsgService;
 
     @RequestMapping(value = "course/{coursesId}")
     public Result outline(@PathVariable("coursesId") Long coursesId){
@@ -26,6 +30,13 @@ public class MyCourseController extends BaseController {
     public Result lessones(@PathVariable("coursesId") Long coursesId,
                            @RequestParam(value ="studentId", required = false, defaultValue = "") Long studentId){
         return Result.of(coursesService.getLessesonByCourse(coursesId,studentId));
+    }
+
+    @RequestMapping(value = "dynamicList/{coursesId}")
+    public Result dynamicList(@PathVariable("coursesId") Long coursesId) {
+        //课程动态基本信息
+        Long userId = 0L;
+        return Result.of(dynamicmsgService.getDynamicmListByCourseId(userId,coursesId));
     }
 
     @RequestMapping(value = "/fllowMe/{courseId}")
