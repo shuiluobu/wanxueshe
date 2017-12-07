@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.course.TStudentClassMapper;
 import com.wxs.mapper.customer.TFllowCourseMapper;
-import com.wxs.mapper.customer.TFollowTeacherMapper;
+import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.mapper.organ.TFllowOrganMapper;
 import com.wxs.service.customer.ITStudentService;
@@ -27,7 +27,7 @@ import java.util.Map;
 public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> implements ITStudentService {
 
     private TFllowOrganMapper fllowOrganMapper;
-    private TFollowTeacherMapper followTeacherMapper;
+    private TFollowUserMapper followUserMapper;
     private TFllowCourseMapper fllowCourseMapper;
     private TStudentClassMapper studentClassMapper; //我的课程
 
@@ -38,7 +38,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     public Map<String, List> getMyFollow(Long userId) {
         //我的关注分为：我关注的机构，我关注的课程，我关注的老师
         List organs = fllowOrganMapper.getFllowOrganByUser(userId); //我关注的机构
-        List teachers = followTeacherMapper.getFllowTeacherByUser(userId); //我关注的老师
+        List teachers = followUserMapper.getFllowTeacherByUser(userId); //我关注的老师
         List courses = fllowCourseMapper.getFllowCoursesByUser(userId);//我关注的课程
         return ImmutableMap.of(MY_FOLLOW_ORGAN, organs, MY_FOLLOW_TEACHER, teachers, MY_FOLLOW_COURSE, courses);
     }

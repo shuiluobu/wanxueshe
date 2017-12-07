@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
-import com.wxs.mapper.course.TCourseCategoryMapper;
-import com.wxs.mapper.customer.TFollowTeacherMapper;
+import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TTeacherMapper;
 import com.wxs.service.customer.ITParentService;
 import com.wxs.service.customer.ITTeacherService;
@@ -17,8 +16,6 @@ import org.wxs.core.util.BaseUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * <p>
@@ -33,7 +30,7 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
     @Autowired
     private TTeacherMapper teacherMapper; //课程基本信息
     @Autowired
-    private TFollowTeacherMapper followTeacherMapper;
+    private TFollowUserMapper followUserMapper;
     @Autowired
     private ITParentService parentService;
 
@@ -48,30 +45,20 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
         TOrganization organization = new TOrganization().selectById(teacher.getOrganizationId());
         teacher.setOrganization(organization);
         result = BaseUtil.convertBeanToMap(teacher);
-        int fllowCount = followTeacherMapper.getFllowTeacherByCount(teacherId);
+        int fllowCount = followUserMapper.getFllowTeacherByCount(teacherId);
         int studentCount = teacherMapper.getTeacherStudentCount(teacherId);
         result.put("fllowCount", fllowCount);//关注人数
         result.put("studentCount", studentCount);//教过的学员
         if (userId != null) {
-            result.put("ifFllow", followTeacherMapper.getOneFllowTeacherByUser(userId, teacherId) == null ? false : true);
+            result.put("ifFllow", followUserMapper.getOneFllowTeacherByUser(userId, teacherId) == null ? false : true);
         }
         return result;
     }
 
     @Override
     public List<Map<String,Object>> getOrganFllowUserList(Long organId){
-        List<Long> userIds = followTeacherMapper.getFllowUserIdsOfTeacherId(organId);
+        List<Long> userIds = followUserMapper.getFllowUserIdsOfTeacherId(organId);
         return parentService.getFllowUsers(userIds);
-    }
-
-
-    public List<Map<String, Object>> getClassByTeacher(Long tId) {
-        List<Map<String, Object>> result = Lists.newArrayList();
-        teacherMapper.getClassByTeacher(tId).stream().forEach(item -> {
-            item.put("courseType", ""); //这里之后要处理课程类型
-            result.add(item);
-        });
-        return result;
     }
 
 

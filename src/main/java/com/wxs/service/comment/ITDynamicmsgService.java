@@ -15,5 +15,8 @@ import java.util.Map;
  * @since 2017-09-21
  */
 public interface ITDynamicmsgService extends IService<TDynamicmsg> {
-	public List<Map<String,Object>> getDynamicmsgListByUserId(Long userId);
+	public List<Map<String,Object>> getDynamicmListByCourseId(Long loginUserId,Long couserId);
+	public List<Map<String,Object>> getDynamicmListByTeacherId(Long loginUserId,Long teacherId);
+	List<Map<String,Object>> getMyFriendDynamicmList(Long loginUserId);
+	List<Map<String,Object>> getDynamicmListByMySelfId(Long userId,Long studentId);
 }

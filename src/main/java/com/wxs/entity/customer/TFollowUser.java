@@ -13,14 +13,16 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-21
  */
-@TableName("t_follow_teacher")
-public class TFollowTeacher extends Model<TFollowTeacher> {
+@TableName("t_follow_user")
+public class TFollowUser extends Model<TFollowUser> {
 
     private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private Long userId;
-	private Long teacherId;
+	private Long fuserId; //关注的老师所属用户的ID
+	private String relationType; //10:关注，20：朋友,30:屏蔽
+	private String memoName; //备注名称
 	private Date createTime;
 	private Date updateTime;
 	private Integer status=0;
@@ -42,12 +44,12 @@ public class TFollowTeacher extends Model<TFollowTeacher> {
 		this.userId = userId;
 	}
 
-	public Long getTeacherId() {
-		return teacherId;
+	public String getRelationType() {
+		return relationType;
 	}
 
-	public void setTeacherId(Long teacherId) {
-		this.teacherId = teacherId;
+	public void setRelationType(String relationType) {
+		this.relationType = relationType;
 	}
 
 	public Date getCreateTime() {
@@ -66,12 +68,28 @@ public class TFollowTeacher extends Model<TFollowTeacher> {
 		this.updateTime = updateTime;
 	}
 
+	public Long getFuserId() {
+		return fuserId;
+	}
+
+	public void setFuserId(Long fuserId) {
+		this.fuserId = fuserId;
+	}
+
 	public Integer getStatus() {
 		return status;
 	}
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getMemoName() {
+		return memoName;
+	}
+
+	public void setMemoName(String memoName) {
+		this.memoName = memoName;
 	}
 
 	@Override

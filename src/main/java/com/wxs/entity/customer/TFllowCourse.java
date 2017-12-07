@@ -24,6 +24,7 @@ public class TFllowCourse extends Model<TFllowCourse> {
 	private Long id;
 	private Long userId;
 	private Long courseCateId;
+	private String memoName; //备注名
 	private Long organId;
 	private Date createTime;
 	private Date updateTime;
@@ -44,6 +45,14 @@ public class TFllowCourse extends Model<TFllowCourse> {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getMemoName() {
+		return memoName;
+	}
+
+	public void setMemoName(String memoName) {
+		this.memoName = memoName;
 	}
 
 	public Long getCourseCateId() {

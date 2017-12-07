@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wxs.mapper.customer.TFollowTeacherMapper">
+<mapper namespace="com.wxs.mapper.customer.TFollowUser">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TFollowTeacher">
+	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TFollowUser">
 		<id column="id" property="id" />
 		<result column="userId" property="userId" />
-		<result column="teacherId" property="teacherId" />
+		<result column="fuserId" property="fuserId" />
+		<result column="relationType" property="relationType"/>
 		<result column="createTime" property="createTime" />
 		<result column="updateTime" property="updateTime" />
 		<result column="status" property="status" />
 	</resultMap>
 
-	<select id="getOneFllowTeacherByUser" resultType="com.wxs.entity.customer.TFollowTeacher" >
-		SELECT f.* FROM t_follow_teacher f
-		   where f.teacherId = #{teacherId}
+	<select id="getOneFllowTeacherByUser" resultType="com.wxs.entity.customer.TFollowUser" >
+		SELECT f.* FROM t_follow_user f,t_teacher t
+		   where f.fuserId =t.userId
+		     AND t.id = #{teacherId}
 		     and f.userId =#{userId}
 	</select>
 	

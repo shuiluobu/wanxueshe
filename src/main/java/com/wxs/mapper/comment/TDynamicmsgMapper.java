@@ -18,5 +18,6 @@ import java.util.Optional;
  */
 public interface TDynamicmsgMapper extends BaseMapper<TDynamicmsg> {
     public List<Map<String, Object>> getDynamicmsgByParam(Map<String, Object> param);
+    public List<Map<String,Object>> getFriendDynamicmsgByUserId(Long userId);
 
 }

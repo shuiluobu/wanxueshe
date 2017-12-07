@@ -1,7 +1,8 @@
 package com.wxs.mapper.customer;
 
-import com.wxs.entity.customer.TFollowTeacher;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.wxs.entity.customer.TFollowUser;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -17,21 +18,24 @@ import java.util.Map;
  * @author skyer
  * @since 2017-09-21
  */
-public interface TFollowTeacherMapper extends BaseMapper<TFollowTeacher> {
+public interface TFollowUserMapper extends BaseMapper<TFollowUser> {
 
-    @Select("SELECT t.* FROM t_follow_teacher f,t_teacher t where f.teacherId=t.id  and f.userId =#{userId} ")
+    @Select("SELECT t.* FROM t_follow_user f,t_teacher t where t.userId=f.fuserId " +
+            " and f.userId =#{userId} ")
     @ResultType(Map.class)
     List<Map<String,Object>> getFllowTeacherByUser(@Param("userId") Long userId);
 
 
-    TFollowTeacher getOneFllowTeacherByUser(@Param("userId") Long userId,@Param("userId") Long teacherId);
+    TFollowUser getOneFllowTeacherByUser(@Param("userId") Long userId, @Param("teacherId") Long teacherId);
 
-    @Select("select userId from t_follow_teacher where status=0 and teacherId=#{teacherId}")
+    @Select("select userId from t_follow_user f,t_teacher t where t.userId=f.fuserId " +
+            " and f.status=0 and t.id=#{teacherId}")
     @ResultType(Long.class)
     List<Long> getFllowUserIdsOfTeacherId(Long teacherId);
 
 
-    @Select("SELECT count(1) FROM t_follow_teacher f,t_teacher t where f.teacherId=t.id  and f.teacherId=#{teacherId} ")
+    @Select("SELECT count(1) FROM t_follow_user f,t_teacher t where t.userId=f.fuserId" +
+            " and f.status=0 and t.id=#{teacherId} ")
     @ResultType(int.class)
     int getFllowTeacherByCount(@Param("teacherId") Long teacherId);
 

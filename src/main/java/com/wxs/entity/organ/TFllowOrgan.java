@@ -22,6 +22,7 @@ public class TFllowOrgan extends Model<TFllowOrgan> {
 	private Long userId;
 	private Long parentId;
 	private Long organId;
+	private String memoName; //备注名称
 	private Date createTime;
 	private Date updateTime;
 	private Integer status=0;
@@ -77,6 +78,14 @@ public class TFllowOrgan extends Model<TFllowOrgan> {
 
 	public Integer getStatus() {
 		return status;
+	}
+
+	public String getMemoName() {
+		return memoName;
+	}
+
+	public void setMemoName(String memoName) {
+		this.memoName = memoName;
 	}
 
 	public void setStatus(Integer status) {
