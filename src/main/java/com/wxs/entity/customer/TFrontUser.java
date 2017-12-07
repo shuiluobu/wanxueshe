@@ -5,6 +5,9 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
@@ -46,6 +49,9 @@ public class TFrontUser extends Model<TFrontUser> {
      * 微信号
      */
 	private String wxCode;
+	/**
+	 * 创建时间
+	 */
 	private Date createTime;
     /**
      * 所在城市
@@ -67,6 +73,9 @@ public class TFrontUser extends Model<TFrontUser> {
      * 头像
      */
 	private String headImg;
+	/**
+	 * 状态: 0：禁用，1：启用
+	 */
 	private Integer status;
 
 
@@ -125,7 +134,8 @@ public class TFrontUser extends Model<TFrontUser> {
 	public void setWxCode(String wxCode) {
 		this.wxCode = wxCode;
 	}
-
+	@DateTimeFormat(pattern ="yyyy-MM-dd  HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}

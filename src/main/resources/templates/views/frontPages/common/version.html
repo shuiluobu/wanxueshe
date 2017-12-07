@@ -1,0 +1,17 @@
+<script type="text/javascript" src="/weui/js/jquery.min.js"></script>
+<script type="text/javascript" src="/weui/js/jquery-weui.min.js"></script>
+<script>
+    var frontUser;
+    $(function () {
+        var userId = 1;
+        $.ajax("/cFrontUser/getById",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{userId:userId},
+            success:function(json){
+                frontUser = json.data;
+            }
+        });
+    });
+</script>

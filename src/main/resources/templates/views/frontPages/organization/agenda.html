@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <#include "/frontPages/common/header.html"/>
     <title>我的待办</title>
-    <link rel="stylesheet" href="/weui/css/weui.css">
-    <link rel="stylesheet" href="/weui/css/jquery-weui.css">
-    <link rel="stylesheet" href="/weui/css/style.css">
     <link rel="stylesheet"  href="/weui/css/calendar.css">
     <style>
     .adendaDone{
@@ -48,22 +44,6 @@
     </div>
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <!-- 搜索   start -->
-            <!--<div class="weui-search-bar" id="searchBar">-->
-                <!--<form class="weui-search-bar__form" id="search" action="">-->
-                    <!--<div class="weui-search-bar__box">-->
-                        <!--<i class="weui-icon-search"></i>-->
-                        <!--<input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">-->
-                        <!--<a href="javascript:" class="weui-icon-clear" id="searchClear"></a>-->
-                    <!--</div>-->
-                    <!--<label class="weui-search-bar__label" id="searchText">-->
-                        <!--<i class="weui-icon-search"></i>-->
-                        <!--<span>搜索</span>-->
-                    <!--</label>-->
-                <!--</form>-->
-                <!--<a href="javascript:" class="weui-search-bar__cancel-btn" id="search_cancel">取消</a>-->
-            <!--</div>-->
-            <!-- 搜索   end -->
 
             <!-- 日历   start -->
             <div id="calendar" class="calendar"></div>
@@ -135,9 +115,6 @@
         </div>
     </div>
 </div>
-<div>
-</div>
-</br>
 </div>
 
 <!-- 底部导航栏 s -->
@@ -151,9 +128,7 @@
 <!-- 底部导航栏 e -->
 
 </body>
-<script src="/weui/js/jquery.min.js"></script>
-<!--<script src="agenda.js"></script>-->
-<script src="/weui/js/jquery-weui.min.js"></script>
+<#include "/frontPages/common/version.html"/>
 <script src="/weui/js/calendar.js"></script>
 <script>
     $(function () {
@@ -171,7 +146,7 @@
                 var tomorrows = json.data.tomorrows;
                 //今日待办
                 for(var i=0;i<todays.length;i++){
-                    if(todays[i].status == 0){
+                    if(todays[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                                         '<div class="doneDiv">&radic;</div>'+
                                         '<div class="weui-cell__bd adendaDone">'+
@@ -201,7 +176,7 @@
                 );
                 //明日待办
                 for(var i=0;i<tomorrows.length;i++){
-                    if(tomorrows[i].status == 0){
+                    if(tomorrows[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                             '<div class="doneDiv">&radic;</div>'+
                             '<div class="weui-cell__bd adendaDone">'+
@@ -255,7 +230,7 @@
                 );
                 //今日待办
                 for(var i=0;i<todays.length;i++){
-                    if(todays[i].status == 0){
+                    if(todays[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                             '<div class="doneDiv">&radic;</div>'+
                             '<div class="weui-cell__bd adendaDone">'+
@@ -285,7 +260,7 @@
                 );
                 //明日待办
                 for(var i=0;i<tomorrows.length;i++){
-                    if(tomorrows[i].status == 0){
+                    if(tomorrows[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                             '<div class="doneDiv">&radic;</div>'+
                             '<div class="weui-cell__bd adendaDone">'+
@@ -341,7 +316,7 @@
                     );
                     //今日待办
                     for(var i=0;i<todays.length;i++){
-                        if(todays[i].status == 0){
+                        if(todays[i].status == 1){
                             var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                                 '<div class="doneDiv">&radic;</div>'+
                                 '<div class="weui-cell__bd adendaDone">'+
@@ -371,7 +346,7 @@
                     );
                     //明日待办
                     for(var i=0;i<tomorrows.length;i++){
-                        if(tomorrows[i].status == 0){
+                        if(tomorrows[i].status == 1){
                             var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                                 '<div class="doneDiv">&radic;</div>'+
                                 '<div class="weui-cell__bd adendaDone">'+
@@ -405,7 +380,7 @@
         });
     });
 
-    //获取时间的时分
+    //获取时间的 时分 HH:mm
     function getHM(pataTime){
         return pataTime.substring(11,16);
     }

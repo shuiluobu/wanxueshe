@@ -1,5 +1,7 @@
 package com.wxs.companyWX.controller.organization;
 
+import com.wxs.entity.organ.TOrganAgenda;
+import com.wxs.service.customer.ITTeacherService;
 import com.wxs.service.organ.ITOrganAgendaService;
 import com.wxs.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/cOrganAgenda")
 public class COrganAgendaController {
+
     @Autowired
     private ITOrganAgendaService organAgendaService;
+    @Autowired
+    private ITTeacherService teacherService;
 
     /**
      * 获取 我的今日和明日待办
@@ -100,5 +105,58 @@ public class COrganAgendaController {
         }
 
         return Result.of(resultMap);
+    }
+
+    /**
+     * 获取待办详情
+     * @param agendaId
+     * @return
+     */
+
+    @RequestMapping("/OrganAgendaDetail")
+    public Result OrganAgendaDetail(Long agendaId){
+        Map resultMap = new HashMap();
+        try{
+            //获取该待办
+            TOrganAgenda organAgenda = organAgendaService.selectById(agendaId);
+            organAgenda.setUserName(teacherService.selectById(organAgenda.getUserId()).getTeacherName());
+            resultMap.put("agendaDetail",organAgenda);
+            //教务待办 - 获取其下的 四个任务
+            if(organAgenda.getType() == 1){
+
+            }
+            Calendar calendar = Calendar.getInstance();
+            //今日待办
+            String startTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 00:00:00";
+            String endTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 23:59:59";
+//            resultMap.put("todays",organAgendaService.getAgendaByUserName(userName,startTime,endTime));
+            //明日待办
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+            startTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 00:00:00";
+            endTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 23:59:59";
+//            resultMap.put("tomorrows",organAgendaService.getAgendaByUserName(userName,startTime,endTime));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return Result.of(resultMap);
+    }
+
+    /**
+     * 完成待办
+     * @param agendaId
+     * @return
+     */
+    @RequestMapping("/doneOrganAgenda")
+    public Result doneOrganAgenda(Long agendaId){
+        try{
+            TOrganAgenda organAgenda =  organAgendaService.selectById(agendaId);
+            organAgenda.setStatus(1);
+            organAgendaService.updateById(organAgenda);
+            return Result.of("完成待办成功!");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
