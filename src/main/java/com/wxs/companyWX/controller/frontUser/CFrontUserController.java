@@ -38,7 +38,7 @@ public class CFrontUserController {
             if(frontUser.getUserType() == 2){
                 frontUser.setTeacherName(teacherService.getByUserId(userId).getTeacherName());
             }
-             return Result.of();
+             return Result.of(frontUser);
         }catch (Exception e){
             e.printStackTrace();
             log.error(BaseUtil.getExceptionStackTrace(e));
