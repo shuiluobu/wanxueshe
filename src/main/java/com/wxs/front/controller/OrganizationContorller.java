@@ -45,7 +45,7 @@ public class OrganizationContorller extends CrudController<TOrganization,ITOrgan
 
     @RequestMapping("/toIndex")
     public String toIndex(){
-        return "frontPages/organization/agenda";
+        return "frontPages/organization/eduAgendaDetail";
     }
 
     @RequestMapping("/page")

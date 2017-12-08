@@ -3,6 +3,7 @@ package com.wxs.mapper.customer;
 import com.wxs.entity.customer.TTeacher;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
@@ -26,5 +27,10 @@ public interface TTeacherMapper extends BaseMapper<TTeacher> {
     @Select("SELECT COUNT(s.studentId) from t_class c,t_student_class s  where c.teacherId=t.id and c.id=s.classId  and c.teacherId=#{teacherId} ")
     @ResultType(int.class)
     int getTeacherStudentCount(@Param("teacherId") Long teacherId);
+
+    //根据用户给Id 获取老师信息
+    @Select((" select * from t_teacher where userId = #{userId}"))
+    @ResultMap("BaseResultMap")
+    public TTeacher getByUserId(@Param("userId") Long userId);
 
 }

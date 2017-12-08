@@ -61,5 +61,10 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
         return parentService.getFllowUsers(userIds);
     }
 
+    @Override
+    public TTeacher getByUserId(Long userId) {
+        return teacherMapper.getByUserId(userId);
+    }
+
 
 }

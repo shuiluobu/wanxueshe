@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>教务待办详情</title>
+    <style>
+        a{
+            cursor: pointer;
+        }
+        .head{
+            text-align: left;
+            height: 45px;
+            line-height: 45px;
+            box-shadow: 0 1px 1px 1px #e4e4e4;
+            background:#fff;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+        .head span{
+            position: absolute;
+            left:60px;
+            top: 0;
+        }
+        .head .return{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 45px;
+            height: 45px;
+        }
+        .head .return:after{
+            content: " ";
+            display: inline-block;
+            height: 13px;
+            width: 13px;
+            border-width: 2px 2px 0 0;
+            border-color: #C8C8CD;
+            border-style: solid;
+            -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+            transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+            position: absolute;
+            transform:rotate(225deg);
+            left: 16px;
+            top: 14px;
+        }
+        .weui-logistics {
+            border-left: 1px solid #a5a5a5;
+            padding:0px 10px 0px 12px;
+            margin:0 15px;
+            color:#a5a5a5;
+        }
+        .weui-logistics .weui-logistics-li{
+            position: relative;
+            /*border-bottom: 1px solid #e3e3e3;*/
+            padding:10px 10px;
+            font-size: 15px;
+        }
+        .weui-logistics .weui-logistics-li:before{
+            content:"";
+            width: 20px;
+            height: 20px;
+            background:white;
+            border: 1px solid;
+            border-radius:  50%;
+            display: inline-block;
+            position: absolute;
+            left: -23px;
+            top: 12px;
+        }
+        .weui-logistics .weui-logistics-li.done:before{
+            content: url("/weui/images/wyh/right.png");
+            font-weight: bold;
+            background:#666666;
+            color: white;
+            text-align: center;
+        }
+        .weui-logistics .weui-logistics-li.next:before{
+            background:#666666;
+        }
+        .weui-logistics .weui-logistics-li span{
+            font-size: 13px;
+        }
+        .icon_add:before{
+            content: url("/weui/images/wyh/add.png");
+            text-align: center;
+            color: white;
+            width: 20px;
+            height: 20px;
+            background:#333333;
+            border: 1px solid;
+            border-radius:  50%;
+            display: inline-block;
+            position: absolute;
+            left: 5px;
+        }
+        .icon_wait:before{
+            content: url("/weui/images/wyh/wait.png");
+            text-align: center;
+            color: white;
+            width: 20px;
+            height: 20px;
+            background:#333333;
+            border: 1px solid;
+            border-radius:  50%;
+            display: inline-block;
+            position: absolute;
+            left: 3px;
+        }
+        .weui-logistics .weui-logistics-li p{
+            line-height: 20px;
+        }
+        .weui-logistics .weui-logistics-li a{
+            float: right;
+        }
+        .comment-blue{
+            color: #0066CC;
+        }
+        .classDetail{
+            padding-right: 21px;
+            position: relative;
+            text-align: right;
+            color: #999;
+            display: block;
+        }
+        .status_a a{
+            margin: 0 20px;
+            color: #0066CC;
+        }
+    </style>
+</head>
+<body>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>待办详情-教务</span> </div>
+<!-- 待办详情 S -->
+<div class="weui-cells" style="margin-top: 2.176471em;background-color: #F2F2F2">
+    <div class="weui-cell ">
+        <div class="weui-cell__bd" id="agendaDetail">
+            </br>
+            <h3></h3>
+            <p>教务 &bull; <span></span></p>
+            <p>经办人:<span></span></p>
+            </br>
+            <p style="color: #B4A6C2;">4个子任务</p>
+        </div>
+        <a class="classDetail">班级详情 <img src="/weui/images/wyh/toRightGray.png">
+        </a>
+    </div>
+</div>
+<!-- 待办详情 E -->
+<!-- 待办完成情况 S -->
+<div class="weui-logistics">
+    <div class="weui-logistics-li done">
+        <a>7人已签到 <img src="/weui/images/wyh/toRight.png"></a>
+        <p>签到</p>
+        <span>2016-01-03 15:20:03</span>
+    </div>
+    <div class="weui-logistics-li next">
+        <a>未点评 <img src="/weui/images/wyh/toRight.png"></a>
+        <p>课程点评</p>
+        <span>2016-01-03 16:30:03</span>
+    </div>
+    <div class="weui-logistics-li">
+        <a >未发布 <img src="/weui/images/wyh/toRight.png"></a>
+        <p>作业发布</p>
+        <span>2016-01-03 16:30:03</span>
+    </div>
+    <div class="weui-logistics-li">
+        <a>未点评 <img src="/weui/images/wyh/toRight.png"></a>
+        <p>作业点评</p>
+        <span>2016-01-03 16:30:03</span>
+    </div>
+</div>
+<!-- 待办完成情况 E -->
+<!-- 待办创建详情 S -->
+<div class="weui-cell" style="background-color: #F2F2F2;font-size: 13px">
+    <div class="weui-cell__bd">
+        <p class="icon_add" style="padding-left: 23px">09-01 12:12 课堂表  创建待办任务</p>
+        </br>
+        <p class="icon_wait" style="padding-left: 23px">09-01 12:12 课堂表  指派任务给 <span style="font-weight: bold">张老师</span></p>
+    </div>
+</div>
+<!-- 待办创建详情 E -->
+<!-- 评论 S -->
+<div class="weui-panel ">
+    <div class="weui-panel__bd" style="font-size: 13px">
+        <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+                <img class="weui-media-box__thumb" src="/images/userface1.jpg">
+            </div>
+            <div class="weui-media-box__bd">
+                <div style="float: right">09-01</div>
+                <p class="comment-blue">王老师</p>
+                <p>王老师的评论</p>
+            </div>
+        </div>
+        <div class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+                <img class="weui-media-box__thumb" src="/images/userface2.jpg">
+            </div>
+            <div class="weui-media-box__bd">
+                <div style="float: right">09-01</div>
+                <p class="comment-blue">张老师</p>
+                <p>回复 <span class="comment-blue">王老师</span> 回复的评论</p>
+            </div>
+        </div>
+        <div class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+                <img class="weui-media-box__thumb" src="/images/userface3.jpg">
+            </div>
+            <div class="weui-media-box__bd">
+                <div style="float: right">09-01</div>
+                <p class="comment-blue">张老师</p>
+                <p>张老师的评论</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 评论 E -->
+
+<!-- 待办状态 S -->
+<div class="weui-cell" id="agendaStatus">
+    <div class="weui-cell__bd">
+        <p></p>
+    </div>
+    <div class="weui-cell__ft status_a">
+        <a>修改时间</a>
+        <a>完成</a>
+        <a>评论</a>
+    </div>
+</div>
+<!-- 待办状态 E -->
+<!-- 待办创建详情 E -->
+<!-- 添加评论 S -->
+<div class="weui-panel " id="addComment">
+    <div class="weui-panel__bd" style="font-size: 13px">
+        <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+                <img class="weui-media-box__thumb" src="">
+            </div>
+            <div class="weui-media-box__bd">
+               <textarea style="height: 50px;width: 95%"></textarea>
+                <div  style="height: 50px;width: 50px;float: right;">
+                    <p style="padding-top: 15px;text-align: center;color: #0066CC;">评论</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加评论 E -->
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    $(function () {
+        //添加评论 中 用户头像
+        $("#addComment img").attr("src",frontUser.headImg);
+        var agendaId = 1;
+       //获取 待办-教务 详情
+        $.ajax({
+            url:"/cOrganAgenda/OrganAgendaDetail",
+            type:"get",
+            data:{agendaId:agendaId},
+            dataType:"json",
+            success:function(json){
+                //待办详情
+                var agendaDetail = json.data.agendaDetail;
+                //工作内容
+                $("#agendaDetail h3").text(agendaDetail.content);
+                //时间
+                $("#agendaDetail span").eq(0).text(getHM(agendaDetail.startTime)+"-"+getHM(agendaDetail.startTime) );
+                //经办人
+                $("#agendaDetail span").eq(1).text(agendaDetail.userName);
+                //创建人 创建时间
+                $(".icon_add").text( getMDHM(agendaDetail.createTime)+" "+agendaDetail.createUser+" 创建待办任务" );
+                //状态
+                var status;
+                if(agendaDetail.status == 1){
+                    status = "已完成";
+                }else{
+                    status = "未完成";
+                }
+                $("#agendaStatus p").text(status);
+            }
+        });
+
+        //完成待办
+        $(".status_a a").eq(1).click(function () {
+            $.ajax("/cOrganAgenda/doneOrganAgenda",{
+                async : false,
+                type: 'get',
+                dataType: 'json',
+                data:{agendaId:agendaId},
+                success:function(json){
+                    //状态变为已完成
+                    $("#agendaStatus p").text("已完成");
+                    //提示操作结果
+                    $.toast(json.data,'text',800,function(){
+                        //提示完成后执行方法
+                    });
+                }
+            });
+        });
+
+
+    });
+
+    //获取时间的 时分 HH:mm
+    function getHM(pataTime){
+        return pataTime.substring(11,16);
+    }
+
+    //获取时间的 月日时分 MM-dd HH:mm
+    function getMDHM(pataTime){
+        return pataTime.substring(5,16);
+    }
+</script>
+</html>

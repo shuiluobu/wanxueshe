@@ -19,4 +19,6 @@ public interface ITTeacherService extends IService<TTeacher> {
     public Optional<Map> getTeacharInfoById(Long tId);
     public Map<String,Object> getTeacherOutline(Long teacherId,Long userId) throws Exception;
     public List<Map<String,Object>> getOrganFllowUserList(Long organId);
+    //根据用户给Id 获取老师信息
+    public TTeacher getByUserId(Long userId);
 }
