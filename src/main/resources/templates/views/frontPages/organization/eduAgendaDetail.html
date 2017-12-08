@@ -176,45 +176,38 @@
 <!-- 待办创建详情 S -->
 <div class="weui-cell" style="background-color: #F2F2F2;font-size: 13px">
     <div class="weui-cell__bd">
-        <p class="icon_add" style="padding-left: 23px">09-01 12:12 课堂表  创建待办任务</p>
+        <p class="icon_add" style="padding-left: 23px"></p>
         </br>
-        <p class="icon_wait" style="padding-left: 23px">09-01 12:12 课堂表  指派任务给 <span style="font-weight: bold">张老师</span></p>
+        <p class="icon_wait" style="padding-left: 23px;">09-01 12:12 课堂表  指派任务给 <span style="font-weight: bold">张老师</span></p>
     </div>
 </div>
 <!-- 待办创建详情 E -->
 <!-- 评论 S -->
-<div class="weui-panel ">
-    <div class="weui-panel__bd" style="font-size: 13px">
-        <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-            <div class="weui-media-box__hd">
-                <img class="weui-media-box__thumb" src="/images/userface1.jpg">
-            </div>
-            <div class="weui-media-box__bd">
-                <div style="float: right">09-01</div>
-                <p class="comment-blue">王老师</p>
-                <p>王老师的评论</p>
-            </div>
-        </div>
-        <div class="weui-media-box weui-media-box_appmsg">
-            <div class="weui-media-box__hd">
-                <img class="weui-media-box__thumb" src="/images/userface2.jpg">
-            </div>
-            <div class="weui-media-box__bd">
-                <div style="float: right">09-01</div>
-                <p class="comment-blue">张老师</p>
-                <p>回复 <span class="comment-blue">王老师</span> 回复的评论</p>
-            </div>
-        </div>
-        <div class="weui-media-box weui-media-box_appmsg">
-            <div class="weui-media-box__hd">
-                <img class="weui-media-box__thumb" src="/images/userface3.jpg">
-            </div>
-            <div class="weui-media-box__bd">
-                <div style="float: right">09-01</div>
-                <p class="comment-blue">张老师</p>
-                <p>张老师的评论</p>
-            </div>
-        </div>
+<div class="weui-panel " >
+    <div class="weui-panel__bd" style="font-size: 13px" id="agendaComment">
+        <!--<div class="weui-media-box weui-media-box_appmsg">-->
+            <!--<div class="weui-media-box__hd">-->
+                <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+            <!--</div>-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<div style="float: right;">09-01</div>-->
+                <!--<p class="comment-blue">王老师</p>-->
+                <!--<p>王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论-->
+                    <!--王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论-->
+                    <!--王老师的评论王老师的评论王老师的评论王老师的评论</p>-->
+                <!--<a style="float: right;">回复</a>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="weui-media-box weui-media-box_appmsg">-->
+            <!--<div class="weui-media-box__hd">-->
+                <!--<img class="weui-media-box__thumb" src="/images/userface2.jpg">-->
+            <!--</div>-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<div style="float: right">09-01</div>-->
+                <!--<p class="comment-blue">张老师</p>-->
+                <!--<p>回复 <span class="comment-blue">王老师</span> 回复的评论</p>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </div>
 <!-- 评论 E -->
@@ -231,18 +224,18 @@
     </div>
 </div>
 <!-- 待办状态 E -->
-<!-- 待办创建详情 E -->
+
 <!-- 添加评论 S -->
-<div class="weui-panel " id="addComment">
+<div class="weui-panel " id="addComment" hidden>
     <div class="weui-panel__bd" style="font-size: 13px">
         <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
             <div class="weui-media-box__hd">
                 <img class="weui-media-box__thumb" src="">
             </div>
             <div class="weui-media-box__bd">
-               <textarea style="height: 50px;width: 95%"></textarea>
-                <div  style="height: 50px;width: 50px;float: right;">
-                    <p style="padding-top: 15px;text-align: center;color: #0066CC;">评论</p>
+               <textarea style="height: 50px;width: 80%"></textarea>
+                <div  style="height: 50px;width: 50px;float: right;background-color: #D7D7D7">
+                    <div style="padding-top: 15px;text-align: center;color: #0066CC;cursor: pointer;" id="submitAddComment">评论</div>
                 </div>
             </div>
         </div>
@@ -253,6 +246,11 @@
 <#include "/frontPages/common/version.html"/>
 <script>
     $(function () {
+
+        // 页面全局  变量  用于回复评论使用
+        var toUserId;   //@的人的 用户Id
+        var toUserName;//@的人的 教师名称
+
         //添加评论 中 用户头像
         $("#addComment img").attr("src",frontUser.headImg);
         var agendaId = 1;
@@ -284,6 +282,48 @@
             }
         });
 
+        //获取待办下的所有评论
+        $.ajax("/cOrganComment/getAllById",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{itemId:agendaId,type:1},
+            success:function(json){
+                $("#agendaComment").empty();
+                var list = json.data;
+                for(var i=0;i<list.length;i++){
+                    var content;
+                    if(list[i].toUserId == null){
+                        content = '<p>'+list[i].content+'</p>';
+                    }else{
+                        content = '<p>回复 <span class="comment-blue">'+list[i].toUserName+'</span> '+list[i].content+'</p>';
+                    }
+                    var div = '<div class="weui-media-box weui-media-box_appmsg">'+
+                                    '<div class="weui-media-box__hd">'+
+                                    '<img class="weui-media-box__thumb" src="'+list[i].fromUserHeadImg+'">'+
+                                    '</div>'+
+                                    ' <div class="weui-media-box__bd">'+
+                                        '<div style="float: right;">'+getMD(list[i].createTime)+'</div>'+
+                                        '<p class="comment-blue">'+list[i].fromUserName+'</p>'+
+                                        content+
+                                        '<a style="float: right;"  id="'+list[i].fromUserId+'" >回复</a>'
+                                    '</div>'+
+                                '</div>';
+                    $("#agendaComment").append(div);
+                }
+                // @人回复评论
+                $("#agendaComment a").click(function () {
+                    //打开评论框
+                    $("#addComment").show();
+                    //鼠标指针移动到评论输入框
+                    $("#addComment textarea").focus();
+                    toUserId =$(this).attr("id");
+                    toUserName = $(this).parent().find("p").eq(0).text();
+                    $("#addComment textarea").attr("placeholder"," @ "+$(this).parent().find("p").eq(0).text()+" :");
+                });
+            }
+        });
+
         //完成待办
         $(".status_a a").eq(1).click(function () {
             $.ajax("/cOrganAgenda/doneOrganAgenda",{
@@ -297,7 +337,87 @@
                     //提示操作结果
                     $.toast(json.data,'text',800,function(){
                         //提示完成后执行方法
+
                     });
+                }
+            });
+        });
+
+        //单评论,不@人的
+        $(".status_a a").eq(2).click(function () {
+            //打开评论框
+            $("#addComment").show();
+            //鼠标指针移动到评论输入框
+            $("#addComment textarea").focus();
+            //归null  页面全局  变量
+            toUserId = null;
+            toUserName = null;
+            $("#addComment textarea").attr("placeholder","");
+        });
+
+        //添加评论
+        $("#submitAddComment ").click(function () {
+            var content = $("#addComment textarea").val();
+            if(content.length == 0){
+                $.toast("评论内容不能为空!",'text',800,function(){
+                    //提示完成后执行方法
+                });
+                return;
+            }
+            //关闭评论框
+            $("#addComment").hide();
+            $.ajax("/cOrganComment/addComment",{
+                async : false,
+                type: 'get',
+                dataType: 'json',
+                data:{
+                    itemId:agendaId,
+                    type:1,//待办评论
+                    fromUserId:frontUser.id,
+                    fromUserName:frontUser.teacherName,
+                    toUserId:toUserId,
+                    toUserName:toUserName,
+                    content: content
+
+                },
+                success:function(json){
+                    //提示操作结果
+                    $.toast(json.data,'text',800,function(){
+                        //提示完成后执行方法
+                    });
+                    //动态刷新上该条评论
+                    if(toUserId == null){
+                        content = '<p>'+content+'</p>';
+                    }else{
+                        content = '<p>回复 <span class="comment-blue">'+toUserName+'</span> '+content+'</p>';
+                    }
+                    var div = '<div class="weui-media-box weui-media-box_appmsg">'+
+                        '<div class="weui-media-box__hd">'+
+                        '<img class="weui-media-box__thumb" src="'+frontUser.headImg+'">'+
+                        '</div>'+
+                        ' <div class="weui-media-box__bd">'+
+                        '<div style="float: right;">'+getCurMD()+'</div>'+
+                        '<p class="comment-blue">'+frontUser.teacherName+'</p>'+
+                        content+
+                        '<a style="float: right;"  id="'+toUserId+'" >回复</a>'
+                    '</div>'+
+                    '</div>';
+                    $("#agendaComment").append(div);
+                    // @人回复评论
+                    $("#agendaComment a").click(function () {
+                        //打开评论框
+                        $("#addComment").show();
+                        //鼠标指针移动到评论输入框
+                        $("#addComment textarea").focus();
+                        toUserId =$(this).attr("id");
+                        toUserName = $(this).parent().find("p").eq(0).text();
+                        $("#addComment textarea").attr("placeholder"," @ "+$(this).parent().find("p").eq(0).text()+" :");
+                    });
+                    //归null  页面全局  变量
+                    toUserId = null;
+                    toUserName = null;
+                    //清空评论输入框
+                    $("#addComment textarea").val("");
                 }
             });
         });
@@ -305,9 +425,23 @@
 
     });
 
+    //获取当前 时间的 月日  MM-dd
+    function getCurMD(){
+        var now = new Date();
+        var month = now.getMonth()+1;
+        month = month<10?"0"+month:month;
+        var day = now.getDate();
+        day = day<10?"0"+day:day;
+        return month+"-"+day;
+    }
     //获取时间的 时分 HH:mm
     function getHM(pataTime){
         return pataTime.substring(11,16);
+    }
+
+    //获取时间的 月日 MM-dd
+    function getMD(pataTime){
+        return pataTime.substring(5,10);
     }
 
     //获取时间的 月日时分 MM-dd HH:mm
