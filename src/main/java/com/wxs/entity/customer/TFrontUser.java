@@ -1,5 +1,6 @@
 package com.wxs.entity.customer;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -77,6 +78,11 @@ public class TFrontUser extends Model<TFrontUser> {
 	 * 状态: 0：禁用，1：启用
 	 */
 	private Integer status;
+
+	//额外字段
+	@TableField(exist = false)
+	private String teacherName; //教师名称
+
 
 
 	public Long getId() {
@@ -190,6 +196,14 @@ public class TFrontUser extends Model<TFrontUser> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getTeacherName() {
+		return teacherName;
+	}
+
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
 	}
 
 	@Override
