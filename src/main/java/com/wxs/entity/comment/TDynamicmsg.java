@@ -31,7 +31,7 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 	/**
 	 * 课程类ID
 	 */
-	private  Long courseCateId;
+	private  Long courseId;
     /**
      * 关联的课时
      */
@@ -42,11 +42,7 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 	private Long organId;
 
 	private Long studentId;
-    /**
-     * 图片或视频ID集合
-     */
-	private String imgUrlIds;
-	private Long videoId;
+
     /**
      * 权限，是否公开等
      */
@@ -106,14 +102,6 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 		this.classLessonId = classLessonId;
 	}
 
-	public String getImgUrlIds() {
-		return imgUrlIds;
-	}
-
-	public void setImgUrlIds(String imgUrlIds) {
-		this.imgUrlIds = imgUrlIds;
-	}
-
 	public Integer getPower() {
 		return power;
 	}
@@ -122,12 +110,12 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 		this.power = power;
 	}
 
-	public Long getCourseCateId() {
-		return courseCateId;
+	public Long getCourseId() {
+		return courseId;
 	}
 
-	public void setCourseCateId(Long courseCateId) {
-		this.courseCateId = courseCateId;
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
 	}
 
 	public double getLatitude() {
@@ -144,14 +132,6 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
-	}
-
-	public Long getVideoId() {
-		return videoId;
-	}
-
-	public void setVideoId(Long videoId) {
-		this.videoId = videoId;
 	}
 
 	public Integer getJurisdiction() {

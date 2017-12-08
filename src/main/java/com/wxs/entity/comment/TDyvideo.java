@@ -26,7 +26,8 @@ public class TDyvideo extends Model<TDyvideo> {
 	private String videoUrl;
 	private Integer size;
 	private Date createTime;
-	private Integer status;
+	private Long dynamicId;
+	private Integer status=0;
 
 
 	public Long getId() {
@@ -75,6 +76,14 @@ public class TDyvideo extends Model<TDyvideo> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Long getDynamicId() {
+		return dynamicId;
+	}
+
+	public void setDynamicId(Long dynamicId) {
+		this.dynamicId = dynamicId;
 	}
 
 	@Override

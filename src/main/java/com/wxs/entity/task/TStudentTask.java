@@ -29,17 +29,10 @@ public class TStudentTask extends Model<TStudentTask> {
      * 完成情况
      */
 	private String completion;
-	private String conent;
-    /**
-     * json格式的小视频对象
-     */
-	private String video;
-    /**
-     * json格式的数组
-     */
-	private String imgUrl;
+	private Long dynamicId; //动态ID，作业也是一种动态
+
 	private Date createTime;
-	private String createUserId;
+	private Long userId;
 	private Integer status;
 	@TableField(exist = false)
 	private TClassTask classTask;
@@ -77,30 +70,6 @@ public class TStudentTask extends Model<TStudentTask> {
 		this.completion = completion;
 	}
 
-	public String getConent() {
-		return conent;
-	}
-
-	public void setConent(String conent) {
-		this.conent = conent;
-	}
-
-	public String getVideo() {
-		return video;
-	}
-
-	public void setVideo(String video) {
-		this.video = video;
-	}
-
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
-
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -109,12 +78,20 @@ public class TStudentTask extends Model<TStudentTask> {
 		this.createTime = createTime;
 	}
 
-	public String getCreateUserId() {
-		return createUserId;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setCreateUserId(String createUserId) {
-		this.createUserId = createUserId;
+	public Long getDynamicId() {
+		return dynamicId;
+	}
+
+	public void setDynamicId(Long dynamicId) {
+		this.dynamicId = dynamicId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public Integer getStatus() {

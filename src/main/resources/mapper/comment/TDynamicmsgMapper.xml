@@ -10,8 +10,6 @@
         <result column="courseCateId" property="courseCateId"/>
         <result column="classId" property="classId"/>
         <result column="classLessonId" property="classLessonId"/>
-        <result column="imgUrlIds" property="imgUrlIds"/>
-        <result column="videoId" property="videoId"/>
         <result column="jurisdiction" property="jurisdiction"/>
         <result column="createTime" property="createTime"/>
         <result column="createPlace" property="createPlace"/>
@@ -70,8 +68,6 @@
         d.userId,
         d.nickName,
         content,
-        d.imgUrlIds,
-        videoId,
         jurisdiction,
         createPlace,
         d.createTime,

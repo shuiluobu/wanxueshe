@@ -19,6 +19,8 @@ public class TDyimg extends Model<TDyimg> {
     private static final long serialVersionUID = 1L;
 
 	private Long id;
+
+	private Long dynamicId; //动态主题
     /**
      * 缩略图
      */
@@ -69,6 +71,14 @@ public class TDyimg extends Model<TDyimg> {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Long getDynamicId() {
+		return dynamicId;
+	}
+
+	public void setDynamicId(Long dynamicId) {
+		this.dynamicId = dynamicId;
 	}
 
 	@Override

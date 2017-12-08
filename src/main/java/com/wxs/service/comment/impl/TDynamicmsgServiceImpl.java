@@ -59,11 +59,11 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDynamicmListByMySelfId(Long userId,Long studentId) {
-        Map<String,Object> param = Maps.newHashMap();
-        param.put("userId",userId);
-        if(studentId!=null){
-            param.put("studentId",studentId);
+    public List<Map<String, Object>> getDynamicmListByMySelfId(Long userId, Long studentId) {
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("userId", userId);
+        if (studentId != null) {
+            param.put("studentId", studentId);
         }
         List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
         return buildDynamicmsgList(null, dynamicMsgs);
@@ -121,17 +121,16 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
             }
         });
         dynamiList.stream().forEach(dyn -> {
-            String imgUrlIds = dyn.get("imgUrlIds") == null ? "0" : dyn.get("imgUrlIds").toString();
-            List<TDyimg> dyimgs = imgMapper.selectBatchIds(Arrays.asList(StringUtils.split(imgUrlIds, ",")));
+            Long dynamicId = Long.parseLong(dyn.get("id").toString());
+            List<TDyimg> dyimgs = imgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
             dyn.put("dyImgs", dyimgs); //图集
-            if (dyn.get("videoId") != null) {
-                TDyvideo dyvideo = videMapper.selectById(Long.parseLong(dyn.get("videoId").toString()));
-                dyn.put("dyVideo", dyvideo); //视频
-            }
-            List<TLike> likes = likeMapper.selectByMap(ImmutableMap.of("dynamicId", dyn.get("id").toString()));
+            TDyvideo dyvideo = new TDyvideo();
+            dyvideo.setDynamicId(dynamicId);
+            dyn.put("dyVideo", videMapper.selectOne(dyvideo)); //视频
+            List<TLike> likes = likeMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
             dyn.put("likes", likes);
-            List<TComment> comments = commentMapper.selectByMap(ImmutableMap.of("dynamicId",dyn.get("id").toString()));
-            dyn.put("comments",comments);
+            List<TComment> comments = commentMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
+            dyn.put("comments", comments);
         });
         return dynamiList;
     }

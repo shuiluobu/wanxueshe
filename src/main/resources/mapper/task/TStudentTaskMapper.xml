@@ -8,11 +8,9 @@
 		<result column="studentId" property="studentId" />
 		<result column="workId" property="workId" />
 		<result column="completion" property="completion" />
-		<result column="conent" property="conent" />
-		<result column="video" property="video" />
-		<result column="imgUrl" property="imgUrl" />
+		<result column="dynamicId" property="dynamicId"/>
 		<result column="createTime" property="createTime" />
-		<result column="createUserId" property="createUserId" />
+		<result column="userId" property="userId" />
 		<result column="status" property="status" />
 	</resultMap>
 
