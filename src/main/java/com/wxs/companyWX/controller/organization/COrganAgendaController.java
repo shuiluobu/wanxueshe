@@ -4,6 +4,7 @@ import com.wxs.entity.organ.TOrganAgenda;
 import com.wxs.service.customer.ITTeacherService;
 import com.wxs.service.organ.ITOrganAgendaService;
 import com.wxs.util.Result;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/cOrganAgenda")
 public class COrganAgendaController {
+
+    private static Logger log = Logger.getLogger(COrganAgendaController.class);
 
     @Autowired
     private ITOrganAgendaService organAgendaService;
@@ -48,6 +51,7 @@ public class COrganAgendaController {
             resultMap.put("tomorrows",organAgendaService.myOrganAgenda(userId,startTime,endTime));
         }catch (Exception e){
             e.printStackTrace();
+            log.error(BaseUtil.getExceptionStackTrace(e));
         }
 
         return Result.of(resultMap);
@@ -75,6 +79,7 @@ public class COrganAgendaController {
             resultMap.put("tomorrows",organAgendaService.organAgenda(userId,startTime,endTime));
         }catch (Exception e){
             e.printStackTrace();
+            log.error(BaseUtil.getExceptionStackTrace(e));
         }
 
         return Result.of(resultMap);
@@ -102,6 +107,7 @@ public class COrganAgendaController {
             resultMap.put("tomorrows",organAgendaService.getAgendaByUserName(userName,startTime,endTime));
         }catch (Exception e){
             e.printStackTrace();
+            log.error(BaseUtil.getExceptionStackTrace(e));
         }
 
         return Result.of(resultMap);
@@ -137,6 +143,7 @@ public class COrganAgendaController {
 //            resultMap.put("tomorrows",organAgendaService.getAgendaByUserName(userName,startTime,endTime));
         }catch (Exception e){
             e.printStackTrace();
+            log.error(BaseUtil.getExceptionStackTrace(e));
         }
 
         return Result.of(resultMap);
@@ -156,6 +163,7 @@ public class COrganAgendaController {
             return Result.of("完成待办成功!");
         }catch (Exception e){
             e.printStackTrace();
+            log.error(BaseUtil.getExceptionStackTrace(e));
         }
         return null;
     }
