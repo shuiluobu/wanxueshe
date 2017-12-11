@@ -23,4 +23,7 @@ public interface ITClassLessonService extends IService<TClassLesson> {
 
 	public Map<String,Object> getOneClassLession(Long lessionId);
 	public Map<String,Object> getOneClassLession(Long lessionId,Long userId);
+	public List<Map<String,Object>> getTodayCourseLesson(Long userId);
+	public List<Map<String,Object>> getNextDayCourseLesson(Long userId);
+	List<Map<String,Object>> getCourseByTime(String beginTime,Long userId);
 }

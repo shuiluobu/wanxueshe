@@ -19,4 +19,6 @@ public interface ITDynamicmsgService extends IService<TDynamicmsg> {
 	public List<Map<String,Object>> getDynamicmListByTeacherId(Long loginUserId,Long teacherId);
 	List<Map<String,Object>> getMyFriendDynamicmList(Long loginUserId);
 	List<Map<String,Object>> getDynamicmListByMySelfId(Long userId,Long studentId);
+	Map<String,Object> buildOneDynamic(Map<String,Object> dyn);
+	Boolean saveComment(Long userId,Long dynamicId,String content);
 }

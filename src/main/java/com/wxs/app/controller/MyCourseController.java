@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.wxs.core.controller.BaseController;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2017/9/23 0023.
  */
@@ -46,8 +48,9 @@ public class MyCourseController extends BaseController {
     }
 
     @RequestMapping(value = "editMyCourse")
-    public Result editMyCourse(@ModelAttribute TCourse course){
-        return null;
+    public Result editMyCourse(@RequestParam Map<String,Object> param){
+        //返回是否保存成功
+        return Result.of();
     }
 
     @RequestMapping(value = "addMyCourse")

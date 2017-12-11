@@ -1,5 +1,7 @@
 package com.wxs.app.controller;
 
+import com.wxs.entity.comment.TDyimg;
+import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.customer.ITFrontUserService;
 import com.wxs.service.customer.ITParentService;
@@ -12,6 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/10/24 0024.
@@ -32,44 +42,83 @@ public class MyHomePageController {
     private ITDynamicmsgService dynamicmsgService;
 
     @RequestMapping(value = "/follow/{sessionId}")
-    public Result follow(String sessionId) {
+    public Result follow(@PathVariable String sessionId) {
         Long userId = 1L; //之后需要从session中获取
         return Result.of(studentService.getMyFollow(userId));
     }
 
     @RequestMapping(value = "/myCourse/{sessionId}")
-    public Result myCourse(String sessionId) {
+    public Result myCourse(@PathVariable String sessionId) {
         //我的课程
         Long userId = 1L; //之后需要从session中获取
         return Result.of(studentService.getMyCourses(userId));
     }
 
     @RequestMapping(value = "/myRemind/{sessionId}")
-    public Result myRemind(String sessionId) {
+    public Result myRemind(@PathVariable String sessionId) {
         //我的提醒
         Long userId = 1L; //之后需要从session中获取
         return Result.of(remindMessageService.getRemindMsgByFromUid(userId));
     }
 
     @RequestMapping(value = "/myFriend/{sessionId}")
-    public Result myFriend(String sessionId) {
+    public Result myFriend(@PathVariable String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
         return Result.of(frontUserService.getUserFriends(userId));
     }
 
     @RequestMapping(value = "/myDynamic")
-    public Result myDynamic(@RequestParam String sessionId,@RequestParam Long studentId) {
+    public Result myDynamic(@RequestParam String sessionId, @RequestParam Long studentId) {
         //我的动态记录
         Long userId = 1L; //之后需要从session中获取
-        return Result.of(dynamicmsgService.getDynamicmListByMySelfId(userId,studentId));
+        return Result.of(dynamicmsgService.getDynamicmListByMySelfId(userId, studentId));
     }
 
     @RequestMapping(value = "/myStudents/{sessionId}")
-    public Result myStudents(String sessionId) {
+    public Result myStudents(@PathVariable String sessionId) {
         //我的学员
         Long parentId = 0L;
         return Result.of(parentService.getStudentByParent(parentId));
+    }
+
+    @RequestMapping(value = "/saveMygrowth")
+    public Result saveMygrowth(@RequestParam MultipartFile[] imageOrVideos, HttpServletRequest request) throws IOException {
+        //保存我的作业
+        List<TDyimg> dyimgs = new ArrayList<>();
+        Long userId = 0L;
+        for (MultipartFile imageOrVideo : imageOrVideos) {
+            String originalFilename = imageOrVideo.getOriginalFilename();
+            String newFileName = null;
+            String pic_path = request.getSession().getServletContext().getRealPath("/upload/callRing");
+            //新图片路径
+            File targetFile = new File(pic_path, newFileName);
+            //内存数据读入磁盘
+            imageOrVideo.transferTo(targetFile);
+
+            TDyimg tDyimg = new TDyimg();
+            tDyimg.setCreateTime(new Date());
+            tDyimg.setOriginalImgUrl(pic_path + "/" + newFileName);
+            tDyimg.setStatus(0);
+            dyimgs.add(tDyimg); //图片list
+        }
+        String content = request.getParameter("content");
+        Integer power = Integer.parseInt(request.getParameter("power")); //是否公开
+        Long studentId = Long.parseLong(request.getParameter("studentId"));
+        Long workId = Long.parseLong(request.getParameter("workId"));
+        TDynamicmsg dynamic = new TDynamicmsg();
+        dynamic.setPower(power); //权限
+        dynamic.setContent(content);
+        dynamic.setStudentId(studentId);
+        dynamic.setUserId(userId); //用户
+        return Result.of(studentService.saveMygrowth(dyimgs, dynamic, workId));
+    }
+
+    @RequestMapping(value = "/sendComment/{sessionId}")
+    public Result sendComment(@PathVariable String sessionId, @RequestParam String content, @RequestParam Long dynamicId) {
+        //我的学员
+        Long userId = 0L;
+        return Result.of(dynamicmsgService.saveComment(userId, dynamicId, content));
     }
 
 

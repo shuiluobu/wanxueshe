@@ -50,6 +50,8 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 	private Date createTime;
 
 	private Integer power; //权限 0:公开，1：好友可看，2:仅自己
+
+	private String dynamicType; //动态类型 个人成长，作业等
     /**
      * 创建地方
      */
@@ -128,6 +130,14 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 
 	public double getLongitude() {
 		return longitude;
+	}
+
+	public String getDynamicType() {
+		return dynamicType;
+	}
+
+	public void setDynamicType(String dynamicType) {
+		this.dynamicType = dynamicType;
 	}
 
 	public void setLongitude(double longitude) {

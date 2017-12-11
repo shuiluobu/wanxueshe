@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -121,19 +122,35 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
             }
         });
         dynamiList.stream().forEach(dyn -> {
-            Long dynamicId = Long.parseLong(dyn.get("id").toString());
-            List<TDyimg> dyimgs = imgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
-            dyn.put("dyImgs", dyimgs); //图集
-            TDyvideo dyvideo = new TDyvideo();
-            dyvideo.setDynamicId(dynamicId);
-            dyn.put("dyVideo", videMapper.selectOne(dyvideo)); //视频
-            List<TLike> likes = likeMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
-            dyn.put("likes", likes);
-            List<TComment> comments = commentMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
-            dyn.put("comments", comments);
+            buildOneDynamic(dyn);
         });
         return dynamiList;
     }
+    @Override
+    public Map<String,Object> buildOneDynamic(Map<String,Object> dyn){
+        Long dynamicId = Long.parseLong(dyn.get("id").toString());
+        List<TDyimg> dyimgs = imgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
+        dyn.put("dyImgs", dyimgs); //图集
+        TDyvideo dyvideo = new TDyvideo();
+        dyvideo.setDynamicId(dynamicId);
+        dyn.put("dyVideo", videMapper.selectOne(dyvideo)); //视频
+        List<TLike> likes = likeMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
+        dyn.put("likes", likes);
+        List<TComment> comments = commentMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
+        dyn.put("comments", comments);
+        return dyn;
+    }
 
-
+    @Override
+    public Boolean saveComment(Long userId,Long dynamicId,String content){
+        TComment comment = new TComment();
+        comment.setContent(content);
+        comment.setDynamicId(dynamicId);
+        comment.setCreateTime(new Date());
+        comment.setFromUserId(userId);
+        TDynamicmsg dynamic = new TDynamicmsg().selectById(dynamicId);
+        comment.setToUserId(dynamic.getUserId());
+        comment.setStatus(0);
+        return  comment.insert();
+    }
 }

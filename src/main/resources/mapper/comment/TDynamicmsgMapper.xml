@@ -12,6 +12,7 @@
         <result column="classLessonId" property="classLessonId"/>
         <result column="jurisdiction" property="jurisdiction"/>
         <result column="createTime" property="createTime"/>
+        <result column="dynamicType" property="dynamicType"/>
         <result column="createPlace" property="createPlace"/>
         <result column="longitude" property="longitude"/>
         <result column="latitude" property="latitude"/>

@@ -447,8 +447,6 @@ CREATE TABLE `t_dynamicmsg` (
   `content` varchar(1024) DEFAULT NULL COMMENT '动态正文',
   `classId` bigint(20) DEFAULT NULL COMMENT '动态关联的班级',
   `classLessonId` bigint(20) DEFAULT NULL COMMENT '关联的课时',
-  `imgUrlIds` varchar(128) DEFAULT NULL COMMENT '图片或视频ID集合',
-  `videoId` bigint(20) DEFAULT NULL,
   `jurisdiction` int(4) DEFAULT NULL COMMENT '权限，是否公开等',
   `createTime` datetime DEFAULT NULL,
   `createPlace` varchar(512) DEFAULT NULL COMMENT '创建地方',

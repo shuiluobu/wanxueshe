@@ -7,6 +7,7 @@ import com.wxs.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,5 +25,23 @@ public class MyLessionController {
         //展示课时详情
         Long userId = 0L;
         return Result.of(classLessonService.getOneClassLession(lessionId,userId));
+    }
+
+    @RequestMapping(value = "/toDayCourse")
+    public Result toDayCourse(){
+        Long userId = 0L;//今日课程
+        return Result.of(classLessonService.getTodayCourseLesson(userId));
+    }
+
+    @RequestMapping(value = "/nextDayCourse")
+    public Result nextDayCourse(){
+        Long userId = 0L; //接下来一周的课程
+        return Result.of(classLessonService.getNextDayCourseLesson(userId));
+    }
+
+    @RequestMapping(value = "/viewCourseByTime")
+    public Result viewCourseByTime(@RequestParam("oneDay") String oneDay){
+        Long userId = 0L; //按日期显示课程
+        return Result.of(classLessonService.getCourseByTime(oneDay,userId));
     }
 }

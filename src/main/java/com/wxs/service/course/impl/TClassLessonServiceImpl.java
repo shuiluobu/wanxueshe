@@ -9,10 +9,13 @@ import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.course.ITClassLessonService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wxs.core.util.BaseUtil;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,4 +74,28 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
         }
         return result;
     }
+    @Override
+    public List<Map<String,Object>> getTodayCourseLesson(Long userId){
+        String beginTime = BaseUtil.toShortDate(new Date());
+        String endTIme = beginTime + " 23:59:59";
+        return classLessonMapper.getTodayCourseLesson(beginTime,endTIme,userId);
+    }
+    @Override
+    public List<Map<String,Object>> getNextDayCourseLesson(Long userId){
+        //接下来一周的课程
+        String beginTime = BaseUtil.toShortDate(new Date()) + " 23:59:59";
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_WEEK, 7);
+        String endTIme = BaseUtil.toShortDate(cal.getTime());
+        return classLessonMapper.getTodayCourseLesson(beginTime,endTIme,userId);
+    }
+
+    @Override
+    public List<Map<String,Object>> getCourseByTime(String beginTime,Long userId){
+        //按日历来显示课程
+        String endTIme = beginTime + " 23:59:59";
+        return classLessonMapper.getTodayCourseLesson(beginTime,endTIme,userId);
+    }
+
+
 }
