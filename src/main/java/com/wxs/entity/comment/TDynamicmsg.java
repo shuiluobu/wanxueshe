@@ -43,10 +43,7 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 
 	private Long studentId;
 
-    /**
-     * 权限，是否公开等
-     */
-	private Integer jurisdiction;
+
 	private Date createTime;
 
 	private Integer power; //权限 0:公开，1：好友可看，2:仅自己
@@ -142,14 +139,6 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
-	}
-
-	public Integer getJurisdiction() {
-		return jurisdiction;
-	}
-
-	public void setJurisdiction(Integer jurisdiction) {
-		this.jurisdiction = jurisdiction;
 	}
 
 	public Date getCreateTime() {

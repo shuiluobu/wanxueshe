@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxs.entity.organ.TOrganization;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -72,8 +72,6 @@ public class TCourse extends Model<TCourse> {
 
 	//-------额外字段
 	@TableField(exist = false)
-	private TOrganization organization;
-	@TableField(exist = false)
 	private String courseCategoryName; //所属课程类型名称
 	@TableField(exist = false)
 	private String organName; //所属教育机构名称
@@ -99,14 +97,6 @@ public class TCourse extends Model<TCourse> {
 
 	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
-	}
-
-	public TOrganization getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(TOrganization organization) {
-		this.organization = organization;
 	}
 
 	public String getCourseCode() {

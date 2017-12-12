@@ -1,5 +1,6 @@
 package com.wxs.app.controller;
 
+import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.impl.TClassLessonServiceImpl;
@@ -10,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2017/11/23 0023.
  * 课时管理
  */
 @RestController
-@RequestMapping("clession")
+@RequestMapping("app/clession")
 public class MyLessionController {
     @Autowired
     private ITClassLessonService classLessonService;
@@ -27,10 +30,13 @@ public class MyLessionController {
         return Result.of(classLessonService.getOneClassLession(lessionId,userId));
     }
 
-    @RequestMapping(value = "/toDayCourse")
-    public Result toDayCourse(){
-        Long userId = 0L;//今日课程
-        return Result.of(classLessonService.getTodayCourseLesson(userId));
+    @RequestMapping(value = "/mySchedule")
+    public Result mySchedule(){
+        Long userId = 1L; //我的日程
+        Map<String,Object> result = Maps.newHashMap();
+        result.put("toDay",classLessonService.getTodayCourseLesson(userId));
+        result.put("nextDay",classLessonService.getNextDayCourseLesson(userId));
+        return Result.of(result);
     }
 
     @RequestMapping(value = "/nextDayCourse")

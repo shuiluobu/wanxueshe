@@ -9,6 +9,7 @@
         <result column="userId" property="userId"/>
         <result column="organizationId" property="organizationId"/>
         <result column="coursesId" property="coursesId"/>
+        <result column="courseCateId" property="courseCateId"/>
         <result column="status" property="status"/>
         <result column="createTime" property="createTime"/>
     </resultMap>
@@ -24,7 +25,7 @@
             AND organizationId = #{organizationId}
         </if>
     </select>
-    <select id="getMyCourses" parameterType="java.lang.Long" resultType="java.util.HashMap">
+    <select id="getMyCourses" parameterType="java.util.HashMap" resultType="java.util.HashMap">
         SELECT
         y.courseCategoryCode courseCode,
         y.courseCategoryName courseName,
@@ -33,17 +34,34 @@
         s.coursesId,
         s.userId,
         s.studentId,
+        t.studentName,
         s.isEnd
         FROM
         t_student_class s,
         t_course c,
-        t_course_category y
+        t_course_category y,
+        t_student t
         WHERE
         s.coursesId = c.id
         AND y.id = c.courseCateId
-        AND s.userId = #{userId}
+        AND t.id = s.studentId
+        <if test="userId!=null">
+            AND s.userId = #{userId}
+        </if>
         <if test="isEnd!=null">
             AND s.isEnd = #{isEnd}
+        </if>
+    </select>
+    <select id="getClassStudentCountByParam" parameterType="com.wxs.entity.course.TStudentClass" resultType="int">
+        select count(1) from t_student_class c where 1=1
+        <if test="organizationId!=null">
+            and c.organizationId=#{organizationId}
+        </if>
+        <if test="courseCateId!=null">
+            and c.courseCateId=#{courseCateId}
+        </if>
+        <if test="userId!=null">
+            and c.userId=#{userId}
         </if>
     </select>
 

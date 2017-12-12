@@ -37,7 +37,6 @@ public class WxAuthController{
 	 * @param wxCode	小程序登录时获取的code
 	 * @return
 	 */
-	@PassLogin
 	@RequestMapping(value = "/getSession", method = RequestMethod.GET, produces = "application/json")
 	public Map<String,Object> createSssion(@RequestParam(required = true,value = "code")String wxCode){
 		Map<String,Object> wxSessionMap = wxService.getWxSession(wxCode);

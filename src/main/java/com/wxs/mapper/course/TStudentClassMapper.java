@@ -20,11 +20,9 @@ public interface TStudentClassMapper extends BaseMapper<TStudentClass> {
     //获取个人的课程集合
     public String getCoursesIds(Map<String,Object> map);
 
-    public List<Map<String,Object>> getMyCourses(Long userId,Integer isEnd);
+    public List<Map<String,Object>> getMyCourses(Map map);
 
-    @Select("select count(1) from t_student_class c,t_student s where c.studentId=s.id and c.organizationId=#{organId} ")
-    @ResultType(int.class)
-    public int getOrganStudentCount(Long organId);
+    public int getClassStudentCountByParam(TStudentClass stuClass);
 
     /**
      * 获取一个学生有多少个课

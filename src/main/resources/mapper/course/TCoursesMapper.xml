@@ -60,10 +60,6 @@
         limit #{pageStartIndex},#{limit}
     </select>
 
-    <select id="selectOneCourseById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-		SELECT * FROM t_course WHERE id = #{coursesId}
-	</select>
-
     <select id="selectCoursesByIds" parameterType="java.util.List" resultType="java.util.HashMap">
         SELECT
         organizationId,courseCode,courseName,courseRemark,marketPrice,preferenPrice,
@@ -75,9 +71,9 @@
     </select>
 
     <select id="selectMap" parameterType="java.lang.Long" resultType="java.util.HashMap">
-		SELECT s.*,c.className,t.teacherName,o.organName
+		SELECT s.*,c.className,t.teacherName,o.organName,s.organizationId,o.leval
 		FROM t_course s,t_class c,t_teacher t,t_organization o
-        where c.course=s.id
+        where c.courseId=s.id
         and c.teacherId=t.id
         and s.organizationId=o.id
         and  s.id = #{coursesId}

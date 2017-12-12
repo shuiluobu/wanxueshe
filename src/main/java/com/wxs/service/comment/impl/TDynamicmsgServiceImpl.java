@@ -133,7 +133,7 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
         dyn.put("dyImgs", dyimgs); //图集
         TDyvideo dyvideo = new TDyvideo();
         dyvideo.setDynamicId(dynamicId);
-        dyn.put("dyVideo", videMapper.selectOne(dyvideo)); //视频
+        dyn.put("dyVideo", videMapper.selectOne(dyvideo)==null?"": videMapper.selectOne(dyvideo)); //视频
         List<TLike> likes = likeMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
         dyn.put("likes", likes);
         List<TComment> comments = commentMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));

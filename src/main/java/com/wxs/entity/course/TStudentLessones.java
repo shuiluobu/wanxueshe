@@ -20,6 +20,7 @@ public class TStudentLessones extends Model<TStudentLessones> {
 
 	private Long id;
 	private Long studentId;
+	private Long userId;
 	private Long lessonId;
 	private Long courseId;
 	private Integer status;
@@ -27,7 +28,7 @@ public class TStudentLessones extends Model<TStudentLessones> {
     /**
      * 进度
      */
-	private String condition;
+	private String scheduleStatus;
     /**
      * 调课后保存老的Id
      */
@@ -74,12 +75,12 @@ public class TStudentLessones extends Model<TStudentLessones> {
 		this.createTime = createTime;
 	}
 
-	public String getCondition() {
-		return condition;
+	public String getScheduleStatus() {
+		return scheduleStatus;
 	}
 
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setScheduleStatus(String scheduleStatus) {
+		this.scheduleStatus = scheduleStatus;
 	}
 
 	public Long getOldId() {
@@ -88,6 +89,14 @@ public class TStudentLessones extends Model<TStudentLessones> {
 
 	public void setOldId(Long oldId) {
 		this.oldId = oldId;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public Long getCourseId() {

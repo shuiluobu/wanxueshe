@@ -1,6 +1,7 @@
 package com.wxs.service.organ.impl;
 
 import com.google.common.collect.Maps;
+import com.wxs.entity.course.TStudentClass;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.course.TStudentClassMapper;
@@ -73,7 +74,7 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
         result.put("smallIntroduce",organization.getIntroduce()); //小介绍，个性签名
         result.put("samllCount",smallCountOfOrgan(organization.getId())); //小统计
         result.put("ifFllow",fllowOrganMapper.getFllowByUserId(userId,organization.getId())==null?false:true); //是否关注
-        result.put("levalDesc",organization.getLeval());
+        result.put("leval",organization.getLeval());
         result.put("foundingTime", BaseUtil.toChinaDate(organization.getFoundingTime())); //成立时间
         result.put("address",organization.getAddress());
         result.put("organRemark",organization.getOrganRemark());
@@ -85,7 +86,9 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     public String smallCountOfOrgan(Long organId){
        //获取机构的小统计，主要统计多少学员，多少人关注，多少课程
         int organFllowCount = fllowOrganMapper.getOrganFllowCount(organId);
-        int organStudentCount = studentClassMapper.getOrganStudentCount(organId);
+        TStudentClass stuClass = new TStudentClass();
+        stuClass.setOrganizationId(organId);
+        int organStudentCount = studentClassMapper.getClassStudentCountByParam(stuClass);
         int organCourseCount = coursesMapper.getOrganCourseCount(organId);
         return  organFllowCount+"人关注，"+organStudentCount+"学员，"+organCourseCount+"课程";
    }

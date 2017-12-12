@@ -23,7 +23,7 @@ public interface ITCoursesService extends IService<TCourse> {
      * @param coursesId
      * @return
      */
-    public TCourse getMyCourseInfo(Long coursesId);
+    Map<String,Object> getCourseOutlineInfo(Long coursesId,Long userId);
 
     /**
      * 获取关注该课程的所有用户

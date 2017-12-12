@@ -22,15 +22,13 @@ public interface TCoursesMapper extends BaseMapper<TCourse> {
     //分页+混合条件 查询课程
     List<TCourse> pageData(TCourse course);
 
-    TCourse selectOneCourseById(@Param("coursesId") Long coursesId);
-
     List<Map<String,Object>> selectCoursesByIds (List cIdList);
 
     Map<String,Object> selectMap(Long coursesId);
 
     @Select("select count(1) from t_course where organizationId=#{organId}")
     @ResultType(int.class)
-    public int getOrganCourseCount(Long organId);
+    public int getOrganCourseCount(@Param("organId") Long organId);
 
 
 }

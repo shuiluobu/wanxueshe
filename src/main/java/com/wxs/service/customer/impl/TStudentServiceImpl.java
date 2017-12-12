@@ -70,7 +70,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     }
 
     public List<Map<String,Object>> isEndMyCourses(Long userId,Integer isEnd){
-      return   studentClassMapper.getMyCourses(userId,isEnd);
+      return   studentClassMapper.getMyCourses(ImmutableMap.of("userId",userId,"isEnd",isEnd));
     }
 
     @Override

@@ -21,7 +21,11 @@ public interface TFllowCourseMapper extends BaseMapper<TFllowCourse> {
 
     List<Map<String,Object>> getFllowCoursesByUser(Long userId);
 
-    @Select("select userId from t_fllow_course where status=0 and courseCateId=#{courseId}")
+    @Select("select userId from t_fllow_course where status=0 and courseCateId=#{courseCateId}")
     @ResultType(Long.class)
-    List<Long> getFllowUserIdsOfCourseId(Long courseId);
+    List<Long> getFllowUserIdsOfCourseId(Long courseCateId);
+
+    @Select("select count(1) from t_fllow_course where status=0 and courseCateId=#{courseCateId}")
+    @ResultType(int.class)
+    int getFllowCountOfCourseId(Long courseId);
 }

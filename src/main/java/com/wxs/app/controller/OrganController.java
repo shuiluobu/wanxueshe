@@ -31,8 +31,8 @@ public class OrganController {
     @Autowired
     private ITOrganActivityService organActivityService;
 
-    @RequestMapping(value = "/{organId}")
-    public Result organOne(@PathVariable("organId") Long organId){
+    @RequestMapping(value = "/view/{organId}")
+    public Result view(@PathVariable("organId") Long organId){
         //机构基本信息
         Long userId = 0L;
         return Result.of(organizationService.getOrganOutline(organId,userId));

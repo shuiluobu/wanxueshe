@@ -64,14 +64,21 @@
 	</select>
 
 	<select id="queryLessionByCourse" resultType="java.util.HashMap">
-		SELECT beginTime,endTime,lessonSeq
-		<if test="studentId !=null">
-			,condition
+		SELECT DATE_FORMAT(l.beginTime,'%m-%d') dayTime,
+		DATE_FORMAT(l.beginTime,'%h:%i') beginTime,
+		DATE_FORMAT(l.endTime,'%h:%i') endTime,
+		l.lessonSeq
+		<if test="studentId !=null or userId!=null">
+			,scheduleStatus
 		</if>
 		FROM `t_class_lesson` l
 		<if test="studentId !=null">
 			LEFT  JOIN  (SELECT * FROM t_student_lessones where studentId=#{studentId}) s
-			ON l.lessonId=s.id
+			ON s.lessonId=l.id
+		</if>
+		<if test="userId !=null">
+			LEFT  JOIN  (SELECT * FROM t_student_lessones  where userId=#{userId}) s
+			ON s.lessonId=l.id
 		</if>
 		 WHERE l.courseId=#{courseId}
 	</select>

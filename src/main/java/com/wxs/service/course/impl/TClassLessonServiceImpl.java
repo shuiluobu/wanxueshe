@@ -53,15 +53,22 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
         try {
             TClassLesson lesson = this.selectById(lessionId);
             Map<String, Object> course = coursesMapper.selectMap(lesson.getCourseId());
-
-            result = BaseUtil.convertBeanToMap(lesson);
-            result.put("beginTime", BaseUtil.toString(lesson.getBeginTime(), "HH:mm:ss"));
-            result.put("endTime", BaseUtil.toString(lesson.getEndTime(), "HH:mm:ss"));
+            result.put("realTearcherName",lesson.getRealTearcherName());
+            result.put("shouldTearcherName",lesson.getShouldTearcherName());
+            result.put("createTime",BaseUtil.toLongDate(lesson.getCreateTime()));
+            result.put("content",lesson.getContent());
+            result.put("lessonName",lesson.getLessonName());
+            result.put("beginTime", BaseUtil.toString(lesson.getBeginTime(), "HH:mm"));
+            result.put("endTime", BaseUtil.toString(lesson.getEndTime(), "HH:mm"));
             result.put("day", BaseUtil.toString(lesson.getEndTime(), "yyyy-MM-dd"));
             result.put("lessonSeq", lesson.getLessonSeq() + "/" + course.get("canQty")); //课时序号
             result.put("courseName", course.get("courseName"));
             result.put("teacherName", course.get("teacherName"));
-            result.put("organName", course.get("organName"));
+            Map<String,Object> organMap = Maps.newHashMap();
+            organMap.put("organName", course.get("organName"));
+            organMap.put("organId",course.get("organizationId"));
+            organMap.put("leval",course.get("leval"));
+            result.put("organ",organMap);
             if (userId != null) {
                 //如果是登录状态
                 List<Map<String, Object>> students = studentMapper.getStudentByCourse(lesson.getCourseId(), userId);
@@ -70,7 +77,7 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
 
             return result;
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return result;
     }

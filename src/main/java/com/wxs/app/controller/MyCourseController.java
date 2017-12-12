@@ -23,18 +23,20 @@ public class MyCourseController extends BaseController {
     @Autowired
     private ITDynamicmsgService dynamicmsgService;
 
-    @RequestMapping(value = "course/{coursesId}")
+    @RequestMapping(value = "/course/{coursesId}")
     public Result outline(@PathVariable("coursesId") Long coursesId){
-       return Result.of(coursesService.getMyCourseInfo(coursesId));
+        Long userId=0L;
+       return Result.of(coursesService.getCourseOutlineInfo(coursesId,userId));
     }
 
-    @RequestMapping(value = "lessones/{coursesId}")
+    @RequestMapping(value = "/lessones/{coursesId}")
     public Result lessones(@PathVariable("coursesId") Long coursesId,
                            @RequestParam(value ="studentId", required = false, defaultValue = "") Long studentId){
-        return Result.of(coursesService.getLessesonByCourse(coursesId,studentId));
+        Long userId =1L;
+        return Result.of(coursesService.getLessesonByCourse(coursesId,userId));
     }
 
-    @RequestMapping(value = "dynamicList/{coursesId}")
+    @RequestMapping(value = "/dynamicList/{coursesId}")
     public Result dynamicList(@PathVariable("coursesId") Long coursesId) {
         //课程动态基本信息
         Long userId = 0L;

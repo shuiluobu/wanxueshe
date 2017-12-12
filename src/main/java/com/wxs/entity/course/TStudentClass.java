@@ -23,6 +23,7 @@ public class TStudentClass extends Model<TStudentClass> {
      * 所属学生Id
      */
 	private Long studentId;
+
     /**
      * 用户Id
      */
@@ -32,6 +33,11 @@ public class TStudentClass extends Model<TStudentClass> {
      * 课程Id
      */
 	private Long coursesId;
+
+	/**
+	 * 大课程ID
+	 */
+	private Long courseCateId;
     /**
      * 课堂，班级ID
      */
@@ -122,7 +128,15 @@ public class TStudentClass extends Model<TStudentClass> {
         return classId;
     }
 
-    public void setClassId(Long classId) {
+	public Long getCourseCateId() {
+		return courseCateId;
+	}
+
+	public void setCourseCateId(Long courseCateId) {
+		this.courseCateId = courseCateId;
+	}
+
+	public void setClassId(Long classId) {
         this.classId = classId;
     }
 

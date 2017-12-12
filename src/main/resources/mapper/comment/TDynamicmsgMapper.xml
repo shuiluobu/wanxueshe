@@ -10,7 +10,7 @@
         <result column="courseCateId" property="courseCateId"/>
         <result column="classId" property="classId"/>
         <result column="classLessonId" property="classLessonId"/>
-        <result column="jurisdiction" property="jurisdiction"/>
+        <result column="power" property="power"/>
         <result column="createTime" property="createTime"/>
         <result column="dynamicType" property="dynamicType"/>
         <result column="createPlace" property="createPlace"/>
@@ -66,18 +66,18 @@
 
     <sql id="querySql">
         SELECT
+        d.id,
         d.userId,
-        d.nickName,
+        u.nickName,
         content,
-        jurisdiction,
         createPlace,
         d.createTime,
         d.dynamicType,
         d.longitude,
         d.latitude,
         d.power
-        from t_dynamicmsg d
-        INNER JOIN t_front_user u where u.id = d.userId
-        LEFT JOIN t_organization o on o.id=d.organId
+        FROM t_dynamicmsg d
+        INNER JOIN t_front_user u ON u.id = d.userId
+        LEFT JOIN t_organization o ON o.id=d.organId
     </sql>
 </mapper>
