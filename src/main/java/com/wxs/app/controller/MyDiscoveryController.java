@@ -21,34 +21,31 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("app/myDiscovery")
-public class MyDiscoveryController {
-    @Autowired
-    private ITCourseCategoryService courseCategoryService;
-
-    @Autowired
-    private ITOrganizationService organizationService;
-
+public class MyDiscoveryController extends BaseWxController{
 
     @RequestMapping(value = "/view")
-    public Result view() {
+    public Result view(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         List<Object> list = Lists.newArrayList();
         return Result.of(list);
     }
     @RequestMapping(value = "/nearInformation")
-    public Result nearInformation(@RequestParam double latitude,@RequestParam double longitude){
+    public Result nearInformation(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                                  @RequestParam double latitude,@RequestParam double longitude){
         //根据经纬度查找附近的课程
         List<TCourseCategory> list = courseCategoryService.getNearByCategorys(latitude,longitude);
         return Result.of(list);
     }
 
     @RequestMapping(value = "/nearOrgan")
-    public Result nearOrgan(@RequestParam double latitude,@RequestParam double longitude){
+    public Result nearOrgan(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                            @RequestParam double latitude,@RequestParam double longitude){
         //根据经纬度查找附近机构
         return Result.of(organizationService.getNearOrgans(latitude,longitude));
     }
 
     @RequestMapping(value = "/findCourse/{courseType}")
-    public Result nearOrgan(@RequestParam String courseType){
+    public Result nearOrgan(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                            @RequestParam String courseType){
         //根据经纬度查找附近机构
         return Result.of(courseCategoryService.getCourseListByType(courseType));
     }

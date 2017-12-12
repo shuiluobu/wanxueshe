@@ -43,14 +43,14 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
 
     @Override
     @Transactional
-    public TWxUser getUserByWx(String wxUserInfo, String sessionId) {
+    public TWxUser saveUserByWx(String wxUserInfo, String sessionKey) {
         Map<String, Object> userInfo = BaseUtil.parseJson(wxUserInfo, Map.class);
         String unionId = userInfo.get("unionId").toString();
-        TWxUser wxUser = (TWxUser) cache.getCache(sessionId);
+        TWxUser wxUser = (TWxUser) cache.getCache(sessionKey);
         if (wxUser == null) {
             wxUser = new TWxUser().selectById(unionId);
             if (wxUser != null) {
-                cache.putCache(sessionId, wxUser);
+                cache.putCache(sessionKey, wxUser);
             } else {
                 TFrontUser user = new TFrontUser();
                 user.setStatus(0);
@@ -65,7 +65,7 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
                 wxUser.setGender(userInfo.get("gender").toString()); //性别
                 wxUser.setStatus(0);
                 wxUser.insert();
-                cache.putCache(sessionId, wxUser);
+                cache.putCache(sessionKey, wxUser);
             }
         }
         return wxUser;

@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public interface ITFrontUserService extends IService<TFrontUser> {
 
-    public TWxUser getUserByWx(String wxUserInfo,String sessionId);
+    public TWxUser saveUserByWx(String wxUserInfo,String sessionId);
 
     public List<Map<String,Object>> getUserFriends(Long userId);
 	

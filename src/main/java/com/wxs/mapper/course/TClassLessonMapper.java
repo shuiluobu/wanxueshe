@@ -25,7 +25,7 @@ public interface TClassLessonMapper extends BaseMapper<TClassLesson> {
     //获取一个课程下面所有课时信息
     List<Map<String,Object>> queryLessionByCourse(@Param("courseId") Long courseId,@Param("studentId") Long studentId,@Param("userId") Long userId);
 
-    @Select(" SELECT DATE_FORMAT(l.beginTime,'%m-%d') dayTime," +
+    @Select(" SELECT l.courseId, DATE_FORMAT(l.beginTime,'%m-%d') dayTime," +
             " DATE_FORMAT(l.beginTime,'%h:%i') beginTime," +
             " DATE_FORMAT(l.endTime,'%h:%i') endTime," +
             " l.lessonSeq,r.canQty,r.courseName,o.organName,courseType " +

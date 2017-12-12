@@ -29,61 +29,52 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("app/homePage")
-public class MyHomePageController {
-    @Autowired
-    private TStudentServiceImpl studentService;
-    @Autowired
-    private ITParentService parentService;
-    @Autowired
-    private ITRemindMessageService remindMessageService;
-    @Autowired
-    private ITFrontUserService frontUserService;
-    @Autowired
-    private ITDynamicmsgService dynamicmsgService;
-
-    @RequestMapping(value = "/follow/{sessionId}")
-    public Result follow(@PathVariable String sessionId) {
+public class MyHomePageController extends BaseWxController{
+    @RequestMapping(value = "/follow")
+    public Result follow(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         Long userId = 1L; //之后需要从session中获取
         return Result.of(studentService.getMyFollow(userId));
     }
 
-    @RequestMapping(value = "/myCourse/{sessionId}")
-    public Result myCourse(@PathVariable String sessionId) {
+    @RequestMapping(value = "/myCourse")
+    public Result myCourse(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         //我的课程
         Long userId = 1L; //之后需要从session中获取
         return Result.of(studentService.getMyCourses(userId));
     }
 
-    @RequestMapping(value = "/myRemind/{sessionId}")
-    public Result myRemind(@PathVariable String sessionId) {
+    @RequestMapping(value = "/myRemind")
+    public Result myRemind(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         //我的提醒
         Long userId = 1L; //之后需要从session中获取
         return Result.of(remindMessageService.getRemindMsgByFromUid(userId));
     }
 
-    @RequestMapping(value = "/myFriend/{sessionId}")
-    public Result myFriend(@PathVariable String sessionId) {
+    @RequestMapping(value = "/myFriend")
+    public Result myFriend(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
         return Result.of(frontUserService.getUserFriends(userId));
     }
 
     @RequestMapping(value = "/myDynamic")
-    public Result myDynamic(@RequestParam String sessionId, @RequestParam Long studentId) {
+    public Result myDynamic(@RequestParam(value = "sessionId" ,required = true) String sessionId, @RequestParam Long studentId) {
         //我的动态记录
         Long userId = 1L; //之后需要从session中获取
         return Result.of(dynamicmsgService.getDynamicmListByMySelfId(userId, studentId));
     }
 
-    @RequestMapping(value = "/myStudents/{sessionId}")
-    public Result myStudents(@PathVariable String sessionId) {
+    @RequestMapping(value = "/myStudents")
+    public Result myStudents(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         //我的学员
         Long parentId = 0L;
         return Result.of(parentService.getStudentByParent(parentId));
     }
 
     @RequestMapping(value = "/saveMygrowth")
-    public Result saveMygrowth(@RequestParam MultipartFile[] imageOrVideos, HttpServletRequest request) throws IOException {
+    public Result saveMygrowth(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                               @RequestParam MultipartFile[] imageOrVideos,
+                               HttpServletRequest request) throws IOException {
         //保存我的作业
         List<TDyimg> dyimgs = new ArrayList<>();
         Long userId = 0L;
@@ -114,8 +105,9 @@ public class MyHomePageController {
         return Result.of(studentService.saveMygrowth(dyimgs, dynamic, workId));
     }
 
-    @RequestMapping(value = "/sendComment/{sessionId}")
-    public Result sendComment(@PathVariable String sessionId, @RequestParam String content, @RequestParam Long dynamicId) {
+    @RequestMapping(value = "/sendComment")
+    public Result sendComment(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                              @RequestParam String content, @RequestParam Long dynamicId) {
         //我的学员
         Long userId = 0L;
         return Result.of(dynamicmsgService.saveComment(userId, dynamicId, content));

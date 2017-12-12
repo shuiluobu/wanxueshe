@@ -19,19 +19,18 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("app/clession")
-public class MyLessionController {
-    @Autowired
-    private ITClassLessonService classLessonService;
+public class MyLessionController extends BaseWxController{
 
     @RequestMapping(value = "/view/{lessionId}")
-    public Result view(@PathVariable("lessionId") Long lessionId) {
+    public Result view(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                       @PathVariable("lessionId") Long lessionId) {
         //展示课时详情
         Long userId = 0L;
         return Result.of(classLessonService.getOneClassLession(lessionId,userId));
     }
 
     @RequestMapping(value = "/mySchedule")
-    public Result mySchedule(){
+    public Result mySchedule(@RequestParam(value = "sessionId" ,required = true) String sessionId){
         Long userId = 1L; //我的日程
         Map<String,Object> result = Maps.newHashMap();
         result.put("toDay",classLessonService.getTodayCourseLesson(userId));
@@ -40,13 +39,14 @@ public class MyLessionController {
     }
 
     @RequestMapping(value = "/nextDayCourse")
-    public Result nextDayCourse(){
+    public Result nextDayCourse(@RequestParam(value = "sessionId" ,required = true) String sessionId){
         Long userId = 0L; //接下来一周的课程
         return Result.of(classLessonService.getNextDayCourseLesson(userId));
     }
 
     @RequestMapping(value = "/viewCourseByTime")
-    public Result viewCourseByTime(@RequestParam("oneDay") String oneDay){
+    public Result viewCourseByTime(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                                   @RequestParam("oneDay") String oneDay){
         Long userId = 0L; //按日期显示课程
         return Result.of(classLessonService.getCourseByTime(oneDay,userId));
     }

@@ -3,6 +3,9 @@ package com.wxs.app.controller;
 import com.google.common.collect.ImmutableMap;
 import com.wxs.app.service.WxService;
 import com.wxs.cache.ICache;
+import com.wxs.entity.customer.TWxUser;
+import com.wxs.service.customer.ITFrontUserService;
+import com.wxs.service.customer.impl.TFriendServiceImpl;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -26,17 +29,13 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/wx")
-public class WxAuthController{
-	@Autowired
-	private WxService wxService;
-	@Autowired
-	private ICache cache;
-
+public class WxAuthController extends BaseWxController{
 	/**
 	 * 根据客户端传过来的code从微信服务器获取appid和session_key，然后生成3rdkey返回给客户端，后续请求客户端传3rdkey来维护客户端登录态
 	 * @param wxCode	小程序登录时获取的code
 	 * @return
 	 */
+	@PassLogin
 	@RequestMapping(value = "/getSession", method = RequestMethod.GET, produces = "application/json")
 	public Map<String,Object> createSssion(@RequestParam(required = true,value = "code")String wxCode){
 		Map<String,Object> wxSessionMap = wxService.getWxSession(wxCode);
@@ -49,7 +48,7 @@ public class WxAuthController{
 		}
 		String wxOpenId = (String)wxSessionMap.get("openid");
 		String wxSessionKey = (String)wxSessionMap.get("session_key");
-		System.out.println(wxSessionKey);
+
 		Integer expires = 60;
 		String thirdSession = wxService.create3rdSession(wxOpenId, wxSessionKey, expires);
 		return rtnParam(0, thirdSession);
@@ -62,7 +61,7 @@ public class WxAuthController{
 	 * @param sessionId	会话ID
 	 * @return
 	 */
-
+	@PassLogin
 	@RequestMapping(value = "/checkUserInfo", method = RequestMethod.GET, produces = "application/json")
 	public Map<String,Object> checkUserInfo(@RequestParam(required = true,value = "rawData")String rawData,
 			@RequestParam(required = true,value = "signature")String signature,
@@ -89,6 +88,7 @@ public class WxAuthController{
 	 * @param sessionId		会话ID
 	 * @return
 	 */
+	@PassLogin
 	@RequestMapping(value = "/decodeUserInfo", method = RequestMethod.GET, produces = "application/json")
 	public Map<String,Object> decodeUserInfo(@RequestParam(required = true,value = "encryptedData")String encryptedData,
 			@RequestParam(required = true,defaultValue = "iv")String iv,
@@ -108,7 +108,8 @@ public class WxAuthController{
 			byte[] resultByte = aes.decrypt(Base64.decodeBase64(encryptedData), Base64.decodeBase64(sessionKey), Base64.decodeBase64(iv));
 			if(null != resultByte && resultByte.length > 0){
 				String userInfo = new String(resultByte, "UTF-8");
-				return rtnParam(0, userInfo);
+				TWxUser wxUser = frontUserService.saveUserByWx(userInfo,sessionKey); //获取微信用户信息
+				return rtnParam(0, wxUser);
 			}
 		} catch (InvalidAlgorithmParameterException e) {
 			e.printStackTrace();
