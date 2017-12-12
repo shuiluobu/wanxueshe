@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.organ.TOrganTaskMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.organ.TOrganTask">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="type" property="type" />
+		<result column="agendaId" property="agendaId" />
+		<result column="crouseId" property="crouseId" />
+		<result column="teacherId" property="teacherId" />
+		<result column="studentId" property="studentId" />
+		<result column="content" property="content" />
+		<result column="shouldDoneTime" property="shouldDoneTime" />
+		<result column="doneTime" property="doneTime" />
+		<result column="createTime" property="createTime" />
+		<result column="power" property="power" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>

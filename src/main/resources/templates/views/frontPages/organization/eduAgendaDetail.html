@@ -126,7 +126,7 @@
             display: block;
         }
         .status_a a{
-            margin: 0 20px;
+            margin: 0 2px;
             color: #0066CC;
         }
     </style>
@@ -151,25 +151,25 @@
 <!-- 待办详情 E -->
 <!-- 待办完成情况 S -->
 <div class="weui-logistics">
-    <div class="weui-logistics-li done">
-        <a>7人已签到 <img src="/weui/images/wyh/toRight.png"></a>
+    <div class="weui-logistics-li">
+        <a></a>
         <p>签到</p>
-        <span>2016-01-03 15:20:03</span>
+        <span></span>
     </div>
-    <div class="weui-logistics-li next">
-        <a>未点评 <img src="/weui/images/wyh/toRight.png"></a>
+    <div class="weui-logistics-li">
+        <a></a>
         <p>课程点评</p>
-        <span>2016-01-03 16:30:03</span>
+        <span></span>
     </div>
     <div class="weui-logistics-li">
-        <a >未发布 <img src="/weui/images/wyh/toRight.png"></a>
+        <a></a>
         <p>作业发布</p>
-        <span>2016-01-03 16:30:03</span>
+        <span></span>
     </div>
     <div class="weui-logistics-li">
-        <a>未点评 <img src="/weui/images/wyh/toRight.png"></a>
+        <a></a>
         <p>作业点评</p>
-        <span>2016-01-03 16:30:03</span>
+        <span></span>
     </div>
 </div>
 <!-- 待办完成情况 E -->
@@ -219,6 +219,7 @@
     </div>
     <div class="weui-cell__ft status_a">
         <a>修改时间</a>
+        <a>转交</a>
         <a>完成</a>
         <a>评论</a>
     </div>
@@ -226,16 +227,16 @@
 <!-- 待办状态 E -->
 
 <!-- 添加评论 S -->
-<div class="weui-panel " id="addComment" hidden>
+<div class="weui-panel " id="addComment" >
     <div class="weui-panel__bd" style="font-size: 13px">
         <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
             <div class="weui-media-box__hd">
                 <img class="weui-media-box__thumb" src="">
             </div>
             <div class="weui-media-box__bd">
-               <textarea style="height: 50px;width: 80%"></textarea>
-                <div  style="height: 50px;width: 50px;float: right;background-color: #D7D7D7">
-                    <div style="padding-top: 15px;text-align: center;color: #0066CC;cursor: pointer;" id="submitAddComment">评论</div>
+               <textarea style="height: 50px;width: 85%"></textarea>
+                <div  style="height: 50px;width: 13%;float: right;background-color: #D7D7D7" id="submitAddComment">
+                    <div style="padding-top: 15px;text-align: center;color: #0066CC;cursor: pointer;" id="submitAddComment1">评论</div>
                 </div>
             </div>
         </div>
@@ -261,8 +262,9 @@
             data:{agendaId:agendaId},
             dataType:"json",
             success:function(json){
+                var data = json.data;
                 //待办详情
-                var agendaDetail = json.data.agendaDetail;
+                var agendaDetail = data.agendaDetail;
                 //工作内容
                 $("#agendaDetail h3").text(agendaDetail.content);
                 //时间
@@ -279,6 +281,51 @@
                     status = "未完成";
                 }
                 $("#agendaStatus p").text(status);
+                //四个子任务 完成情况
+                var as = $(".weui-logistics a");
+                //a标签 内容
+                as.eq(0).html(data.signInDetail + ' <img src="/weui/images/wyh/toRight.png">');
+                as.eq(1).html(data.classCommentDetail + ' <img src="/weui/images/wyh/toRight.png">');
+                as.eq(2).html(data.taskReleaseDetail + ' <img src="/weui/images/wyh/toRight.png">');
+                as.eq(3).html(data.taskCommentDetail + ' <img src="/weui/images/wyh/toRight.png">');
+                //首次完成时间
+                var spans = $(".weui-logistics span");
+                spans.eq(0).text(data.firstSignInTime);
+                spans.eq(1).text(data.firstClassCommentTime);
+                spans.eq(2).text(data.firstTaskReleaseTime);
+                spans.eq(3).text(data.firstTaskCommentTime);
+                //动态图标
+                var divs =$(".weui-logistics div");
+                var nextIndex = 0;
+                if(data.signInDetail.indexOf("未") == -1){
+                    divs.eq(0).addClass("done");
+                    nextIndex = 1;
+                }
+                if(data.classCommentDetail.indexOf("未") == -1){
+                    divs.eq(1).addClass("done");
+                    nextIndex = 2;
+                }else{
+                    if(nextIndex == 1){
+                        divs.eq(1).addClass("next");
+                    }
+                }
+                if(data.taskReleaseDetail.indexOf("未") == -1){
+                    divs.eq(2).addClass("done");
+                    nextIndex = 3;
+                }else{
+                    if(nextIndex == 2){
+                        divs.eq(2).addClass("next");
+                    }
+                }
+                if(data.taskCommentDetail.indexOf("未") == -1){
+                    divs.eq(3).addClass("done");
+                }else{
+                    if(nextIndex == 3){
+                        divs.eq(3).addClass("next");
+                    }
+                }
+
+
             }
         });
 
@@ -325,7 +372,7 @@
         });
 
         //完成待办
-        $(".status_a a").eq(1).click(function () {
+        $(".status_a a").eq(2).click(function () {
             $.ajax("/cOrganAgenda/doneOrganAgenda",{
                 async : false,
                 type: 'get',
@@ -344,7 +391,7 @@
         });
 
         //单评论,不@人的
-        $(".status_a a").eq(2).click(function () {
+        $(".status_a a").eq(3).click(function () {
             //打开评论框
             $("#addComment").show();
             //鼠标指针移动到评论输入框
