@@ -83,9 +83,19 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
     }
     @Override
     public List<Map<String,Object>> getTodayCourseLesson(Long userId){
-        String beginTime = BaseUtil.toShortDate(new Date());
+        String beginTime = "2017-12-11"; //todo 测试数据，先写死
         String endTIme = beginTime + " 23:59:59";
-        return classLessonMapper.getTodayCourseLesson(beginTime,endTIme,userId);
+        List<Map<String,Object>> list = classLessonMapper.getTodayCourseLesson(beginTime,endTIme,userId);
+        list.stream().forEach(map->{
+            String time = map.get("beginTime").toString();
+            String day = map.get("dayTime").toString();
+            map.put("hour",StringUtils.split(time,":")[0]);
+            map.put("min",StringUtils.split(time,":")[1]);
+            map.put("month",StringUtils.split(day,"-")[0]);
+            map.put("day",StringUtils.split(day,"-")[1]);
+            map.put("courseType","");
+        });
+        return list;
     }
     @Override
     public List<Map<String,Object>> getNextDayCourseLesson(Long userId){
