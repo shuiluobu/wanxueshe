@@ -18,9 +18,7 @@ import java.util.List;
  */
 public interface TOrganTaskMapper extends BaseMapper<TOrganTask> {
 
-    //根据 待办Id 和类型 获取 其他所有的 任务
-    @Select("select * from t_organ_task where agendaId = #{agendaId} and type = #{type} order by doneTime ")
-    @ResultMap("BaseResultMap")
-    public List<TOrganTask> getAllByAgendaId(@Param("agendaId") Long agendaId,@Param("type") Integer type);
+    //根据 待办Id ,类型和完成状态 获取 其他所有的 任务
+    public List<TOrganTask> getAllByAgendaId(@Param("agendaId") Long agendaId,@Param("type") Integer type,@Param("statuss")List<Integer> statuss);
 
 }

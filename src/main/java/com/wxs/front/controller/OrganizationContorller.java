@@ -48,6 +48,11 @@ public class OrganizationContorller extends CrudController<TOrganization,ITOrgan
         return "frontPages/organization/eduAgendaDetail";
     }
 
+    @RequestMapping("/toTemp")
+    public String toTemp(){
+        return "frontPages/organization/signInDetail";
+    }
+
     @RequestMapping("/page")
     @ResponseBody
     public Rest page(@RequestParam(required = true,defaultValue = "1")Integer page,

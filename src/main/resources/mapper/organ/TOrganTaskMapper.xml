@@ -19,4 +19,16 @@
 		<result column="status" property="status" />
 	</resultMap>
 
+	<select id="getAllByAgendaId" resultMap="BaseResultMap">
+		select t.*,a.realName studentName,a.headImg studentHeadImg
+		from t_organ_task t left join t_student a on a.id = t.studentId
+        where t.agendaId = #{agendaId} and t.type = #{type}
+        and t.status in
+        <foreach collection="statuss" item="status" open="(" close=")" separator=",">
+			#{status}
+		</foreach>
+         order by t.doneTime
+
+
+	</select>
 </mapper>

@@ -23,7 +23,7 @@ public class TOrganTaskServiceImpl extends ServiceImpl<TOrganTaskMapper, TOrganT
     @Autowired
     private TOrganTaskMapper organTaskMapper;
     @Override
-    public List<TOrganTask> getAllByAgendaId(Long agendaId,Integer type) {
-        return organTaskMapper.getAllByAgendaId(agendaId,type);
+    public List<TOrganTask> getAllByAgendaId(Long agendaId,Integer type,List<Integer> statuss) {
+        return organTaskMapper.getAllByAgendaId(agendaId,type,statuss);
     }
 }

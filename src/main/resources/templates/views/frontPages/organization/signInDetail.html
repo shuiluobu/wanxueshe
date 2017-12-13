@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>签到详情</title>
+    <style>
+        .multiSelect{
+            border: 1px solid #CCCCCC;
+            height: 20px;
+            width: 20px;
+            margin-right: 20px;
+            background-color: #F2F2F2
+        }
+        .multiSelect-on{
+            background-color: #666666;
+        }
+        .multiSelectAll{
+            border: 1px solid #CCCCCC;
+            height: 20px;
+            width: 20px;
+            margin-right: 20px;
+            background-color: #F2F2F2
+        }
+        .multiSelectAll-on{
+            background-color: #666666;
+        }
+        .rightRound{
+            width: 40px;
+            height: 40px;
+            background: inherit;
+            background-color: rgba(215, 215, 215, 1);
+            border: none;
+            border-radius: 25px;
+            -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.349019607843137);
+            -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.349019607843137);
+            box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.349019607843137);
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+        }
+        .built-in-font{
+            position: absolute;
+            right: 16px;
+            top: 36px;
+            width: 36px;
+            word-wrap: break-word;
+            display: block;
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            text-align: center;
+            line-height: normal;
+        }
+        .status_a a{
+            margin: 0 0 0 25px;
+            color: #0066CC;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>签到-高空作业-1/3课时</span></div>
+<div class="weui-tab" style="margin-top: 45px;">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            全部学员()
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            已签到()
+        </a>
+        <a class="weui-navbar__item" href="#tab3">
+            未签到()
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+
+            <div class="weui-panel" >
+
+                <div class="weui-panel__bd" style="font-size: 13px" id="signInAll">
+
+                    <!--<div class="weui-media-box weui-media-box_appmsg ">-->
+                        <!--<div class="multiSelect"></div>-->
+                        <!--<div class="weui-media-box__hd ">-->
+                            <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+                        <!--</div>-->
+                        <!--<div class="weui-media-box__bd">-->
+                            <!--<p class="comment-blue">王同学</p>-->
+                            <!--<p>未签到</p>-->
+                        <!--</div>-->
+                        <!--<div class="rightRound">-->
+                            <!--<div class="built-in-font">-->
+                                <!--<p><span>签到</span></p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="weui-media-box weui-media-box_appmsg">-->
+                        <!--<div class="multiSelect"></div>-->
+                        <!--<div class="weui-media-box__hd">-->
+                            <!--<img class="weui-media-box__thumb" src="/images/userface5.jpg">-->
+                        <!--</div>-->
+                        <!--<div class="weui-media-box__bd">-->
+                            <!--<p class="comment-blue">张同学</p>-->
+                            <!--<p>签到时间：2017-08-22  22:33:11</p>-->
+                        <!--</div>-->
+                        <!--<div class="rightRound">-->
+                            <!--<div class="built-in-font">-->
+                                <!--<p><span>已签到</span></p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </div>
+
+            </div>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <div class="weui-panel" >
+                <div class="weui-panel__bd" style="font-size: 13px">
+                </div>
+            </div>
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+            <div class="weui-panel" >
+                <div class="weui-panel__bd" style="font-size: 13px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="weui-cell" id="agendaStatus">
+    <div class="multiSelectAll"></div>
+    <div class="weui-cell__bd">
+        <p>全选</p>
+    </div>
+    <div class="weui-cell__ft status_a">
+        <a>请假</a>
+        <a>签到</a>
+    </div>
+</div>
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    var agendaId = 1;
+    $(function () {
+
+        //获取班级里所有学生的签到情况
+        $.ajax("/cOrganTask/getAllByAgendaId",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{agendaId:agendaId,type:1,status:2},
+            success:function(json){
+                var list = json.data;
+                var as = $(".weui-navbar a");
+                //全部学员数量
+                var totalNum = list.length;
+                as.eq(0).text("全部学员("+totalNum+")");
+                //已签到学员数量
+                var doneNum = 0;
+                //未签到学员数量
+                var notDoneNum = 0;
+                var tempStatus;//签到状态
+                var operation;
+                var id;
+                for(var i=0;i<list.length;i++){
+                    if(list[i].status == 0){
+                        id = list[i].id;
+                        notDoneNum++;
+                        tempStatus = "未签到";
+                        operation = "签到"
+                    }
+                    if(list[i].status == 1){
+                        id = "";
+                        doneNum++;
+                        tempStatus = "签到时间 : "+list[i].doneTime;
+                        operation = "已签到"
+                    }
+                    if(list[i].status == 2){
+                        id = list[i].id;
+                        notDoneNum++;
+                        tempStatus = "未签到";
+                        operation = "已请假"
+                    }
+                    var div = '<div class="weui-media-box weui-media-box_appmsg ">'+
+                                    '<div class="multiSelect"></div>'+
+                                    '<div class="weui-media-box__hd ">'+
+                                          '<img class="weui-media-box__thumb" src="'+list[i].studentHeadImg+'">'+
+                                     '</div>'+
+                                '<div class="weui-media-box__bd">'+
+                                    '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                                    '<p>'+tempStatus+'</p>'+
+                                '</div>'+
+                                '<div class="rightRound" id="'+id+'">'+
+                                    '<div class="built-in-font">'+
+                                    '<p><span>'+operation+'</span></p>'+
+                                    '</div>'+
+                                '</div>'+
+                                '</div>';
+                    $("#signInAll").append(div);
+                }
+                as.eq(1).text("已签到("+doneNum+")");
+                as.eq(2).text("未签到("+notDoneNum+")");
+                //签到方法
+                $(".rightRound").click(function () {
+                    singIn($(this).attr("id"));
+                })
+            }
+        });
+
+        //选项卡切换执行查询
+        $(".weui-navbar a" ).click(function () {
+            var index = $(this).index();
+            getByType(index);
+        })
+        //多选切换样式
+        $(".multiSelect").click(function () {
+            $(this).toggleClass("multiSelect-on");
+        })
+        //全选切换样式
+        $(".multiSelectAll").click(function () {
+            $(this).toggleClass("multiSelectAll-on");
+            if($(this).hasClass("multiSelectAll-on")){
+                $(".multiSelect").each(function () {
+                    $(this).addClass("multiSelect-on");
+                })
+            }else{
+                $(".multiSelect").each(function () {
+                    $(this).removeClass("multiSelect-on");
+                })
+            }
+        })
+
+        //批量签到
+        $(".status_a a").eq(1).click(function () {
+            var divs = $(".multiSelect-on");
+            var arr = new Array();
+            var id;
+            for(var i=0;i<divs.length;i++){
+                id = divs.eq(i).parent().find(".rightRound").attr("id");
+                if(id != ""){
+                    arr.push(id);
+                }
+            }
+            var taskIds = arr.join(",");
+            if(taskIds.length == 0){
+                //提示操作结果
+                $.toast("没有需要签到的!",'text',800,function(){
+                    //提示完成后执行方法
+                });
+                return;
+            }
+            $.ajax("/cOrganTask/batchSignIn",{
+                async : false,
+                type: 'get',
+                dataType: 'json',
+                data:{taskIds:taskIds},
+                success:function(json){
+                    //提示操作结果
+                    $.toast(json.data,'text',800,function(){
+                        //提示完成后执行方法
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    },1000);
+                }
+            });
+        });
+
+        //批量请假
+        $(".status_a a").eq(0).click(function () {
+            var divs = $(".multiSelect-on");
+            var arr = new Array();
+            var id;
+            for(var i=0;i<divs.length;i++){
+                id = divs.eq(i).parent().find(".rightRound").attr("id");
+                if(id != ""){
+                    arr.push(id);
+                }
+            }
+            var taskIds = arr.join(",");
+            console.log(taskIds +", length: "+ taskIds.length+", arr.length:"+arr.length);
+            if(taskIds.length == 0){
+                //提示操作结果
+                $.toast("没有可请假的!",'text',800,function(){
+                    //提示完成后执行方法
+                });
+                return;
+            }
+            $.ajax("/cOrganTask/batchskForleave",{
+                async : false,
+                type: 'get',
+                dataType: 'json',
+                data:{taskIds:taskIds},
+                success:function(json){
+                    //提示操作结果
+                    $.toast(json.data,'text',800,function(){
+                        //提示完成后执行方法
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    },1000);
+                }
+            });
+        });
+    });
+
+    // index:   0：全部  ，1：已完成，2：未完成,对应选项卡下标
+    function getByType(index) {
+        var status;
+        //全部
+        if(index == 0){
+            status = 2;
+        }
+        //已完成
+        if(index == 1){
+            status = 1;
+        }
+        //未完成
+        if(index == 2){
+            status = 0;
+        }
+        $.ajax("/cOrganTask/getAllByAgendaId",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{agendaId:agendaId,type:1,status:status},
+            success:function(json){
+                var mainDiv = $(".weui-panel__bd").eq(index);
+                mainDiv.empty();
+                var list = json.data;
+                if(list != null){
+                    var tempStatus;//签到状态
+                    var operation;
+                    var id;
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].status == 0){
+                            id = list[i].id;
+                            tempStatus = "未签到";
+                            operation = "签到"
+                        }
+                        if(list[i].status == 1){
+                            id = "";
+                            tempStatus = "签到时间 : "+list[i].doneTime;
+                            operation = "已签到"
+                        }
+                        if(list[i].status == 2){
+                            id = list[i].id;
+                            tempStatus = "未签到";
+                            operation = "已请假"
+                        }
+                        var div = '<div class="weui-media-box weui-media-box_appmsg ">'+
+                            '<div class="multiSelect"></div>'+
+                            '<div class="weui-media-box__hd ">'+
+                            '<img class="weui-media-box__thumb" src="'+list[i].studentHeadImg+'">'+
+                            '</div>'+
+                            '<div class="weui-media-box__bd">'+
+                            '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                            '<p>'+tempStatus+'</p>'+
+                            '</div>'+
+                            '<div class="rightRound" id="'+id+'">'+
+                            '<div class="built-in-font">'+
+                            '<p><span>'+operation+'</span></p>'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>';
+                        mainDiv.append(div);
+                    }
+                    //签到方法
+                    $(".rightRound").click(function () {
+                        singIn($(this).attr("id"));
+                    })
+                }
+            }
+        });
+    }
+    
+    //签到
+    function singIn(taskId) {
+        if(taskId == ""){
+            $.toast("已签到过了!",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        $.ajax("/cOrganTask/signIn",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{taskId:taskId},
+            success:function(json){
+                //提示操作结果
+                $.toast(json.data,'text',800,function(){
+                    //提示完成后执行方法
+                });
+                setTimeout(function () {
+                    window.location.reload();
+                },1000);
+            }
+        });
+    }
+
+</script>
+</html>

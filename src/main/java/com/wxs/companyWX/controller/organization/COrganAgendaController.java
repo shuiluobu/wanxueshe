@@ -186,8 +186,11 @@ public class COrganAgendaController {
             List<TOrganTask> tempList = null;
             Integer tempTotalCount = null;
             Integer tempDoneCount = null;
+            List<Integer> statuss = new ArrayList<>();
+            statuss.add(0);
+            statuss.add(1);
             for(int i=1;i<5;i++){
-                tempList = organTaskService.getAllByAgendaId(agendaId,i);
+                tempList = organTaskService.getAllByAgendaId(agendaId,i,statuss);
                 tempTotalCount = tempList.size();
                 tempDoneCount = 0;
                 for(int j=0;j<tempTotalCount;j++){

@@ -1,0 +1,39 @@
+.head{
+    text-align: left;
+    height: 45px;
+    line-height: 45px;
+    box-shadow: 0 1px 1px 1px #e4e4e4;
+    background:#fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+}
+.head span{
+    position: absolute;
+    left:60px;
+    top: 0;
+}
+.head .return{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45px;
+    height: 45px;
+}
+.head .return:after{
+    content: " ";
+    display: inline-block;
+    height: 13px;
+    width: 13px;
+    border-width: 2px 2px 0 0;
+    border-color: #C8C8CD;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: absolute;
+    transform:rotate(225deg);
+    left: 16px;
+    top: 14px;
+}

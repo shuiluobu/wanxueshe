@@ -1,5 +1,6 @@
 package com.wxs.entity.organ;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -72,9 +73,16 @@ public class TOrganTask extends Model<TOrganTask> {
 	 */
 	private Integer power = 0;
     /**
-     * 状态 :  0:未完成 ， 1：已完成
+     * 状态 :  0:未完成 ， 1：已完成，2：签到请假
      */
 	private Integer status;
+
+
+	//额外字段
+	@TableField(exist = false)
+	private String studentName; //学生真实名字
+	@TableField(exist = false)
+	private String studentHeadImg;//学生头像
 
 
 	public Long getId() {
@@ -182,6 +190,22 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setPower(Integer power) {
 		this.power = power;
+	}
+
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+
+	public String getStudentHeadImg() {
+		return studentHeadImg;
+	}
+
+	public void setStudentHeadImg(String studentHeadImg) {
+		this.studentHeadImg = studentHeadImg;
 	}
 
 	@Override

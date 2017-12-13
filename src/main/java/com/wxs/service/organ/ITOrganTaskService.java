@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface ITOrganTaskService extends IService<TOrganTask> {
 
-    //根据 待办Id 获取 其他所有的 任务
-    public List<TOrganTask> getAllByAgendaId(Long agendaId,Integer type);
+    //根据 待办Id ,类型和完成状态  获取 其下 所有的 任务
+    public List<TOrganTask> getAllByAgendaId(Long agendaId,Integer type,List<Integer> statuss);
 
 }
