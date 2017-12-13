@@ -8,18 +8,14 @@
         <result column="organizationId" property="organizationId"/>
         <result column="courseCode" property="courseCode"/>
         <result column="courseName" property="courseName"/>
-        <result column="courseRemark" property="courseRemark"/>
-        <result column="marketPrice" property="marketPrice"/>
-        <result column="preferenPrice" property="preferenPrice"/>
-        <result column="preferStartTime" property="preferStartTime"/>
-        <result column="preferEndTime" property="preferEndTime"/>
         <result column="canQty" property="canQty"/>
-        <result column="categoryCode" property="categoryCode"/>
-        <result column="categoryName" property="categoryName"/>
+        <result column="courseType" property="courseType"/>
+        <result column="courseCateId" property="courseCateId"/>
         <result column="beginTime" property="beginTime"/>
         <result column="endTime" property="endTime"/>
         <result column="createTime" property="createTime"/>
         <result column="status" property="status"/>
+        <result column="surplusClassLesson" property="surplusClassLesson"/>
     </resultMap>
 
     <select id="pageData" parameterType="TCourse" resultMap="BaseResultMap">

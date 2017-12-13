@@ -2,6 +2,7 @@ package com.wxs.config;
 
 import com.wxs.admin.intercptror.LoginInterceptor;
 import com.wxs.admin.intercptror.ResourceInterceptor;
+import com.wxs.admin.intercptror.WxInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,6 +23,8 @@ public class MyWebMvcConfig extends WebMvcConfigurerAdapter {
 	LoginInterceptor loginInterceptor;
 	@Autowired
 	ResourceInterceptor resourceInterceptor;
+	@Autowired
+	WxInterceptor wxInterceptor;
 
 	/**
 	 * 自定义拦截器
@@ -35,6 +38,7 @@ public class MyWebMvcConfig extends WebMvcConfigurerAdapter {
 	    // excludePathPatterns 用户排除拦截
 		registry.addInterceptor(loginInterceptor).addPathPatterns("/**").
 				excludePathPatterns("/login").excludePathPatterns("/app/**");
+		registry.addInterceptor(wxInterceptor).addPathPatterns("/app/**");
 		registry.addInterceptor(resourceInterceptor).addPathPatterns("/**");
 		super.addInterceptors(registry);
 	}

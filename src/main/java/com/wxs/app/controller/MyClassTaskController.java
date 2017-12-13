@@ -29,11 +29,8 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("app/mytask")
-public class MyClassTaskController {
-    @Autowired
-    private ITStudentTaskService studentTaskService;
-    @Autowired
-    private ITClassTaskService classTaskService;
+public class MyClassTaskController extends BaseWxController {
+
 
     /**
      * 获取下发给我的作业详情
@@ -41,13 +38,15 @@ public class MyClassTaskController {
      * @return
      */
     @RequestMapping(value = "/view/{studentTaskId}")
-    public Result view(@PathVariable("studentTaskId") Long studentTaskId) {
+    public Result view(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                       @PathVariable("studentTaskId") Long studentTaskId) {
         //展示课时详情
         return Result.of(studentTaskService.getStudentTaskDetail(studentTaskId));
     }
 
     @RequestMapping(value = "/saveWork")
-    public Result saveWork(@RequestParam MultipartFile[] imageOrVideos,HttpServletRequest request) throws IOException {
+    public Result saveWork(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                           @RequestParam MultipartFile[] imageOrVideos,HttpServletRequest request) throws IOException {
         //保存我的作业
         List<TDyimg> dyimgs=new ArrayList<>();
         Long userId =0L;

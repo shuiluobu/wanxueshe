@@ -25,9 +25,12 @@ public interface TClassLessonMapper extends BaseMapper<TClassLesson> {
     //获取一个课程下面所有课时信息
     List<Map<String,Object>> queryLessionByCourse(@Param("courseId") Long courseId,@Param("studentId") Long studentId,@Param("userId") Long userId);
 
-    @Select(" SELECT DATE_FORMAT(l.beginTime,'%m-%d') dayTime, DATE_FORMAT(l.beginTime,'%h:%i') beginTime,DATE_FORMAT(l.endTime,'%h:%i') endTime,l.lessonSeq,r.canQty,r.courseName\n" +
-            " from t_student_class c,t_course r,t_class_lesson l " +
-            " where c.coursesId=l.courseId and c.coursesId=r.id " +
+    @Select(" SELECT l.courseId, DATE_FORMAT(l.beginTime,'%m-%d') dayTime," +
+            " DATE_FORMAT(l.beginTime,'%h:%i') beginTime," +
+            " DATE_FORMAT(l.endTime,'%h:%i') endTime," +
+            " l.lessonSeq,r.canQty,r.courseName,o.organName,courseType " +
+            " from t_student_class c,t_course r,t_class_lesson l,t_organization o " +
+            " where c.coursesId=l.courseId and c.coursesId=r.id and o.id=c.organizationId" +
             " and l.beginTime>#{beginTime} and l.beginTime<=#{endTime} and c.userId=#{userId}")
     @ResultType(Map.class)
     List<Map<String,Object>> getTodayCourseLesson(@Param("beginTime") String beginTime,@Param("endTime") String endTime,@Param("userId") Long userId);
