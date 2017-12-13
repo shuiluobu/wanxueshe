@@ -2,9 +2,13 @@ package com.wxs.service.task.impl;
 
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.google.common.collect.ImmutableMap;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.course.TClass;
+import com.wxs.entity.course.TCourse;
+import com.wxs.entity.customer.TTeacher;
+import com.wxs.entity.organ.TOrganization;
 import com.wxs.entity.task.TClassTask;
 import com.wxs.entity.task.TStudentTask;
 import com.wxs.mapper.task.TClassTaskMapper;
@@ -35,9 +39,16 @@ public class TClassTaskServiceImpl extends ServiceImpl<TClassTaskMapper, TClassT
     @Autowired
     private ITDynamicmsgService dynamicmsgService;
 
-    public Map<String, Object> getClassTaskMap(Long taskId) {
+    public Map<String, Object> getClassTaskOutline(Long taskId) {
         Map<String, Object> classTask = classTaskMapper.getClassTask(taskId);
-        classTask.put("day", classTask.get("endTime").toString());
+        Long teacherId = Long.parseLong(classTask.get("teacherId").toString());
+        classTask.put("teacherName",new TTeacher().selectById(teacherId).getTeacherName());
+        Long organId = Long.parseLong(classTask.get("organ").toString());
+        TOrganization organ = new TOrganization().selectById(organId); //todo 从缓存中获取
+        classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()));
+        TCourse course = new TCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
+        classTask.put("courseName",course.getCourseName());
+
         return classTask;
     }
 

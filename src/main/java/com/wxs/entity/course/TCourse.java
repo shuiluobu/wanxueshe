@@ -66,13 +66,15 @@ public class TCourse extends Model<TCourse> {
      */
 	private Integer status;
 	/**
-	 * 课程类型Id
+	 * 课程大Id
 	 */
 	private Long courseCateId;
 	/**
 	 * 剩余课时
 	 */
 	private Integer surplusClassLesson;
+
+	private Long  teacherId;
 
 	//-------额外字段
 	@TableField(exist = false)
@@ -160,6 +162,14 @@ public class TCourse extends Model<TCourse> {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Long getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(Long teacherId) {
+		this.teacherId = teacherId;
 	}
 
 	public Integer getStatus() {

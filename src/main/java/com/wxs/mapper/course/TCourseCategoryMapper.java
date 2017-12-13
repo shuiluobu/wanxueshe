@@ -26,8 +26,8 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
     public List<Map<String,Object>> getCourseListByParam(@Param("organId") Long organId,@Param("categoryType") String categoryType);
 
     @Select("SELECT distinct y.courseCategoryName courseName,y.canQty,y.alreadyStudySum,y.courseType " +
-            "FROM t_course_category y,t_course c,t_class s where y.id=c.courseCateId " +
-            "and c.id=s.courseId and s.teacherId=#{teacherId}")
+            "FROM t_course_category y,t_course c, where y.id=c.courseCateId " +
+            "and  t.teacherId=#{teacherId}")
     @ResultType(Map.class)
     public List<Map<String,Object>> getTeacherCourseList(@Param("teacherId") Long teacherId);
 
@@ -35,7 +35,7 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
 
     @Select("SELECT y.* from t_course_category y " +
             "INNER JOIN t_course c on y.id=c.courseCateId\n" +
-            "INNER JOIN t_class s on s.id=c.classId where s.teacherId =#{teacherId} "
+            " where c.teacherId =#{teacherId} "
     )
     @ResultType(TCourseCategory.class)
     public List<TCourseCategory> getAllCategoryByTeacher(@Param("teacherId") Long teacherId);

@@ -34,14 +34,14 @@ public class MyClassTaskController extends BaseWxController {
 
     /**
      * 获取下发给我的作业详情
-     * @param studentTaskId
+     * @param taskId
      * @return
      */
-    @RequestMapping(value = "/view/{studentTaskId}")
+    @RequestMapping(value = "/view/{taskId}")
     public Result view(@RequestParam(value = "sessionId" ,required = true) String sessionId,
-                       @PathVariable("studentTaskId") Long studentTaskId) {
-        //展示课时详情
-        return Result.of(studentTaskService.getStudentTaskDetail(studentTaskId));
+                       @PathVariable("taskId") Long taskId) {
+        //展示作业详情
+        return Result.of(classTaskService.getClassTaskOutline(taskId));
     }
 
     @RequestMapping(value = "/saveWork")

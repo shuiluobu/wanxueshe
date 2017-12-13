@@ -18,6 +18,6 @@ import java.util.Map;
  * @since 2017-11-24
  */
 public interface ITClassTaskService extends IService<TClassTask> {
-    Map<String,Object> getClassTaskMap(Long taskId);
+    Map<String,Object> getClassTaskOutline(Long taskId);
     Map<String,Object> saveStudentWork(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId);
 }

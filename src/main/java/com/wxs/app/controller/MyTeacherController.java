@@ -56,13 +56,6 @@ public class MyTeacherController extends BaseWxController{
         return Result.of(courseCategoryService.getTeacherCourseList(teacher.getUserId()));
     }
 
-    @RequestMapping(value = "classTask/{taskId}")
-    public Result classTask(@RequestParam(value = "sessionId" ,required = true) String sessionId,
-                            @PathVariable("taskId") Long taskId) {
-        //根据taskId获取作业详情
-        return Result.of(classTaskService.getClassTaskMap(taskId));
-    }
-
     @RequestMapping(value = "/fllowMe/{teacherId}")
     public Result fllowMe(@RequestParam(value = "sessionId" ,required = true) String sessionId,
                           @PathVariable("teacherId") Long teacherId){
