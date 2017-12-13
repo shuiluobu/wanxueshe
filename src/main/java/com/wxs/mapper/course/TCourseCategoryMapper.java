@@ -23,14 +23,9 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
     //分页+混合条件 查询 班级
     public List<TCourseCategory> pageData(TCourseCategory courseCategory);
 
-    @Select("SELECT * FROM t_course_category WHERE organId =#{organId} ")
-    @ResultType(TCourseCategory.class)
-    public List<TCourseCategory> getAllCategoryOfOrgan(@Param("organId") Long organId);
-
-
     public List<Map<String,Object>> getCourseListByParam(@Param("organId") Long organId,@Param("categoryType") String categoryType);
 
-    @Select("SELECT distinct y.courseCategoryName courseName,y.canQty,y.alreadyStudySum,y.explain " +
+    @Select("SELECT distinct y.courseCategoryName courseName,y.canQty,y.alreadyStudySum,y.courseType " +
             "FROM t_course_category y,t_course c,t_class s where y.id=c.courseCateId " +
             "and c.id=s.courseId and s.teacherId=#{teacherId}")
     @ResultType(Map.class)
@@ -38,7 +33,7 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
 
 
 
-    @Select("SELECT * from t_course_category y " +
+    @Select("SELECT y.* from t_course_category y " +
             "INNER JOIN t_course c on y.id=c.courseCateId\n" +
             "INNER JOIN t_class s on s.id=c.classId where s.teacherId =#{teacherId} "
     )

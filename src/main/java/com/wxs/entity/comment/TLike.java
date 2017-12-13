@@ -3,6 +3,9 @@ package com.wxs.entity.comment;
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
@@ -22,10 +25,8 @@ public class TLike extends Model<TLike> {
 	private Long createUserId;
 	private Long dynamicId;
 	private String createUserName;
-    /**
-     * 坐标
-     */
-	private String coordinate;
+
+	//private String coordinate;
 	private Date createTime;
 	private Integer status=0;
 
@@ -46,6 +47,7 @@ public class TLike extends Model<TLike> {
 		this.createUserId = createUserId;
 	}
 
+
 	public String getCreateUserName() {
 		return createUserName;
 	}
@@ -54,14 +56,8 @@ public class TLike extends Model<TLike> {
 		this.createUserName = createUserName;
 	}
 
-	public String getCoordinate() {
-		return coordinate;
-	}
-
-	public void setCoordinate(String coordinate) {
-		this.coordinate = coordinate;
-	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}

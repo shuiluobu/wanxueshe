@@ -36,18 +36,21 @@ public class WxInterceptor extends HandlerInterceptorAdapter {
 				return true;
 			}
 				//登录验证
-				if(request.getParameter("sessionId") == null){
+				if(request.getParameter("sessionId") != null && !"".equals(request.getParameter("sessionId"))){
 					if (WebUtil.isAjax(request)) {
 						throw new RuntimeException("您的登录已失效,请重新登录");
 					} else {
-						String sessionKey = cache.getCache(request.getParameter("sessionId"));
+						System.out.println(request.getParameter("sessionId"));
+						String sessionKey = (String)cache.getCache(request.getParameter("sessionId"));
 						if(sessionKey==null){
-							return false; //session失效了，需要重新授权
+							throw new RuntimeException("您的登录已失效,请重新登录");
 						} else {
 							return true;
 						}
 
 					}
+				} else {
+					throw new RuntimeException("您的登录已失效,请重新登录");
 				}
 				
 			}

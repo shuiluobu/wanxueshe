@@ -35,10 +35,8 @@ public class MyTeacherController extends BaseWxController{
     public Result view(@RequestParam(value = "sessionId" ,required = true) String sessionId,
                        @PathVariable("teacherId") Long teacherId) {
         //教师基本信息
-        TTeacher teacher = teacherService.selectById(teacherId);
-        TOrganization organ = organizationService.selectById(teacher.getOrganizationId());
-        teacher.setOrganization(organ);
-        return Result.of(teacher);
+        Long userId = 1L;
+        return Result.of(teacherService.getTeacherOutline(teacherId,userId));
     }
 
     @RequestMapping(value = "dynamicList/{teacherId}")
@@ -69,6 +67,7 @@ public class MyTeacherController extends BaseWxController{
     public Result fllowMe(@RequestParam(value = "sessionId" ,required = true) String sessionId,
                           @PathVariable("teacherId") Long teacherId){
         //关注机构的用户列表
-        return Result.of(teacherService.getOrganFllowUserList(teacherId));
+        Long userId =1L;
+        return Result.of(teacherService.getOrganFllowUserList(teacherId,userId));
     }
 }

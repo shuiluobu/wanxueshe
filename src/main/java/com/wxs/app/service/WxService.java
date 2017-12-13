@@ -56,7 +56,6 @@ public class WxService {
         return thirdSessionKey;
     }
 
-    @Autowired
     public TWxUser session2User(String sessionId) {
         Object wxSessionObj = cache.getCache(sessionId);
         if (wxSessionObj != null) {

@@ -3,6 +3,7 @@ package com.wxs.service.customer.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.wxs.entity.customer.TFollowUser;
 import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.course.TStudentClassMapper;
@@ -55,7 +56,7 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
     }
 
     @Override
-    public List<Map<String, Object>> getFllowUsers(List<Long> userIds) {
+    public List<Map<String, Object>> getFllowUsers(List<Long> userIds,Long loginUserId) {
        List<Map<String,Object>> resultList = Lists.newArrayList();
 
         userIds.stream().forEach(userId -> {
@@ -64,6 +65,12 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
             map.put("realName",parent.getRealName());
             map.put("studentCount",studentMapper.getParentStudentCount(parent.getId()));
             map.put("courseCount",studentClassMapper.getParentCourseCount(parent.getId()));
+            Integer isFriednCount = new TFollowUser().selectCount("userId={0} and fuserId={1}",loginUserId,userId);
+            if(isFriednCount>0){
+                map.put("isFriend",true);
+            } else {
+                map.put("isFriend",false); //是否已经加好友
+            }
             resultList.add(map);
         });
         return resultList;

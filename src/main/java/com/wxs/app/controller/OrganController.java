@@ -33,23 +33,26 @@ public class OrganController extends BaseWxController{
 
     @RequestMapping(value = "/course/{organId}")
     public Result courseOfOrgan(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                                @RequestParam(value = "page",required = false,defaultValue = "1") Integer page,
                                 @PathVariable("organId") Long organId){
         //机构的课程信息
-        return Result.of(courseCategoryService.getCourseListByOrgan(organId));
+        return Result.of(courseCategoryService.getCourseListByOrgan(organId,page));
     }
 
     @RequestMapping(value = "/fllowMe/{organId}")
     public Result fllowMe(@RequestParam(value = "sessionId" ,required = true) String sessionId,
                           @PathVariable("organId") Long organId){
         //关注机构的用户列表
-        return Result.of(organizationService.getOrganFllowUserList(organId));
+        Long userId =1L;
+        return Result.of(organizationService.getOrganFllowUserList(organId,userId));
     }
 
     @RequestMapping(value = "/activity/{organId}")
     public Result activityOfOrgan(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                                  @RequestParam(value = "page",required = false,defaultValue = "1") Integer page,
                                   @PathVariable("organId") Long organId){
         //机构的活动信息
-        return Result.of(organActivityService.getActivityOfOrgan(organId));
+        return Result.of(organActivityService.getActivityOfOrgan(organId,page));
     }
 
     @RequestMapping(value = "/advice/{adviceId}")

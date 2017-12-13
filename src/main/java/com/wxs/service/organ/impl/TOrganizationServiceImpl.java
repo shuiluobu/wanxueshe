@@ -61,9 +61,9 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
         return organizationMapper.getNearOrgans(latitude,longitude,5);
     }
     @Override
-    public List<Map<String,Object>> getOrganFllowUserList(Long organId){
+    public List<Map<String,Object>> getOrganFllowUserList(Long organId,Long loginUserId){
        List<Long> userIds = fllowOrganMapper.getFllowUserIdsOfOrganId(organId);
-       return parentService.getFllowUsers(userIds);
+       return parentService.getFllowUsers(userIds,loginUserId);
     }
 
     public Map<String,Object> buildOrganInfo(TOrganization organization,Long userId){

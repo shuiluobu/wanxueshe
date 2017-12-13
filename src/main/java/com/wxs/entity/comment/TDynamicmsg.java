@@ -52,7 +52,7 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
     /**
      * 创建地方
      */
-	private String createPlace;
+	//private String createPlace;
     /**
      * 坐标，经纬度
      */
@@ -149,13 +149,13 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 		this.createTime = createTime;
 	}
 
-	public String getCreatePlace() {
-		return createPlace;
-	}
-
-	public void setCreatePlace(String createPlace) {
-		this.createPlace = createPlace;
-	}
+//	public String getCreatePlace() {
+//		return createPlace;
+//	}
+//
+//	public void setCreatePlace(String createPlace) {
+//		this.createPlace = createPlace;
+//	}
 
 	public Integer getStatus() {
 		return status;

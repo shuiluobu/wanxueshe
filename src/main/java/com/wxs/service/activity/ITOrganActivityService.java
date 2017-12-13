@@ -14,5 +14,5 @@ import java.util.List;
  * @since 2017-09-29
  */
 public interface ITOrganActivityService extends IService<TOrganActivity> {
-	public List<TOrganActivity> getActivityOfOrgan(Long organId);
+	public List<TOrganActivity> getActivityOfOrgan(Long organId,Integer page);
 }

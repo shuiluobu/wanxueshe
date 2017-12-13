@@ -3,11 +3,14 @@ package com.wxs.service.course.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.wxs.entity.course.TCourseCategory;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TCourseCategoryMapper;
 import com.wxs.service.course.ITCourseCategoryService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +38,22 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
     }
 
     @Override
-    public List<TCourseCategory> getCourseListByOrgan(Long organId) {
+    public List<Map<String,Object>> getCourseListByOrgan(Long organId,Integer page) {
         EntityWrapper<TCourseCategory> ew = new EntityWrapper<TCourseCategory>();
         ew.eq("organId",organId);
-        return courseCategoryMapper.selectList(ew);
+        RowBounds rowBounds = new RowBounds(page-1,10);
+        List<TCourseCategory> list =  courseCategoryMapper.selectPage(rowBounds,ew);
+        List<Map<String,Object>> mapList = Lists.newArrayList();
+        list.stream().forEach(bean->{
+            Map<String,Object> map = Maps.newHashMap();
+            map.put("courseName",bean.getCourseCategoryName());
+            map.put("courseType",bean.getCategoryType()==null?"":bean.getCategoryType());
+            map.put("canQty",bean.getCanQty());
+            map.put("alreadyStudySum",bean.getAlreadyStudySum());
+            map.put("cover",bean.getCover()==null?"": bean.getCover());//封面图片
+            mapList.add(map);
+        });
+        return mapList;
     }
 
     @Override
@@ -60,7 +75,11 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
      * @return
      */
     public List<Map<String,Object>> getTeacherCourseList(Long teacherId){
-        return  courseCategoryMapper.getTeacherCourseList(teacherId);
+        List<Map<String,Object>> list =   courseCategoryMapper.getTeacherCourseList(teacherId);
+        list.stream().forEach(map->{
+            map.put("courseType","科学启蒙-机器人编程"); //todo 后续从字典表中获取
+        });
+        return list;
     }
 
 

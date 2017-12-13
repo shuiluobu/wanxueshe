@@ -24,7 +24,7 @@ public interface TTeacherMapper extends BaseMapper<TTeacher> {
 
     List<Map<String,Object>> getClassByTeacher(Long tid);
 
-    @Select("SELECT COUNT(s.studentId) from t_class c,t_student_class s  where c.teacherId=t.id and c.id=s.classId  and c.teacherId=#{teacherId} ")
+    @Select("SELECT COUNT(s.studentId) from t_class c,t_student_class s  where  c.id=s.classId  and c.teacherId=#{teacherId} ")
     @ResultType(int.class)
     int getTeacherStudentCount(@Param("teacherId") Long teacherId);
 

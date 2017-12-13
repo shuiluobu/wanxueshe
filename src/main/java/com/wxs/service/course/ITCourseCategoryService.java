@@ -18,7 +18,7 @@ public interface ITCourseCategoryService extends IService<TCourseCategory> {
 
     //分页+混合条件 查询 班级
     public List<TCourseCategory> pageData(TCourseCategory courseCategory);
-    List<TCourseCategory> getCourseListByOrgan(Long organId);
+    public List<Map<String,Object>> getCourseListByOrgan(Long organId,Integer offset);
     public List<TCourseCategory> getAllCategoryByTeacher(Long teacherId);
     public List<TCourseCategory> getCourseListByType(String categoryType);
     public List<Map<String,Object>> getTeacherCourseList(Long teacherId);

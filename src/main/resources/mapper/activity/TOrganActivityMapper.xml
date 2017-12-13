@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wxs.mapper.activity.TOrganActivityMapper">
 	<resultMap id="BaseResultMap" type="com.wxs.entity.activity.TOrganActivity">
-		<id column="id" property="id" />
+		<id column="id" property="activityId" />
 		<result column="organId" property="organId" />
 		<result column="activityTitle" property="activityTitle" />
 		<result column="startTime" property="startTime" />

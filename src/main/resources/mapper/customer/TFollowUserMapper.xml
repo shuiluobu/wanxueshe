@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wxs.mapper.customer.TFollowUser">
+<mapper namespace="com.wxs.mapper.customer.TFollowUserMapper">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TFollowUser">
@@ -15,9 +15,9 @@
 
 	<select id="getOneFllowTeacherByUser" resultType="com.wxs.entity.customer.TFollowUser" >
 		SELECT f.* FROM t_follow_user f,t_teacher t
-		   where f.fuserId =t.userId
+		   WHERE f.fuserId =t.userId
 		     AND t.id = #{teacherId}
-		     and f.userId =#{userId}
+		     AND f.userId =#{userId}
 	</select>
 	
 

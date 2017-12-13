@@ -18,8 +18,8 @@ import java.util.List;
  * @since 2017-09-29
  */
 public interface TOrganActivityMapper extends BaseMapper<TOrganActivity> {
-    @Select("SELECT * FROM t_organ_activity WHERE organId =#{organId} ")
+    @Select("SELECT * FROM t_organ_activity WHERE organId =#{organId} limit #{page},2")
     @ResultMap("BaseResultMap")
-    public List<TOrganActivity> getActivityOfOrgan(@Param("organId") Long organId);
+    public List<TOrganActivity> getActivityOfOrgan(@Param("organId") Long organId,@Param("page") Integer page);
 
 }

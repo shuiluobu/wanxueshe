@@ -51,4 +51,10 @@ public class BaseWxController {
     public ITOrganizationService organizationService;
     @Autowired
     public ITOrganActivityService organActivityService;
+
+    public static Long userId = 1L;
+    public static Long coursesId = 1L;
+    public static Long lessionId = 1L;
+    public static Long organId = 1L;
+    public static Long teacherId =1L;
 }

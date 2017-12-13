@@ -20,6 +20,6 @@ public interface ITOrganizationService extends IService<TOrganization> {
 
     public List<TOrganization> getNearOrgans(double latitude, double longitude );
 
-    List<Map<String,Object>> getOrganFllowUserList(Long organId);
+    List<Map<String,Object>> getOrganFllowUserList(Long organId,Long LoginUserId);
 	
 }

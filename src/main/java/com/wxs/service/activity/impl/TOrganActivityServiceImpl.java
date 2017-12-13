@@ -23,8 +23,8 @@ public class TOrganActivityServiceImpl extends ServiceImpl<TOrganActivityMapper,
     @Autowired
     private  TOrganActivityMapper organActivityMapper;
     @Override
-    public List<TOrganActivity> getActivityOfOrgan(Long organId) {
-        return organActivityMapper.getActivityOfOrgan(organId);
+    public List<TOrganActivity> getActivityOfOrgan(Long organId,Integer page) {
+        return organActivityMapper.getActivityOfOrgan(organId,page-1);
     }
 
 

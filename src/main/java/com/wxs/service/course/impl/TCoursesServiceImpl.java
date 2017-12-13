@@ -97,10 +97,10 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     }
 
     @Override
-    public List<Map<String, Object>> getCourseFllowUserList(Long coursesId) {
+    public List<Map<String, Object>> getCourseFllowUserList(Long coursesId,Long loginUserId) {
         TCourse course = new TCourse().selectById(coursesId);
         List<Long> userIds = fllowCourseMapper.getFllowUserIdsOfCourseId(course.getCourseCateId());
-        return parentService.getFllowUsers(userIds);
+        return parentService.getFllowUsers(userIds,loginUserId);
 
     }
 

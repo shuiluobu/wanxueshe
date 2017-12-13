@@ -8,7 +8,6 @@
 		<result column="createUserId" property="createUserId" />
 		<result column="dynamicId" property="dynamicId" />
 		<result column="createUserName" property="createUserName" />
-		<result column="coordinate" property="coordinate" />
 		<result column="createTime" property="createTime" />
 		<result column="status" property="status" />
 	</resultMap>

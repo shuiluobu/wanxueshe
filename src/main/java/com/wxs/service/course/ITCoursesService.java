@@ -30,7 +30,7 @@ public interface ITCoursesService extends IService<TCourse> {
      * @param coursesId
      * @return
      */
-    List<Map<String,Object>> getCourseFllowUserList(Long coursesId);
+    List<Map<String,Object>> getCourseFllowUserList(Long coursesId,Long loginUserId);
 
     /**
      * 获取课程的所有课时，如果订阅了该课程，则显示课时状态

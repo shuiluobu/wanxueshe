@@ -31,7 +31,7 @@ public interface TFllowOrganMapper extends BaseMapper<TFllowOrgan> {
     @ResultType(TFllowOrgan.class)
     public TFllowOrgan getFllowByUserId(@Param("userId") Long userId,@Param("organId") Long organId);
 
-    @Select("select userId from t_fllow_organ where status=0 and organId=#{organId}")
+    @Select("select userId from t_fllow_organ where status=0 and organId=#{organId} ")
     @ResultType(Long.class)
     List<Long> getFllowUserIdsOfOrganId(@Param("organId") Long organId);
 

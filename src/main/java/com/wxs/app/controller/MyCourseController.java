@@ -46,7 +46,8 @@ public class MyCourseController extends BaseWxController {
     public Result fllowMe(@RequestParam(value = "sessionId", required = true) String sessionId,
                           @PathVariable("courseId") Long courseId) {
         //关注课程的用户列表
-        return Result.of(coursesService.getCourseFllowUserList(courseId));
+        Long userId =1L;
+        return Result.of(coursesService.getCourseFllowUserList(courseId,userId));
     }
 
     @RequestMapping(value = "editMyCourse")

@@ -49,7 +49,7 @@ public class WxAuthController extends BaseWxController{
 		String wxOpenId = (String)wxSessionMap.get("openid");
 		String wxSessionKey = (String)wxSessionMap.get("session_key");
 
-		Integer expires = 60;
+		Integer expires = 60 * 60 * 24 * 30; //失效期一般是1个月
 		String thirdSession = wxService.create3rdSession(wxOpenId, wxSessionKey, expires);
 		return rtnParam(0, thirdSession);
 	}

@@ -85,6 +85,7 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     public List<Map<String, Object>> buildDynamicmsgList(Long loginUserId, List<Map<String, Object>> dynamicMsgs) {
         List<Map<String, Object>> dynamiList = Lists.newArrayList();
         dynamicMsgs.stream().forEach(dyn -> {
+            dyn.put("dynamicType",""); //后去从字段中取值
             if (loginUserId != null && loginUserId != 0) {
                 Long dynUserId = Long.parseLong(dyn.get("userId").toString());
                 String power = dyn.get("power").toString(); //动态权限0：公开，1：仅好友 2：仅自己

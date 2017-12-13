@@ -3,6 +3,9 @@ package com.wxs.entity.activity;
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
@@ -18,7 +21,7 @@ public class TOrganActivity extends Model<TOrganActivity> {
 
     private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private Long activityId;
 	private Long organId;
 	private String activityTitle;
 	private Date startTime;
@@ -30,12 +33,12 @@ public class TOrganActivity extends Model<TOrganActivity> {
 	private String statusDesc;
 
 
-	public Long getId() {
-		return id;
+	public Long getActivityId() {
+		return activityId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setActivityId(Long activityId) {
+		this.activityId = activityId;
 	}
 
 	public Long getOrganId() {
@@ -54,6 +57,8 @@ public class TOrganActivity extends Model<TOrganActivity> {
 		this.activityTitle = activityTitle;
 	}
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -62,6 +67,8 @@ public class TOrganActivity extends Model<TOrganActivity> {
 		this.startTime = startTime;
 	}
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -94,6 +101,8 @@ public class TOrganActivity extends Model<TOrganActivity> {
 		this.createUser = createUser;
 	}
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -112,7 +121,7 @@ public class TOrganActivity extends Model<TOrganActivity> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.id;
+		return this.activityId;
 	}
 
 }
