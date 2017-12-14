@@ -4,11 +4,13 @@
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TWxUser">
-		<id column="id" property="id" />
+		<id column="unionId" property="unionId" />
 		<result column="userId" property="userId" />
 		<result column="openId" property="openId" />
 		<result column="wxCode" property="wxCode" />
-		<result column="unionID" property="unionID" />
+		<result column="headImg" property="headImg"/>
+		<result column="gender" property="gender"/>
+		<result column="mobilePhone" property="mobilePhone"/>
 		<result column="status" property="status" />
 		<result column="createTime" property="createTime" />
 	</resultMap>

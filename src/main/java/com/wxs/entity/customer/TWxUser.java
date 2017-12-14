@@ -2,7 +2,10 @@ package com.wxs.entity.customer;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -27,7 +30,8 @@ public class TWxUser extends Model<TWxUser> {
     /**
      * 唯一标示
      */
-	private String unionID;
+	@TableId(value="unionId", type= IdType.INPUT)
+	private String unionId;
 	private Integer status;
 	private Date createTime;
 
@@ -63,12 +67,12 @@ public class TWxUser extends Model<TWxUser> {
 		this.wxCode = wxCode;
 	}
 
-	public String getUnionID() {
-		return unionID;
+	public String getUnionId() {
+		return unionId;
 	}
 
-	public void setUnionID(String unionID) {
-		this.unionID = unionID;
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 
 	public Integer getStatus() {
@@ -105,7 +109,7 @@ public class TWxUser extends Model<TWxUser> {
 
 	@Override
 	protected Serializable pkVal() {
-		return this.unionID;
+		return this.unionId;
 	}
 
 }

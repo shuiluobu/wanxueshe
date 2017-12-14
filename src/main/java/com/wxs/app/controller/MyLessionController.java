@@ -2,6 +2,7 @@ package com.wxs.app.controller;
 
 import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TTeacher;
+import com.wxs.entity.customer.TWxUser;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.impl.TClassLessonServiceImpl;
 import com.wxs.util.Result;
@@ -31,6 +32,7 @@ public class MyLessionController extends BaseWxController{
 
     @RequestMapping(value = "/mySchedule")
     public Result mySchedule(@RequestParam(value = "sessionId" ,required = true) String sessionId){
+        TWxUser wxUser = wxService.session2User(sessionId);
         Long userId = 1L; //我的日程
         Map<String,Object> result = Maps.newHashMap();
         result.put("toDay",classLessonService.getTodayCourseLesson(userId));

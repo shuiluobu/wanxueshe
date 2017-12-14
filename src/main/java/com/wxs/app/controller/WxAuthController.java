@@ -28,7 +28,7 @@ import java.util.Map;
  *
  */
 @RestController
-@RequestMapping("/wx")
+@RequestMapping("app/wx")
 public class WxAuthController extends BaseWxController{
 	/**
 	 * 根据客户端传过来的code从微信服务器获取appid和session_key，然后生成3rdkey返回给客户端，后续请求客户端传3rdkey来维护客户端登录态

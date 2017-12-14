@@ -73,7 +73,7 @@ public class RedisPoolConfig {
 			@Qualifier("jedisPoolConfig")JedisPoolConfig jedisPoolConfig){
 		List<JedisShardInfo> shards = new ArrayList<>();
 		JedisShardInfo jedisShardInfo = new JedisShardInfo(host, port);
-		jedisShardInfo.setPassword(password);
+		//jedisShardInfo.setPassword(password);
 		shards.add(jedisShardInfo);
 		return new ShardedJedisPool(jedisPoolConfig, shards);
 	}

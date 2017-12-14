@@ -7,6 +7,7 @@ import com.wxs.entity.customer.TWxUser;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.wxs.core.util.BaseUtil;
 import org.wxs.core.util.HttpRequest;
@@ -19,6 +20,8 @@ public class WxService {
     private WxAuth wxAuth;
     @Autowired
     private ICache cache;
+    @Value("${wxuser.key}")
+    private String wxUserKey;
 
     /**
      * 根据小程序登录返回的code获取openid和session_key
@@ -59,12 +62,12 @@ public class WxService {
     public TWxUser session2User(String sessionId) {
         Object wxSessionObj = cache.getCache(sessionId);
         if (wxSessionObj != null) {
-            TWxUser user = cache.getCache(StringUtils.split((String) wxSessionObj, "#")[0]);
+            String sessionUserKey = wxUserKey + StringUtils.split((String) wxSessionObj, "#")[1];
+            TWxUser user = cache.getCache(sessionUserKey);
             return user;
         } else {
             //设置的session失效了，需要重新授权
             return null;
         }
-
     }
 }
