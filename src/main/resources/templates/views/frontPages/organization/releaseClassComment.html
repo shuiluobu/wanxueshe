@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>发布课堂点评</title>
+    <style>
+        select {
+            direction: rtl;
+        }
+        /*select option {*/
+            /*direction: ltr;*/
+        /*}*/
+        .weui-uploader__files li{
+            position: relative;
+            margin-top: 12px;
+            /*border: 1px solid red;*/
+            margin-right: 10px;
+        }
+        .weui-uploader__files img{
+            cursor: pointer;
+            display: inline-block;
+            position: absolute;
+            border-radius:  20px;
+            right: -9px;
+            top:-13px;
+            width: 21px;
+            height: 21px;
+            background-image: url("/weui/images/wyh/cancel.png");
+        }
+    </style>
+</head>
+<body>
+<!-- 标题头 S -->
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>王同学的课堂点评</span></div>
+<!-- 标题头 E -->
+
+
+<div class="weui-cells weui-cells_form" style="margin-top: 45px;">
+    <!-- 点评内容文本域 S -->
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea class="weui-textarea" id="weui-textarea" onkeyup="astrict()"  placeholder="请输入点评内容,200字以内" maxlength="200" rows="3"></textarea>
+            <div class="weui-textarea-counter"><span id="astrict-sl">0</span>/200</div>
+        </div>
+    </div>
+    <!-- 点评内容文本域 E -->
+    <!-- 图片上传  S -->
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title">图片上传<span style="color: orangered">(单击可放大)</span></p>
+                    <!--<div class="weui-uploader__info">0/2</div>-->
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+                        <!--<li class="weui-uploader__file" style="background-image:url(/images/userface1.jpg)"><img></img></li>-->
+                        <!--<li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(/weui/images/temp/1.jpg)">-->
+                            <!--<div class="weui-uploader__file-content">-->
+                                <!--<i class="weui-icon-warn"></i>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(/weui/images/temp/2.jpg)">-->
+                            <!--<div class="weui-uploader__file-content">50%</div>-->
+                        <!--</li>-->
+                    </ul>
+                    <div class="weui-uploader__input-box" style="margin-top: 12px;">
+                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 图片上传  E -->
+</div>
+
+<!-- 图片放大  S -->
+<div class="weui-gallery" id="gallery" >
+    <span class="weui-gallery__img" id="galleryImg" style="background-image:url(/weui/images/pic_160.png)"></span>
+    <div class="weui-gallery__opr">
+        <a href="javascript:" class="weui-gallery__del">
+            <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+        </a>
+    </div>
+</div>
+<!-- 图片放大  E -->
+
+<div class="weui-cell weui-cell_select weui-cell_select-after" style="padding: 20px;background-color: #F2F2F2">
+    <div class="weui-cell__hd" style="background-color: #FFFFFF;height: 45px;">
+        <label class="weui-label" style="height: 100%;text-align: center;line-height: 45px;">分享 : </label>
+    </div>
+    <div class="weui-cell__bd" style="background-color: #FFFFFF">
+        <select class="weui-select" id="power">
+            <option value="0">公开</option>
+            <option value="1">好友可看</option>
+            <option value="2">仅自己</option>
+        </select>
+    </div>
+</div>
+<div style="padding:20px;background-color: #F2F2F2" >
+    <a href="javascript:;" class="weui-btn weui-btn_primary" style="background-color: #CCCCCC" onclick="release();">发 布</a>
+    <a href="javascript:;" class="weui-btn weui-btn_default" style="background-color: #FFFFFF">取 消</a>
+</div>
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+
+    $(function(){
+        //预览图片
+        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"><img></img></li>',
+            $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
+            $uploaderInput = $("#uploaderInput"),
+            $uploaderFiles = $("#uploaderFiles");
+
+        $uploaderInput.on("change", function(e){
+            // 如果浏览器不支持FileReader，则不处理
+            if(!window.FileReader)
+                return;
+            var files = e.target.files;
+            for(var i=0;i<files.length;i++){
+                var reader = new FileReader();
+                var src;
+                reader.onload = (function(evt){
+                    src = evt.target.result;
+                    //预览
+                    $uploaderFiles.append($(tmpl.replace('#url#', src)));
+                });
+                reader.readAsDataURL(e.target.files[i]);
+            }
+
+        });
+        //图片放大
+        $uploaderFiles.on("click", "li", function(){
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        //图片删除
+        $uploaderFiles.on("click", "img", function(event){
+            $(this).parent().remove();
+            event.stopPropagation();    //  阻止事件冒泡
+        });
+        //关闭 图片放大
+        $gallery.on("click", function(){
+            $gallery.fadeOut(100);
+        });
+    });
+
+    
+    //发布
+    function release() {
+        var taskId = 4;
+        var content = $("#weui-textarea").val().trim();
+        if(content.length == 0){
+            $.toast("点评内容不能为空",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        var power = $("#power").val();
+        var imgs = "";
+        var lis = $(".weui-uploader__file");
+        var temp;
+        for(var i=0;i<lis.length;i++){
+            temp =lis.eq(i).css("background-image");
+            temp =temp.split(",")[1];
+            temp = temp.substring(0,temp.length-2);
+            imgs += temp+",";
+        }
+        $.ajax("/cOrganTask/releaseClassComment",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                taskId:taskId,
+                content:content,
+                power:power,
+                imgs:imgs},
+            success:function(json){
+                $.toast(json.data,'text',800,function(){
+                    //提示完成后执行方法
+                });
+            }
+        });
+    }
+
+    //评论内容限制数字
+    function astrict(){
+        var tarea=document.getElementById("weui-textarea");
+        var maxlength=200;
+        var length=tarea.value.length;
+        var count=maxlength-length;
+
+        var sp=document.getElementById("astrict-sl");
+        sp.innerHTML=count;
+        if(count<=25){
+            sp.style.color="red";
+        }else{
+            sp.removeAttribute("style");
+        }
+    }
+</script>
+</html>

@@ -50,7 +50,7 @@ public class OrganizationContorller extends CrudController<TOrganization,ITOrgan
 
     @RequestMapping("/toTemp")
     public String toTemp(){
-        return "frontPages/organization/signInDetail";
+        return "frontPages/organization/releaseClassComment";
     }
 
     @RequestMapping("/page")
