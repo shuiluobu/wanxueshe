@@ -1,6 +1,7 @@
 <script type="text/javascript" src="/weui/js/jquery.min.js"></script>
 <script type="text/javascript" src="/weui/js/jquery-weui.min.js"></script>
 <script>
+    //前端用户
     var frontUser;
     $(function () {
         var userId = 1;
@@ -13,5 +14,9 @@
                 frontUser = json.data;
             }
         });
+    });
+    //返回上一页
+    $(".return").click(function () {
+       window.history.back(-1);
     });
 </script>
