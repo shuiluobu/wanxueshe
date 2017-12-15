@@ -13,6 +13,7 @@ import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.customer.ITFrontUserService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wxs.core.util.BaseUtil;
@@ -41,16 +42,21 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
     @Autowired
     private TFriendMapper friendMapper;
 
+    @Value("${wxuser.key}")
+    private String wxUserKey;
+
+
     @Override
     @Transactional
     public TWxUser saveUserByWx(String wxUserInfo, String sessionKey) {
         Map<String, Object> userInfo = BaseUtil.parseJson(wxUserInfo, Map.class);
-        String unionId = userInfo.get("unionId").toString();
-        TWxUser wxUser = (TWxUser) cache.getCache(sessionKey);
+        System.out.println(wxUserInfo);
+        String unionId = userInfo.get("openId").toString();
+        TWxUser wxUser = (TWxUser) cache.getCache(wxUserKey + unionId);
         if (wxUser == null) {
             wxUser = new TWxUser().selectById(unionId);
             if (wxUser != null) {
-                cache.putCache(sessionKey, wxUser);
+                cache.putCache(wxUserKey + unionId, wxUser);
             } else {
                 TFrontUser user = new TFrontUser();
                 user.setStatus(0);
@@ -58,14 +64,15 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
                 user.setNickName(userInfo.get("nickName").toString());
                 user.setCreateTime(new Date());
                 this.insert(user); //保存用户
+                wxUser = new TWxUser();
                 wxUser.setOpenId(userInfo.get("openId").toString());
-                wxUser.setUnionID(unionId);
+                wxUser.setUnionId(unionId);
                 wxUser.setUserId(user.getId());
                 wxUser.setHeadImg(userInfo.get("avatarUrl").toString()); //头像
                 wxUser.setGender(userInfo.get("gender").toString()); //性别
                 wxUser.setStatus(0);
                 wxUser.insert();
-                cache.putCache(sessionKey, wxUser);
+                cache.putCache(wxUserKey + unionId, wxUser);
             }
         }
         return wxUser;

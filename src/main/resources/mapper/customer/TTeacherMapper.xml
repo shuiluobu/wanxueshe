@@ -23,16 +23,4 @@
     <select id="selectTeacherById" resultType="java.util.HashMap">
 		SELECT * FROM t_teacher WHERE id = #{tid}
 	</select>
-    <select id="getClassByTeacher" parameterType="java.lang.Long" resultType="java.util.HashMap">
-         SELECT
-         y.courseCategoryCode courseCode,
-         y.courseCategoryName courseName,
-         y.canQty,
-         y.alreadyStudySum
-         FROM t_class c,t_course r,t_course_category y
-         WHERE
-         c.courseId=r.id
-         AND r.courseCode=y.courseCategoryCode
-         AND c.teacherId = #{tid}
-    </select>
 </mapper>

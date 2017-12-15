@@ -30,5 +30,14 @@ public interface TCoursesMapper extends BaseMapper<TCourse> {
     @ResultType(int.class)
     public int getOrganCourseCount(@Param("organId") Long organId);
 
+    /**
+     * 课时计划
+     * @param courseCateId
+     * @return
+     */
+    @Select("select DATE_FORMAT(beginTime,'%Y年%m月%d日') beginTime,DATE_FORMAT(endTime,'%Y年%m月%d日') endTime from t_course where courseCateId=#{courseCateId}")
+    @ResultType(Map.class)
+    public List<Map<String,Object>> getCoursePlans(@Param("courseCateId") Long courseCateId);
+
 
 }

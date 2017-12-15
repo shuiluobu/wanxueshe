@@ -1,5 +1,6 @@
 package com.wxs.service.course.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.sun.xml.internal.rngom.parse.host.Base;
@@ -13,6 +14,7 @@ import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.course.TStudentClassMapper;
 import com.wxs.mapper.course.TStudentLessonesMapper;
 import com.wxs.mapper.customer.TFllowCourseMapper;
+import com.wxs.mapper.customer.TTeacherMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -48,6 +50,8 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     private ITParentService parentService;
     @Autowired
     private TStudentClassMapper studentClassMapper;
+    @Autowired
+    private TTeacherMapper teacherMapper;
 
     @Override
     public List<TCourse> pageData(TCourse course) {
@@ -56,23 +60,24 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
 
     @Override
     public Map<String, Object> getCourseOutlineInfo(Long coursesId, Long userId) {
-        TCourse course = coursesMapper.selectById(coursesId);
+        TCourseCategory category = new TCourseCategory().selectById(coursesId); //大课程信息
         try {
             Map<String, Object> result = Maps.newHashMap();
-            TOrganization organization = new TOrganization().selectById(course.getOrganizationId());
+            TOrganization organization = new TOrganization().selectById(category.getOrganId());
             Map<String,Object> organMap = Maps.newHashMap();
             organMap.put("organName",organization.getOrganName());
             organMap.put("leval",organization.getLeval()); //等级
             organMap.put("organId",organization.getId());
             result.put("organ",organMap);
-            result.put("beginTime", BaseUtil.toLongDate(course.getBeginTime()));
-            result.put("endTime", BaseUtil.toLongDate(course.getEndTime()));
-            TCourseCategory category = new TCourseCategory().selectById(course.getCourseCateId());
+            result.put("coursePlans",coursesMapper.getCoursePlans(category.getId())); //课时计划
             result.put("canQty",category.getCanQty()); //课时
+            result.put("backgroundImg",category.getBackgroundImg()); //背景图
+            result.put("coverImg",category.getCover()); //封面头像图
             result.put("cateoryType",category.getCategoryType()); //类型
             result.put("courseRemark",category.getCourseRemark()); //简介
-            result.put("fllowCount", fllowCourseMapper.getFllowCountOfCourseId(course.getCourseCateId())); //关注数
+            result.put("fllowCount", fllowCourseMapper.getFllowCountOfCourseId(coursesId)); //关注数
             result.put("areadyStudCount", category.getAlreadyStudySum());
+            result.put("teacherList",teacherMapper.getTeacherNameListByCourseId(coursesId)); //教师信息
             TStudentClass stuClass = new TStudentClass(); //参数传递
             stuClass.setCourseCateId(category.getId());
             stuClass.setUserId(userId);
@@ -84,6 +89,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
                 studentClassMapList.stream().forEach(map -> {
                     studentNames.append(map.get("studentName").toString());
                 });
+                TCourse course = new TCourse().selectById(stuClass.getCoursesId());
                 result.put("smallRemark", "我的上课时间：" + BaseUtil.toChinaDate(course.getBeginTime()) + "-" + BaseUtil.toChinaDate(course.getEndTime())
                         + " 我参与的学员：" + StringUtils.split(studentNames.toString(), ","));
             } else {
