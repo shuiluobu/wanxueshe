@@ -8,7 +8,7 @@
 		<result column="title" property="title" />
 		<result column="type" property="type" />
 		<result column="agendaId" property="agendaId" />
-		<result column="crouseId" property="crouseId" />
+		<result column="courseId" property="courseId" />
 		<result column="classLessonId" property="classLessonId" />
 		<result column="teacherId" property="teacherId" />
 		<result column="studentId" property="studentId" />

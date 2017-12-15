@@ -43,7 +43,7 @@ public class TOrganTask extends Model<TOrganTask> {
     /**
      * 所属课程Id
      */
-	private Long crouseId;
+	private Long courseId;
 	/**
 	 * 所属教师Id
 	 */
@@ -90,7 +90,11 @@ public class TOrganTask extends Model<TOrganTask> {
 	@TableField(exist = false)
 	private String teacherName; //教师名称
 	@TableField(exist = false)
+	private String teacherHeadImg;//教师头像
+	@TableField(exist = false)
 	private String courseName; //课程名称
+	@TableField(exist = false)
+	private String lessonName; //课时名称
 	@TableField(exist = false)
 	private String organName; //教师所属机构名称
 
@@ -127,12 +131,12 @@ public class TOrganTask extends Model<TOrganTask> {
 		this.agendaId = agendaId;
 	}
 
-	public Long getCrouseId() {
-		return crouseId;
+	public Long getCourseId() {
+		return courseId;
 	}
 
-	public void setCrouseId(Long crouseId) {
-		this.crouseId = crouseId;
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
 	}
 
 	public Long getTeacherId() {
@@ -248,6 +252,22 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setOrganName(String organName) {
 		this.organName = organName;
+	}
+
+	public String getLessonName() {
+		return lessonName;
+	}
+
+	public void setLessonName(String lessonName) {
+		this.lessonName = lessonName;
+	}
+
+	public String getTeacherHeadImg() {
+		return teacherHeadImg;
+	}
+
+	public void setTeacherHeadImg(String teacherHeadImg) {
+		this.teacherHeadImg = teacherHeadImg;
 	}
 
 	@Override
