@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -20,5 +22,9 @@ public class TOrganTaskImgServiceImpl extends ServiceImpl<TOrganTaskImgMapper, T
 
     @Autowired
     private TOrganTaskImgMapper organTaskImgMapper;
-	
+
+    @Override
+    public List<TOrganTaskImg> getAllByTaskId(long taskId) {
+        return organTaskImgMapper.getAllByTaskId(taskId);
+    }
 }

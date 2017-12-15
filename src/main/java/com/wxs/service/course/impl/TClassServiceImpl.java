@@ -26,4 +26,9 @@ public class TClassServiceImpl extends ServiceImpl<TClassMapper, TClass> impleme
     public List<TClass> pageData(TClass tClass) {
         return  classMapper.pageData(tClass);
     }
+
+    @Override
+    public TClass getByCourseId(Long courseId) {
+        return classMapper.getByCourseId(courseId);
+    }
 }

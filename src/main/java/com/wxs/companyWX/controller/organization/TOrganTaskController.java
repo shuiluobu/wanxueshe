@@ -1,7 +1,17 @@
 package com.wxs.companyWX.controller.organization;
 
+import com.wxs.entity.comment.TDyimg;
+import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.course.TCourse;
+import com.wxs.entity.customer.TFrontUser;
+import com.wxs.entity.organ.TOrganComment;
 import com.wxs.entity.organ.TOrganTask;
 import com.wxs.entity.organ.TOrganTaskImg;
+import com.wxs.service.comment.ITDyimgService;
+import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.course.ITClassService;
+import com.wxs.service.course.ITCoursesService;
+import com.wxs.service.organ.ITOrganCommentService;
 import com.wxs.service.organ.ITOrganTaskImgService;
 import com.wxs.service.organ.ITOrganTaskService;
 import com.wxs.util.Result;
@@ -14,11 +24,9 @@ import org.wxs.core.util.BASE64Util;
 import org.wxs.core.util.BaseUtil;
 import org.wxs.core.util.OsppyUtil;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -37,11 +45,56 @@ public class TOrganTaskController {
     private ITOrganTaskService organTaskService;
     @Autowired
     private ITOrganTaskImgService organTaskImgService;
+    @Autowired
+    private ITOrganCommentService organCommentService;
+    @Autowired
+    private ITDynamicmsgService dynamicmsgService;
+    @Autowired
+    private ITDyimgService dyimgService;
+    @Autowired
+    private ITCoursesService coursesService;
+    @Autowired
+    private ITClassService classService;
 
     @Value("${web.upload-path}")
     private String imgUploadPath;
     @Value("${web.load-path}")
     private String imgLoadPath;
+
+    /**
+     * @Description : 获取任务详情
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 10:42 2017/12/15
+     * @Params : [taskId]
+     **/
+    @RequestMapping("/getByTaskId")
+    public Result getByTaskId(Long taskId){
+
+        Map resultMap = new HashMap();
+        try{
+            TOrganTask organTask = organTaskService.getDetailByTaskId(taskId);
+            resultMap.put("organTask",organTask);
+            //获取任务下图片
+            List<TOrganTaskImg> imgList = organTaskImgService.getAllByTaskId(taskId);
+            if(imgList.size()>0){
+                resultMap.put("imgList",imgList);
+            }
+            //获取任务下评论
+            List<TOrganComment> commentList = organCommentService.getAllById(taskId,2);
+            if(commentList.size()>0){
+                resultMap.put("commentList",commentList);
+            }
+            return Result.of(resultMap);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error(BaseUtil.getExceptionStackTrace(e));
+        }finally {
+            resultMap = null;//for gc
+        }
+        return null;
+    }
+
     /**
      * @Description : 根据 教务待办Id + 类型 + 状态  获取 其下 子任务
      * @return com.wxs.util.Result
@@ -149,18 +202,48 @@ public class TOrganTaskController {
         return null;
     }
 
-
+    /**
+     * @Description : 发布课堂点评
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 16:52 2017/12/15
+     * @Params : [taskId, content, imgs, power]
+     **/
     @RequestMapping("/releaseClassComment")
-    public Result releaseClassComment(Long taskId,String content,String imgs,Integer power){
+    public Result releaseClassComment(Long taskId, String content, String imgs, Integer power, HttpSession session){
+
         TOrganTask tempOrganTask = null;
         try{
+            //点评任务
             tempOrganTask = organTaskService.selectById(taskId);
-            tempOrganTask.setContent(content);//点评内容
+            Long courseId = tempOrganTask.getCourseId();
+            //所属课程
+            TCourse course = coursesService.selectById(tempOrganTask.getCourseId());
+//            TFrontUser frontUser = (TFrontUser)session.getAttribute("fronUser");
+//            Long userId = frontUser.getId();
+            Long userId = 1l;
+            //插入到动态表
+            TDynamicmsg dynamicmsg = new TDynamicmsg();
+            dynamicmsg.setContent(content);//动态内容
+            dynamicmsg.setCreateTime(new Date());//创建时间
+            dynamicmsg.setUserId(userId);//创建人Id
+            dynamicmsg.setPower(power);//权限
+            dynamicmsg.setDynamicType("课堂点评");//动态类型
+            dynamicmsg.setCourseId(courseId);//所属课程Id
+            dynamicmsg.setClassId(classService.getByCourseId(courseId).getId());//所属班级Id
+            dynamicmsg.setClassLessonId(tempOrganTask.getClassLessonId());//所属课时Id
+            dynamicmsg.setStudentId(tempOrganTask.getStudentId());//所属学生Id
+            dynamicmsg.setOrganId(course.getOrganizationId());//所属教育机构Id
+            //插入
+            dynamicmsgService.insert(dynamicmsg);
+            //更新点评任务
+            tempOrganTask.setDynamicId(dynamicmsg.getId());
             tempOrganTask.setDoneTime(new Date());//完成时间
-            tempOrganTask.setPower(power);//权限
-            //保存图片
-            uploadCommentImg(imgs,taskId,1);
+            tempOrganTask.setDoneTime(new Date());
+            tempOrganTask.setStatus(1);
             organTaskService.updateById(tempOrganTask);
+            //保存图片
+            uploadCommentImg(imgs,dynamicmsg.getId(),1);
             return Result.of("发布课堂评论成功!");
         }catch (Exception e){
             e.printStackTrace();
@@ -172,7 +255,7 @@ public class TOrganTaskController {
     }
 
 
-    private void  uploadCommentImg(String imgs,Long taskId,Integer type){
+    private void  uploadCommentImg(String imgs,Long dynamicId,Integer type){
 //        String loadPath = "";
         try{
 
@@ -184,9 +267,14 @@ public class TOrganTaskController {
                 //文件读取根路径
                 String loadPath = imgLoadPath;
                 //文件夹
+                //课堂点评
                 if(type == 1){
                     savePath += "classComment";
                     loadPath += "classComment";
+                //课堂点评 作业点评
+                }else{
+                    savePath += "workComment";
+                    loadPath += "workComment";
                 }
                 //判断目录是否存在，不存在则创建
                 savePath = savePath.replace("/", FileSeparator);
@@ -198,24 +286,24 @@ public class TOrganTaskController {
                 String img = null;
                 String tempSavePath = null;
                 String tempLoadPath = null;
-                TOrganTaskImg organTaskImg = null;
+                TDyimg dyimg = null;
                 for(int i=0;i<arr.length;i++){
                     img = arr[i];
                     //当前时间 年月日
                     Calendar calendar = Calendar.getInstance();
                     String yMd = BaseUtil.toString(calendar.getTime(),"yyyyMMdd");
                     //文件名称
-                    String curFileName = yMd + "_" + calendar.getTimeInMillis() + "_" + taskId+"_"+i+".png";
+                    String curFileName = yMd + "_" + calendar.getTimeInMillis() + "_" + dynamicId+"_"+i+".png";
                     tempSavePath = savePath+"/"+curFileName;
                     tempLoadPath = loadPath+"/"+curFileName;
                     tempSavePath = tempSavePath.replace("/", FileSeparator);
                     BASE64Util.uploadImg(img,tempSavePath);
                     //插入数据库
-                    organTaskImg = new TOrganTaskImg();
-                    organTaskImg.setTaskId(taskId);
-                    organTaskImg.setImgUrl(tempLoadPath);
-                    organTaskImg.setCreateTime(new Date());
-                    organTaskImgService.insert(organTaskImg);
+                    dyimg = new TDyimg();
+                    dyimg.setDynamicId(dynamicId);
+                    dyimg.setOriginalImgUrl(tempLoadPath);
+                    dyimg.setCreateTime(new Date());
+                    dyimgService.insert(dyimg);
                 }
             }
 

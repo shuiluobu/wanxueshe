@@ -18,5 +18,7 @@ public interface ITClassService extends IService<TClass> {
 
     //分页+混合条件 查询 班级
     public List<TClass> pageData(TClass tClass);
+    //根据课程Id 获取班级
+    public TClass getByCourseId(Long courseId);
 	
 }

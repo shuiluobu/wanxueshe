@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>课堂点评详情</title>
+    <style>
+        .comment-blue{
+            color: #0066CC;
+        }
+        .status_a{
+            position: absolute;
+            bottom: 15px;
+            right: 5px;
+        }
+        .status_a a{
+            margin: 0 2px;
+            color: #0066CC;
+        }
+    </style>
+</head>
+<body>
+<!-- 标题头 S -->
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>课堂点评详情</span></div>
+<!-- 标题头 E -->
+
+<div class="weui-cells weui-cells_form" style="margin-top: 45px;">
+
+    <!-- 老师头像，老师名称，学生名称  S -->
+    <div class="weui-panel">
+
+        <div class="weui-panel__bd" style="font-size: 13px" >
+
+            <div class="weui-media-box weui-media-box_appmsg ">
+                <div class="weui-media-box__hd ">
+                    <img class="weui-media-box__thumb" id="teacherHeadImg" src="">
+                </div>
+                <div class="weui-media-box__bd" id="tAsName">
+                    <p><span class="comment-blue"></span>
+                        <img style="position: absolute;top: 39px;" src="/weui/images/wyh/toRight_s.png"></img>
+                        <span style="padding-left: 18px;"></span>
+                    </p>
+                </div>
+                <div>
+                    <p><img src="/weui/images/wyh/lock-open.png"> </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="weui-cell">
+
+        <div class="weui-cell__bd">
+            <!-- 点评内容文本域 S -->
+            <div>
+                <p id="commentDetail" style="font-family: '微软雅黑 Regular', '微软雅黑';font-weight: 400;font-style: normal;font-size: 12px;color: #666666;"></p>
+            </div>
+            <div class="weui-textarea-counter"></div>
+            <!-- 点评内容文本域 E -->
+
+            <!-- 点评图片  S -->
+            <div class="weui-uploader">
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+                        <li class="weui-uploader__file" style="background-image:url(/images/userface1.jpg);bottom: 0px;"></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 点评图片 E -->
+
+        </div>
+    </div>
+
+    <!-- 课程，课时，机构，时间信息，各种操作  S -->
+    <div class="weui-panel__bd" style="font-size: 13px;margin-top: -20px;">
+        <div class="weui-media-box weui-media-box_appmsg ">
+            <div class="weui-media-box__bd" id="cloName">
+                <p class="comment-blue"><span></span> &bull; <span></span></p>
+                <p></p>
+            </div>
+            <div class="status_a ">
+                <a><img src="/weui/images/wyh/blackHeart.png" ></img></a>
+                <a><img src="/weui/images/wyh/talk.png" ></img></a>
+                <a><img src="/weui/images/wyh/share.png"></img></a>
+            </div>
+        </div>
+    </div>
+    <!-- 课程，课时，机构，时间信息，各种操作  S -->
+
+    <!-- 评论 S -->
+    <div class="weui-panel " >
+        <div class="weui-panel__bd" style="font-size: 13px" id="classComment">
+            <div style="height: 40px;line-height: 40px;padding-left: 35px;">
+                <img src="/weui/images/wyh/blackHeart.png" ></img><span style="padding-left: 27px;"> ejedi, 张老师 , 李景...</span>
+            </div>
+        </div>
+    </div>
+    <!-- 评论 E -->
+</div>
+
+<!-- 添加评论 S -->
+<div class="weui-panel " id="addComment" >
+    <div class="weui-panel__bd" style="font-size: 13px">
+        <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+                <img class="weui-media-box__thumb" src="">
+            </div>
+            <div class="weui-media-box__bd">
+                <textarea style="height: 50px;width: 85%"></textarea>
+                <div  style="height: 50px;width: 13%;float: right;background-color: #D7D7D7" id="submitAddComment">
+                    <div style="padding-top: 15px;text-align: center;color: #0066CC;cursor: pointer;" id="submitAddComment1">评论</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加评论 E -->
+
+
+<!-- 图片放大  S -->
+<div class="weui-gallery" id="gallery" >
+    <span class="weui-gallery__img"  id="galleryImg" style="background-image:url(/weui/images/pic_160.png);"></span>
+</div>
+<!-- 图片放大  E -->
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    var taskId = 4;
+
+    // 页面全局  变量  用于回复评论使用
+    var toUserId;   //@的人的 用户Id
+    var toUserName;//@的人的 教师名称
+
+    $(function(){
+
+
+        //添加评论 中 用户头像
+        $("#addComment img").attr("src",frontUser.headImg);
+        //获取点评详情
+        $.ajax("/cOrganTask/getByTaskId",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{ taskId:taskId},
+            success:function(json){
+                var map = json.data;
+                var organTask = map.organTask;
+                //老师头像
+                $("#teacherHeadImg").attr("src",organTask.teacherHeadImg);
+                //老师名称，学生姓名
+                $("#tAsName span").eq(0).text(organTask.teacherName);
+                $("#tAsName span").eq(1).text(organTask.studentName+" 课堂点评");
+                //点评内容
+                $("#commentDetail").text(organTask.content);
+                //点评图片
+                $("#uploaderFiles").empty();
+                if(map.imgList){
+                    var list = map.imgList;
+                    for(var i=0;i<list.length;i++){
+                        var li = '<li class="weui-uploader__file" style="background-image:url('+list[i].imgUrl+');bottom: 0px;"></li>';
+                        console.log(li);
+                        $("#uploaderFiles").append(li);
+                    }
+                }
+                //课程名称,课时名称
+                $("#cloName span").eq(0).text(organTask.courseName+" "+organTask.lessonName);
+                //教师机构名称
+                $("#cloName span").eq(1).text(organTask.organName);
+                //点评时间
+                $("#cloName p").eq(1).text(getMDHM(organTask.doneTime));
+                //点评下 评论
+                if(map.commentList){
+                    var list = map.commentList;
+
+                    for(var i=0;i<list.length;i++){
+                        var content;
+                        if(list[i].toUserId == null){
+                            content = '<p>'+list[i].content+'</p>';
+                        }else{
+                            content = '<p>回复 <span class="comment-blue">'+list[i].toUserName+'</span> '+list[i].content+'</p>';
+                        }
+                        var div = '<div class="weui-media-box weui-media-box_appmsg">'+
+                            '<div class="weui-media-box__hd">'+
+                            '<img class="weui-media-box__thumb" src="'+list[i].fromUserHeadImg+'">'+
+                            '</div>'+
+                            ' <div class="weui-media-box__bd">'+
+                            '<div style="float: right;">'+getMD(list[i].createTime)+'</div>'+
+                            '<p class="comment-blue">'+list[i].fromUserName+'</p>'+
+                            content+
+                            '<a style="float: right;"  id="'+list[i].fromUserId+'" >回复</a>'
+                        '</div>'+
+                        '</div>';
+                        $("#classComment").append(div);
+                    }
+                    // @人回复评论
+                    $("#classComment a").click(function () {
+                        //打开评论框
+                        $("#addComment").show();
+                        //鼠标指针移动到评论输入框
+                        $("#addComment textarea").focus();
+                        toUserId =$(this).attr("id");
+                        toUserName = $(this).parent().find("p").eq(0).text();
+                        $("#addComment textarea").attr("placeholder"," @ "+$(this).parent().find("p").eq(0).text()+" :");
+                    });
+                }
+
+
+            }
+        });
+
+        //添加评论
+        $("#submitAddComment ").click(function () {
+            var content = $("#addComment textarea").val();
+            if(content.length == 0){
+                $.toast("评论内容不能为空!",'text',800,function(){
+                    //提示完成后执行方法
+                });
+                return;
+            }
+            //关闭评论框
+//            $("#addComment").hide();
+            $.ajax("/cOrganComment/addComment",{
+                async : false,
+                type: 'get',
+                dataType: 'json',
+                data:{
+                    itemId:taskId,
+                    type:2,//课堂点评评论
+                    fromUserId:frontUser.id,
+                    fromUserName:frontUser.teacherName,
+                    toUserId:toUserId,
+                    toUserName:toUserName,
+                    content: content
+
+                },
+                success:function(json){
+                    //提示操作结果
+                    $.toast(json.data,'text',800,function(){
+                        //提示完成后执行方法
+                    });
+                    //动态刷新上该条评论
+                    if(toUserId == null){
+                        content = '<p>'+content+'</p>';
+                    }else{
+                        content = '<p>回复 <span class="comment-blue">'+toUserName+'</span> '+content+'</p>';
+                    }
+                    var div = '<div class="weui-media-box weui-media-box_appmsg">'+
+                        '<div class="weui-media-box__hd">'+
+                        '<img class="weui-media-box__thumb" src="'+frontUser.headImg+'">'+
+                        '</div>'+
+                        ' <div class="weui-media-box__bd">'+
+                        '<div style="float: right;">'+getCurMD()+'</div>'+
+                        '<p class="comment-blue">'+frontUser.teacherName+'</p>'+
+                        content+
+                        '<a style="float: right;"  id="'+toUserId+'" >回复</a>'
+                    '</div>'+
+                    '</div>';
+                    $("#classComment").append(div);
+                    // @人回复评论
+                    $("#classComment a").click(function () {
+                        //打开评论框
+                        $("#addComment").show();
+                        //鼠标指针移动到评论输入框
+                        $("#addComment textarea").focus();
+                        toUserId =$(this).attr("id");
+                        toUserName = $(this).parent().find("p").eq(0).text();
+                        $("#addComment textarea").attr("placeholder"," @ "+$(this).parent().find("p").eq(0).text()+" :");
+                    });
+                    //归null  页面全局  变量
+                    toUserId = null;
+                    toUserName = null;
+                    //清空评论输入框
+                    $("#addComment textarea").val("");
+                }
+            });
+        });
+
+
+
+        //预览图片
+        var  $gallery = $("#gallery"), $galleryImg = $("#galleryImg"), $uploaderFiles = $("#uploaderFiles");
+
+        //图片放大
+        $uploaderFiles.on("click", "li", function(){
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        //图片删除
+        $uploaderFiles.on("click", "img", function(event){
+            $(this).parent().remove();
+            event.stopPropagation();    //  阻止事件冒泡
+        });
+        //关闭 图片放大
+        $gallery.on("click", function(){
+            $gallery.fadeOut(100);
+        });
+    });
+
+    
+    //发布
+    function release() {
+        var content = $("#weui-textarea").val().trim();
+        if(content.length == 0){
+            $.toast("点评内容不能为空",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        var power = $("#power").val();
+        var imgs = "";
+        var lis = $(".weui-uploader__file");
+        var temp;
+        for(var i=0;i<lis.length;i++){
+            temp =lis.eq(i).css("background-image");
+            temp =temp.split(",")[1];
+            temp = temp.substring(0,temp.length-2);
+            imgs += temp+",";
+        }
+        $.ajax("/cOrganTask/releaseClassComment",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                taskId:taskId,
+                content:content,
+                power:power,
+                imgs:imgs},
+            success:function(json){
+                $.toast(json.data,'text',800,function(){
+                    //提示完成后执行方法
+                });
+            }
+        });
+    }
+    //获取当前 时间的 月日  MM-dd
+    function getCurMD(){
+        var now = new Date();
+        var month = now.getMonth()+1;
+        month = month<10?"0"+month:month;
+        var day = now.getDate();
+        day = day<10?"0"+day:day;
+        return month+"-"+day;
+    }
+    //获取时间的 月日时分 MM-dd HH:mm
+    function getMDHM(pataTime){
+        return pataTime.substring(5,16);
+    }
+    //获取时间的 月日 MM-dd
+    function getMD(pataTime){
+        return pataTime.substring(5,10);
+    }
+
+</script>
+</html>

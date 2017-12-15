@@ -36,6 +36,10 @@ public class TOrganTask extends Model<TOrganTask> {
      * 类型: 1：签到，2：课程点评，3：作业发布，4：作业点评
      */
 	private Integer type;
+	/**
+	 * 对应的 动态Id
+	 */
+	private Long dynamicId;
     /**
      * 所属待办Id
      */
@@ -56,10 +60,6 @@ public class TOrganTask extends Model<TOrganTask> {
      * 任务所属学生Id
      */
 	private Long studentId;
-    /**
-     * 任务内容
-     */
-	private String content;
 	/**
 	 * 作业规定完成时间
 	 */
@@ -72,10 +72,6 @@ public class TOrganTask extends Model<TOrganTask> {
 	 * 创建时间
 	 */
 	private Date createTime;
-	/**
-	 * 课堂点评 权限   0:公开，1：好友可看，2:仅自己
-	 */
-	private Integer power = 0;
     /**
      * 状态 :  0:未完成 ， 1：已完成，2：签到请假
      */
@@ -123,6 +119,14 @@ public class TOrganTask extends Model<TOrganTask> {
 		this.type = type;
 	}
 
+	public Long getDynamicId() {
+		return dynamicId;
+	}
+
+	public void setDynamicId(Long dynamicId) {
+		this.dynamicId = dynamicId;
+	}
+
 	public Long getAgendaId() {
 		return agendaId;
 	}
@@ -153,14 +157,6 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setStudentId(Long studentId) {
 		this.studentId = studentId;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -196,14 +192,6 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setDoneTime(Date doneTime) {
 		this.doneTime = doneTime;
-	}
-
-	public Integer getPower() {
-		return power;
-	}
-
-	public void setPower(Integer power) {
-		this.power = power;
 	}
 
 	public String getStudentName() {

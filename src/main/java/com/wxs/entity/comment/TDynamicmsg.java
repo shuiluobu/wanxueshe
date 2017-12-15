@@ -2,7 +2,12 @@ package com.wxs.entity.comment;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
@@ -17,7 +22,7 @@ import java.io.Serializable;
 public class TDynamicmsg extends Model<TDynamicmsg> {
 
     private static final long serialVersionUID = 1L;
-
+	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
 	private Long userId;
     /**
@@ -140,7 +145,8 @@ public class TDynamicmsg extends Model<TDynamicmsg> {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}
