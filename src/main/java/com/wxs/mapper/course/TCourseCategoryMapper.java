@@ -29,9 +29,7 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
             "FROM t_course_category y,t_course c, where y.id=c.courseCateId " +
             "and  t.teacherId=#{teacherId}")
     @ResultType(Map.class)
-    public List<Map<String,Object>> getTeacherCourseList(@Param("teacherId") Long teacherId);
-
-
+    public List<Map<String,Object>> getCourseListByTeacher(@Param("teacherId") Long teacherId);
 
     @Select("SELECT y.* from t_course_category y " +
             "INNER JOIN t_course c on y.id=c.courseCateId\n" +

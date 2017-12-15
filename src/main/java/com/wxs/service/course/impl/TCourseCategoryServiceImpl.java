@@ -75,7 +75,7 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
      * @return
      */
     public List<Map<String,Object>> getTeacherCourseList(Long teacherId){
-        List<Map<String,Object>> list =   courseCategoryMapper.getTeacherCourseList(teacherId);
+        List<Map<String,Object>> list =   courseCategoryMapper.getCourseListByTeacher(teacherId);
         list.stream().forEach(map->{
             map.put("courseType","科学启蒙-机器人编程"); //todo 后续从字典表中获取
         });

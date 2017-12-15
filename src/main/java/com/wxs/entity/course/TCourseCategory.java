@@ -93,6 +93,8 @@ public class TCourseCategory extends Model<TCourseCategory> {
      */
 	private String cover;
 
+	private String backgroundImg;
+
 	//-----额外字段
 	@TableField(exist = false)
 	private String organName;   //所属教育机构名称
@@ -234,6 +236,14 @@ public class TCourseCategory extends Model<TCourseCategory> {
 
 	public void setCategoryType(String categoryType) {
 		this.categoryType = categoryType;
+	}
+
+	public String getBackgroundImg() {
+		return backgroundImg;
+	}
+
+	public void setBackgroundImg(String backgroundImg) {
+		this.backgroundImg = backgroundImg;
 	}
 
 	public String getCover() {
