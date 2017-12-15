@@ -113,7 +113,7 @@
 <!-- 待办完成情况 S -->
 <div class="weui-logistics">
     <div class="weui-logistics-li">
-        <a></a>
+        <a href="signInDetail.html"></a>
         <p>签到</p>
         <span></span>
     </div>
@@ -216,6 +216,11 @@
         //添加评论 中 用户头像
         $("#addComment img").attr("src",frontUser.headImg);
         var agendaId = 1;
+
+//        //跳转到 签到页面
+//        $(".weui-logistics-li").eq(0).click(function () {
+//            window.location.href="signIndetail.html";
+//        })
        //获取 待办-教务 详情
         $.ajax({
             url:"/cOrganAgenda/OrganAgendaDetail",
