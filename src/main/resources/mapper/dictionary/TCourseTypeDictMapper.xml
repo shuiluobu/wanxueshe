@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.dictionary.TCourseTypeDictMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.dictionary.TCourseTypeDict">
+		<id column="id" property="id" />
+		<result column="parentCode" property="parentCode" />
+		<result column="courseTypeCode" property="courseTypeCode" />
+		<result column="courseTypeName" property="courseTypeName" />
+		<result column="status" property="status" />
+	</resultMap>
+	<select id="getCourseTypeByParentCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT courseTypeCode,courseTypeName FROM t_course_type_dict WHERE parentCode=#{parentCode}
+	</select>
+
+</mapper>

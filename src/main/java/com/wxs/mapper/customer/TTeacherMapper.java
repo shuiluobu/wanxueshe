@@ -36,5 +36,5 @@ public interface TTeacherMapper extends BaseMapper<TTeacher> {
            " from t_teacher t,t_course c,t_course_category cy where " +
            " t.id=c.teacherId and c.courseCateId=cy.id and courseCateId = #{courseCateId}")
     @ResultType(Map.class)
-    public Map<String,Object> getTeacherNameListByCourseId(@Param("courseCateId") Long courseCateId);
+    public List<Map<String,Object>> getTeacherNameListByCourseId(@Param("courseCateId") Long courseCateId);
 }

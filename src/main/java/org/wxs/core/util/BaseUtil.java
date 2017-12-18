@@ -1155,4 +1155,10 @@ public class BaseUtil {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+    public static Map getKeyValueMap(Object key,Object value){
+        Map map = new HashMap();
+        map.put("key",key);
+        map.put("value",value);
+        return map;
+    }
 }

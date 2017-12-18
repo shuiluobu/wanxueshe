@@ -19,10 +19,10 @@ import java.util.Map;
  */
 public interface TStudentMapper extends BaseMapper<TStudent> {
 
-    @Select("SELECT t.realName from t_student t,t_student_class c where t.id=c.studentId and c.userId=#{userId} " +
+    @Select("SELECT Group_concat(t.realName) studentName from t_student t,t_student_class c where t.id=c.studentId and c.userId=#{userId} " +
             "and c.coursesId=#{coursesId} ")
-    @ResultType(Map.class)
-    public List<Map<String,Object>> getStudentByCourse(@Param("coursesId") Long coursesId,@Param("userId") Long userId);
+    @ResultType(String.class)
+    public String getStudentByCourse(@Param("coursesId") Long coursesId,@Param("userId") Long userId);
 
     @Select("SELECT count(1) from t_student where parentId=#{parentId} ")
     @ResultType(int.class)

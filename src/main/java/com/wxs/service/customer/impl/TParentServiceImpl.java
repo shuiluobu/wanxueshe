@@ -62,14 +62,15 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
         userIds.stream().forEach(userId -> {
             Map<String,Object> map = Maps.newHashMap();
             TParent parent = new TParent().selectOne(new EntityWrapper().where("userId={0}",userId));
+            map.put("userId",userId);
             map.put("realName",parent.getRealName());
             map.put("studentCount",studentMapper.getParentStudentCount(parent.getId()));
             map.put("courseCount",studentClassMapper.getParentCourseCount(parent.getId()));
             Integer isFriednCount = new TFollowUser().selectCount("userId={0} and fuserId={1}",loginUserId,userId);
             if(isFriednCount>0){
-                map.put("isFriend",true);
+                map.put("isFriend",1);
             } else {
-                map.put("isFriend",false); //是否已经加好友
+                map.put("isFriend",0); //是否已经加好友
             }
             resultList.add(map);
         });

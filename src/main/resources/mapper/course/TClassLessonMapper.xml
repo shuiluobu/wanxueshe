@@ -6,6 +6,7 @@
 	<resultMap id="BaseResultMap" type="com.wxs.entity.course.TClassLesson">
 		<id column="id" property="id" />
 		<result column="lessonSeq" property="lessonSeq" />
+		<result column="lessonName" property="lessonName"/>
 		<result column="courseId" property="courseId" />
 		<result column="beginTime" property="beginTime" />
 		<result column="endTime" property="endTime" />
@@ -64,9 +65,9 @@
 	</select>
 
 	<select id="queryLessionByCourse" resultType="java.util.HashMap">
-		SELECT DATE_FORMAT(l.beginTime,'%m-%d') dayTime,
+		SELECT lessonName,DATE_FORMAT(l.beginTime,'%m-%d') dayTime,
 		DATE_FORMAT(l.beginTime,'%h:%i') beginTime,
-		DATE_FORMAT(l.endTime,'%h:%i') endTime,
+		DATE_FORMAT(l.endTime,'%h:%i') endTime,l.id lessonId,
 		l.lessonSeq
 		<if test="studentId !=null or userId!=null">
 			,scheduleStatus

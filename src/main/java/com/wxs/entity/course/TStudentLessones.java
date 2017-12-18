@@ -3,6 +3,9 @@ package com.wxs.entity.course;
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 
 /**
@@ -23,12 +26,12 @@ public class TStudentLessones extends Model<TStudentLessones> {
 	private Long userId;
 	private Long lessonId;
 	private Long courseId;
-	private Integer status;
+	private Integer status=0;
 	private Date createTime;
     /**
      * 进度
      */
-	private String scheduleStatus;
+	private Integer scheduleStatus=0;
     /**
      * 调课后保存老的Id
      */
@@ -66,7 +69,8 @@ public class TStudentLessones extends Model<TStudentLessones> {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -75,11 +79,11 @@ public class TStudentLessones extends Model<TStudentLessones> {
 		this.createTime = createTime;
 	}
 
-	public String getScheduleStatus() {
+	public Integer getScheduleStatus() {
 		return scheduleStatus;
 	}
 
-	public void setScheduleStatus(String scheduleStatus) {
+	public void setScheduleStatus(Integer scheduleStatus) {
 		this.scheduleStatus = scheduleStatus;
 	}
 

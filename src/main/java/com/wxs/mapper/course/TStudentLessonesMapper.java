@@ -23,4 +23,5 @@ public interface TStudentLessonesMapper extends BaseMapper<TStudentLessones> {
 
     @Select("SELECT scheduleStatus,count(1) AS qty FROM t_student_lessones WHERE userId =#{userId} AND courseId=#{courseId} GROUP BY scheduleStatus")
     public List<Map<String,Object>> groupLessesByUserId(@Param("userId") Long userId,@Param("courseId") Long courseId);
+
 }

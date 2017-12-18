@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.wxs.entity.course.TCourseCategory;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TCourseCategoryMapper;
+import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.course.ITCourseCategoryService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
@@ -30,6 +31,8 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
 
     @Autowired
     private TCourseCategoryMapper courseCategoryMapper;
+    @Autowired
+    public IDictionaryService dictionaryService;
 
 
     @Override
@@ -47,7 +50,7 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
         list.stream().forEach(bean->{
             Map<String,Object> map = Maps.newHashMap();
             map.put("courseName",bean.getCourseCategoryName());
-            map.put("courseType",bean.getCategoryType()==null?"":bean.getCategoryType());
+            map.put("courseType",dictionaryService.getCourseTypeValue(bean.getCategoryType(),"2"));
             map.put("canQty",bean.getCanQty());
             map.put("alreadyStudySum",bean.getAlreadyStudySum());
             map.put("cover",bean.getCover()==null?"": bean.getCover());//封面图片
@@ -75,9 +78,11 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
      * @return
      */
     public List<Map<String,Object>> getTeacherCourseList(Long teacherId){
+        Map<String,Object> courseTypeDictMap = dictionaryService.getCourseTypeDict();
         List<Map<String,Object>> list =   courseCategoryMapper.getCourseListByTeacher(teacherId);
         list.stream().forEach(map->{
-            map.put("courseType","科学启蒙-机器人编程"); //todo 后续从字典表中获取
+            String typeCode = map.get("courseType").toString();
+            map.put("courseType",dictionaryService.getCourseTypeValue(typeCode,"2"));
         });
         return list;
     }

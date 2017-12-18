@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 课程分类
+ * 课程
  * </p>
  *
  * @author skyer

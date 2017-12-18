@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author skyer
@@ -45,51 +45,58 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
 
     /**
      * 机构概要
+     *
      * @param organId
      * @param userId
      * @return
      */
-   public Map<String,Object> getOrganOutline(Long organId, Long userId){
-       Map<String,Object> result = Maps.newHashMap();
-       TOrganization organization = organizationMapper.selectById(organId);
-       return buildOrganInfo(organization,userId);
-   }
+    public Map<String, Object> getOrganOutline(Long organId, Long userId) {
+        Map<String, Object> result = Maps.newHashMap();
+        TOrganization organization = organizationMapper.selectById(organId);
+        return buildOrganInfo(organization, userId);
+    }
 
     @Override
     public List<TOrganization> getNearOrgans(double latitude, double longitude) {
-       //先搜索5公里之内的机构
-        return organizationMapper.getNearOrgans(latitude,longitude,5);
+        //先搜索5公里之内的机构
+        return organizationMapper.getNearOrgans(latitude, longitude, 5);
     }
+
     @Override
-    public List<Map<String,Object>> getOrganFllowUserList(Long organId,Long loginUserId){
-       List<Long> userIds = fllowOrganMapper.getFllowUserIdsOfOrganId(organId);
-       return parentService.getFllowUsers(userIds,loginUserId);
+    public List<Map<String, Object>> getOrganFllowUserList(Long organId, Long loginUserId) {
+        List<Long> userIds = fllowOrganMapper.getFllowUserIdsOfOrganId(organId);
+        return parentService.getFllowUsers(userIds, loginUserId);
     }
 
-    public Map<String,Object> buildOrganInfo(TOrganization organization,Long userId){
-        Map<String,Object> result = Maps.newHashMap();
-       result.put("organId",organization.getId());
-        result.put("organName",organization.getOrganName());
-        result.put("logoImg",organization.getLogoImg());//logo头像
-        result.put("smallIntroduce",organization.getIntroduce()); //小介绍，个性签名
-        result.put("samllCount",smallCountOfOrgan(organization.getId())); //小统计
-        result.put("ifFllow",fllowOrganMapper.getFllowByUserId(userId,organization.getId())==null?false:true); //是否关注
-        result.put("leval",organization.getLeval());
+    public Map<String, Object> buildOrganInfo(TOrganization organization, Long userId) {
+        Map<String, Object> result = Maps.newHashMap();
+        result.put("organId", organization.getId());
+        result.put("organName", organization.getOrganName());
+        result.put("logoImg", organization.getLogoImg());//logo头像
+        result.put("smallIntroduce", organization.getIntroduce()); //小介绍，个性签名
+        result.put("samllCount", smallCountOfOrgan(organization.getId())); //小统计
+        TStudentClass stuClass = new TStudentClass();
+        stuClass.setOrganizationId(organization.getId());
+        stuClass.setUserId(userId);
+        int organStudentCount = studentClassMapper.getClassStudentCountByParam(stuClass);
+        result.put("isParkIn", organStudentCount > 0 ? 1 : 0);
+        result.put("ifFllow", fllowOrganMapper.getFllowByUserId(userId, organization.getId()) == null ? 0 : 1); //是否关注
+        result.put("leval", organization.getLeval());
         result.put("foundingTime", BaseUtil.toChinaDate(organization.getFoundingTime())); //成立时间
-        result.put("address",organization.getAddress());
-        result.put("organRemark",organization.getOrganRemark());
-        result.put("telePhone",organization.getTelePhone()==null?organization.getMobilePhone():organization.getTelePhone());
+        result.put("address", organization.getAddress());
+        result.put("organRemark", organization.getOrganRemark());
+        result.put("telePhone", organization.getTelePhone() == null ? organization.getMobilePhone() : organization.getTelePhone());
         return result;
-   }
+    }
 
 
-    public String smallCountOfOrgan(Long organId){
-       //获取机构的小统计，主要统计多少学员，多少人关注，多少课程
+    public String smallCountOfOrgan(Long organId) {
+        //获取机构的小统计，主要统计多少学员，多少人关注，多少课程
         int organFllowCount = fllowOrganMapper.getOrganFllowCount(organId);
         TStudentClass stuClass = new TStudentClass();
         stuClass.setOrganizationId(organId);
         int organStudentCount = studentClassMapper.getClassStudentCountByParam(stuClass);
         int organCourseCount = coursesMapper.getOrganCourseCount(organId);
-        return  organFllowCount+"人关注，"+organStudentCount+"学员，"+organCourseCount+"课程";
-   }
+        return organFllowCount + "人关注，" + organStudentCount + "学员，" + organCourseCount + "课程";
+    }
 }

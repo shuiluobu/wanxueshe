@@ -1,12 +1,15 @@
 package com.wxs.service.course.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.wxs.entity.course.TClassLesson;
 import com.wxs.entity.course.TStudentClass;
+import com.wxs.entity.course.TStudentLessones;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.course.TClassLessonMapper;
 import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.customer.TStudentMapper;
+import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.course.ITClassLessonService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +36,8 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
     private TCoursesMapper coursesMapper;
     @Autowired
     private TClassLessonMapper classLessonMapper;
+    @Autowired
+    public IDictionaryService dictionaryService;
 
     @Override
     public List<TClassLesson> pageData(TClassLesson classLesson) {
@@ -46,6 +51,7 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
 
     @Autowired
     private TStudentMapper studentMapper;
+
 
     @Override
     public Map<String, Object> getOneClassLession(Long lessionId, Long userId) {
@@ -71,8 +77,15 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
             result.put("organ",organMap);
             if (userId != null) {
                 //如果是登录状态
-                List<Map<String, Object>> students = studentMapper.getStudentByCourse(lesson.getCourseId(), userId);
-                result.put("students", students);
+                Map<String,Object>  student = Maps.newHashMap();
+
+                student.put("studentName", studentMapper.getStudentByCourse(lesson.getCourseId(), userId));
+                TStudentLessones stuLesson = new TStudentLessones().selectOne("userId={0} and lessonId={1}",userId,lessionId);
+                String statusValue = dictionaryService.getLessonStudyStatus().get(stuLesson.getScheduleStatus().toString());
+                student.put("scheduleStatus",  BaseUtil.getKeyValueMap(stuLesson.getScheduleStatus(),statusValue)); //完成情况
+                student.put("userId",userId);
+                result.put("student",student);
+
             }
 
             return result;
@@ -93,7 +106,8 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
             map.put("min",StringUtils.split(time,":")[1]);
             map.put("month",StringUtils.split(day,"-")[0]);
             map.put("day",StringUtils.split(day,"-")[1]);
-            map.put("courseType","");
+            String code = map.get("courseType").toString();
+            map.put("courseType",dictionaryService.getCourseTypeValue(code,"1"));
         });
         return list;
     }

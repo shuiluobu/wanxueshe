@@ -16,6 +16,7 @@ import com.wxs.mapper.course.TStudentLessonesMapper;
 import com.wxs.mapper.customer.TFllowCourseMapper;
 import com.wxs.mapper.customer.TTeacherMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
+import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.customer.ITParentService;
@@ -52,6 +53,8 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     private TStudentClassMapper studentClassMapper;
     @Autowired
     private TTeacherMapper teacherMapper;
+    @Autowired
+    public IDictionaryService dictionaryService;
 
     @Override
     public List<TCourse> pageData(TCourse course) {
@@ -132,7 +135,8 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
             map.put("dayTime",map.get("dayTime").toString() + " " + map.get("beginTime").toString()+"-"+map.get("endTime").toString());
             TStudentLessones stuLesson = new TStudentLessones().selectOne("courseId={0} and userId={1}",courseId,userId);
             if(stuLesson!=null){
-                map.put("scheduleStatus",stuLesson.getScheduleStatus()); //todo 后期从字段表里取值
+                String statusValue = dictionaryService.getLessonStudyStatus().get(stuLesson.getScheduleStatus().toString());
+                map.put("scheduleStatus",BaseUtil.getKeyValueMap(stuLesson.getScheduleStatus(),statusValue)); //todo 后期从字段表里取值
             }
             map.put("canQty",course.getCanQty()); //总课时
         });
