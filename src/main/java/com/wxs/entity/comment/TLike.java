@@ -2,7 +2,9 @@ package com.wxs.entity.comment;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,8 +21,7 @@ import java.io.Serializable;
 @TableName("t_like")
 public class TLike extends Model<TLike> {
 
-    private static final long serialVersionUID = 1L;
-
+	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
 	private Long createUserId;
 	private Long dynamicId;
@@ -28,7 +29,7 @@ public class TLike extends Model<TLike> {
 
 	//private String coordinate;
 	private Date createTime;
-	private Integer status=0;
+	private Integer status=1;  //0：取消点赞,1:点赞，创建时点赞
 
 
 	public Long getId() {

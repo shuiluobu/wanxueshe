@@ -81,7 +81,7 @@
                 <p></p>
             </div>
             <div class="status_a ">
-                <a><img src="/weui/images/wyh/blackHeart.png" ></img></a>
+                <a><img ></img></a>
                 <a><img src="/weui/images/wyh/talk.png" ></img></a>
                 <a><img src="/weui/images/wyh/share.png"></img></a>
             </div>
@@ -132,6 +132,7 @@
     // 页面全局  变量  用于回复评论使用
     var toUserId;   //@的人的 用户Id
     var toUserName;//@的人的 教师名称
+    var dynamicId; //动态Id
 
     $(function(){
 
@@ -152,15 +153,23 @@
                 //老师名称，学生姓名
                 $("#tAsName span").eq(0).text(organTask.teacherName);
                 $("#tAsName span").eq(1).text(organTask.studentName+" 课堂点评");
+                //是否已点赞
+                if(map.like){
+                    $(".status_a img").eq(0).attr("src","/weui/images/wyh/redHeart.png");
+                }else{
+                    $(".status_a img").eq(0).attr("src","/weui/images/wyh/blackHeart.png");
+                }
                 //点评内容
-                $("#commentDetail").text(organTask.content);
+                if(map.dynamicmsg){
+                    $("#commentDetail").text(map.dynamicmsg.content);
+                    dynamicId = map.dynamicmsg.id;
+                }
                 //点评图片
                 $("#uploaderFiles").empty();
                 if(map.imgList){
                     var list = map.imgList;
                     for(var i=0;i<list.length;i++){
-                        var li = '<li class="weui-uploader__file" style="background-image:url('+list[i].imgUrl+');bottom: 0px;"></li>';
-                        console.log(li);
+                        var li = '<li class="weui-uploader__file" style="background-image:url('+list[i].originalImgUrl+');bottom: 0px;"></li>';
                         $("#uploaderFiles").append(li);
                     }
                 }
@@ -170,6 +179,8 @@
                 $("#cloName span").eq(1).text(organTask.organName);
                 //点评时间
                 $("#cloName p").eq(1).text(getMDHM(organTask.doneTime));
+                //是否已点赞
+
                 //点评下 评论
                 if(map.commentList){
                     var list = map.commentList;
@@ -273,6 +284,36 @@
                     toUserName = null;
                     //清空评论输入框
                     $("#addComment textarea").val("");
+                }
+            });
+        });
+
+
+        //点赞
+        $(".status_a a").eq(0).click(function () {
+            var status;
+            var img = $(this).children("img");
+            if(img.attr("src").indexOf("black") != -1){
+                img.attr("src","/weui/images/wyh/redHeart.png");
+                status = 1;
+            }else{
+                img.attr("src","/weui/images/wyh/blackHeart.png");
+                status = 0;
+            }
+            $.ajax("/cOrganTask/likeOne",{
+                async : false,
+                type: 'post',
+                dataType: 'json',
+                data:{
+                    dynamicId:dynamicId,
+                    userId:frontUser.id,
+                    userName:frontUser.userName,
+                    status:status
+                },
+                success:function(json){
+//                    $.toast(json.data,'text',800,function(){
+//                        //提示完成后执行方法
+//                    });
                 }
             });
         });

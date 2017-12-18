@@ -2,13 +2,14 @@ package com.wxs.companyWX.controller.organization;
 
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.comment.TLike;
 import com.wxs.entity.course.TCourse;
 import com.wxs.entity.customer.TFrontUser;
 import com.wxs.entity.organ.TOrganComment;
 import com.wxs.entity.organ.TOrganTask;
-import com.wxs.entity.organ.TOrganTaskImg;
 import com.wxs.service.comment.ITDyimgService;
 import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.comment.ITLikeService;
 import com.wxs.service.course.ITClassService;
 import com.wxs.service.course.ITCoursesService;
 import com.wxs.service.organ.ITOrganCommentService;
@@ -55,6 +56,8 @@ public class TOrganTaskController {
     private ITCoursesService coursesService;
     @Autowired
     private ITClassService classService;
+    @Autowired
+    private ITLikeService likeService;
 
     @Value("${web.upload-path}")
     private String imgUploadPath;
@@ -66,17 +69,28 @@ public class TOrganTaskController {
      * @return com.wxs.util.Result
      * @Author : wyh
      * @Creation Date : 10:42 2017/12/15
-     * @Params : [taskId]
+     * @Params : [taskId, userId]
      **/
     @RequestMapping("/getByTaskId")
-    public Result getByTaskId(Long taskId){
+    public Result getByTaskId(Long taskId,Long userId){
 
         Map resultMap = new HashMap();
         try{
             TOrganTask organTask = organTaskService.getDetailByTaskId(taskId);
             resultMap.put("organTask",organTask);
+            //任务内容，在动态表
+            TDynamicmsg dynamicmsg = dynamicmsgService.selectById(organTask.getDynamicId());
+            if(dynamicmsg != null){
+                resultMap.put("dynamicmsg",dynamicmsg);
+                //是否已点赞
+                TLike  like = likeService.getOneByDUId(dynamicmsg.getId(),userId);
+                if(like != null && like.getStatus() == 1){
+                    resultMap.put("like",like);
+                }
+
+            }
             //获取任务下图片
-            List<TOrganTaskImg> imgList = organTaskImgService.getAllByTaskId(taskId);
+            List<TDyimg> imgList = dyimgService.getAllByDynamicId(organTask.getDynamicId());
             if(imgList.size()>0){
                 resultMap.put("imgList",imgList);
             }
@@ -256,7 +270,6 @@ public class TOrganTaskController {
 
 
     private void  uploadCommentImg(String imgs,Long dynamicId,Integer type){
-//        String loadPath = "";
         try{
 
             if(imgs.trim().length()>0){
@@ -312,6 +325,45 @@ public class TOrganTaskController {
             log.error(BaseUtil.getExceptionStackTrace(e));
             e.printStackTrace();
         }
+    }
+    /**
+     * @Description : 点赞与取消点赞
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 10:17 2017/12/18
+     * @Params : [dynamicId, userId, userName]
+     **/
+    @RequestMapping("/likeOne")
+    public Result likeOne(Long dynamicId,Long userId,String userName,Integer status){
+
+
+        try{
+            TLike tempLike = likeService.getOneByDUId(dynamicId,userId);
+            //取消点赞
+            if(tempLike != null){
+                tempLike.setStatus(status);
+                likeService.updateById(tempLike);
+                String resultStr = null;
+                if(status == 1){
+                    resultStr = "点赞成功!";
+                }else{
+                    resultStr = "已取消点赞!";
+                }
+                return Result.of(resultStr);
+            }else{
+                TLike like = new TLike();
+                like.setDynamicId(dynamicId);
+                like.setCreateUserId(userId);
+                like.setCreateUserName(userName);
+                like.setCreateTime(new Date());
+                likeService.insert(like);
+                return Result.of("点赞成功!");
+            }
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
     }
 
 	

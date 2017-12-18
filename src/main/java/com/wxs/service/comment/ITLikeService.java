@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2017-09-21
  */
 public interface ITLikeService extends IService<TLike> {
-	
+
+    //根据 动态Id和用户Id  获取一条赞
+    public TLike getOneByDUId(Long dynamicId,Long userId);
 }
