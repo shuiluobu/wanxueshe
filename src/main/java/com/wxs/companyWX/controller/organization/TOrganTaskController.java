@@ -87,7 +87,19 @@ public class TOrganTaskController {
                 if(like != null && like.getStatus() == 1){
                     resultMap.put("like",like);
                 }
-
+                //动态下所有点赞人用户名
+                List<TLike> likeList = likeService.getAllByDynamicId(dynamicmsg.getId());
+                if(likeList.size() > 0){
+                    String likeUserNames = "";
+                    for(int i=0;i<likeList.size();i++){
+                        if(i == likeList.size() -1){
+                            likeUserNames += likeList.get(i).getCreateUserName();
+                        }else{
+                            likeUserNames += likeList.get(i).getCreateUserName()+",";
+                        }
+                    }
+                    resultMap.put("likeUserNames",likeUserNames);
+                }
             }
             //获取任务下图片
             List<TDyimg> imgList = dyimgService.getAllByDynamicId(organTask.getDynamicId());

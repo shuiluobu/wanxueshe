@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * <p>
   *  Mapper 接口
@@ -20,4 +22,8 @@ public interface TLikeMapper extends BaseMapper<TLike> {
     @Select(" select * from t_like where dynamicId = #{dynamicId} and createUserId = #{userId}")
     @ResultMap("BaseResultMap")
     public TLike getOneByDUId(@Param("dynamicId") Long dynamicId, @Param("userId") Long userId);
+
+    //根据动态Id  获取其下 所有点赞
+    @Select(" select * from t_like where dynamicId = #{dynamicId} and status = 1 ")
+    public List<TLike> getAllByDynamicId(@Param("dynamicId") Long dynamicId);
 }

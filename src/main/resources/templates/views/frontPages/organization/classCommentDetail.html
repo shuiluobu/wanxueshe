@@ -93,7 +93,7 @@
     <div class="weui-panel " >
         <div class="weui-panel__bd" style="font-size: 13px" id="classComment">
             <div style="height: 40px;line-height: 40px;padding-left: 35px;">
-                <img src="/weui/images/wyh/blackHeart.png" ></img><span style="padding-left: 27px;"> ejedi, 张老师 , 李景...</span>
+                <img src="/weui/images/wyh/redHeart.png" ></img><span style="padding-left: 27px;"></span>
             </div>
         </div>
     </div>
@@ -127,6 +127,7 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
+    //任务Id
     var taskId = 4;
 
     // 页面全局  变量  用于回复评论使用
@@ -136,7 +137,6 @@
 
     $(function(){
 
-
         //添加评论 中 用户头像
         $("#addComment img").attr("src",frontUser.headImg);
         //获取点评详情
@@ -144,7 +144,7 @@
             async : false,
             type: 'post',
             dataType: 'json',
-            data:{ taskId:taskId},
+            data:{ taskId:taskId,userId:frontUser.id},
             success:function(json){
                 var map = json.data;
                 var organTask = map.organTask;
@@ -158,6 +158,10 @@
                     $(".status_a img").eq(0).attr("src","/weui/images/wyh/redHeart.png");
                 }else{
                     $(".status_a img").eq(0).attr("src","/weui/images/wyh/blackHeart.png");
+                }
+                //点赞的用户名
+                if(map.likeUserNames){
+                    $("#classComment span").text(map.likeUserNames);
                 }
                 //点评内容
                 if(map.dynamicmsg){
