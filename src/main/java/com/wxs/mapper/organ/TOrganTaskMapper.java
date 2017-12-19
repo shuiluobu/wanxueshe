@@ -21,7 +21,8 @@ public interface TOrganTaskMapper extends BaseMapper<TOrganTask> {
     //根据 待办Id ,类型和完成状态 获取 其他所有的 任务
     public List<TOrganTask> getAllByAgendaId(@Param("agendaId") Long agendaId,@Param("type") Integer type,@Param("statuss")List<Integer> statuss);
     //根绝 taskId 获取其详情
-    @Select("select t.*,a.teacherName,a.headImg teacherHeadImg,b.realName studentName,l.courseName,e.lessonName,q.organName " +
+    @Select("select t.*,a.teacherName,a.headImg teacherHeadImg,b.realName studentName,b.headImg studentHeadImg, " +
+            "l.courseName,e.lessonName,q.organName " +
             "from t_organ_task t " +
             "left join t_teacher a on a.id = t.teacherId " +
             "left join t_student b on b.id = t.studentId " +
@@ -31,5 +32,9 @@ public interface TOrganTaskMapper extends BaseMapper<TOrganTask> {
             "where t.id = #{taskId} ")
     @ResultMap("BaseResultMap")
     public TOrganTask getDetailByTaskId(@Param("taskId") Long taskId);
+    //根据 待办Id，学生Id,类型 获取单个任务
+    @Select(" select * from t_organ_task where agendaId = #{agendaId} and studentId = #{studentId} and type = #{type}")
+    @ResultMap("BaseResultMap")
+    public TOrganTask getOneByASId(@Param("agendaId")Long agendaId,@Param("studentId")Long studentId,@Param("type")Integer type);
 
 }

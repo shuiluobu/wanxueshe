@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>作业详情</title>
+    <style>
+        .comment-blue{
+            color: #0066CC;
+        }
+        .status_a{
+            position: absolute;
+            bottom: 15px;
+            right: 5px;
+        }
+        .status_a a{
+            margin: 0 2px;
+            color: #0066CC;
+        }
+        .thisFont{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #666666;
+        }
+        .thisFont-small{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #666666;
+        }
+        .thisFont-small p{
+            padding-left: 25px;
+        }
+        .thisFont-big{
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 16px;
+            color: #666666
+        }
+    </style>
+</head>
+<body>
+<!-- 标题头 S -->
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>作业</span></div>
+<!-- 标题头 E -->
+
+<div class="weui-cells weui-cells_form" style="margin-top: 45px;">
+
+    <!--  课程，课时名称，需完成时间  S  -->
+    <div class="weui-cell " style="background-color: #F2F2F2">
+        <div class="weui-cell__bd" id="cltDetail">
+            </br>
+            <h3></h3>
+            <p></p>
+            <p style="font-family: '微软雅黑';font-weight: 400;font-size: 12px;">作业 &bull; <span></span>&nbsp;&nbsp;&nbsp;<span></span> 前完成</p>
+            </br>
+            <h3></h3>
+        </div>
+    </div>
+    <!--  课程，课时名称，需完成时间  E -->
+    <!--  所属课程，发布老师名称，发布对象  S  -->
+    <div class="weui-cell">
+        <div class="weui-cell__bd thisFont-small" >
+            <h3 class="thisFont-big">作业内容</h3>
+            </br>
+            <p><img src="/weui/images/wyh/courseIcon.png" style="    position: absolute;left: 15px;">所属课程：<span class="comment-blue"></span></p>
+            </br>
+            <p>发布老师：<span>张老师</span></p>
+            </br>
+            <p>发布对象：<span>张淼，张森</span></p>
+        </div>
+    </div>
+    <!--  所属课程，发布老师名称，发布对象  E  -->
+
+    <div class="weui-cell thisFont">
+
+        <div class="weui-cell__bd">
+            <!-- 点评内容文本域 S -->
+            <div>
+                <p id="commentDetail" style="font-family: '微软雅黑 Regular', '微软雅黑';font-weight: 400;font-style: normal;font-size: 12px;color: #666666;"></p>
+            </div>
+            <div class="weui-textarea-counter"></div>
+            <!-- 点评内容文本域 E -->
+
+            <!-- 点评图片  S -->
+            <div class="weui-uploader">
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+                        <li class="weui-uploader__file" style="background-image:url(/images/userface1.jpg);bottom: 0px;"></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 点评图片 E -->
+
+        </div>
+    </div>
+
+
+</div>
+
+<!-- 图片放大  S -->
+<div class="weui-gallery" id="gallery" >
+    <span class="weui-gallery__img"  id="galleryImg" style="background-image:url(/weui/images/pic_160.png);"></span>
+</div>
+<!-- 图片放大  E -->
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    //任务Id
+    var taskId;
+
+    $(function(){
+
+        //任务id
+        taskId = getParmVal("itemId");
+
+        //添加评论 中 用户头像
+        $("#addComment img").attr("src",frontUser.headImg);
+        //获取点评详情
+        $.ajax("/cOrganTask/getByTaskId",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{ taskId:taskId,userId:frontUser.id},
+            success:function(json){
+                var map = json.data;
+                var organTask = map.organTask;
+                //课程，课时
+                $("#cltDetail p").eq(0).text(organTask.courseName+"-"+organTask.lessonName);
+                //作业完成规定时间
+                $("#cltDetail span").eq(0).text(getYMD(organTask.shouldDoneTime));
+                $("#cltDetail span").eq(1).text(map.dayOfWeek+" "+getHM(organTask.shouldDoneTime));
+                //所属课程
+                $(".thisFont-small span").eq(0).text(organTask.courseName+"-"+organTask.lessonName);
+                //发布老师
+                $(".thisFont-small span").eq(1).text(organTask.teacherName);
+                //发布对象
+                $(".thisFont-small span").eq(2).text(organTask.studentName);
+                //作业内容
+                if(map.dynamicmsg){
+                    $("#commentDetail").text(map.dynamicmsg.content);
+                }
+                //点评图片
+                $("#uploaderFiles").empty();
+                if(map.imgList){
+                    var list = map.imgList;
+                    for(var i=0;i<list.length;i++){
+                        var li = '<li class="weui-uploader__file" style="background-image:url('+list[i].originalImgUrl+');bottom: 0px;"></li>';
+                        $("#uploaderFiles").append(li);
+                    }
+                }
+
+            }
+        });
+
+
+        //预览图片
+        var  $gallery = $("#gallery"), $galleryImg = $("#galleryImg"), $uploaderFiles = $("#uploaderFiles");
+
+        //图片放大
+        $uploaderFiles.on("click", "li", function(){
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        //关闭 图片放大
+        $gallery.on("click", function(){
+            $gallery.fadeOut(100);
+        });
+    });
+
+    //获取时间的 年月日 yy-MM-dd
+    function getYMD(paraTime){
+        return paraTime.substring(0,10);
+    }
+
+    //获取时间的 时分 HH:mm
+    function getHM(paraTime){
+        return paraTime.substring(11,16);
+    }
+
+</script>
+</html>

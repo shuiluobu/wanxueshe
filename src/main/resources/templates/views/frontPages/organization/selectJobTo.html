@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>尚未被发布作业的学员</title>
+    <style>
+        .multiSelect{
+            border: 1px solid #CCCCCC;
+            height: 20px;
+            width: 20px;
+            margin-right: 20px;
+            background-color: #F2F2F2
+        }
+        .multiSelect-on{
+            background-color: #666666;
+        }
+        .multiSelectAll{
+            border: 1px solid #CCCCCC;
+            height: 20px;
+            width: 20px;
+            margin-right: 20px;
+            background-color: #F2F2F2
+        }
+        .multiSelectAll-on{
+            background-color: #666666;
+        }
+        .rightRound{
+            width: 40px;
+            height: 40px;
+            background: inherit;
+            background-color: rgba(215, 215, 215, 1);
+            border: none;
+            border-radius: 25px;
+            -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.349019607843137);
+            -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.349019607843137);
+            box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.349019607843137);
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+        }
+        .built-in-font{
+            position: absolute;
+            right: 16px;
+            top: 36px;
+            width: 36px;
+            word-wrap: break-word;
+            display: block;
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            text-align: center;
+            line-height: normal;
+        }
+        .status_a a{
+            margin: 0 0 0 25px;
+            color: #0066CC;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>尚未被发布作业的学员</span></div>
+<div class="weui-panel" style="margin-top: 45px;">
+
+    <div class="weui-panel__bd" style="font-size: 13px" id="signInAll">
+
+        <!--<div class="weui-media-box weui-media-box_appmsg ">-->
+            <!--<div class="multiSelect"></div>-->
+            <!--<div class="weui-media-box__hd ">-->
+                <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+            <!--</div>-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<p class="comment-blue">王同学</p>-->
+                <!--<p>完成课时: <span>1/32</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点评: <span>10</span></p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </div>
+
+</div>
+<div class="weui-cell" id="agendaStatus">
+    <div class="multiSelectAll"></div>
+    <div class="weui-cell__bd">
+        <p><span style="color: #0066CC;">全选</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已选<span>0</span>人</p>
+    </div>
+    <div class="weui-cell__ft status_a">
+        <a>取消</a>
+        <a>保存</a>
+    </div>
+</div>
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    //待办Id
+    var agendaId = getParmVal("itemId");
+    //已选择数量 span 对象
+    var selectedNum = $("#agendaStatus span").eq(1);
+    $(function () {
+
+        //获取班级里所有学生
+        $.ajax("/cOrganTask/selectJobToDetail",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{agendaId:agendaId},
+            success:function(json){
+                var classLessonName = json.data.classLessonName;
+                var list = json.data.list;
+                var id;
+                for(var i=0;i<list.length;i++){
+                    var div = '<div class="weui-media-box weui-media-box_appmsg ">'+
+                                    '<div id="'+list[i].studentId+'" class="multiSelect"></div>'+
+                                    '<div class="weui-media-box__hd ">'+
+                                         '<img class="weui-media-box__thumb" src="'+list[i].studentHeadImg+'">'+
+                                    '</div>'+
+                                    '<div class="weui-media-box__bd">'+
+                                        '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                                        '<p>完成课时: <span>'+classLessonName+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点评: <span>'+list[i].commentNum+'</span></p>'+
+                                    '</div>'+
+                                '</div>';
+                    $("#signInAll").append(div);
+                }
+            }
+        });
+
+        //多选切换样式
+        $(".multiSelect").click(function () {
+            var num = selectedNum.text();
+            $(this).toggleClass("multiSelect-on");
+            if($(this).hasClass("multiSelect-on")){
+                selectedNum.text(++num);
+            }else{
+                selectedNum.text(--num);
+            }
+        })
+        //全选切换样式
+        $(".multiSelectAll").click(function () {
+            $(this).toggleClass("multiSelectAll-on");
+            if($(this).hasClass("multiSelectAll-on")){
+                selectedNum.text($(".multiSelect").length);
+                $(".multiSelect").each(function () {
+                    $(this).addClass("multiSelect-on");
+                })
+            }else{
+                selectedNum.text(0);
+                $(".multiSelect").each(function () {
+                    $(this).removeClass("multiSelect-on");
+                })
+            }
+        });
+        //取消
+        $(".status_a a").eq(0).click(function () {
+           window.history.back(-1);
+        });
+        //保存
+        $(".status_a a").eq(1).click(function () {
+            var ids = "";
+            var names = "";
+            $(".multiSelect-on").each(function (i) {
+                ids += $(this).attr("id")+",";
+                names += $(this).parent().find("p[class='comment-blue']").text()+",";
+            });
+            ids = ids.substring(0,ids.length-1);
+            names = names.substring(0,names.length-1);
+//            console.log(ids +"-------------"+names);
+            window.location = "/organization/viewsTransfer?view=publishJob&itemId="+agendaId+"&paramOne="+ids+"&paramTwo="+names;
+        });
+
+
+    });
+
+
+</script>
+</html>
