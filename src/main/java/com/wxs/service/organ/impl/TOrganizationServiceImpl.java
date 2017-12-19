@@ -1,5 +1,6 @@
 package com.wxs.service.organ.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Maps;
 import com.wxs.entity.course.TStudentClass;
 import com.wxs.entity.organ.TOrganization;
@@ -50,6 +51,7 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
      * @param userId
      * @return
      */
+    @Override
     public Map<String, Object> getOrganOutline(Long organId, Long userId) {
         Map<String, Object> result = Maps.newHashMap();
         TOrganization organization = organizationMapper.selectById(organId);
@@ -66,6 +68,11 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     public List<Map<String, Object>> getOrganFllowUserList(Long organId, Long loginUserId) {
         List<Long> userIds = fllowOrganMapper.getFllowUserIdsOfOrganId(organId);
         return parentService.getFllowUsers(userIds, loginUserId);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryOrganByLikeName(String organName) {
+        return organizationMapper.queryOrganByLikeName(organName);
     }
 
     public Map<String, Object> buildOrganInfo(TOrganization organization, Long userId) {

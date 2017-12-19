@@ -21,5 +21,7 @@ public interface ITOrganizationService extends IService<TOrganization> {
     public List<TOrganization> getNearOrgans(double latitude, double longitude );
 
     List<Map<String,Object>> getOrganFllowUserList(Long organId,Long LoginUserId);
+
+    List<Map<String, Object>> queryOrganByLikeName(String organName);
 	
 }

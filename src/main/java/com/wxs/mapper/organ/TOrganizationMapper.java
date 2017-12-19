@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,4 +30,5 @@ public interface TOrganizationMapper extends BaseMapper<TOrganization> {
     @ResultType(TOrganization.class)
     public List<TOrganization> getNearOrgans(@Param("latitude") double latitude, @Param("longitude") double longitude, @Param("range") double range);
 
+    public List<Map<String,Object>> queryOrganByLikeName(String organName);
 }

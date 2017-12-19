@@ -27,7 +27,6 @@ public class TOrganization extends Model<TOrganization> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;                //主键，自增
-    private Long userId;           //用户Id
     private String organCode;       //机构编号
     private String organName;       //机构名称
     private String province;        //所在省
@@ -73,13 +72,6 @@ public class TOrganization extends Model<TOrganization> {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getOrganCode() {
         return organCode;

@@ -1,7 +1,7 @@
-package com.wxs.mapper.dictionary;
+package com.wxs.mapper.common;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.wxs.entity.dictionary.TCourseTypeDict;
+import com.wxs.entity.common.TCourseTypeDict;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

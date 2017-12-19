@@ -4,6 +4,8 @@ import com.wxs.app.service.WxService;
 import com.wxs.cache.ICache;
 import com.wxs.service.activity.ITOrganActivityService;
 import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.common.IDictionaryService;
+import com.wxs.service.common.ISequenceService;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITCourseCategoryService;
 import com.wxs.service.course.ITCoursesService;
@@ -51,6 +53,12 @@ public class BaseWxController {
     public ITOrganizationService organizationService;
     @Autowired
     public ITOrganActivityService organActivityService;
+
+    @Autowired
+    public IDictionaryService dictionaryService;
+    @Autowired
+    public ISequenceService sequenceService;
+
 
     public static Long userId = 1L;
     public static Long coursesId = 1L;

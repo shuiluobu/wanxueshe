@@ -17,12 +17,15 @@ import com.wxs.mapper.customer.TFllowCourseMapper;
 import com.wxs.mapper.customer.TTeacherMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.common.IDictionaryService;
+import com.wxs.service.common.ISequenceService;
 import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.customer.ITParentService;
+import net.bytebuddy.asm.Advice;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.wxs.core.util.BaseUtil;
 
 import java.util.List;
@@ -55,6 +58,8 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     private TTeacherMapper teacherMapper;
     @Autowired
     public IDictionaryService dictionaryService;
+    @Autowired
+    public ISequenceService sequenceService;
 
     @Override
     public List<TCourse> pageData(TCourse course) {
@@ -142,6 +147,24 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         });
         resultMap.put("lessones", lessones);
         return resultMap;
+    }
+    @Override
+    @Transactional
+    public Map<String,Object> addCourseByApp(Long userId,Map param){
+        String courseCode = sequenceService.getCourseCode(userId);//code
+        String courseType = param.get("types").toString();
+        String courseName = param.get("courseName").toString();
+        String organName = param.get("organName").toString();
+        String way = param.get("way").toString(); //周期或者单次
+        String beginDays = param.get("beginDays").toString();
+        String endDays =param.get("endDays").toString();
+        String remindTime = param.get("remindTime").toString();
+        String remindWay = param.get("remindWay").toString();
+        String courseAddress = param.get("courseAddress").toString();
+        String teacherName = param.get("teacherName").toString();
+        String permissions = param.get("permissions").toString();
+        String courseDetails = param.get("courseDetails").toString();
+        return null;
     }
 
 }

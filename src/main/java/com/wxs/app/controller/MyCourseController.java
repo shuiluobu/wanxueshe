@@ -59,8 +59,9 @@ public class MyCourseController extends BaseWxController {
 
     @RequestMapping(value = "addMyCourse")
     public Result addMyCourse(@RequestParam(value = "sessionId", required = true) String sessionId,
-                              @ModelAttribute TCourse course) {
-        return null;
+                              @RequestParam Map<String, Object> param) {
+        Long userId = 0L;
+        return Result.of(coursesService.addCourseByApp(userId,param));
     }
 
 

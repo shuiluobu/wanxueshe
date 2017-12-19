@@ -5,7 +5,7 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.wxs.entity.organ.TOrganization">
 		<id column="id" property="id" />
-		<result column="userId" property="userId" />
+
 		<result column="organCode" property="organCode" />
 		<result column="organName" property="organName" />
 		<result column="province" property="province" />
@@ -28,5 +28,9 @@
 		<result column="longitude" property="longitude"/>
 
 	</resultMap>
+
+	<select id="queryOrganByLikeName" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT id organId,organName FROM t_organization where organName LIKE '%#{organName}%'
+	</select>
 
 </mapper>

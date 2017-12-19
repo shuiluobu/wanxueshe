@@ -7,6 +7,7 @@ import java.util.Map;
  */
 
 public interface IDictionaryService {
+    public Map<String,Object> queryCourseTypeDictes();
     public Map<String,Object> getCourseTypeDict();
     public String getCourseTypeValue(String code,String type);
     public Map<String,String>  getLessonStudyStatus();

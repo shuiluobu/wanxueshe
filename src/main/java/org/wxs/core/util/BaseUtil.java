@@ -1109,19 +1109,19 @@ public class BaseUtil {
         return returnMap;
     }
 
-    public static String toJson(Object obj)  {
-        try{
+    public static String toJson(Object obj) {
+        try {
             return objectMapper.writeValueAsString(obj);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return null;
+        return null;
     }
 
-    public static <T> T parseJson(String json, Class<T> clazz)  {
-        try{
+    public static <T> T parseJson(String json, Class<T> clazz) {
+        try {
             return objectMapper.readValue(json, clazz);
-        } catch ( IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -1155,10 +1155,10 @@ public class BaseUtil {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public static Map getKeyValueMap(Object key,Object value){
+    public static Map getKeyValueMap(Object key, Object value) {
         Map map = new HashMap();
-        map.put("key",key);
-        map.put("value",value);
+        map.put("key", key);
+        map.put("value", value);
         return map;
     }
 }

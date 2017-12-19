@@ -39,4 +39,12 @@ public interface ITCoursesService extends IService<TCourse> {
      * @return
      */
     Map<String,Object> getLessesonByCourse(Long courseId, Long studentId);
+
+    /**
+     * 家长端通过小程序添加课程
+     * @param userId
+     * @param param
+     * @return
+     */
+    Map<String,Object> addCourseByApp(Long userId,Map param);
 }

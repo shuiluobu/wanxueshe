@@ -1,4 +1,4 @@
-package com.wxs.entity.dictionary;
+package com.wxs.entity.common;
 
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -8,22 +8,22 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 字典表
+ * 
  * </p>
  *
  * @author skyer
  * @since 2017-12-15
  */
-@TableName("t_dictionary")
-public class TDictionary extends Model<TDictionary> {
+@TableName("t_course_type_dict")
+public class TCourseTypeDict extends Model<TCourseTypeDict> {
 
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
-	private String key;
-	private String value;
-	private String type;
+	private String parentCode;
+	private String courseTypeCode;
+	private String courseTypeName;
 	private Integer status;
 
 
@@ -35,28 +35,28 @@ public class TDictionary extends Model<TDictionary> {
 		this.id = id;
 	}
 
-	public String getKey() {
-		return key;
+	public String getParentCode() {
+		return parentCode;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
 	}
 
-	public String getValue() {
-		return value;
+	public String getCourseTypeCode() {
+		return courseTypeCode;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setCourseTypeCode(String courseTypeCode) {
+		this.courseTypeCode = courseTypeCode;
 	}
 
-	public String getType() {
-		return type;
+	public String getCourseTypeName() {
+		return courseTypeName;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setCourseTypeName(String courseTypeName) {
+		this.courseTypeName = courseTypeName;
 	}
 
 	public Integer getStatus() {
