@@ -88,7 +88,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             TClassWork classWork = new TClassWork().selectById(workId);
             TCourse course = new TCourse().selectById(classWork.getCourseId());
             dynamic.setCourseId(classWork.getCourseId()); //班级
-            dynamic.setClassLessonId(classWork.getLeessonId()); //课节
+            dynamic.setClassLessonId(classWork.getLessonId()); //课节
             dynamic.setOrganId(course.getOrganizationId()); //机构
             dynamic.setCourseId(course.getId()); //课程
             dynamic.setDynamicType("GERENCZ");//类型为个人成长

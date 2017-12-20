@@ -57,7 +57,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
             TCourse tClass = new TCourse().selectById(classWork.getCourseId());
-            dynamic.setClassLessonId(classWork.getLeessonId()); //课节
+            dynamic.setClassLessonId(classWork.getLessonId()); //课节
             dynamic.setOrganId(tClass.getOrganizationId()); //机构
             dynamic.setCourseId(classWork.getCourseId()); //课程
             dynamic.setDynamicType("ZUOYE");//类型为作业

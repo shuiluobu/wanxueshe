@@ -23,9 +23,9 @@ public class TClassWork extends Model<TClassWork> {
     @TableId(value="id", type= IdType.AUTO)
     private Long id;
     /**
-     * 课节Id
+     * 课时Id
      */
-    private Long leessonId;
+    private Long lessonId;
     /**
      * 课程Id，课程可以查询到
      */
@@ -52,12 +52,12 @@ public class TClassWork extends Model<TClassWork> {
         this.id = id;
     }
 
-    public Long getLeessonId() {
-        return leessonId;
+    public Long getLessonId() {
+        return lessonId;
     }
 
-    public void setLeessonId(Long leessonId) {
-        this.leessonId = leessonId;
+    public void setLessonId(Long lessonId) {
+        this.lessonId = lessonId;
     }
 
     public Long getCourseId() {
