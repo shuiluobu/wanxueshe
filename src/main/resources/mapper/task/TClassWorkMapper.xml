@@ -7,9 +7,7 @@
 		<id column="id" property="id" />
 		<result column="leessonId" property="leessonId" />
 		<result column="classId" property="classId" />
-		<result column="content" property="content" />
-		<result column="video" property="video" />
-		<result column="imgUrls" property="imgUrls" />
+		<result column="dynamicId" property="dynamicId"/>
 		<result column="endTime" property="endTime" />
 		<result column="beginTime" property="beginTime" />
 		<result column="createTime" property="createTime" />

@@ -35,18 +35,8 @@ public class TClassWork extends Model<TClassWork> {
      */
     private String title;
 
-    /**
-     * 作业说明
-     */
-    private String content;
-    /**
-     * 小视频对象，json格式
-     */
-    private String video;
-    /**
-     * 图片路径集合,json格式
-     */
-    private String imgUrls;
+    private Long dynamicId; //动态
+
     private Date endTime;
     private Date beginTime;
     private Date createTime;
@@ -78,28 +68,12 @@ public class TClassWork extends Model<TClassWork> {
         this.classId = classId;
     }
 
-    public String getContent() {
-        return content;
+    public Long getDynamicId() {
+        return dynamicId;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getVideo() {
-        return video;
-    }
-
-    public void setVideo(String video) {
-        this.video = video;
-    }
-
-    public String getImgUrls() {
-        return imgUrls;
-    }
-
-    public void setImgUrls(String imgUrls) {
-        this.imgUrls = imgUrls;
+    public void setDynamicId(Long dynamicId) {
+        this.dynamicId = dynamicId;
     }
 
     public Date getEndTime() {
