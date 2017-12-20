@@ -21,5 +21,5 @@ public interface ITFrontUserService extends IService<TFrontUser> {
     public TWxUser saveUserByWx(String wxUserInfo,String sessionId);
 
     public List<Map<String,Object>> getUserFriends(Long userId);
-	
+    Map<String, Object> editUserInfoByMySelf(Long userId, String nickName, String headImg, int gener, String mobilePhone);
 }

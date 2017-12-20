@@ -1,6 +1,7 @@
 package com.wxs.service.customer.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.common.collect.Maps;
 import com.wxs.cache.ICache;
 import com.wxs.entity.customer.TFriend;
 import com.wxs.entity.customer.TFrontUser;
@@ -89,6 +90,20 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
             tFriend.put("courseCount",studentClassMapper.getParentCourseCount(parent.getId()));
         });
         return list;
+    }
+
+    @Override
+    public Map<String, Object> editUserInfoByMySelf(Long userId, String nickName, String headImg, int gener, String mobilePhone) {
+        Map<String, Object> result = Maps.newHashMap();
+        TFrontUser user = baseMapper.selectById(userId);
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("nickName", nickName);
+        wrapper.eq("mobilePhone", mobilePhone);
+        wrapper.eq("headImg", headImg);
+        baseMapper.update(user, wrapper);
+        result.put("success", true);
+        result.put("message", "保存成功");
+        return result;
     }
 
 }

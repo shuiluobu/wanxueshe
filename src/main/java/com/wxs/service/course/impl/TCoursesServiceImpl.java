@@ -185,6 +185,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         classCourse.setEndTime(BaseUtil.toDate(endDays));
         classCourse.setOrganName(organName);
         classCourse.setCourseCateId(0L); //表示没有关联的机构课程
+        classCourse.setOrganizationId(0L); //表示暂时没有机构
         classCourse.setTeacherName(teacherName); //授课老师
         classCourse.setCourseRemark(courseDetails);
         classCourse.insert();//保存课程

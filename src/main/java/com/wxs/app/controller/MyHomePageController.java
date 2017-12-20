@@ -2,6 +2,7 @@ package com.wxs.app.controller;
 
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.customer.TStudent;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.customer.ITFrontUserService;
 import com.wxs.service.customer.ITParentService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.wxs.core.util.OsppyUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -71,28 +73,14 @@ public class MyHomePageController extends BaseWxController{
         return Result.of(parentService.getStudentByParent(parentId));
     }
 
-    @RequestMapping(value = "/saveMygrowth")
-    public Result saveMygrowth(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+    @RequestMapping(value = "/saveMyGrowth")
+    public Result saveMyGrowth(@RequestParam(value = "sessionId" ,required = true) String sessionId,
                                @RequestParam MultipartFile[] imageOrVideos,
                                HttpServletRequest request) throws IOException {
         //保存我的作业
-        List<TDyimg> dyimgs = new ArrayList<>();
         Long userId = 0L;
-        for (MultipartFile imageOrVideo : imageOrVideos) {
-            String originalFilename = imageOrVideo.getOriginalFilename();
-            String newFileName = null;
-            String pic_path = request.getSession().getServletContext().getRealPath("/upload/callRing");
-            //新图片路径
-            File targetFile = new File(pic_path, newFileName);
-            //内存数据读入磁盘
-            imageOrVideo.transferTo(targetFile);
-
-            TDyimg tDyimg = new TDyimg();
-            tDyimg.setCreateTime(new Date());
-            tDyimg.setOriginalImgUrl(pic_path + "/" + newFileName);
-            tDyimg.setStatus(0);
-            dyimgs.add(tDyimg); //图片list
-        }
+        String mediaType = request.getParameter("mediaType"); //文件类型，IMG 图片，VIDEO 小视频
+        List<String> mediaUrls = getImageOrVideoUrls(imageOrVideos);
         String content = request.getParameter("content");
         Integer power = Integer.parseInt(request.getParameter("power")); //是否公开
         Long studentId = Long.parseLong(request.getParameter("studentId"));
@@ -102,7 +90,7 @@ public class MyHomePageController extends BaseWxController{
         dynamic.setContent(content);
         dynamic.setStudentId(studentId);
         dynamic.setUserId(userId); //用户
-        return Result.of(studentService.saveMygrowth(dyimgs, dynamic, workId));
+        return Result.of(studentService.saveMygrowth(mediaUrls,mediaType, dynamic, workId));
     }
 
     @RequestMapping(value = "/sendComment")
@@ -111,6 +99,41 @@ public class MyHomePageController extends BaseWxController{
         //我的学员
         Long userId = 0L;
         return Result.of(dynamicmsgService.saveComment(userId, dynamicId, content));
+    }
+
+    @RequestMapping(value = "/saveStudent")
+    public Result saveStudent(@RequestParam(value = "sessionId", required = true) String sessionId,
+                              @RequestParam String studentName, @RequestParam int sex) {
+        //我的学员
+        Long userId = 0L;
+        TStudent student = new TStudent();
+        student.setRealName(studentName);
+        student.setSex(sex);
+        student.setUserId(userId);
+        return Result.of(studentService.saveStudent(student));
+    }
+
+    @RequestMapping(value = "/editMyself")
+    public Result editMyself(@RequestParam(value = "sessionId", required = true) String sessionId,
+                             @RequestParam(required = false, value = "nickName", defaultValue = "") String nickName,
+                             @RequestParam(required = false,defaultValue = "") MultipartFile file,
+                             @RequestParam(required = true, value = "sex", defaultValue = "0") int sex,
+                             @RequestParam(required = true, value = "mobilePhone", defaultValue = "") String mobilePhone) {
+        //我的学员
+        Long userId = 0L;
+
+        try {
+            String headImgUrl = imgUploadPath + "userLogoImg" + OsppyUtil.osSeparator() + userId +file.getName();
+            File newFile = new File(headImgUrl);
+            if(!newFile.exists() || !newFile.isDirectory()){
+                newFile.mkdirs();//会创建所有的目录
+            }
+            file.transferTo(new File(headImgUrl));
+            return Result.of(frontUserService.editUserInfoByMySelf(userId, nickName, headImgUrl, sex, mobilePhone));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Result.error("上传头像出错了");
     }
 
 

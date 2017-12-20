@@ -19,5 +19,5 @@ import java.util.Map;
  */
 public interface ITClassWorkService extends IService<TClassWork> {
     Map<String,Object> getClassWorkOutline(Long taskId);
-    Map<String,Object> saveStudentWork(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId);
+    Map<String,Object> saveStudentWork(List<String> mediaUrls, String mediaType,TDynamicmsg dynamic, Long workId);
 }

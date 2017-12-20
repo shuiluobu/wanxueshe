@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.ImmutableMap;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.comment.TDyvideo;
 import com.wxs.entity.course.TClass;
 import com.wxs.entity.course.TCourse;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TStudentWork;
+import com.wxs.enu.EnuDynamicTypeCode;
 import com.wxs.mapper.task.TClassWorkMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.task.ITClassWorkService;
@@ -53,14 +55,15 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
 
     @Override
     @Transactional
-    public Map<String, Object> saveStudentWork(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId) {
+    public Map<String, Object> saveStudentWork(List<String> mediaUrls,String mediaType, TDynamicmsg dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
-            TCourse tClass = new TCourse().selectById(classWork.getCourseId());
+            TCourse course = new TCourse().selectById(classWork.getCourseId());
             dynamic.setClassLessonId(classWork.getLessonId()); //课节
-            dynamic.setOrganId(tClass.getOrganizationId()); //机构
+            dynamic.setOrganId(course.getOrganizationId()); //机构
             dynamic.setCourseId(classWork.getCourseId()); //课程
-            dynamic.setDynamicType("ZUOYE");//类型为作业
+            dynamic.setClassLessonId(classWork.getLessonId());
+            dynamic.setDynamicType(EnuDynamicTypeCode.DYNAMIC_TYPE_MYWORK.getTypeCode());//类型为作业
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
             TStudentWork studentWork = new TStudentWork();
@@ -69,11 +72,23 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
             studentWork.setStudentId(dynamic.getStudentId());
             studentWork.setCreateTime(new Date());
             studentWork.insert();//保存作业
-            for (TDyimg dyimg : dyimgs) {
-                dyimg.setDynamicId(dynamic.getId());
-                dyimg.insert(); //动态图片保存
+            if(mediaType.equals("IMG")){
+                for (String mediaUrl : mediaUrls) {
+                    TDyimg dyimg = new TDyimg();
+                    dyimg.setDynamicId(dynamic.getId());
+                    dyimg.setStatus(0);
+                    dyimg.setCreateTime(new Date());
+                    dyimg.setOriginalImgUrl(mediaUrl);
+                    dyimg.insert(); //动态图片保存
+                }
+            } else {
+                String mediaUrl = mediaUrls.get(0);
+                TDyvideo dyvideo = new TDyvideo();
+                dyvideo.setDynamicId(dynamic.getId());
+                dyvideo.setCreateTime(new Date());
+                dyvideo.setVideoUrl(mediaUrl);
+                dyvideo.insert(); //动态小视频
             }
-
             Map<String, Object> dynMap = BaseUtil.convertBeanToMap(dynamic);
             return dynamicmsgService.buildOneDynamic(dynMap);
         } catch (Exception e) {

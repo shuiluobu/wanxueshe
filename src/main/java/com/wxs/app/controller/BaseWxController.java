@@ -18,6 +18,14 @@ import com.wxs.service.organ.ITOrganizationService;
 import com.wxs.service.task.ITClassWorkService;
 import com.wxs.service.task.ITStudentWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
+import org.wxs.core.util.BaseUtil;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/12/12 0012.
@@ -60,9 +68,33 @@ public class BaseWxController {
     public ISequenceService sequenceService;
 
 
+    @Value("${web.upload-path}")
+    public String imgUploadPath;
+
     public static Long userId = 1L;
     public static Long coursesId = 1L;
     public static Long lessionId = 1L;
     public static Long organId = 1L;
     public static Long teacherId =1L;
+
+    public List<String> getImageOrVideoUrls(MultipartFile[] imageOrVideos) {
+        List<String> mediaUrls = new ArrayList<>();
+        try{
+            for (MultipartFile imageOrVideo : imageOrVideos) {
+                String originalFilename = imageOrVideo.getOriginalFilename();
+                String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
+                String newFileName = BaseUtil.uuid() + suffix; //uuid +后缀
+                String mediaFilePath = imgUploadPath + "dynamic" + "/" + BaseUtil.toShortDate(new Date()) + "/" + newFileName;
+                File targetFile = new File(mediaFilePath); //新图片路径
+                if (!targetFile.exists() || !targetFile.isDirectory()) {
+                    targetFile.mkdirs();
+                }
+                imageOrVideo.transferTo(targetFile);   //内存数据读入磁盘
+                mediaUrls.add(mediaFilePath);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return mediaUrls;
+    }
 }
