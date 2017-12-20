@@ -21,4 +21,6 @@ public interface ITStudentService extends IService<TStudent> {
     Map<String, Object> getMyCourses(Long userId); //我的课程
     List<Map<String,Object>> isEndMyCourses(Long userId,Integer isEnd);
     Map<String, Object> saveMygrowth(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId);
+    public Map<Long, String> queryStudentByUserId(Long userId);
+    public Map<String,Object> saveStudent(TStudent student);
 }

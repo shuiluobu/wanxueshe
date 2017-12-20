@@ -1,13 +1,15 @@
 package com.wxs.service.customer.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.course.TClass;
+import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TStudent;
-import com.wxs.entity.task.TClassTask;
-import com.wxs.entity.task.TStudentTask;
+import com.wxs.entity.task.TClassWork;
+import com.wxs.entity.task.TStudentWork;
 import com.wxs.mapper.course.TStudentClassMapper;
 import com.wxs.mapper.customer.TFllowCourseMapper;
 import com.wxs.mapper.customer.TFollowUserMapper;
@@ -36,9 +38,13 @@ import java.util.Map;
 @Service
 public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> implements ITStudentService {
 
+    @Autowired
     private TFllowOrganMapper fllowOrganMapper;
+    @Autowired
     private TFollowUserMapper followUserMapper;
+    @Autowired
     private TFllowCourseMapper fllowCourseMapper;
+    @Autowired
     private TStudentClassMapper studentClassMapper; //我的课程
     @Autowired
     private ITDynamicmsgService dynamicmsgService;
@@ -58,35 +64,36 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
 
     /**
      * 个人首页，课程，我的课程
+     *
      * @param userId
      * @return
      */
     public Map<String, Object> getMyCourses(Long userId) {
         //我的课程
-        Map<String,Object> result = Maps.newHashMap();
-        result.put("0", isEndMyCourses(userId,0)); //未完成课程
-        result.put("1", isEndMyCourses(userId,1)); //已完成课程
+        Map<String, Object> result = Maps.newHashMap();
+        result.put("0", isEndMyCourses(userId, 0)); //未完成课程
+        result.put("1", isEndMyCourses(userId, 1)); //已完成课程
         return result;
     }
 
-    public List<Map<String,Object>> isEndMyCourses(Long userId,Integer isEnd){
-      return   studentClassMapper.getMyCourses(ImmutableMap.of("userId",userId,"isEnd",isEnd));
+    public List<Map<String, Object>> isEndMyCourses(Long userId, Integer isEnd) {
+        return studentClassMapper.getMyCourses(ImmutableMap.of("userId", userId, "isEnd", isEnd));
     }
 
     @Override
     @Transactional
     public Map<String, Object> saveMygrowth(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId) {
         try {
-            TClassTask classTask = new TClassTask().selectById(workId);
-            TClass tClass = new TClass().selectById(classTask.getClassId());
-            dynamic.setClassId(classTask.getClassId()); //班级
-            dynamic.setClassLessonId(classTask.getLeessonId()); //课节
+            TClassWork classWork = new TClassWork().selectById(workId);
+            TClass tClass = new TClass().selectById(classWork.getClassId());
+            dynamic.setClassId(classWork.getClassId()); //班级
+            dynamic.setClassLessonId(classWork.getLeessonId()); //课节
             dynamic.setOrganId(tClass.getOrganId()); //机构
             dynamic.setCourseId(tClass.getCourseId()); //课程
             dynamic.setDynamicType("GERENCZ");//类型为个人成长
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
-            TStudentTask studentTask = new TStudentTask();
+            TStudentWork studentTask = new TStudentWork();
             studentTask.setWorkId(workId);
             studentTask.setDynamicId(dynamic.getId());
             studentTask.setStudentId(dynamic.getStudentId());
@@ -104,4 +111,30 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         }
         return null;
     }
+    @Override
+    public Map<Long, String> queryStudentByUserId(Long userId) {
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("userId", userId);
+        List<TStudent> students = baseMapper.selectList(wrapper);
+        Map<Long, String> result = Maps.newHashMap();
+        students.stream().forEach(tStudent -> {
+            result.put(tStudent.getId(),tStudent.getRealName());
+            //BaseUtil.getKeyValueMap(result, tStudent.getId(), tStudent.getRealName());
+        });
+        return result;
+    }
+    @Override
+    public Map<String,Object> saveStudent(TStudent student){
+        Map<String,Object> result = Maps.newHashMap();
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("userId",student.getUserId());
+        TParent parent = new TParent().selectOne(wrapper);
+        student.setParentId(parent.getId());
+        baseMapper.insert(student);
+        result.put("success",true);
+        result.put("message","保存成功");
+        return result;
+    }
+
+
 }

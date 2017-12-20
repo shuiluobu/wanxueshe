@@ -2,7 +2,7 @@ package com.wxs.service.task;
 
 
 import com.baomidou.mybatisplus.service.IService;
-import com.wxs.entity.task.TStudentTask;
+import com.wxs.entity.task.TStudentWork;
 
 import java.util.Map;
 
@@ -14,6 +14,6 @@ import java.util.Map;
  * @author skyer
  * @since 2017-11-24
  */
-public interface ITStudentTaskService extends IService<TStudentTask> {
-    Map<String,Object> getStudentTaskDetail(Long studentId);
+public interface ITStudentWorkService extends IService<TStudentWork> {
+    Map<String,Object> getStudentWorkDetail(Long studentId);
 }

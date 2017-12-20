@@ -33,6 +33,8 @@ public class TStudent extends Model<TStudent> {
      * 学生家长ID
      */
 	private Long parentId;
+
+	private Long userId;
     /**
      * 出生日期
      */
@@ -167,6 +169,14 @@ public class TStudent extends Model<TStudent> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	@Override

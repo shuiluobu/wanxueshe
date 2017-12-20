@@ -15,8 +15,8 @@ import com.wxs.service.customer.ITTeacherService;
 import com.wxs.service.customer.impl.TStudentServiceImpl;
 import com.wxs.service.message.ITRemindMessageService;
 import com.wxs.service.organ.ITOrganizationService;
-import com.wxs.service.task.ITClassTaskService;
-import com.wxs.service.task.ITStudentTaskService;
+import com.wxs.service.task.ITClassWorkService;
+import com.wxs.service.task.ITStudentWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -30,7 +30,7 @@ public class BaseWxController {
     @Autowired
     public ICache cache;
     @Autowired
-    public ITStudentTaskService studentTaskService;
+    public ITStudentWorkService studentTaskService;
     @Autowired
     public ITCoursesService coursesService;
     @Autowired
@@ -48,7 +48,7 @@ public class BaseWxController {
     @Autowired
     public ITCourseCategoryService courseCategoryService;
     @Autowired
-    public ITClassTaskService classTaskService;
+    public ITClassWorkService classTaskService;
     @Autowired
     public ITOrganizationService organizationService;
     @Autowired

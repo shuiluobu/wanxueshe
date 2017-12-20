@@ -1,17 +1,7 @@
 package com.wxs.app.controller;
 
-import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.customer.TTeacher;
-import com.wxs.entity.organ.TOrganization;
-import com.wxs.service.comment.ITDynamicmsgService;
-import com.wxs.service.course.ITCourseCategoryService;
-import com.wxs.service.customer.ITTeacherService;
-import com.wxs.service.organ.ITOrganizationService;
-import com.wxs.service.task.ITClassTaskService;
-import com.wxs.service.task.ITStudentTaskService;
 import com.wxs.util.Result;
-import net.bytebuddy.asm.Advice;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

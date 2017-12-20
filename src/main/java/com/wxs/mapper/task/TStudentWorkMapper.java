@@ -1,7 +1,7 @@
 package com.wxs.mapper.task;
 
-import com.wxs.entity.task.TStudentTask;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.wxs.entity.task.TStudentWork;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author skyer
  * @since 2017-11-24
  */
-public interface TStudentTaskMapper extends BaseMapper<TStudentTask> {
+public interface TStudentWorkMapper extends BaseMapper<TStudentWork> {
 
 }

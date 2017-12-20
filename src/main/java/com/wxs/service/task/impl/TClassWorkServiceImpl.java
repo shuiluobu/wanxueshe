@@ -9,14 +9,13 @@ import com.wxs.entity.course.TClass;
 import com.wxs.entity.course.TCourse;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
-import com.wxs.entity.task.TClassTask;
-import com.wxs.entity.task.TStudentTask;
-import com.wxs.mapper.task.TClassTaskMapper;
+import com.wxs.entity.task.TClassWork;
+import com.wxs.entity.task.TStudentWork;
+import com.wxs.mapper.task.TClassWorkMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
-import com.wxs.service.task.ITClassTaskService;
+import com.wxs.service.task.ITClassWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionSuspensionNotSupportedException;
 import org.springframework.transaction.annotation.Transactional;
 import org.wxs.core.util.BaseUtil;
 
@@ -33,14 +32,14 @@ import java.util.Map;
  * @since 2017-11-24
  */
 @Service
-public class TClassTaskServiceImpl extends ServiceImpl<TClassTaskMapper, TClassTask> implements ITClassTaskService {
+public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassWork> implements ITClassWorkService {
     @Autowired
-    private TClassTaskMapper classTaskMapper;
+    private TClassWorkMapper classWorkMapper;
     @Autowired
     private ITDynamicmsgService dynamicmsgService;
 
-    public Map<String, Object> getClassTaskOutline(Long taskId) {
-        Map<String, Object> classTask = classTaskMapper.getClassTask(taskId);
+    public Map<String, Object> getClassWorkOutline(Long taskId) {
+        Map<String, Object> classTask = classWorkMapper.getClassWork(taskId);
         Long teacherId = Long.parseLong(classTask.get("teacherId").toString());
         classTask.put("teacherName",new TTeacher().selectById(teacherId).getTeacherName());
         Long organId = Long.parseLong(classTask.get("organ").toString());
@@ -56,21 +55,21 @@ public class TClassTaskServiceImpl extends ServiceImpl<TClassTaskMapper, TClassT
     @Transactional
     public Map<String, Object> saveStudentWork(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId) {
         try {
-            TClassTask classTask = new TClassTask().selectById(workId);
-            TClass tClass = new TClass().selectById(classTask.getClassId());
-            dynamic.setClassId(classTask.getClassId()); //班级
-            dynamic.setClassLessonId(classTask.getLeessonId()); //课节
+            TClassWork classWork = new TClassWork().selectById(workId);
+            TClass tClass = new TClass().selectById(classWork.getClassId());
+            dynamic.setClassId(classWork.getClassId()); //班级
+            dynamic.setClassLessonId(classWork.getLeessonId()); //课节
             dynamic.setOrganId(tClass.getOrganId()); //机构
             dynamic.setCourseId(tClass.getCourseId()); //课程
             dynamic.setDynamicType("ZUOYE");//类型为作业
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
-            TStudentTask studentTask = new TStudentTask();
-            studentTask.setWorkId(workId);
-            studentTask.setDynamicId(dynamic.getId());
-            studentTask.setStudentId(dynamic.getStudentId());
-            studentTask.setCreateTime(new Date());
-            studentTask.insert();//保存作业
+            TStudentWork studentWork = new TStudentWork();
+            studentWork.setWorkId(workId);
+            studentWork.setDynamicId(dynamic.getId());
+            studentWork.setStudentId(dynamic.getStudentId());
+            studentWork.setCreateTime(new Date());
+            studentWork.insert();//保存作业
             for (TDyimg dyimg : dyimgs) {
                 dyimg.setDynamicId(dynamic.getId());
                 dyimg.insert(); //动态图片保存

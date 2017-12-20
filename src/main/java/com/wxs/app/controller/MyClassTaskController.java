@@ -2,18 +2,13 @@ package com.wxs.app.controller;
 
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
-import com.wxs.entity.customer.TStudent;
-import com.wxs.entity.task.TStudentTask;
-import com.wxs.service.task.ITClassTaskService;
-import com.wxs.service.task.ITStudentTaskService;
+import com.wxs.entity.task.TStudentWork;
 import com.wxs.util.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.wxs.core.util.BaseUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -21,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2017/11/24 0024.
@@ -34,14 +28,14 @@ public class MyClassTaskController extends BaseWxController {
 
     /**
      * 获取下发给我的作业详情
-     * @param taskId
+     * @param workId
      * @return
      */
     @RequestMapping(value = "/view/{taskId}")
     public Result view(@RequestParam(value = "sessionId" ,required = true) String sessionId,
-                       @PathVariable("taskId") Long taskId) {
+                       @PathVariable("workId") Long workId) {
         //展示作业详情
-        return Result.of(classTaskService.getClassTaskOutline(taskId));
+        return Result.of(classTaskService.getClassWorkOutline(workId));
     }
 
     @RequestMapping(value = "/saveWork")
