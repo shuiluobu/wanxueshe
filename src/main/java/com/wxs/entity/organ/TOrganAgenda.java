@@ -24,6 +24,8 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
 
     private Long userId;    //用户Id
     private Long organId;   //所属机构Id
+    private Long courseId;  //所属课程Id
+    private Long lessonId;  //所属课时Id
     private String content;  //待办工作内容
     private Integer type;   //类型: 1:教务 , 2:销售, 3:市场, 4:行政
     private Date startTime; //开始时间
@@ -59,6 +61,22 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
 
     public void setOrganId(Long organId) {
         this.organId = organId;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
+    public Long getLessonId() {
+        return lessonId;
+    }
+
+    public void setLessonId(Long lessonId) {
+        this.lessonId = lessonId;
     }
 
     public String getContent() {

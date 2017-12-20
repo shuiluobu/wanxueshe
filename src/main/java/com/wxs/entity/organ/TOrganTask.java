@@ -64,6 +64,10 @@ public class TOrganTask extends Model<TOrganTask> {
 	 * 创建时间
 	 */
 	private Date createTime;
+	/**
+	 * 任务完成时间
+	 */
+	private Date doneTime;
     /**
      * 状态 :  0:未完成 ， 1：已完成，2：签到请假
      */
@@ -166,6 +170,15 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	public Date getDoneTime() {
+		return doneTime;
+	}
+
+	public void setDoneTime(Date doneTime) {
+		this.doneTime = doneTime;
 	}
 
 	public Integer getStatus() {

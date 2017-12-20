@@ -245,9 +245,9 @@ public class COrganAgendaController {
     //获取首次完成时间
     private String getFirstDoneTime(List<TOrganTask> list){
         for(int i=0;i<list.size();i++){
-//            if(list.get(i).getDoneTime() != null){
-//                return BaseUtil.toString(list.get(i).getDoneTime(),"yyyy-MM-dd HH:mm:ss");
-//            }
+            if(list.get(i).getDoneTime() != null){
+                return BaseUtil.toString(list.get(i).getDoneTime(),"yyyy-MM-dd HH:mm:ss");
+            }
         }
         return null;
     }
