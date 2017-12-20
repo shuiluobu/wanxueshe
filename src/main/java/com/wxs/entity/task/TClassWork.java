@@ -29,7 +29,7 @@ public class TClassWork extends Model<TClassWork> {
     /**
      * 课程Id，课程可以查询到
      */
-    private Long classId;
+    private Long courseId;
     /**
      * 作业标题
      */
@@ -60,12 +60,12 @@ public class TClassWork extends Model<TClassWork> {
         this.leessonId = leessonId;
     }
 
-    public Long getClassId() {
-        return classId;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setClassId(Long classId) {
-        this.classId = classId;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public Long getDynamicId() {

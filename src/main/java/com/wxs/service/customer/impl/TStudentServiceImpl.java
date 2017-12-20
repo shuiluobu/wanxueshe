@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.course.TClass;
+import com.wxs.entity.course.TCourse;
 import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.entity.task.TClassWork;
@@ -85,11 +86,11 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     public Map<String, Object> saveMygrowth(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
-            TClass tClass = new TClass().selectById(classWork.getClassId());
-            dynamic.setClassId(classWork.getClassId()); //班级
+            TCourse course = new TCourse().selectById(classWork.getCourseId());
+            dynamic.setCourseId(classWork.getCourseId()); //班级
             dynamic.setClassLessonId(classWork.getLeessonId()); //课节
-            dynamic.setOrganId(tClass.getOrganId()); //机构
-            dynamic.setCourseId(tClass.getCourseId()); //课程
+            dynamic.setOrganId(course.getOrganizationId()); //机构
+            dynamic.setCourseId(course.getId()); //课程
             dynamic.setDynamicType("GERENCZ");//类型为个人成长
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态

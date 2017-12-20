@@ -9,6 +9,7 @@
         <result column="content" property="content"/>
         <result column="courseCateId" property="courseCateId"/>
         <result column="classId" property="classId"/>
+        <result column="courseId" property="courseId"/>
         <result column="classLessonId" property="classLessonId"/>
         <result column="power" property="power"/>
         <result column="createTime" property="createTime"/>
@@ -30,6 +31,9 @@
             </if>
             <if test="userId!=null">
                 AND d.userId = #{userId}
+            </if>
+            <if test="courseId!=null">
+                AND d.courseId = #{courseId}
             </if>
             <if test="classId!=null">
                 AND d.classId = #{classId}
