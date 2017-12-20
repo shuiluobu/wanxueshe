@@ -5,16 +5,14 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.wxs.entity.organ.TOrganTask">
 		<id column="id" property="id" />
+		<result column="agendaId" property="agendaId" />
 		<result column="title" property="title" />
 		<result column="type" property="type" />
-		<result column="dynamicId" property="dynamicId" />
-		<result column="agendaId" property="agendaId" />
+		<result column="businessId" property="businessId" />
 		<result column="courseId" property="courseId" />
-		<result column="classLessonId" property="classLessonId" />
+		<result column="lessonId" property="lessonId" />
 		<result column="teacherId" property="teacherId" />
 		<result column="studentId" property="studentId" />
-		<result column="shouldDoneTime" property="shouldDoneTime" />
-		<result column="doneTime" property="doneTime" />
 		<result column="createTime" property="createTime" />
 		<result column="status" property="status" />
 	</resultMap>
