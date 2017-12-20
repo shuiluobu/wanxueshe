@@ -28,6 +28,10 @@ public class TOrganTask extends Model<TOrganTask> {
      */
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
+	/**
+	 * 所属待办Id
+	 */
+	private Long agendaId;
     /**
      * 任务主题
      */
@@ -37,21 +41,17 @@ public class TOrganTask extends Model<TOrganTask> {
      */
 	private Integer type;
 	/**
-	 * 对应的 动态Id
+	 * 对应的 任务详情Id
 	 */
-	private Long dynamicId;
-    /**
-     * 所属待办Id
-     */
-	private Long agendaId;
+	private Long businessId;
     /**
      * 所属课程Id
      */
 	private Long courseId;
 	/**
-	 * 所属教师Id
+	 * 所属课时Id
 	 */
-	private Long classLessonId;
+	private Long lessonId;
     /**
      * 所属教师Id
      */
@@ -61,17 +61,13 @@ public class TOrganTask extends Model<TOrganTask> {
      */
 	private Long studentId;
 	/**
-	 * 作业规定完成时间
-	 */
-	private Date shouldDoneTime;
-	/**
-	 * 完成时间
-	 */
-	private Date doneTime;
-	/**
 	 * 创建时间
 	 */
 	private Date createTime;
+	/**
+	 * 任务完成时间
+	 */
+	private Date doneTime;
     /**
      * 状态 :  0:未完成 ， 1：已完成，2：签到请假
      */
@@ -103,6 +99,14 @@ public class TOrganTask extends Model<TOrganTask> {
 		this.id = id;
 	}
 
+	public Long getAgendaId() {
+		return agendaId;
+	}
+
+	public void setAgendaId(Long agendaId) {
+		this.agendaId = agendaId;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -119,20 +123,12 @@ public class TOrganTask extends Model<TOrganTask> {
 		this.type = type;
 	}
 
-	public Long getDynamicId() {
-		return dynamicId;
+	public Long getBusinessId() {
+		return businessId;
 	}
 
-	public void setDynamicId(Long dynamicId) {
-		this.dynamicId = dynamicId;
-	}
-
-	public Long getAgendaId() {
-		return agendaId;
-	}
-
-	public void setAgendaId(Long agendaId) {
-		this.agendaId = agendaId;
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
 	}
 
 	public Long getCourseId() {
@@ -141,6 +137,14 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setCourseId(Long courseId) {
 		this.courseId = courseId;
+	}
+
+	public Long getLessonId() {
+		return lessonId;
+	}
+
+	public void setLessonId(Long lessonId) {
+		this.lessonId = lessonId;
 	}
 
 	public Long getTeacherId() {
@@ -167,23 +171,6 @@ public class TOrganTask extends Model<TOrganTask> {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	public Date getShouldDoneTime() {
-		return shouldDoneTime;
-	}
-
-	public void setShouldDoneTime(Date shouldDoneTime) {
-		this.shouldDoneTime = shouldDoneTime;
-	}
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getDoneTime() {
@@ -192,6 +179,14 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setDoneTime(Date doneTime) {
 		this.doneTime = doneTime;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getStudentName() {
@@ -210,20 +205,20 @@ public class TOrganTask extends Model<TOrganTask> {
 		this.studentHeadImg = studentHeadImg;
 	}
 
-	public Long getClassLessonId() {
-		return classLessonId;
-	}
-
-	public void setClassLessonId(Long classLessonId) {
-		this.classLessonId = classLessonId;
-	}
-
 	public String getTeacherName() {
 		return teacherName;
 	}
 
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
+	}
+
+	public String getTeacherHeadImg() {
+		return teacherHeadImg;
+	}
+
+	public void setTeacherHeadImg(String teacherHeadImg) {
+		this.teacherHeadImg = teacherHeadImg;
 	}
 
 	public String getCourseName() {
@@ -234,14 +229,6 @@ public class TOrganTask extends Model<TOrganTask> {
 		this.courseName = courseName;
 	}
 
-	public String getOrganName() {
-		return organName;
-	}
-
-	public void setOrganName(String organName) {
-		this.organName = organName;
-	}
-
 	public String getLessonName() {
 		return lessonName;
 	}
@@ -250,12 +237,12 @@ public class TOrganTask extends Model<TOrganTask> {
 		this.lessonName = lessonName;
 	}
 
-	public String getTeacherHeadImg() {
-		return teacherHeadImg;
+	public String getOrganName() {
+		return organName;
 	}
 
-	public void setTeacherHeadImg(String teacherHeadImg) {
-		this.teacherHeadImg = teacherHeadImg;
+	public void setOrganName(String organName) {
+		this.organName = organName;
 	}
 
 	@Override

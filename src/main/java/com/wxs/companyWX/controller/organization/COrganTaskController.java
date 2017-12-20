@@ -4,7 +4,6 @@ import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.comment.TLike;
 import com.wxs.entity.course.TCourse;
-import com.wxs.entity.customer.TFrontUser;
 import com.wxs.entity.organ.TOrganComment;
 import com.wxs.entity.organ.TOrganTask;
 import com.wxs.service.comment.ITDyimgService;
@@ -15,6 +14,7 @@ import com.wxs.service.course.ITClassService;
 import com.wxs.service.course.ITCoursesService;
 import com.wxs.service.organ.ITOrganCommentService;
 import com.wxs.service.organ.ITOrganTaskService;
+import com.wxs.service.task.ITClockService;
 import com.wxs.util.Result;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,9 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/cOrganTask")
-public class TOrganTaskController {
+public class COrganTaskController {
 
-    private static Logger log = Logger.getLogger(TOrganTaskController.class);
+    private static Logger log = Logger.getLogger(COrganTaskController.class);
     @Autowired
     private ITOrganTaskService organTaskService;
     @Autowired
@@ -58,6 +58,8 @@ public class TOrganTaskController {
     private ITLikeService likeService;
     @Autowired
     private ITClassLessonService classLessonService;
+    @Autowired
+    private ITClockService clockService;
 
     @Value("${web.upload-path}")
     private String imgUploadPath;
@@ -78,13 +80,13 @@ public class TOrganTaskController {
         try{
             TOrganTask organTask = organTaskService.getDetailByTaskId(taskId);
             // 课堂作业，获取规定完成时间 属于 星期几
-            Date shouldDoneTime = organTask.getShouldDoneTime();
-            if(shouldDoneTime != null){
-                resultMap.put("dayOfWeek","星期" + BaseUtil.getWeekOfDate(shouldDoneTime));
-            }
+//            Date shouldDoneTime = organTask.getShouldDoneTime();
+//            if(shouldDoneTime != null){
+//                resultMap.put("dayOfWeek","星期" + BaseUtil.getWeekOfDate(shouldDoneTime));
+//            }
             resultMap.put("organTask",organTask);
             //任务内容，在动态表
-            TDynamicmsg dynamicmsg = dynamicmsgService.selectById(organTask.getDynamicId());
+            TDynamicmsg dynamicmsg = dynamicmsgService.selectById(organTask.getBusinessId());
             if(dynamicmsg != null){
                 resultMap.put("dynamicmsg",dynamicmsg);
                 //是否已点赞
@@ -107,7 +109,7 @@ public class TOrganTaskController {
                 }
             }
             //获取任务下图片
-            List<TDyimg> imgList = dyimgService.getAllByDynamicId(organTask.getDynamicId());
+            List<TDyimg> imgList = dyimgService.getAllByDynamicId(organTask.getBusinessId());
             if(imgList.size()>0){
                 resultMap.put("imgList",imgList);
             }
@@ -165,7 +167,6 @@ public class TOrganTaskController {
         TOrganTask organTask = organTaskService.selectById(taskId);
         try{
             organTask.setStatus(1);
-            organTask.setDoneTime(new Date());
             organTaskService.updateById(organTask);
             return Result.of("签到成功!");
         }catch (Exception e){
@@ -191,7 +192,6 @@ public class TOrganTaskController {
             for(int i=0;i<arr.length;i++){
                 tempOrganTask = organTaskService.selectById(Long.parseLong(arr[i]));
                 tempOrganTask.setStatus(1);
-                tempOrganTask.setDoneTime(new Date());
                 organTaskService.updateById(tempOrganTask);
             }
             return Result.of("批量签到成功!");
@@ -262,14 +262,13 @@ public class TOrganTaskController {
             dynamicmsg.setDynamicType("课堂点评");//动态类型
             dynamicmsg.setCourseId(courseId);//所属课程Id
             dynamicmsg.setClassId(classService.getByCourseId(courseId).getId());//所属班级Id
-            dynamicmsg.setClassLessonId(tempOrganTask.getClassLessonId());//所属课时Id
+            dynamicmsg.setClassLessonId(tempOrganTask.getLessonId());//所属课时Id
             dynamicmsg.setStudentId(tempOrganTask.getStudentId());//所属学生Id
             dynamicmsg.setOrganId(course.getOrganizationId());//所属教育机构Id
             //插入
             dynamicmsgService.insert(dynamicmsg);
             //更新点评任务
-            tempOrganTask.setDynamicId(dynamicmsg.getId());
-            tempOrganTask.setDoneTime(new Date());//完成时间
+            tempOrganTask.setBusinessId(dynamicmsg.getId());
             tempOrganTask.setStatus(1);//状态修改为完成
             organTaskService.updateById(tempOrganTask);
             //保存图片
@@ -407,7 +406,7 @@ public class TOrganTaskController {
             List<TOrganTask> organTasks = organTaskService.getAllByAgendaId(agendaId,3,statuss);
             if(organTasks.size() >0){
                 //获取课时名称
-                String classLessonName = classLessonService.selectById(organTasks.get(0).getClassLessonId()).getLessonName();
+                String classLessonName = classLessonService.selectById(organTasks.get(0).getLessonId()).getLessonName();
                 resultMap.put("classLessonName",classLessonName);
                 //学生Id,头像
                 List<Map> list = new ArrayList<>();
@@ -460,16 +459,15 @@ public class TOrganTaskController {
                 tempDynamicmsg.setDynamicType("课堂作业");//动态类型
                 tempDynamicmsg.setCourseId(courseId);//所属课程Id
                 tempDynamicmsg.setClassId(classService.getByCourseId(courseId).getId());//所属班级Id
-                tempDynamicmsg.setClassLessonId(tempOrganTask.getClassLessonId());//所属课时Id
+                tempDynamicmsg.setClassLessonId(tempOrganTask.getLessonId());//所属课时Id
                 tempDynamicmsg.setStudentId(tempOrganTask.getStudentId());//所属学生Id
                 tempDynamicmsg.setOrganId(course.getOrganizationId());//所属教育机构Id
                 //插入动态
                 dynamicmsgService.insert(tempDynamicmsg);
                 dynamicmsgIds.add(tempDynamicmsg.getId());
                 //更新发布任务
-                tempOrganTask.setDynamicId(tempDynamicmsg.getId());//动态Id
-                tempOrganTask.setShouldDoneTime(BaseUtil.toDate(shouldDoneTime,"yyyy-MM-dd HH:mm"));//作业需完成时间
-                tempOrganTask.setDoneTime(new Date());//完成时间
+                tempOrganTask.setBusinessId(tempDynamicmsg.getId());//动态Id
+//                tempOrganTask.setShouldDoneTime(BaseUtil.toDate(shouldDoneTime,"yyyy-MM-dd HH:mm"));//作业需完成时间
                 tempOrganTask.setStatus(1);//状态修改为完成
                 organTaskService.updateById(tempOrganTask);
             }
