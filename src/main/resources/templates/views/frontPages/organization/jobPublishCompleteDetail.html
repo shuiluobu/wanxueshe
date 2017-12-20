@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>作业发布完成详情</title>
+    <style>
+        .multiSelect{
+            border: 1px solid #CCCCCC;
+            height: 20px;
+            width: 20px;
+            margin-right: 20px;
+            background-color: #F2F2F2
+        }
+        .multiSelect-on{
+            background-color: #666666;
+        }
+        .multiSelect-unSelect{
+            border: 1px solid #CCCCCC;
+            height: 20px;
+            width: 20px;
+            margin-right: 20px;
+            background-image: url("/weui/images/wyh/right-square.jpg");
+        }
+        .multiSelectAll{
+            border: 1px solid #CCCCCC;
+            height: 20px;
+            width: 20px;
+            margin-right: 20px;
+            background-color: #F2F2F2
+        }
+        .multiSelectAll-on{
+            background-color: #666666;
+        }
+        .status_a a{
+            margin: 0 0 0 25px;
+            color: #0066CC;
+        }
+        .rightRound{
+            float: right;
+        }
+        .rightRound span{
+            position: absolute;
+            right: 40px;
+            top: 36px;
+            color: #666666;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>作业发布-高空作业-1/3课时</span></div>
+<div class="weui-tab" style="margin-top: 45px;">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            全部学员()
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            已发布()
+        </a>
+        <a class="weui-navbar__item" href="#tab3">
+            未发布()
+        </a>
+    </div>
+    <div class="weui-tab__bd" style="height: auto">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active" style="height: auto">
+
+            <div class="weui-panel" >
+
+                <div class="weui-panel__bd" style="font-size: 13px" id="signInAll">
+
+                    <!--<div class="weui-media-box weui-media-box_appmsg ">-->
+                        <!--<div class="weui-media-box__hd ">-->
+                            <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+                        <!--</div>-->
+                        <!--<div class="weui-media-box__bd">-->
+                            <!--<p class="comment-blue">王同学</p>-->
+                            <!--<p>未点评</p>-->
+                        <!--</div>-->
+                        <!--<div class="rightRound" >-->
+                            <!--<p><span>点评</span><img src="/weui/images/wyh/toRight.png"> </p>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </div>
+
+            </div>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <div class="weui-panel" >
+                <div class="weui-panel__bd" style="font-size: 13px">
+                </div>
+            </div>
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+            <div class="weui-panel" >
+                <div class="weui-panel__bd" style="font-size: 13px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="weui-cell" id="agendaStatus">
+    <div class="multiSelectAll"></div>
+    <div class="weui-cell__bd">
+        <p>全选</p>
+    </div>
+    <div class="weui-cell__ft status_a">
+        <a>发布</a>
+    </div>
+</div>
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    var agendaId = 1;
+    $(function () {
+
+        //获取班级里所有学生的签到情况
+        $.ajax("/cOrganTask/getAllByAgendaId",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{agendaId:agendaId,type:3,status:2},
+            success:function(json){
+                var list = json.data;
+                var as = $(".weui-navbar a");
+                //全部点评数量
+                var totalNum = list.length;
+                as.eq(0).text("全部学员("+totalNum+")");
+                //已点评数量
+                var doneNum = 0;
+                //未点评数量
+                var notDoneNum = 0;
+                var tempStatus;//签到状态
+                var operation;
+                var tempDiv;
+                for(var i=0;i<list.length;i++){
+                    if(list[i].status == 0){
+                        tempDiv =  '<div id="'+list[i].studentId+'" class="multiSelect"></div>';
+                        notDoneNum++;
+                        tempStatus = "未发布";
+                        operation = "发布"
+                    }
+                    if(list[i].status == 1){
+                        tempDiv  =  '<div id="'+list[i].studentId+'" class="multiSelect-unSelect"></div>';
+                        doneNum++;
+                        tempStatus = "发布时间 : "+list[i].doneTime;
+                        operation = "查看"
+                    }
+                    var div = '<div class="weui-media-box weui-media-box_appmsg ">'+
+                                    tempDiv+
+                                    '<div class="weui-media-box__hd ">'+
+                                          '<img class="weui-media-box__thumb" src="'+list[i].studentHeadImg+'">'+
+                                     '</div>'+
+                                    '<div class="weui-media-box__bd">'+
+                                        '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                                        '<p>'+tempStatus+'</p>'+
+                                    '</div>'+
+                                    '<div class="rightRound" id="'+list[i].id+'">'+
+                                        '<p><span>'+operation+'</span><img src="/weui/images/wyh/toRight.png"> </p>'+
+                                    '</div>'+
+                                '</div>';
+                    $("#signInAll").append(div);
+                }
+                as.eq(1).text("已发布("+doneNum+")");
+                as.eq(2).text("未发布("+notDoneNum+")");
+                //发布作业或查看作业详情
+                $(".rightRound").click(function () {
+                    if($(this).prev().find("p").eq(1).text() == "未发布"){
+                        var studentId = $(this).parent().find("div[class='multiSelect']").attr("id");
+                        var studentName = $(this).parent().find("p[class='comment-blue']").text();
+                        publishJob(studentId,studentName);
+                    }else{
+                        loadClassworkDetail($(this).attr("id"));
+                    }
+                });
+            }
+        });
+
+        //选项卡切换执行查询
+        $(".weui-navbar a" ).click(function () {
+            var index = $(this).index();
+            getByType(index);
+        })
+        //多选切换样式
+        $(".multiSelect").click(function () {
+            $(this).toggleClass("multiSelect-on");
+        });
+        //全选切换样式
+        $(".multiSelectAll").click(function () {
+            $(this).toggleClass("multiSelectAll-on");
+            if($(this).hasClass("multiSelectAll-on")){
+                $(".multiSelect").each(function () {
+                    $(this).addClass("multiSelect-on");
+                })
+            }else{
+                $(".multiSelect").each(function () {
+                    $(this).removeClass("multiSelect-on");
+                })
+            }
+        });
+        //发布作业
+        $(".status_a a").eq(0).click(function () {
+            var ids = "";
+            var names = "";
+            $(".multiSelect-on").each(function (i) {
+                ids += $(this).attr("id")+",";
+                names += $(this).parent().find("p[class='comment-blue']").text()+",";
+            });
+            if(ids.length == 0){
+                $.toast("请选择要发布作业的学员",'text',800,function(){
+                    //提示完成后执行方法
+                });
+                return;
+            }
+            ids = ids.substring(0,ids.length-1);
+            names = names.substring(0,names.length-1);
+            window.location = "/organization/viewsTransfer?view=publishJob&itemId="+agendaId+"&paramOne="+ids+"&paramTwo="+names;
+        });
+
+    });
+
+    // index:   0：全部  ，1：已完成，2：未完成,对应选项卡下标
+    function getByType(index) {
+        var status;
+        //全部
+        if(index == 0){
+            status = 2;
+        }
+        //已完成
+        if(index == 1){
+            status = 1;
+        }
+        //未完成
+        if(index == 2){
+            status = 0;
+        }
+        $.ajax("/cOrganTask/getAllByAgendaId",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{agendaId:agendaId,type:3,status:status},
+            success:function(json){
+                var mainDiv = $(".weui-panel__bd").eq(index);
+                mainDiv.empty();
+                var list = json.data;
+                if(list != null){
+                    var tempStatus;//签到状态
+                    var operation;
+                    var tempDiv;
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].status == 0){
+                            tempDiv =  '<div id="'+list[i].studentId+'" class="multiSelect"></div>';
+                            tempStatus = "未发布";
+                            operation = "发布"
+                        }
+                        if(list[i].status == 1){
+                            tempDiv  =  '<div id="'+list[i].studentId+'" class="multiSelect-unSelect"></div>';
+                            tempStatus = "点评时间 : "+list[i].doneTime;
+                            operation = "查看"
+                        }
+                        var div = '<div class="weui-media-box weui-media-box_appmsg ">'+
+                                        tempDiv +
+                                        '<div class="weui-media-box__hd ">'+
+                                             '<img class="weui-media-box__thumb" src="'+list[i].studentHeadImg+'">'+
+                                        '</div>'+
+                                        '<div class="weui-media-box__bd">'+
+                                            '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                                            '<p>'+tempStatus+'</p>'+
+                                        '</div>'+
+                                        '<div class="rightRound" id="'+list[i].id+'">'+
+                                             '<p><span>'+operation+'</span><img src="/weui/images/wyh/toRight.png"> </p>'+
+                                        '</div>'+
+                                    '</div>';
+                        mainDiv.append(div);
+                    }
+                    //发布作业或查看作业详情
+                    $(".rightRound").click(function () {
+                        if($(this).prev().find("p").eq(1).text() == "未发布"){
+                            var studentId = $(this).parent().find("div[class='multiSelect']").attr("id");
+                            var studentName = $(this).parent().find("p[class='comment-blue']").text();
+                            publishJob(studentId,studentName);
+                        }else{
+                            loadClassworkDetail($(this).attr("id"));
+                        }
+                    });
+                    //多选切换样式
+                    $(".multiSelect").click(function () {
+                        $(this).toggleClass("multiSelect-on");
+                    });
+                }
+            }
+        });
+    }
+
+    //发布作业
+    function publishJob(studentId,studentName) {
+        window.location = "/organization/viewsTransfer?view=publishJob&paramOne="+studentId+"&paramTwo="+studentName;
+    }
+    //查看作业详情
+    function loadClassworkDetail(taskId) {
+        window.location = "/organization/viewsTransfer?view=classworkDetail&itemId="+taskId;
+    }
+
+</script>
+</html>

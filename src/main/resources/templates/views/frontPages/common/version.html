@@ -19,4 +19,63 @@
     $(".return").click(function () {
        window.history.back(-1);
     });
+    function getUrlParam(name) {
+        try{
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null){
+                if(r[2].indexOf('%')>=0){
+                    return decodeURI(r[2]);
+                }else{
+                    return r[2];
+                }
+            }
+        }catch(e){
+            console.log(e.message);
+        }
+        return null;
+    }
+
+    //获取URL所有参数
+    function GetUrlParms() {
+        var args = new Object();
+        var query = location.search.substring(1); //获取查询串
+        var pairs = query.split("&"); //在逗号处断开
+        for (var i = 0; i < pairs.length; i++) {
+            var pos = pairs[i].indexOf('='); //查找name=value
+            if (pos == -1) continue; //如果没有找到就跳过
+            var argname = pairs[i].substring(0, pos); //提取name
+            var value = pairs[i].substring(pos + 1); //提取value
+            args[argname] = unescape(value); //存为属性
+        }
+        return args;
+    }
+    function getParmVal(key){
+        var args = new Object();
+        args=GetUrlParms();
+        if (args[key] != undefined) {
+            //如果要查找参数key:
+            var value1 = args[key];
+            return value1;
+        }else{
+            return null;
+        }
+    }
+
+    //用来获取超链接传送的中文参数
+    function getUrlVars(){
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    function getUrlVar(name){
+        return getUrlVars()[name];
+    }
 </script>
