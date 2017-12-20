@@ -31,17 +31,23 @@ public class TRemindMessage extends Model<TRemindMessage> {
     /**
      * 动态（消息）主题ID
      */
-	private Long dyMsgId;
+	//private Long dyMsgId;
     /**
      * 消息提醒类型
      */
 	private String remindType;
 
-	private String jmsType; //点对点通知还是广播
+	private String jmsType; //点对点通知还是广播 queue or topic
 
 	private String messageContent; //消息主题
 
 	private Integer readStatus=0; //是否已读
+
+	private String remindMedia; //提醒通知媒介 XCX：小程序，GZH:公众号,DX：短信
+	/**
+	 * 提醒时间
+	 */
+	private Date remindTime; //提醒时间
 
 	private Date createTime;
 	private Integer status=0;
@@ -79,13 +85,13 @@ public class TRemindMessage extends Model<TRemindMessage> {
 		this.tile = tile;
 	}
 
-	public Long getDyMsgId() {
-		return dyMsgId;
-	}
-
-	public void setDyMsgId(Long dyMsgId) {
-		this.dyMsgId = dyMsgId;
-	}
+//	public Long getDyMsgId() {
+//		return dyMsgId;
+//	}
+//
+//	public void setDyMsgId(Long dyMsgId) {
+//		this.dyMsgId = dyMsgId;
+//	}
 
 	public String getRemindType() {
 		return remindType;
@@ -133,6 +139,22 @@ public class TRemindMessage extends Model<TRemindMessage> {
 
 	public void setReadStatus(Integer readStatus) {
 		this.readStatus = readStatus;
+	}
+
+	public String getRemindMedia() {
+		return remindMedia;
+	}
+
+	public void setRemindMedia(String remindMedia) {
+		this.remindMedia = remindMedia;
+	}
+
+	public Date getRemindTime() {
+		return remindTime;
+	}
+
+	public void setRemindTime(Date remindTime) {
+		this.remindTime = remindTime;
 	}
 
 	@Override

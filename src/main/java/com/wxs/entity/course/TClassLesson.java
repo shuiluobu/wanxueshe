@@ -79,7 +79,7 @@ public class TClassLesson extends Model<TClassLesson> {
 	/**
 	 * 状态 1:启用，0：禁止
 	 */
-	private Long status;
+	private Integer status;
 
 	//------额外字段
 	@TableField(exist = false)
@@ -196,11 +196,11 @@ public class TClassLesson extends Model<TClassLesson> {
 		this.updateTime = updateTime;
 	}
 
-	public Long getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(Long status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

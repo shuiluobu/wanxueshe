@@ -42,7 +42,7 @@ public class TCourse extends Model<TCourse> {
 	 */
 	private String courseName;
 	/**
-	 * 课程类型，来自大课程表类型
+	 * 课程类型
 	 */
 	private String courseType;
 	/**
@@ -76,9 +76,12 @@ public class TCourse extends Model<TCourse> {
 
 	private Long  teacherId;
 
-	//-------额外字段
-	@TableField(exist = false)
-	private String courseCategoryName; //所属课程类型名称
+	private String teacherName;
+	/**
+	 * 课程介绍
+	 */
+	private String courseRemark;
+
 	@TableField(exist = false)
 	private String organName; //所属教育机构名称
 	@TableField(exist = false)
@@ -196,14 +199,6 @@ public class TCourse extends Model<TCourse> {
 		this.surplusClassLesson = surplusClassLesson;
 	}
 
-	public String getCourseCategoryName() {
-		return courseCategoryName;
-	}
-
-	public void setCourseCategoryName(String courseCategoryName) {
-		this.courseCategoryName = courseCategoryName;
-	}
-
 	public String getOrganName() {
 		return organName;
 	}
@@ -234,6 +229,22 @@ public class TCourse extends Model<TCourse> {
 
 	public void setPageStartIndex(Integer pageStartIndex) {
 		this.pageStartIndex = pageStartIndex;
+	}
+
+	public String getTeacherName() {
+		return teacherName;
+	}
+
+	public void setTeacherName(String teacherName) {
+		this.teacherName = teacherName;
+	}
+
+	public String getCourseRemark() {
+		return courseRemark;
+	}
+
+	public void setCourseRemark(String courseRemark) {
+		this.courseRemark = courseRemark;
 	}
 
 	@Override

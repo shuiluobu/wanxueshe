@@ -3,8 +3,11 @@ package org.wxs.core.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Maps;
+import com.sun.xml.internal.rngom.parse.host.Base;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -1109,19 +1112,19 @@ public class BaseUtil {
         return returnMap;
     }
 
-    public static String toJson(Object obj)  {
-        try{
+    public static String toJson(Object obj) {
+        try {
             return objectMapper.writeValueAsString(obj);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-            return null;
+        return null;
     }
 
-    public static <T> T parseJson(String json, Class<T> clazz)  {
-        try{
+    public static <T> T parseJson(String json, Class<T> clazz) {
+        try {
             return objectMapper.readValue(json, clazz);
-        } catch ( IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -1155,20 +1158,10 @@ public class BaseUtil {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    //获取传入时间是星期几
-    public static String getDayOfWeek(Date date){
-        Map<Integer,String> map = new HashMap<>();
-        map.put(1,"日");
-        map.put(2,"一");
-        map.put(3,"二");
-        map.put(4,"三");
-        map.put(5,"四");
-        map.put(6,"五");
-        map.put(7,"六");
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        Integer dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        return "星期"+ map.get(dayOfWeek);
+    public static Map getKeyValueMap(Map map,Object key, Object value) {
+        map.put("key", key);
+        map.put("value", value);
+        return map;
     }
 
     public static Map getKeyValueMap(Object key, Object value) {
@@ -1176,5 +1169,21 @@ public class BaseUtil {
         map.put("key", key);
         map.put("value", value);
         return map;
+    }
+
+    /**
+     * 获取日期星期几
+     *
+     * @param dt
+     * @return
+     */
+    public static String getWeekOfDate(Date dt) {
+        String[] weekDays = {"日", "一", "二", "三", "四", "五", "六"};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+        return weekDays[w];
     }
 }

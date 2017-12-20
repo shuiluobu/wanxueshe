@@ -80,7 +80,7 @@ public class TOrganTaskController {
             // 课堂作业，获取规定完成时间 属于 星期几
             Date shouldDoneTime = organTask.getShouldDoneTime();
             if(shouldDoneTime != null){
-                resultMap.put("dayOfWeek",BaseUtil.getDayOfWeek(shouldDoneTime));
+                resultMap.put("dayOfWeek","星期" + BaseUtil.getWeekOfDate(shouldDoneTime));
             }
             resultMap.put("organTask",organTask);
             //任务内容，在动态表
