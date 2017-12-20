@@ -56,11 +56,10 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
     public Map<String, Object> saveStudentWork(List<TDyimg> dyimgs, TDynamicmsg dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
-            TClass tClass = new TClass().selectById(classWork.getClassId());
-            dynamic.setClassId(classWork.getClassId()); //班级
+            TCourse tClass = new TCourse().selectById(classWork.getCourseId());
             dynamic.setClassLessonId(classWork.getLeessonId()); //课节
-            dynamic.setOrganId(tClass.getOrganId()); //机构
-            dynamic.setCourseId(tClass.getCourseId()); //课程
+            dynamic.setOrganId(tClass.getOrganizationId()); //机构
+            dynamic.setCourseId(classWork.getCourseId()); //课程
             dynamic.setDynamicType("ZUOYE");//类型为作业
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
