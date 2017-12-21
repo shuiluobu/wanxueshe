@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<div class="head"><a href="javascript:void(0);" class="return"></a><span>作业点评-高空作业-1/3课时</span></div>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>作业点评-</span></div>
 <div class="weui-tab" style="margin-top: 45px;">
     <div class="weui-navbar">
         <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
@@ -63,15 +63,20 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
-    var agendaId = 1;
+    var agendaId;
+    var courseLName;
     $(function () {
-
+        //获取上个页面传过来的 agendaId;
+        agendaId = getParmVal("itemId");
+        //课程课时名称
+        courseLName = decodeURI(getUrlParam("paramOne"));
+        $(".head span").text("作业点评-"+courseLName);
         //获取班级里所有学生的签到情况
         $.ajax("/cOrganTask/getAllByAgendaId",{
             async : false,
             type: 'get',
             dataType: 'json',
-            data:{agendaId:agendaId,type:2,status:2},
+            data:{agendaId:agendaId,type:4,status:2},
             success:function(json){
                 var list = json.data;
                 var as = $(".weui-navbar a");
@@ -85,22 +90,29 @@
                 var tempStatus;//签到状态
                 var operation;
                 for(var i=0;i<list.length;i++){
-                    if(list[i].status == 0){
-                        notDoneNum++;
-                        tempStatus = "未点评";
-                        operation = "点评"
-                    }
-                    if(list[i].status == 1){
+
+
+                    //已提交作业
+                    if(list[i].classworkHandInStatus == 1){
                         doneNum++;
-                        tempStatus = "点评时间 : "+list[i].doneTime;
-                        operation = "查看"
+                        tempStatus = "完成时间 : "+list[i].classworkHandInTime;
+                        if(list[i].status == 0){
+                            operation = "未点评";
+                        }
+                        if(list[i].status == 1){
+                            operation = "已点评";
+                        }
+                    }else{
+                        notDoneNum++;
+                        continue;
                     }
+
                     var div = '<div class="weui-media-box weui-media-box_appmsg ">'+
                                     '<div class="weui-media-box__hd ">'+
                                           '<img class="weui-media-box__thumb" src="'+list[i].studentHeadImg+'">'+
                                      '</div>'+
                                     '<div class="weui-media-box__bd">'+
-                                        '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                                        '<p class="comment-blue">'+list[i].studentName+'的作业</p>'+
                                         '<p>'+tempStatus+'</p>'+
                                     '</div>'+
                                     '<div class="rightRound" id="'+list[i].id+'">'+
@@ -109,8 +121,8 @@
                                 '</div>';
                     $("#signInAll").append(div);
                 }
-                as.eq(1).text("已点评("+doneNum+")");
-                as.eq(2).text("未点评("+notDoneNum+")");
+                as.eq(0).text("已提交作业("+doneNum+")");
+                as.eq(1).text("未提交("+notDoneNum+")");
                 //签到方法
 //                $(".rightRound").click(function () {
 //                    singIn($(this).attr("id"));
@@ -126,26 +138,13 @@
 
     });
 
-    // index:   0：全部  ，1：已完成，2：未完成,对应选项卡下标
+    // index:   0：已提交作业  ，1：未提交作业
     function getByType(index) {
-        var status;
-        //全部
-        if(index == 0){
-            status = 2;
-        }
-        //已完成
-        if(index == 1){
-            status = 1;
-        }
-        //未完成
-        if(index == 2){
-            status = 0;
-        }
         $.ajax("/cOrganTask/getAllByAgendaId",{
             async : false,
             type: 'get',
             dataType: 'json',
-            data:{agendaId:agendaId,type:2,status:status},
+            data:{agendaId:agendaId,type:4,status:2},
             success:function(json){
                 var mainDiv = $(".weui-panel__bd").eq(index);
                 mainDiv.empty();
@@ -154,14 +153,43 @@
                     var tempStatus;//签到状态
                     var operation;
                     for(var i=0;i<list.length;i++){
-                        if(list[i].status == 0){
-                            tempStatus = "未点评";
-                            operation = "点评"
+
+                        //已提交作业
+                        if(index == 0){
+                            //已提交作业
+                            if(list[i].classworkHandInStatus == 1){
+                                tempStatus = "完成时间 : "+list[i].classworkHandInTime;
+                                if(list[i].status == 0){
+                                    operation = "未点评";
+                                }
+                                if(list[i].status == 1){
+                                    operation = "已点评";
+                                }
+                            //未提交作业或未被发布作业，不显示
+                            }else{
+                                continue;
+                            }
                         }
-                        if(list[i].status == 1){
-                            tempStatus = "点评时间 : "+list[i].doneTime;
-                            operation = "查看"
+                        //未提交作业
+                        if(index == 1){
+                            //已提交作业
+                            if(list[i].classworkHandInStatus == 1){
+                                continue;
+                            //未提交作业或未被发布作业
+                            }else{
+                                //未提交作业
+                                if(list[i].classworkHandInStatus == 0){
+                                    tempStatus = "未提交";
+                                    operation = "未点评";
+                                }
+                                //未被发布作业
+                                if(list[i].classworkHandInStatus == 2){
+                                    tempStatus = "未被发布作业";
+                                    operation = "发布作业";
+                                }
+                            }
                         }
+
                         var div = '<div class="weui-media-box weui-media-box_appmsg ">'+
                                         '<div class="weui-media-box__hd ">'+
                                              '<img class="weui-media-box__thumb" src="'+list[i].studentHeadImg+'">'+
@@ -185,30 +213,6 @@
         });
     }
     
-    //签到
-    function singIn(taskId) {
-        if(taskId == ""){
-            $.toast("已签到过了!",'text',800,function(){
-                //提示完成后执行方法
-            });
-            return;
-        }
-        $.ajax("/cOrganTask/signIn",{
-            async : false,
-            type: 'get',
-            dataType: 'json',
-            data:{taskId:taskId},
-            success:function(json){
-                //提示操作结果
-                $.toast(json.data,'text',800,function(){
-                    //提示完成后执行方法
-                });
-                setTimeout(function () {
-                    window.location.reload();
-                },1000);
-            }
-        });
-    }
 
 </script>
 </html>

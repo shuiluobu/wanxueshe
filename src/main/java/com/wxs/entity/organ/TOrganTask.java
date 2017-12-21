@@ -89,6 +89,10 @@ public class TOrganTask extends Model<TOrganTask> {
 	private String lessonName; //课时名称
 	@TableField(exist = false)
 	private String organName; //教师所属机构名称
+	@TableField(exist = false)
+	private String classworkHandInStatus; //作业提交状态 0: 未提交，1:已提交,2:尚未被发布作业
+	@TableField(exist = false)
+	private Date classworkHandInTime;  //作业提交时间
 
 
 	public Long getId() {
@@ -243,6 +247,23 @@ public class TOrganTask extends Model<TOrganTask> {
 
 	public void setOrganName(String organName) {
 		this.organName = organName;
+	}
+
+	public String getClassworkHandInStatus() {
+		return classworkHandInStatus;
+	}
+
+	public void setClassworkHandInStatus(String classworkHandInStatus) {
+		this.classworkHandInStatus = classworkHandInStatus;
+	}
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	public Date getClassworkHandInTime() {
+		return classworkHandInTime;
+	}
+
+	public void setClassworkHandInTime(Date classworkHandInTime) {
+		this.classworkHandInTime = classworkHandInTime;
 	}
 
 	@Override

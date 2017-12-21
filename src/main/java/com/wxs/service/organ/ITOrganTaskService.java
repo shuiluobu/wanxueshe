@@ -22,6 +22,8 @@ public interface ITOrganTaskService extends IService<TOrganTask> {
     public TOrganTask getDetailByTaskId(Long taskId);
     //根据 待办Id，学生Id,类型 获取单个任务
     public TOrganTask getOneByASId(Long agendaId,Long studentId,Integer type);
+    //根据 代办Id  agendaId  获取 其下所有学生的作业提交情况
+    public List<TOrganTask> getClassworkCompletions(Long agendaId);
 
 
 }

@@ -36,5 +36,14 @@ public interface TOrganTaskMapper extends BaseMapper<TOrganTask> {
     @Select(" select * from t_organ_task where agendaId = #{agendaId} and studentId = #{studentId} and type = #{type}")
     @ResultMap("BaseResultMap")
     public TOrganTask getOneByASId(@Param("agendaId")Long agendaId,@Param("studentId")Long studentId,@Param("type")Integer type);
+    //根据 代办Id  agendaId  获取 其下所有学生的作业提交情况
+    @Select("select t.studentId,t.businessId,b.completion classworkHandInStatus,l.createTime classworkHandInTime " +
+            "from t_organ_task t " +
+            "left join t_class_work a on a.id = t.businessId " +
+            "left join t_student_work b on b.workId = a.id and b.studentId = t.studentId " +
+            "left join t_dynamicmsg l on l.id = b.dynamicId " +
+            "where agendaId = #{agendaId} and type = 3 ")
+    @ResultMap("BaseResultMap")
+    public List<TOrganTask> getClassworkCompletions(@Param("agendaId") Long agendaId);
 
 }

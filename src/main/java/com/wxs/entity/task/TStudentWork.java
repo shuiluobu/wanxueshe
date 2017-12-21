@@ -28,7 +28,7 @@ public class TStudentWork extends Model<TStudentWork> {
     /**
      * 完成情况
      */
-    private String completion;
+    private String completion; //具体值 见  EnumClassworkCompletion
     private Long dynamicId; //动态ID，作业也是一种动态
 
     private Date createTime;

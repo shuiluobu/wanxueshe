@@ -9,6 +9,8 @@ import com.wxs.entity.organ.TOrganComment;
 import com.wxs.entity.organ.TOrganTask;
 import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TClock;
+import com.wxs.entity.task.TStudentWork;
+import com.wxs.enu.EnumClassworkCompletion;
 import com.wxs.service.comment.ITDyimgService;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.comment.ITLikeService;
@@ -19,6 +21,7 @@ import com.wxs.service.organ.ITOrganCommentService;
 import com.wxs.service.organ.ITOrganTaskService;
 import com.wxs.service.task.ITClassWorkService;
 import com.wxs.service.task.ITClockService;
+import com.wxs.service.task.ITStudentWorkService;
 import com.wxs.util.Result;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +69,8 @@ public class COrganTaskController {
     private ITClockService clockService;
     @Autowired
     private ITClassWorkService classWorkService;
+    @Autowired
+    private ITStudentWorkService studentWorkService;
 
     @Value("${web.upload-path}")
     private String imgUploadPath;
@@ -177,7 +182,39 @@ public class COrganTaskController {
                 }
 
             }
-            return Result.of(organTaskService.getAllByAgendaId(agendaId,type,statuss));
+            List<TOrganTask> list = organTaskService.getAllByAgendaId(agendaId,type,statuss);
+            //如果是作业点评,获取学生作业提交状况
+            if(type == 4){
+                List<TOrganTask> completions = organTaskService.getClassworkCompletions(agendaId);
+                String temp = null;
+                Long businessId = null;
+                TOrganTask organTask = null;
+                for(TOrganTask task :list){
+                    for(int i=0;i<completions.size();i++){
+                        organTask = completions.get(i);
+                        if(organTask.getStudentId() == task.getStudentId()){
+                            businessId = organTask.getBusinessId();
+                            //未被发布作业
+                            if(businessId == null){
+                                task.setClassworkHandInStatus("2");
+                            }else{
+                                temp = organTask.getClassworkHandInStatus();
+                                //未提交
+                                if(temp.equals(EnumClassworkCompletion.NOT_HAND_IN.getTypeCode())){
+                                    task.setClassworkHandInStatus("0");
+                                }
+                                //已提交
+                                if(temp.equals(EnumClassworkCompletion.SUBMITTED.getTypeCode())){
+                                    task.setClassworkHandInStatus("1");
+                                    task.setClassworkHandInTime(organTask.getClassworkHandInTime());
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            return Result.of(list);
         }catch (Exception e){
             e.printStackTrace();
             log.error(BaseUtil.getExceptionStackTrace(e));
@@ -346,7 +383,6 @@ public class COrganTaskController {
             dynamicmsg.setClassLessonId(tempOrganTask.getLessonId());//所属课时Id
             dynamicmsg.setStudentId(tempOrganTask.getStudentId());//所属学生Id
             dynamicmsg.setOrganId(course.getOrganizationId());//所属教育机构Id
-            //插入
             dynamicmsgService.insert(dynamicmsg);
             //更新点评任务
             tempOrganTask.setBusinessId(dynamicmsg.getId());
@@ -526,7 +562,7 @@ public class COrganTaskController {
 
         try{
             String[] idArr = studentIds.split(",");
-            String tempStudentId = null;
+            Long tempStudentId = null;
             TOrganTask tempOrganTask = null;
             List<Long> dynamicmsgIds = new ArrayList<>();
             //操作用户Id
@@ -550,26 +586,37 @@ public class COrganTaskController {
             dynamicmsg.setClassLessonId(tempOrganTask.getLessonId());//所属课时Id
             dynamicmsg.setStudentId(tempOrganTask.getStudentId());//所属学生Id
             dynamicmsg.setOrganId(course.getOrganizationId());//所属教育机构Id
-            //插入动态
             dynamicmsgService.insert(dynamicmsg);
             //动态Id
             Long dynaticmsgId = dynamicmsg.getId();
             dynamicmsgIds.add(dynaticmsgId);
+            //插入作业表 只插入一次
+            TClassWork classWork = new TClassWork();
+            classWork.setLessonId(tempOrganTask.getLessonId());
+            classWork.setCourseId(courseId);
+            classWork.setDynamicId(dynaticmsgId);
+            classWork.setEndTime(BaseUtil.toDate(shouldDoneTime,"yyyy-MM-dd HH:mm"));//作业需完成时间
+            classWork.setCreateTime(new Date());
+            classWork.setCreateUserId(userId);
+            classWorkService.insert(classWork);
+            Long classworkId = classWork.getId();//作业Id
+            //插入学生与作业关系表
+            TStudentWork studentWork = null;
             for( int i=0;i<idArr.length;i++){
-                tempStudentId = idArr[i];
+                tempStudentId = Long.parseLong(idArr[i]);
+                //学生与作业关系表
+                studentWork = new TStudentWork();
+                studentWork.setStudentId(tempStudentId);
+                studentWork.setWorkId(classworkId);
+                studentWork.setDynamicId(dynaticmsgId);
+                studentWork.setCompletion(EnumClassworkCompletion.NOT_HAND_IN.getTypeCode()); //作业状态为: 未提交
+                studentWork.setCreateTime(new Date());
+                studentWork.setUserId(userId);
+                studentWorkService.insert(studentWork);
                 //发布作业任务
-                tempOrganTask = organTaskService.getOneByASId(agendaId,Long.parseLong(tempStudentId),3);
-                //插入作业表
-                TClassWork classWork = new TClassWork();
-                classWork.setLessonId(tempOrganTask.getLessonId());
-                classWork.setCourseId(courseId);
-                classWork.setDynamicId(dynaticmsgId);
-                classWork.setEndTime(BaseUtil.toDate(shouldDoneTime,"yyyy-MM-dd HH:mm"));//作业需完成时间
-                classWork.setCreateTime(new Date());
-                classWork.setCreateUserId(userId);
-                classWorkService.insert(classWork);
+                tempOrganTask = organTaskService.getOneByASId(agendaId,tempStudentId,3);
                 //更新发布作业任务
-                tempOrganTask.setBusinessId(classWork.getId());//作业Id
+                tempOrganTask.setBusinessId(classworkId);//作业Id
                 tempOrganTask.setStatus(1);//状态修改为完成
                 tempOrganTask.setDoneTime(new Date());
                 organTaskService.updateById(tempOrganTask);

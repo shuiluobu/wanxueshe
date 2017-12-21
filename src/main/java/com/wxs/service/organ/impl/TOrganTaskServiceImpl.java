@@ -36,4 +36,9 @@ public class TOrganTaskServiceImpl extends ServiceImpl<TOrganTaskMapper, TOrganT
     public TOrganTask getOneByASId(Long agendaId, Long studentId, Integer type) {
         return organTaskMapper.getOneByASId(agendaId,studentId,type);
     }
+
+    @Override
+    public List<TOrganTask> getClassworkCompletions(Long agendaId) {
+        return organTaskMapper.getClassworkCompletions(agendaId);
+    }
 }
