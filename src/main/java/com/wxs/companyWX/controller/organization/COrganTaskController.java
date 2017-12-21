@@ -7,6 +7,7 @@ import com.wxs.entity.course.TClass;
 import com.wxs.entity.course.TCourse;
 import com.wxs.entity.organ.TOrganComment;
 import com.wxs.entity.organ.TOrganTask;
+import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TClock;
 import com.wxs.service.comment.ITDyimgService;
 import com.wxs.service.comment.ITDynamicmsgService;
@@ -16,6 +17,7 @@ import com.wxs.service.course.ITClassService;
 import com.wxs.service.course.ITCoursesService;
 import com.wxs.service.organ.ITOrganCommentService;
 import com.wxs.service.organ.ITOrganTaskService;
+import com.wxs.service.task.ITClassWorkService;
 import com.wxs.service.task.ITClockService;
 import com.wxs.util.Result;
 import org.apache.log4j.Logger;
@@ -62,6 +64,8 @@ public class COrganTaskController {
     private ITClassLessonService classLessonService;
     @Autowired
     private ITClockService clockService;
+    @Autowired
+    private ITClassWorkService classWorkService;
 
     @Value("${web.upload-path}")
     private String imgUploadPath;
@@ -76,19 +80,27 @@ public class COrganTaskController {
      * @Params : [taskId, userId]
      **/
     @RequestMapping("/getByTaskId")
-    public Result getByTaskId(Long taskId,Long userId){
+    public Result getByTaskId(Long taskId,Long userId,Long type){
 
         Map resultMap = new HashMap();
         try{
             TOrganTask organTask = organTaskService.getDetailByTaskId(taskId);
-            // 课堂作业，获取规定完成时间 属于 星期几
-//            Date shouldDoneTime = organTask.getShouldDoneTime();
-//            if(shouldDoneTime != null){
-//                resultMap.put("dayOfWeek","星期" + BaseUtil.getWeekOfDate(shouldDoneTime));
-//            }
             resultMap.put("organTask",organTask);
             //任务内容，在动态表
-            TDynamicmsg dynamicmsg = dynamicmsgService.selectById(organTask.getBusinessId());
+            Long dynamicmsgId;
+            if(type == 2){
+                // 课堂作业，获取规定完成时间 属于 星期几
+                TClassWork classWork = classWorkService.selectById(organTask.getBusinessId());
+                Date shouldDoneTime = classWork.getEndTime();
+                if(shouldDoneTime != null){
+                    resultMap.put("shouldDoneTime",BaseUtil.toString(shouldDoneTime,"yyyy-MM-dd HH:mm:ss"));
+                    resultMap.put("dayOfWeek","星期" + BaseUtil.getWeekOfDate(shouldDoneTime));
+                }
+                dynamicmsgId = classWork.getDynamicId();
+            }else{
+                dynamicmsgId = organTask.getBusinessId();
+            }
+            TDynamicmsg dynamicmsg = dynamicmsgService.selectById(dynamicmsgId);
             if(dynamicmsg != null){
                 resultMap.put("dynamicmsg",dynamicmsg);
                 //是否已点赞
@@ -109,11 +121,11 @@ public class COrganTaskController {
                     }
                     resultMap.put("likeUserNames",likeUserNames);
                 }
-            }
-            //获取任务下图片
-            List<TDyimg> imgList = dyimgService.getAllByDynamicId(organTask.getBusinessId());
-            if(imgList.size()>0){
-                resultMap.put("imgList",imgList);
+                //获取动态下图片
+                List<TDyimg> imgList = dyimgService.getAllByDynamicId(dynamicmsgId);
+                if(imgList.size()>0){
+                    resultMap.put("imgList",imgList);
+                }
             }
             //获取任务下评论
             List<TOrganComment> commentList = organCommentService.getAllById(taskId,2);
@@ -502,47 +514,67 @@ public class COrganTaskController {
         }
         return null;
     }
+    /**
+     * @Description : 发布作业
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 15:00 2017/12/21
+     * @Params : [fronUserId, agendaId, studentIds, content, imgs, shouldDoneTime]
+     **/
     @RequestMapping("/publishJob")
     public Result publishJob(Long fronUserId,Long agendaId,String studentIds,String content,String imgs,String shouldDoneTime){
+
         try{
             String[] idArr = studentIds.split(",");
             String tempStudentId = null;
             TOrganTask tempOrganTask = null;
-            TDynamicmsg tempDynamicmsg = null;
             List<Long> dynamicmsgIds = new ArrayList<>();
+            //操作用户Id
+            //            TFrontUser frontUser = (TFrontUser)session.getAttribute("fronUser");
+//            Long userId = frontUser.getId();
+            Long userId = 1l;
+            //获取第一个发布作业任务,用户获取所属课程具体信息 --- 获取所属机构
+            tempOrganTask = organTaskService.getOneByASId(agendaId,Long.parseLong(idArr[0]),3);
+            Long courseId = tempOrganTask.getCourseId();
+            //所属课程
+            TCourse course = coursesService.selectById(courseId);
+            //插入到动态表 ,所有选中的学生只用插一条
+            TDynamicmsg dynamicmsg = new TDynamicmsg();
+            dynamicmsg.setContent(content);//动态内容
+            dynamicmsg.setCreateTime(new Date());//创建时间
+            dynamicmsg.setUserId(userId);//创建人Id
+            dynamicmsg.setPower(0);//权限 -默认这是为公开
+            dynamicmsg.setDynamicType("课堂作业");//动态类型
+            dynamicmsg.setCourseId(courseId);//所属课程Id
+            dynamicmsg.setClassId(classService.getByCourseId(courseId).getId());//所属班级Id
+            dynamicmsg.setClassLessonId(tempOrganTask.getLessonId());//所属课时Id
+            dynamicmsg.setStudentId(tempOrganTask.getStudentId());//所属学生Id
+            dynamicmsg.setOrganId(course.getOrganizationId());//所属教育机构Id
+            //插入动态
+            dynamicmsgService.insert(dynamicmsg);
+            //动态Id
+            Long dynaticmsgId = dynamicmsg.getId();
+            dynamicmsgIds.add(dynaticmsgId);
             for( int i=0;i<idArr.length;i++){
                 tempStudentId = idArr[i];
-                //发布任务
+                //发布作业任务
                 tempOrganTask = organTaskService.getOneByASId(agendaId,Long.parseLong(tempStudentId),3);
-                Long courseId = tempOrganTask.getCourseId();
-                //所属课程
-                TCourse course = coursesService.selectById(tempOrganTask.getCourseId());
-//            TFrontUser frontUser = (TFrontUser)session.getAttribute("fronUser");
-//            Long userId = frontUser.getId();
-                Long userId = 1l;
-                //插入到动态表
-                tempDynamicmsg = new TDynamicmsg();
-                tempDynamicmsg.setContent(content);//动态内容
-                tempDynamicmsg.setCreateTime(new Date());//创建时间
-                tempDynamicmsg.setUserId(userId);//创建人Id
-                tempDynamicmsg.setPower(0);//权限 -公开
-                tempDynamicmsg.setDynamicType("课堂作业");//动态类型
-                tempDynamicmsg.setCourseId(courseId);//所属课程Id
-                tempDynamicmsg.setClassId(classService.getByCourseId(courseId).getId());//所属班级Id
-                tempDynamicmsg.setClassLessonId(tempOrganTask.getLessonId());//所属课时Id
-                tempDynamicmsg.setStudentId(tempOrganTask.getStudentId());//所属学生Id
-                tempDynamicmsg.setOrganId(course.getOrganizationId());//所属教育机构Id
-                //插入动态
-                dynamicmsgService.insert(tempDynamicmsg);
-                dynamicmsgIds.add(tempDynamicmsg.getId());
-                //更新发布任务
-                tempOrganTask.setBusinessId(tempDynamicmsg.getId());//动态Id
-//                tempOrganTask.setShouldDoneTime(BaseUtil.toDate(shouldDoneTime,"yyyy-MM-dd HH:mm"));//作业需完成时间
+                //插入作业表
+                TClassWork classWork = new TClassWork();
+                classWork.setLessonId(tempOrganTask.getLessonId());
+                classWork.setCourseId(courseId);
+                classWork.setDynamicId(dynaticmsgId);
+                classWork.setEndTime(BaseUtil.toDate(shouldDoneTime,"yyyy-MM-dd HH:mm"));//作业需完成时间
+                classWork.setCreateTime(new Date());
+                classWork.setCreateUserId(userId);
+                classWorkService.insert(classWork);
+                //更新发布作业任务
+                tempOrganTask.setBusinessId(classWork.getId());//作业Id
                 tempOrganTask.setStatus(1);//状态修改为完成
                 tempOrganTask.setDoneTime(new Date());
                 organTaskService.updateById(tempOrganTask);
             }
-            //保存图片
+            //保存动态图片
             uploadCommentImg(imgs,dynamicmsgIds,2);
             return Result.of("发布任务成功!");
         }catch (Exception e){

@@ -30,13 +30,7 @@ public class TClassWork extends Model<TClassWork> {
      * 课程Id，课程可以查询到
      */
     private Long courseId;
-    /**
-     * 作业标题
-     */
-    private String title;
-
     private Long dynamicId; //动态
-
     private Date endTime;
     private Date beginTime;
     private Date createTime;
@@ -94,14 +88,6 @@ public class TClassWork extends Model<TClassWork> {
 
     public Date getCreateTime() {
         return createTime;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setCreateTime(Date createTime) {

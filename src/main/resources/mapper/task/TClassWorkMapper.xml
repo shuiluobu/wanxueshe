@@ -6,7 +6,7 @@
 	<resultMap id="BaseResultMap" type="com.wxs.entity.task.TClassWork">
 		<id column="id" property="id" />
 		<result column="lessonId" property="lessonId" />
-		<result column="courId" property="courId" />
+		<result column="courseId" property="courseId" />
 		<result column="dynamicId" property="dynamicId"/>
 		<result column="endTime" property="endTime" />
 		<result column="beginTime" property="beginTime" />

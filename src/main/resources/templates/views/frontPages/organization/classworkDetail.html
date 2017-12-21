@@ -124,15 +124,15 @@
             async : false,
             type: 'post',
             dataType: 'json',
-            data:{ taskId:taskId,userId:frontUser.id},
+            data:{ taskId:taskId,userId:frontUser.id,type:2},
             success:function(json){
                 var map = json.data;
                 var organTask = map.organTask;
                 //课程，课时
                 $("#cltDetail p").eq(0).text(organTask.courseName+"-"+organTask.lessonName);
                 //作业完成规定时间
-                $("#cltDetail span").eq(0).text(getYMD(organTask.shouldDoneTime));
-                $("#cltDetail span").eq(1).text(map.dayOfWeek+" "+getHM(organTask.shouldDoneTime));
+                $("#cltDetail span").eq(0).text(getYMD(map.shouldDoneTime));
+                $("#cltDetail span").eq(1).text(map.dayOfWeek+" "+getHM(map.shouldDoneTime));
                 //所属课程
                 $(".thisFont-small span").eq(0).text(organTask.courseName+"-"+organTask.lessonName);
                 //发布老师
