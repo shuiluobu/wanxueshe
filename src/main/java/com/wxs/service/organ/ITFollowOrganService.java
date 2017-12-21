@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author skyer
  * @since 2017-09-21
  */
-public interface ITFllowOrganService extends IService<TFollowOrgan> {
+public interface ITFollowOrganService extends IService<TFollowOrgan> {
 	
 }

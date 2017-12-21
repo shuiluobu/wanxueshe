@@ -20,11 +20,10 @@
 	</select>
 	<select id="getIsFriednCount" resultType="int" parameterType="java.util.HashMap">
 		SELECT count(1)  FROM  t_follow_user
-		 WHERE  relationType=20
+		 WHERE relationType=20
 		 and userId = #{userId}
 		 and fuserId = #{freindUserId}
 	</select>
-
 	
 
 </mapper>

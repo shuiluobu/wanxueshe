@@ -20,8 +20,8 @@ public class TFollowUser extends Model<TFollowUser> {
 
 	private Long id;
 	private Long userId;
-	private Long fuserId; //关注的老师所属用户的ID
-	private String relationType; //10:关注，20：朋友,30:屏蔽
+	private Long fuserId; //关注的用户的ID
+	private String relationType; //10:朋友，20:屏蔽,30:删除
 	private String memoName; //备注名称
 	private Date createTime;
 	private Date updateTime;
