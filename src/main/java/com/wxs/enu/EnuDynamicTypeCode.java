@@ -1,16 +1,21 @@
 package com.wxs.enu;
 
 /**
- * @author 
+ * 动态类型映射表
+ * @author
  */
 public enum EnuDynamicTypeCode {
 
 	DYNAMIC_TYPE_MYWORK("MY_WORK","个人作业"),
-	DYNAMIC_TYPE_MYGROWTH("MY_GROWTH","个人成长");
+	DYNAMIC_TYPE_MYGROWTH("MY_GROWTH","个人成长"),
+	DYNAMIC_TYPE_CLASS_COMMENT("CLASS_COMMENT","课堂点评"),
+	DYNAMIC_TYPE_CLASSWORK("CLASS_WORK","课堂作业"),
+	DYNAMIC_TYPE_CLASSWORK_COMMENT("CLASSWORK_COMMENT","作业点评");
 
-	/** msgType:消息类型 */
+
+	/** msgType:动态类型编号 */
 	private String typeCode;
-	/** msgCode:消息内容 */
+	/** msgCode:动态类型名称 */
 	private String typeNote;
 
 	private EnuDynamicTypeCode(String typeCode, String typeNote) {
@@ -32,5 +37,18 @@ public enum EnuDynamicTypeCode {
 
 	public void setTypeNote(String typeNote) {
 		this.typeNote = typeNote;
+	}
+
+	/**
+	 * 根据 动态类型编号  获取 动态类型名称
+	 * @param typeCode
+	 * @return
+	 */
+	public static String getTypeNote(String typeCode){
+		for(EnuDynamicTypeCode e :EnuDynamicTypeCode.values()){
+			if(e.getTypeCode().equals(typeCode))
+				return e.getTypeNote();
+		}
+		return null;
 	}
 }
