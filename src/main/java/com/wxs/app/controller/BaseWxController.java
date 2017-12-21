@@ -9,10 +9,7 @@ import com.wxs.service.common.ISequenceService;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITCourseCategoryService;
 import com.wxs.service.course.ITCoursesService;
-import com.wxs.service.customer.ITFriendService;
-import com.wxs.service.customer.ITFrontUserService;
-import com.wxs.service.customer.ITParentService;
-import com.wxs.service.customer.ITTeacherService;
+import com.wxs.service.customer.*;
 import com.wxs.service.customer.impl.TStudentServiceImpl;
 import com.wxs.service.message.ITRemindMessageService;
 import com.wxs.service.organ.ITOrganizationService;
@@ -60,15 +57,12 @@ public class BaseWxController {
     public ITOrganizationService organizationService;
     @Autowired
     public ITOrganActivityService organActivityService;
-
+    @Autowired
+    public ITFollowUserService followUserService;
     @Autowired
     public IDictionaryService dictionaryService;
     @Autowired
     public ISequenceService sequenceService;
-
-    @Autowired
-    public ITFriendService friendService;
-
 
     @Value("${web.upload-path}")
     public String imgUploadPath;

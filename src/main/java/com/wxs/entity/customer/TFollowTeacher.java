@@ -1,4 +1,4 @@
-package com.wxs.entity.organ;
+package com.wxs.entity.customer;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -11,21 +11,19 @@ import java.io.Serializable;
  * </p>
  *
  * @author skyer
- * @since 2017-09-21
+ * @since 2017-12-21
  */
-@TableName("t_fllow_organ")
-public class TFllowOrgan extends Model<TFllowOrgan> {
+@TableName("t_follow_teacher")
+public class TFollowTeacher extends Model<TFollowTeacher> {
 
     private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private Long userId;
-	private Long parentId;
-	private Long organId;
-	private String memoName; //备注名称
+	private Long teacherId;
 	private Date createTime;
 	private Date updateTime;
-	private Integer status=0;
+	private Integer status;
 
 
 	public Long getId() {
@@ -44,20 +42,12 @@ public class TFllowOrgan extends Model<TFllowOrgan> {
 		this.userId = userId;
 	}
 
-	public Long getParentId() {
-		return parentId;
+	public Long getTeacherId() {
+		return teacherId;
 	}
 
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
-
-	public Long getOrganId() {
-		return organId;
-	}
-
-	public void setOrganId(Long organId) {
-		this.organId = organId;
+	public void setTeacherId(Long teacherId) {
+		this.teacherId = teacherId;
 	}
 
 	public Date getCreateTime() {
@@ -78,14 +68,6 @@ public class TFllowOrgan extends Model<TFllowOrgan> {
 
 	public Integer getStatus() {
 		return status;
-	}
-
-	public String getMemoName() {
-		return memoName;
-	}
-
-	public void setMemoName(String memoName) {
-		this.memoName = memoName;
 	}
 
 	public void setStatus(Integer status) {

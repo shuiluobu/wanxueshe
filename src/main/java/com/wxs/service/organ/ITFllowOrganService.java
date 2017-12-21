@@ -1,6 +1,6 @@
 package com.wxs.service.organ;
 
-import com.wxs.entity.organ.TFllowOrgan;
+import com.wxs.entity.organ.TFollowOrgan;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author skyer
  * @since 2017-09-21
  */
-public interface ITFllowOrganService extends IService<TFllowOrgan> {
+public interface ITFllowOrganService extends IService<TFollowOrgan> {
 	
 }

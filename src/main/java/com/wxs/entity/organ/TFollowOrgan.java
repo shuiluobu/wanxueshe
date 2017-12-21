@@ -1,4 +1,4 @@
-package com.wxs.entity.customer;
+package com.wxs.entity.organ;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -13,18 +13,19 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-21
  */
-@TableName("t_follow_parent")
-public class TFollowParent extends Model<TFollowParent> {
+@TableName("t_follow_organ")
+public class TFollowOrgan extends Model<TFollowOrgan> {
 
     private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private Long userId;
-	private Long leaderPid;
-	private Long followPid;
+	private Long parentId;
+	private Long organId;
+	private String memoName; //备注名称
 	private Date createTime;
 	private Date updateTime;
-	private Integer status;
+	private Integer status=0;
 
 
 	public Long getId() {
@@ -43,20 +44,20 @@ public class TFollowParent extends Model<TFollowParent> {
 		this.userId = userId;
 	}
 
-	public Long getLeaderPid() {
-		return leaderPid;
+	public Long getParentId() {
+		return parentId;
 	}
 
-	public void setLeaderPid(Long leaderPid) {
-		this.leaderPid = leaderPid;
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
-	public Long getFollowPid() {
-		return followPid;
+	public Long getOrganId() {
+		return organId;
 	}
 
-	public void setFollowPid(Long followPid) {
-		this.followPid = followPid;
+	public void setOrganId(Long organId) {
+		this.organId = organId;
 	}
 
 	public Date getCreateTime() {
@@ -77,6 +78,14 @@ public class TFollowParent extends Model<TFollowParent> {
 
 	public Integer getStatus() {
 		return status;
+	}
+
+	public String getMemoName() {
+		return memoName;
+	}
+
+	public void setMemoName(String memoName) {
+		this.memoName = memoName;
 	}
 
 	public void setStatus(Integer status) {

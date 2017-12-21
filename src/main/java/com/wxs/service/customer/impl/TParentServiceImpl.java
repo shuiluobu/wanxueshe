@@ -7,7 +7,7 @@ import com.wxs.entity.customer.TFollowUser;
 import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.course.TStudentClassMapper;
-import com.wxs.mapper.customer.TFollowParentMapper;
+import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TParentMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.customer.ITParentService;
@@ -37,7 +37,8 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
     private TStudentClassMapper studentClassMapper;
 
     @Autowired
-    private TFollowParentMapper followParentMapper;
+    public TFollowUserMapper followUserMapper;
+
 
     @Override
     public List<Map<String,Object>> getStudentByParent(Long parentId){
@@ -59,14 +60,14 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
     public List<Map<String, Object>> getFllowUsers(List<Long> userIds,Long loginUserId) {
        List<Map<String,Object>> resultList = Lists.newArrayList();
 
-        userIds.stream().forEach(userId -> {
+        userIds.stream().forEach(friendUserId -> {
             Map<String,Object> map = Maps.newHashMap();
-            TParent parent = new TParent().selectOne(new EntityWrapper().where("userId={0}",userId));
-            map.put("userId",userId);
+            TParent parent = new TParent().selectOne(new EntityWrapper().where("userId={0}",friendUserId));
+            map.put("userId",friendUserId);
             map.put("realName",parent.getRealName());
-            map.put("studentCount",studentMapper.getParentStudentCount(parent.getId()));
+            map.put("studentCount",studentMapper.getParentStudentCount(friendUserId));
             map.put("courseCount",studentClassMapper.getParentCourseCount(parent.getId()));
-            Integer isFriednCount = new TFollowUser().selectCount("userId={0} and fuserId={1}",loginUserId,userId);
+            Integer isFriednCount = followUserMapper.getIsFriednCount(loginUserId,friendUserId);
             if(isFriednCount>0){
                 map.put("isFriend",1);
             } else {

@@ -12,13 +12,19 @@
 		<result column="updateTime" property="updateTime" />
 		<result column="status" property="status" />
 	</resultMap>
-
-	<select id="getOneFllowTeacherByUser" resultType="com.wxs.entity.customer.TFollowUser" >
-		SELECT f.* FROM t_follow_user f,t_teacher t
-		   WHERE f.fuserId =t.userId
-		     AND t.id = #{teacherId}
-		     AND f.userId =#{userId}
+	<select id="getMyFriend" resultType="java.util.HashMap" parameterType="java.lang.Long">
+		SELECT fuserId,memoName friendName FROM  t_follow_user
+		 WHERE  relationType=20
+		 and userId = #{userId}
+		 ORDER BY createTime
 	</select>
+	<select id="getIsFriednCount" resultType="int" parameterType="java.util.HashMap">
+		SELECT count(1)  FROM  t_follow_user
+		 WHERE  relationType=20
+		 and userId = #{userId}
+		 and fuserId = #{freindUserId}
+	</select>
+
 	
 
 </mapper>

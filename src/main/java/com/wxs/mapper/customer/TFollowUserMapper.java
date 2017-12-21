@@ -20,23 +20,7 @@ import java.util.Map;
  */
 public interface TFollowUserMapper extends BaseMapper<TFollowUser> {
 
-    @Select("SELECT t.* FROM t_follow_user f,t_teacher t where t.userId=f.fuserId " +
-            " and f.userId =#{userId} ")
-    @ResultType(Map.class)
-    List<Map<String,Object>> getFllowTeacherByUser(@Param("userId") Long userId);
+    public List<Map<String,Object>> getMyFriend(Long userId);
 
-
-    TFollowUser getOneFllowTeacherByUser(@Param("userId") Long userId, @Param("teacherId") Long teacherId);
-
-    @Select("select userId from t_follow_user f,t_teacher t where t.userId=f.fuserId " +
-            " and f.status=0 and t.id=#{teacherId}")
-    @ResultType(Long.class)
-    List<Long> getFllowUserIdsOfTeacherId(Long teacherId);
-
-
-    @Select("SELECT count(1) FROM t_follow_user f,t_teacher t where t.userId=f.fuserId" +
-            " and f.status=0 and t.id=#{teacherId} ")
-    @ResultType(int.class)
-    int getFllowTeacherByCount(@Param("teacherId") Long teacherId);
-
+    public int getIsFriednCount(Long userId,Long friendUserId);
 }

@@ -1,10 +1,8 @@
 package com.wxs.service.course.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sun.xml.internal.rngom.parse.host.Base;
 import com.wxs.entity.course.*;
 import com.wxs.entity.message.TRemindMessage;
 import com.wxs.entity.organ.TOrganization;
@@ -12,15 +10,13 @@ import com.wxs.mapper.course.TClassLessonMapper;
 import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.course.TStudentClassMapper;
 import com.wxs.mapper.course.TStudentLessonesMapper;
-import com.wxs.mapper.customer.TFllowCourseMapper;
+import com.wxs.mapper.customer.TFollowCourseMapper;
 import com.wxs.mapper.customer.TTeacherMapper;
-import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.common.ISequenceService;
 import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.customer.ITParentService;
-import net.bytebuddy.asm.Advice;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +43,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     @Autowired
     private TStudentLessonesMapper studentLessonesMapper; //学生课时关联mapper
     @Autowired
-    private TFllowCourseMapper fllowCourseMapper;
+    private TFollowCourseMapper fllowCourseMapper;
     @Autowired
     private ITParentService parentService;
     @Autowired

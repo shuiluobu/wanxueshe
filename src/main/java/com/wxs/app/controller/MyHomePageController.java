@@ -57,7 +57,7 @@ public class MyHomePageController extends BaseWxController{
     public Result myFriend(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
-        return Result.of(friendService.getUserFriends(userId));
+        return Result.of(followUserService.getUserFriends(userId));
     }
 
     @RequestMapping(value = "/myDynamic")

@@ -1,12 +1,11 @@
 package com.wxs.service.organ.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Maps;
 import com.wxs.entity.course.TStudentClass;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TCoursesMapper;
 import com.wxs.mapper.course.TStudentClassMapper;
-import com.wxs.mapper.organ.TFllowOrganMapper;
+import com.wxs.mapper.organ.TFollowOrganMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.customer.ITParentService;
 import com.wxs.service.organ.ITOrganizationService;
@@ -38,7 +37,7 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     public TCoursesMapper coursesMapper;
 
     @Autowired
-    public TFllowOrganMapper fllowOrganMapper; //关注机构表
+    public TFollowOrganMapper fllowOrganMapper; //关注机构表
 
     @Autowired
     private ITParentService parentService;

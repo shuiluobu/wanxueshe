@@ -1,7 +1,8 @@
 package com.wxs.service.customer;
 
-import com.wxs.entity.customer.TFollowParent;
+
 import com.baomidou.mybatisplus.service.IService;
+import com.wxs.entity.customer.TFollowTeacher;
 
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,8 @@ import java.util.Map;
  * </p>
  *
  * @author skyer
- * @since 2017-09-21
+ * @since 2017-12-21
  */
-public interface ITFollowParentService extends IService<TFollowParent> {
+public interface ITFollowTeacherService extends IService<TFollowTeacher> {
 
 }

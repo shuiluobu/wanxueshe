@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wxs.mapper.customer.TFollowParentMapper">
+<mapper namespace="com.wxs.mapper.customer.TFollowTeacherMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TFollowParent">
+	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TFollowTeacher">
 		<id column="id" property="id" />
 		<result column="userId" property="userId" />
-		<result column="leaderPid" property="leaderPid" />
-		<result column="followPid" property="followPid" />
+		<result column="teacherId" property="teacherId" />
 		<result column="createTime" property="createTime" />
 		<result column="updateTime" property="updateTime" />
 		<result column="status" property="status" />
 	</resultMap>
 
+	<select id="getOneFllowTeacherByUser" resultType="com.wxs.entity.customer.TFollowTeacher" >
+		SELECT f.* FROM t_follow_teacher f,t_teacher t
+		WHERE f.teacherId =t.id
+		AND t.id = #{teacherId}
+		AND f.userId =#{userId}
+	</select>
 </mapper>

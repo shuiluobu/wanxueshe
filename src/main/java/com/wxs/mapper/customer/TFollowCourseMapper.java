@@ -2,7 +2,7 @@ package com.wxs.mapper.customer;
 
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.wxs.entity.customer.TFllowCourse;
+import com.wxs.entity.customer.TFollowCourse;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
@@ -17,15 +17,15 @@ import java.util.Map;
  * @author skyer
  * @since 2017-10-25
  */
-public interface TFllowCourseMapper extends BaseMapper<TFllowCourse> {
+public interface TFollowCourseMapper extends BaseMapper<TFollowCourse> {
 
     List<Map<String,Object>> getFllowCoursesByUser(Long userId);
 
-    @Select("select userId from t_fllow_course where status=0 and courseCateId=#{courseCateId}")
+    @Select("select userId from t_follow_course where status=0 and courseCateId=#{courseCateId}")
     @ResultType(Long.class)
     List<Long> getFllowUserIdsOfCourseId(Long courseCateId);
 
-    @Select("select count(1) from t_fllow_course where status=0 and courseCateId=#{courseCateId}")
+    @Select("select count(1) from t_follow_course where status=0 and courseCateId=#{courseCateId}")
     @ResultType(int.class)
     int getFllowCountOfCourseId(Long courseId);
 }

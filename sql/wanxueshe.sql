@@ -478,10 +478,10 @@ CREATE TABLE `t_dyvideo` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for t_fllow_course
+-- Table structure for t_follow_course
 -- ----------------------------
-DROP TABLE IF EXISTS `t_fllow_course`;
-CREATE TABLE `t_fllow_course` (
+DROP TABLE IF EXISTS `t_follow_course`;
+CREATE TABLE `t_follow_course` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `userId` bigint(20) DEFAULT NULL,
   `courseCateId` bigint(20) DEFAULT NULL,
@@ -493,14 +493,14 @@ CREATE TABLE `t_fllow_course` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='关注的课程';
 
 -- ----------------------------
--- Records of t_fllow_course
+-- Records of t_follow_course
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for t_fllow_organ
+-- Table structure for t_follow_organ
 -- ----------------------------
-DROP TABLE IF EXISTS `t_fllow_organ`;
-CREATE TABLE `t_fllow_organ` (
+DROP TABLE IF EXISTS `t_follow_organ`;
+CREATE TABLE `t_follow_organ` (
   `id` bigint(20) NOT NULL,
   `userId` bigint(20) DEFAULT NULL,
   `parentId` bigint(20) DEFAULT NULL,
@@ -512,7 +512,7 @@ CREATE TABLE `t_fllow_organ` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_fllow_organ
+-- Records of t_follow_organ
 -- ----------------------------
 
 -- ----------------------------

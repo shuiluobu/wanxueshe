@@ -3,14 +3,9 @@ package com.wxs.service.customer.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Maps;
 import com.wxs.cache.ICache;
-import com.wxs.entity.customer.TFriend;
 import com.wxs.entity.customer.TFrontUser;
-import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TWxUser;
-import com.wxs.mapper.course.TStudentClassMapper;
-import com.wxs.mapper.customer.TFriendMapper;
 import com.wxs.mapper.customer.TFrontUserMapper;
-import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.customer.ITFrontUserService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.wxs.core.util.BaseUtil;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**

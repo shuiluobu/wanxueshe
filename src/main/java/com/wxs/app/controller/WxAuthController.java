@@ -1,13 +1,8 @@
 package com.wxs.app.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.wxs.app.service.WxService;
-import com.wxs.cache.ICache;
 import com.wxs.entity.customer.TWxUser;
-import com.wxs.service.customer.ITFrontUserService;
-import com.wxs.service.customer.impl.TFriendServiceImpl;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

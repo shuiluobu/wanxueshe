@@ -6,18 +6,19 @@ import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.comment.TDyvideo;
-import com.wxs.entity.course.TClass;
 import com.wxs.entity.course.TCourse;
+import com.wxs.entity.customer.TFollowTeacher;
 import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TStudentWork;
 import com.wxs.enu.EnuDynamicTypeCode;
 import com.wxs.mapper.course.TStudentClassMapper;
-import com.wxs.mapper.customer.TFllowCourseMapper;
+import com.wxs.mapper.customer.TFollowCourseMapper;
+import com.wxs.mapper.customer.TFollowTeacherMapper;
 import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TStudentMapper;
-import com.wxs.mapper.organ.TFllowOrganMapper;
+import com.wxs.mapper.organ.TFollowOrganMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.customer.ITStudentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -42,11 +43,11 @@ import java.util.Map;
 public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> implements ITStudentService {
 
     @Autowired
-    private TFllowOrganMapper fllowOrganMapper;
+    private TFollowOrganMapper fllowOrganMapper;
     @Autowired
-    private TFollowUserMapper followUserMapper;
+    private TFollowTeacherMapper followTeacherMapper;
     @Autowired
-    private TFllowCourseMapper fllowCourseMapper;
+    private TFollowCourseMapper fllowCourseMapper;
     @Autowired
     private TStudentClassMapper studentClassMapper; //我的课程
     @Autowired
@@ -60,7 +61,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     public Map<String, List> getMyFollow(Long userId) {
         //我的关注分为：我关注的机构，我关注的课程，我关注的老师
         List organs = fllowOrganMapper.getFllowOrganByUser(userId); //我关注的机构
-        List teachers = followUserMapper.getFllowTeacherByUser(userId); //我关注的老师
+        List teachers = followTeacherMapper.getFllowTeacherByUser(userId); //我关注的老师
         List courses = fllowCourseMapper.getFllowCoursesByUser(userId);//我关注的课程
         return ImmutableMap.of(MY_FOLLOW_ORGAN, organs, MY_FOLLOW_TEACHER, teachers, MY_FOLLOW_COURSE, courses);
     }

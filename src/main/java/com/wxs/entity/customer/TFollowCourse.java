@@ -15,8 +15,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-10-25
  */
-@TableName("t_fllow_course")
-public class TFllowCourse extends Model<TFllowCourse> {
+@TableName("t_follow_course")
+public class TFollowCourse extends Model<TFollowCourse> {
 
     private static final long serialVersionUID = 1L;
 
