@@ -3,9 +3,11 @@ package com.wxs.companyWX.controller.organization;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.comment.TLike;
+import com.wxs.entity.course.TClass;
 import com.wxs.entity.course.TCourse;
 import com.wxs.entity.organ.TOrganComment;
 import com.wxs.entity.organ.TOrganTask;
+import com.wxs.entity.task.TClock;
 import com.wxs.service.comment.ITDyimgService;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.comment.ITLikeService;
@@ -139,12 +141,29 @@ public class COrganTaskController {
     public Result getAllByAgendaId(Long agendaId,Integer type,Integer status){
         List<Integer> statuss = new ArrayList<>();
         try{
-            if(status == 2){
-                statuss.add(0);
-                statuss.add(1);
-                statuss.add(2);
+
+            if( type == 1){
+                //签到的 未完成 包括 未签到和请假的
+                if(status == 0){
+                    statuss.add(0);
+                    statuss.add(2);
+                }
+                if(status == 1){
+                    statuss.add(1);
+                }
+                if(status == 2){
+                    statuss.add(0);
+                    statuss.add(1);
+                    statuss.add(2);
+                }
             }else{
-                statuss.add(status);
+                if(status == 2){
+                    statuss.add(0);
+                    statuss.add(1);
+                }else{
+                    statuss.add(status);
+                }
+
             }
             return Result.of(organTaskService.getAllByAgendaId(agendaId,type,statuss));
         }catch (Exception e){
@@ -166,8 +185,22 @@ public class COrganTaskController {
     public Result signIn(Long taskId){
         TOrganTask organTask = organTaskService.selectById(taskId);
         try{
+            //修改任务表
+            Date doneTime = new Date(); //完成时间
             organTask.setStatus(1);
+            organTask.setDoneTime(doneTime);
             organTaskService.updateById(organTask);
+            //插入到 签到表
+            //所属班级
+            TClass tClass = classService.getByCourseId(organTask.getCourseId());
+            TClock clock = new TClock();
+            clock.setClassId(tClass.getId());
+            clock.setLessonId(organTask.getLessonId());
+            clock.setStudentId(organTask.getStudentId());
+            clock.setOrganizationId(tClass.getOrganId());
+            clock.setType(1);
+            clock.setCreateTime(doneTime);
+            clockService.insert(clock);
             return Result.of("签到成功!");
         }catch (Exception e){
             e.printStackTrace();
@@ -188,11 +221,26 @@ public class COrganTaskController {
     public Result batchSignIn(String taskIds){
         TOrganTask tempOrganTask = null;
         String[] arr = taskIds.split(",");
+        Date doneTime = new Date(); //完成时间
+        TClass tempClass = null;
+        TClock tempClock = null;
         try{
             for(int i=0;i<arr.length;i++){
                 tempOrganTask = organTaskService.selectById(Long.parseLong(arr[i]));
                 tempOrganTask.setStatus(1);
+                tempOrganTask.setDoneTime(doneTime);
                 organTaskService.updateById(tempOrganTask);
+                //插入到 签到表
+                //所属班级
+                tempClass = classService.getByCourseId(tempOrganTask.getCourseId());
+                tempClock = new TClock();
+                tempClock.setClassId(tempClass.getId());
+                tempClock.setLessonId(tempOrganTask.getLessonId());
+                tempClock.setStudentId(tempOrganTask.getStudentId());
+                tempClock.setOrganizationId(tempClass.getOrganId());
+                tempClock.setType(1);
+                tempClock.setCreateTime(doneTime);
+                clockService.insert(tempClock);
             }
             return Result.of("批量签到成功!");
         }catch (Exception e){
@@ -201,6 +249,9 @@ public class COrganTaskController {
         }finally {
             tempOrganTask = null;//for gc
             arr = null;
+            doneTime = null;
+            tempClass = null;
+            tempClock = null;
         }
         return null;
     }
@@ -216,11 +267,26 @@ public class COrganTaskController {
     public Result batchskForleave(String taskIds){
         TOrganTask tempOrganTask = null;
         String[] arr = taskIds.split(",");
+        Date doneTime = new Date(); //完成时间
+        TClass tempClass = null;
+        TClock tempClock = null;
         try{
             for(int i=0;i<arr.length;i++){
                 tempOrganTask = organTaskService.selectById(Long.parseLong(arr[i]));
                 tempOrganTask.setStatus(2);
+                tempOrganTask.setDoneTime(new Date());
                 organTaskService.updateById(tempOrganTask);
+                //插入到 签到表
+                //所属班级
+                tempClass = classService.getByCourseId(tempOrganTask.getCourseId());
+                tempClock = new TClock();
+                tempClock.setClassId(tempClass.getId());
+                tempClock.setLessonId(tempOrganTask.getLessonId());
+                tempClock.setStudentId(tempOrganTask.getStudentId());
+                tempClock.setOrganizationId(tempClass.getOrganId());
+                tempClock.setType(3);
+                tempClock.setCreateTime(doneTime);
+                clockService.insert(tempClock);
             }
             return Result.of("批量请假成功!");
         }catch (Exception e){
@@ -229,6 +295,9 @@ public class COrganTaskController {
         }finally {
             tempOrganTask = null;//for gc
             arr = null;
+            doneTime = null;
+            tempClass = null;
+            tempClock = null;
         }
         return null;
     }
@@ -270,6 +339,7 @@ public class COrganTaskController {
             //更新点评任务
             tempOrganTask.setBusinessId(dynamicmsg.getId());
             tempOrganTask.setStatus(1);//状态修改为完成
+            tempOrganTask.setDoneTime(new Date());
             organTaskService.updateById(tempOrganTask);
             //保存图片
             List<Long> dynamicmsgIds = new ArrayList<>();
@@ -469,6 +539,7 @@ public class COrganTaskController {
                 tempOrganTask.setBusinessId(tempDynamicmsg.getId());//动态Id
 //                tempOrganTask.setShouldDoneTime(BaseUtil.toDate(shouldDoneTime,"yyyy-MM-dd HH:mm"));//作业需完成时间
                 tempOrganTask.setStatus(1);//状态修改为完成
+                tempOrganTask.setDoneTime(new Date());
                 organTaskService.updateById(tempOrganTask);
             }
             //保存图片

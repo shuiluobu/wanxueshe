@@ -104,8 +104,16 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
-
+    var taskId;
+    var agendaId;
     $(function(){
+        //所属待办ID
+        agendaId = getParmVal("paramTwo");
+        //任务ID
+        taskId = getParmVal("itemId");
+        //学生姓名
+        var studentName = decodeURI(getUrlVar("paramOne"));
+        $(".head span").text(studentName+"的课堂点评");
         //预览图片
         var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"><img></img></li>',
             $gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
@@ -148,7 +156,6 @@
     
     //发布
     function release() {
-        var taskId = 4;
         var content = $("#weui-textarea").val().trim();
         if(content.length == 0){
             $.toast("点评内容不能为空",'text',800,function(){
@@ -179,6 +186,9 @@
                 $.toast(json.data,'text',800,function(){
                     //提示完成后执行方法
                 });
+                setTimeout(function () {
+                    window.location.href="/organization/viewsTransfer?view=classCommentCompleteDetail&itemId="+agendaId;
+                },1000);
             }
         });
     }

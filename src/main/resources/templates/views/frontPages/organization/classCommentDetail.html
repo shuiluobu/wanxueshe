@@ -128,7 +128,7 @@
 <#include "/frontPages/common/version.html"/>
 <script>
     //任务Id
-    var taskId = 4;
+    var taskId;
 
     // 页面全局  变量  用于回复评论使用
     var toUserId;   //@的人的 用户Id
@@ -136,7 +136,7 @@
     var dynamicId; //动态Id
 
     $(function(){
-
+        taskId = getParmVal("itemId");
         //添加评论 中 用户头像
         $("#addComment img").attr("src",frontUser.headImg);
         //获取点评详情

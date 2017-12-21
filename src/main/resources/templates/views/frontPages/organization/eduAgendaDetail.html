@@ -113,7 +113,7 @@
 <!-- 待办完成情况 S -->
 <div class="weui-logistics">
     <div class="weui-logistics-li">
-        <a href="signInDetail.html"></a>
+        <a></a>
         <p>签到</p>
         <span></span>
     </div>
@@ -207,20 +207,18 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
+    var agendaId;
+    //课程+课时 名称
+    var courseLName;
     $(function () {
-
+        agendaId = 1;
         // 页面全局  变量  用于回复评论使用
         var toUserId;   //@的人的 用户Id
         var toUserName;//@的人的 教师名称
 
         //添加评论 中 用户头像
         $("#addComment img").attr("src",frontUser.headImg);
-        var agendaId = 1;
 
-//        //跳转到 签到页面
-//        $(".weui-logistics-li").eq(0).click(function () {
-//            window.location.href="signIndetail.html";
-//        })
        //获取 待办-教务 详情
         $.ajax({
             url:"/cOrganAgenda/OrganAgendaDetail",
@@ -233,6 +231,7 @@
                 var agendaDetail = data.agendaDetail;
                 //工作内容
                 $("#agendaDetail h3").text(agendaDetail.content);
+                courseLName = agendaDetail.content;
                 //时间
                 $("#agendaDetail span").eq(0).text(getHM(agendaDetail.startTime)+"-"+getHM(agendaDetail.startTime) );
                 //经办人
@@ -293,6 +292,22 @@
 
 
             }
+        });
+        //跳转到 签到完成详情 页面
+        $(".weui-logistics-li").eq(0).click(function () {
+            window.location.href="/organization/viewsTransfer?view=signInCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
+        });
+        //跳转到 课堂点评完成详情 页面
+        $(".weui-logistics-li").eq(1).click(function () {
+            window.location.href="/organization/viewsTransfer?view=classCommentCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
+        });
+        //跳转到 发布作业完成详情  页面
+        $(".weui-logistics-li").eq(2).click(function () {
+            window.location.href="/organization/viewsTransfer?view=jobPublishCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
+        });
+        //跳转到 作业点评完成详情 页面
+        $(".weui-logistics-li").eq(3).click(function () {
+            window.location.href="/organization/viewsTransfer?view=classworkCommentCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
         });
 
         //获取待办下的所有评论

@@ -27,7 +27,7 @@ public interface TOrganTaskMapper extends BaseMapper<TOrganTask> {
             "left join t_teacher a on a.id = t.teacherId " +
             "left join t_student b on b.id = t.studentId " +
             "left join t_course l on l.id = t.courseId " +
-            "left join t_class_lesson e on e.id = t.classLessonId " +
+            "left join t_class_lesson e on e.id = t.lessonId " +
             "left join t_organization q on q.id = a.organizationId " +
             "where t.id = #{taskId} ")
     @ResultMap("BaseResultMap")

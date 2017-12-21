@@ -62,7 +62,7 @@
 </head>
 
 <body>
-<div class="head"><a href="javascript:void(0);" class="return"></a><span>签到-高空作业-1/3课时</span></div>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span></span></div>
 <div class="weui-tab" style="margin-top: 45px;">
     <div class="weui-navbar">
         <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
@@ -145,9 +145,14 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
-    var agendaId = 1;
+    var agendaId;
+    var courseLName;
     $(function () {
-
+        //获取上个页面传过来的 agendaId;
+        agendaId = getParmVal("itemId");
+        //课程课时名称
+        courseLName = decodeURI(getUrlParam("paramOne"));
+        $(".head span").text("签到-"+courseLName);
         //获取班级里所有学生的签到情况
         $.ajax("/cOrganTask/getAllByAgendaId",{
             async : false,

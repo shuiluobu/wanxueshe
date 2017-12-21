@@ -72,10 +72,14 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
-    var agendaId = 1;
+    var agendaId;
+    var courseLName;
     $(function () {
-
+        agendaId = getParmVal("itemId");
         //获取班级里所有学生的签到情况
+        //课程课时名称
+        courseLName = decodeURI(getUrlParam("paramOne"));
+        $(".head span").text("课堂点评-"+courseLName);
         $.ajax("/cOrganTask/getAllByAgendaId",{
             async : false,
             type: 'get',
@@ -120,10 +124,17 @@
                 }
                 as.eq(1).text("已点评("+doneNum+")");
                 as.eq(2).text("未点评("+notDoneNum+")");
-                //签到方法
-//                $(".rightRound").click(function () {
-//                    singIn($(this).attr("id"));
-//                })
+                //点评或 查看 方法
+                $(".rightRound").click(function () {
+                    var taskId = $(this).attr("id");
+                    var operation = $(this).find("span").text();
+                    var studentName = $(this).prev().children("p").eq(0).text();
+                    if(operation == "点评"){
+                        window.location.href = "/organization/viewsTransfer?view=releaseClassComment&itemId="+taskId+"&paramOne="+studentName+"&paramTwo="+agendaId;
+                    }else{
+                        window.location.href = "/organization/viewsTransfer?view=classCommentDetail&itemId="+taskId+"&paramOne="+studentName
+                    }
+                })
             }
         });
 
@@ -190,31 +201,6 @@
 //                        singIn($(this).attr("id"));
 //                    })
                 }
-            }
-        });
-    }
-    
-    //签到
-    function singIn(taskId) {
-        if(taskId == ""){
-            $.toast("已签到过了!",'text',800,function(){
-                //提示完成后执行方法
-            });
-            return;
-        }
-        $.ajax("/cOrganTask/signIn",{
-            async : false,
-            type: 'get',
-            dataType: 'json',
-            data:{taskId:taskId},
-            success:function(json){
-                //提示操作结果
-                $.toast(json.data,'text',800,function(){
-                    //提示完成后执行方法
-                });
-                setTimeout(function () {
-                    window.location.reload();
-                },1000);
             }
         });
     }
