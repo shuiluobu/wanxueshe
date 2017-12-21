@@ -1,7 +1,9 @@
 package com.wxs.app.controller;
 
+import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.customer.TFollowUser;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.customer.ITFrontUserService;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/10/24 0024.
@@ -32,50 +35,50 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("app/homePage")
-public class MyHomePageController extends BaseWxController{
+public class MyHomePageController extends BaseWxController {
     @RequestMapping(value = "/follow")
-    public Result follow(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
+    public Result follow(@RequestParam(value = "sessionId", required = true) String sessionId) {
         Long userId = 1L; //之后需要从session中获取
         return Result.of(studentService.getMyFollow(userId));
     }
 
     @RequestMapping(value = "/myCourse")
-    public Result myCourse(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
+    public Result myCourse(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的课程
         Long userId = 1L; //之后需要从session中获取
         return Result.of(studentService.getMyCourses(userId));
     }
 
     @RequestMapping(value = "/myRemind")
-    public Result myRemind(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
+    public Result myRemind(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的提醒
         Long userId = 1L; //之后需要从session中获取
         return Result.of(remindMessageService.getRemindMsgByFromUid(userId));
     }
 
     @RequestMapping(value = "/myFriend")
-    public Result myFriend(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
+    public Result myFriend(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
         return Result.of(followUserService.getUserFriends(userId));
     }
 
     @RequestMapping(value = "/myDynamic")
-    public Result myDynamic(@RequestParam(value = "sessionId" ,required = true) String sessionId, @RequestParam Long studentId) {
+    public Result myDynamic(@RequestParam(value = "sessionId", required = true) String sessionId, @RequestParam Long studentId) {
         //我的动态记录
         Long userId = 1L; //之后需要从session中获取
         return Result.of(dynamicmsgService.getDynamicmListByMySelfId(userId, studentId));
     }
 
     @RequestMapping(value = "/myStudents")
-    public Result myStudents(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
+    public Result myStudents(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的学员
         Long parentId = 0L;
         return Result.of(parentService.getStudentByParent(parentId));
     }
 
     @RequestMapping(value = "/saveMyGrowth")
-    public Result saveMyGrowth(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+    public Result saveMyGrowth(@RequestParam(value = "sessionId", required = true) String sessionId,
                                @RequestParam MultipartFile[] imageOrVideos,
                                HttpServletRequest request) throws IOException {
         //保存我的作业
@@ -91,11 +94,11 @@ public class MyHomePageController extends BaseWxController{
         dynamic.setContent(content);
         dynamic.setStudentId(studentId);
         dynamic.setUserId(userId); //用户
-        return Result.of(studentService.saveMygrowth(mediaUrls,mediaType, dynamic, workId));
+        return Result.of(studentService.saveMygrowth(mediaUrls, mediaType, dynamic, workId));
     }
 
     @RequestMapping(value = "/sendComment")
-    public Result sendComment(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+    public Result sendComment(@RequestParam(value = "sessionId", required = true) String sessionId,
                               @RequestParam String content, @RequestParam Long dynamicId) {
         //我的学员
         Long userId = 0L;
@@ -104,15 +107,15 @@ public class MyHomePageController extends BaseWxController{
 
     @RequestMapping(value = "/saveStudent")
     public Result saveStudent(@RequestParam(value = "sessionId", required = true) String sessionId,
-                              @RequestParam(required = false,defaultValue = "") MultipartFile file,
+                              @RequestParam(required = false, defaultValue = "") MultipartFile file,
                               @RequestParam(required = true, value = "studentName", defaultValue = "") String studentName,
                               @RequestParam(required = true, value = "sex", defaultValue = "0") int sex) {
-        try{
+        try {
             String originalFilename = file.getOriginalFilename();
             String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
-            String headImgUrl = imgUploadPath + "userStudentImg/"  + BaseUtil.uuid() + "." +suffix;
+            String headImgUrl = imgUploadPath + "userStudentImg/" + BaseUtil.uuid() + "." + suffix;
             File newFile = new File(headImgUrl);
-            if(!newFile.exists() || !newFile.isDirectory()){
+            if (!newFile.exists() || !newFile.isDirectory()) {
                 newFile.mkdirs();//会创建所有的目录
             }
             file.transferTo(new File(headImgUrl));
@@ -124,7 +127,7 @@ public class MyHomePageController extends BaseWxController{
             student.setSex(sex);
             student.setUserId(userId);
             return Result.of(studentService.saveStudent(student));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Result.error("保存失败");
@@ -133,7 +136,7 @@ public class MyHomePageController extends BaseWxController{
     @RequestMapping(value = "/editMyself")
     public Result editMyself(@RequestParam(value = "sessionId", required = true) String sessionId,
                              @RequestParam(required = false, value = "nickName", defaultValue = "") String nickName,
-                             @RequestParam(required = false,defaultValue = "") MultipartFile file,
+                             @RequestParam(required = false, defaultValue = "") MultipartFile file,
                              @RequestParam(required = true, value = "sex", defaultValue = "0") int sex,
                              @RequestParam(required = true, value = "mobilePhone", defaultValue = "") String mobilePhone) {
         //我的学员
@@ -142,9 +145,9 @@ public class MyHomePageController extends BaseWxController{
         try {
             String originalFilename = file.getOriginalFilename();
             String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
-            String headImgUrl = imgUploadPath + "userLogoImg/"  + userId +file.getName() + "." +suffix;
+            String headImgUrl = imgUploadPath + "userLogoImg/" + userId + file.getName() + "." + suffix;
             File newFile = new File(headImgUrl);
-            if(!newFile.exists() || !newFile.isDirectory()){
+            if (!newFile.exists() || !newFile.isDirectory()) {
                 newFile.mkdirs();//会创建所有的目录
             }
             file.transferTo(new File(headImgUrl));
@@ -156,12 +159,45 @@ public class MyHomePageController extends BaseWxController{
     }
 
 
-    @RequestMapping(value = "/addFriend")
-    public Result addFriend(@RequestParam(value = "sessionId" ,required = true) String sessionId,
-                            @RequestParam(required = true,value = "friendId",defaultValue = "") Long friendId) {
+    @RequestMapping(value = "/sendAddFriendReq")
+    public Result sendAddFriendReq(@RequestParam(value = "sessionId", required = true) String sessionId,
+                                   @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
 
-        //添加我的好友
+        //添加好友的请求
+        Long userId = 1L;
+        followUserService.sendAddFriendReq(userId, friendId);
+        return Result.of("发送请求成功");
+    }
+
+    @RequestMapping(value = "/addFriend")
+    public Result addFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
+                            @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId,
+                            @RequestParam(required = true, value = "isAgree", defaultValue = "") Integer isAgree) {
+        Long userId = 1L;
+        if (isAgree == 1) {
+            //表示同意
+            return Result.of(followUserService.addUserFriend(userId, friendId));
+        } else {
+            //表示不同意
+        }
+        //同意请求后，添加好友
         return null;
+    }
+
+    @RequestMapping(value = "/delFriend")
+    public Result delFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
+                            @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
+        Long userId = 1L;
+        //删除好友
+        return Result.of(followUserService.updateFollowUser(userId,friendId,"30"));
+    }
+
+    @RequestMapping(value = "/shieldFriend")
+    public Result shieldFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
+                            @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
+        Long userId = 1L;
+        //屏蔽好友
+        return Result.of(followUserService.updateFollowUser(userId,friendId,"20"));
     }
 
 
