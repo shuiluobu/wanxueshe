@@ -134,7 +134,7 @@
                     }else{
                         window.location.href = "/organization/viewsTransfer?view=classCommentDetail&itemId="+taskId+"&paramOne="+studentName
                     }
-                })
+                });
             }
         });
 
@@ -196,10 +196,17 @@
                                     '</div>';
                         mainDiv.append(div);
                     }
-                    //点评方法
-//                    $(".rightRound").click(function () {
-//                        singIn($(this).attr("id"));
-//                    })
+                    //点评或 查看 方法
+                    $(".rightRound").click(function () {
+                        var taskId = $(this).attr("id");
+                        var operation = $(this).find("span").text();
+                        var studentName = $(this).prev().children("p").eq(0).text();
+                        if(operation == "点评"){
+                            window.location.href = "/organization/viewsTransfer?view=releaseClassComment&itemId="+taskId+"&paramOne="+studentName+"&paramTwo="+agendaId;
+                        }else{
+                            window.location.href = "/organization/viewsTransfer?view=classCommentDetail&itemId="+taskId+"&paramOne="+studentName
+                        }
+                    });
                 }
             }
         });
