@@ -151,5 +151,9 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         return result;
     }
 
+    public void delStudent(Long studentId){
+        
+    }
+
 
 }

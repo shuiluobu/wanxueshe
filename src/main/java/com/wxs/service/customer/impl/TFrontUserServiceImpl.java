@@ -36,12 +36,6 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
 
     @Autowired
     private ICache cache;
-    @Autowired
-    private TStudentClassMapper studentClassMapper;
-    @Autowired
-    private TStudentMapper studentMapper;
-    @Autowired
-    private TFriendMapper friendMapper;
 
     @Value("${wxuser.key}")
     private String wxUserKey;
@@ -79,18 +73,7 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
         return wxUser;
     }
 
-    @Override
-    public List<Map<String, Object>> getUserFriends(Long userId) {
-        List<Map<String,Object>>  list = friendMapper.selectMaps(new EntityWrapper().where("mUserId={0}",userId).orderBy("createTime desc"));
 
-        list.stream().forEach(tFriend -> {
-            Long fUserId = Long.parseLong(tFriend.get("fUserId").toString());
-            TParent parent = new TParent().selectOne(new EntityWrapper().where("userId={0}",fUserId));
-            tFriend.put("studentCount",studentMapper.getParentStudentCount(parent.getId()));
-            tFriend.put("courseCount",studentClassMapper.getParentCourseCount(parent.getId()));
-        });
-        return list;
-    }
 
     @Override
     public Map<String, Object> editUserInfoByMySelf(Long userId, String nickName, String headImg, int gener, String mobilePhone) {

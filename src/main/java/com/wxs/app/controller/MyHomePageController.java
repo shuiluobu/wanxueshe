@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.wxs.core.util.BaseUtil;
 import org.wxs.core.util.OsppyUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ public class MyHomePageController extends BaseWxController{
     public Result myFriend(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
-        return Result.of(frontUserService.getUserFriends(userId));
+        return Result.of(friendService.getUserFriends(userId));
     }
 
     @RequestMapping(value = "/myDynamic")
@@ -103,14 +104,30 @@ public class MyHomePageController extends BaseWxController{
 
     @RequestMapping(value = "/saveStudent")
     public Result saveStudent(@RequestParam(value = "sessionId", required = true) String sessionId,
-                              @RequestParam String studentName, @RequestParam int sex) {
-        //我的学员
-        Long userId = 0L;
-        TStudent student = new TStudent();
-        student.setRealName(studentName);
-        student.setSex(sex);
-        student.setUserId(userId);
-        return Result.of(studentService.saveStudent(student));
+                              @RequestParam(required = false,defaultValue = "") MultipartFile file,
+                              @RequestParam(required = true, value = "studentName", defaultValue = "") String studentName,
+                              @RequestParam(required = true, value = "sex", defaultValue = "0") int sex) {
+        try{
+            String originalFilename = file.getOriginalFilename();
+            String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
+            String headImgUrl = imgUploadPath + "userStudentImg/"  + BaseUtil.uuid() + "." +suffix;
+            File newFile = new File(headImgUrl);
+            if(!newFile.exists() || !newFile.isDirectory()){
+                newFile.mkdirs();//会创建所有的目录
+            }
+            file.transferTo(new File(headImgUrl));
+            //我的学员
+            Long userId = 0L;
+            TStudent student = new TStudent();
+            student.setRealName(studentName);
+            student.setHeadImg(headImgUrl);
+            student.setSex(sex);
+            student.setUserId(userId);
+            return Result.of(studentService.saveStudent(student));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return Result.error("保存失败");
     }
 
     @RequestMapping(value = "/editMyself")
@@ -123,7 +140,9 @@ public class MyHomePageController extends BaseWxController{
         Long userId = 0L;
 
         try {
-            String headImgUrl = imgUploadPath + "userLogoImg" + OsppyUtil.osSeparator() + userId +file.getName();
+            String originalFilename = file.getOriginalFilename();
+            String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
+            String headImgUrl = imgUploadPath + "userLogoImg/"  + userId +file.getName() + "." +suffix;
             File newFile = new File(headImgUrl);
             if(!newFile.exists() || !newFile.isDirectory()){
                 newFile.mkdirs();//会创建所有的目录
@@ -134,6 +153,15 @@ public class MyHomePageController extends BaseWxController{
             e.printStackTrace();
         }
         return Result.error("上传头像出错了");
+    }
+
+
+    @RequestMapping(value = "/addFriend")
+    public Result addFriend(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                            @RequestParam(required = true,value = "friendId",defaultValue = "") Long friendId) {
+
+        //添加我的好友
+        return null;
     }
 
 
