@@ -123,10 +123,11 @@
                 }
                 as.eq(0).text("已提交作业("+doneNum+")");
                 as.eq(1).text("未提交("+notDoneNum+")");
-                //签到方法
-//                $(".rightRound").click(function () {
-//                    singIn($(this).attr("id"));
-//                })
+                //发布作业点评或查看作业点评详情
+                $(".rightRound").click(function () {
+                    var taskId = $(this).attr("id");
+                    window.location.href = "/organization/viewsTransfer?view=classworkCommentDetail&itemId="+taskId+"&paramOne="+agendaId;
+                });
             }
         });
 
@@ -199,15 +200,24 @@
                                             '<p>'+tempStatus+'</p>'+
                                         '</div>'+
                                         '<div class="rightRound" id="'+list[i].id+'">'+
-                                             '<p><span>'+operation+'</span><img src="/weui/images/wyh/toRight.png"> </p>'+
+                                             '<p><span id="'+list[i].studentId+'">'+operation+'</span><img src="/weui/images/wyh/toRight.png"> </p>'+
                                         '</div>'+
                                     '</div>';
                         mainDiv.append(div);
                     }
-                    //点评方法
-//                    $(".rightRound").click(function () {
-//                        singIn($(this).attr("id"));
-//                    })
+                    //发布作业
+                    $(".rightRound").click(function () {
+                        var studentId = $(this).find("span").attr("id");
+                        var studentName = $(this).prev().children("p").eq(0).text();
+                        var taskId = $(this).attr("id");
+                        var operation = $(this).find("span").text();
+                        var studentName = $(this).prev().children("p").eq(0).text();
+                        if(operation == "发布作业"){
+                            window.location.href = "/organization/viewsTransfer?view=publishJob&itemId="+agendaId+"&paramOne="+studentId+"&paramTwo="+studentName;
+                        }else{
+//                            window.location.href = "/organization/viewsTransfer?view=classCommentDetail&itemId="+taskId+"&paramOne="+studentName
+                        }
+                    });
                 }
             }
         });

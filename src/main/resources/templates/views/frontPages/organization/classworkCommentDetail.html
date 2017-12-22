@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <#include "/frontPages/common/header.html"/>
-    <title>课堂点评详情</title>
+    <title>作业点评</title>
     <style>
         .comment-blue{
             color: #0066CC;
@@ -20,7 +20,7 @@
 </head>
 <body>
 <!-- 标题头 S -->
-<div class="head"><a href="javascript:void(0);" class="return"></a><span>课堂点评详情</span></div>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>作业点评</span></div>
 <!-- 标题头 E -->
 
 <div class="weui-cells weui-cells_form" style="margin-top: 45px;">
@@ -144,7 +144,7 @@
             async : false,
             type: 'post',
             dataType: 'json',
-            data:{ taskId:taskId,userId:frontUser.id,type:1},
+            data:{ taskId:taskId,userId:frontUser.id,type:3},
             success:function(json){
                 var map = json.data;
                 var organTask = map.organTask;
@@ -152,7 +152,7 @@
                 $("#teacherHeadImg").attr("src",organTask.teacherHeadImg);
                 //老师名称，学生姓名
                 $("#tAsName span").eq(0).text(organTask.teacherName);
-                $("#tAsName span").eq(1).text(organTask.studentName+" 课堂点评");
+                $("#tAsName span").eq(1).text(organTask.studentName+" 作业点评");
                 //是否已点赞
                 if(map.like){
                     $(".status_a img").eq(0).attr("src","/weui/images/wyh/redHeart.png");
@@ -181,8 +181,10 @@
                 $("#cloName span").eq(0).text(organTask.courseName+" "+organTask.lessonName);
                 //教师机构名称
                 $("#cloName span").eq(1).text(organTask.organName);
-                //点评时间
-                $("#cloName p").eq(1).text(getMDHM(organTask.doneTime));
+                //作业提交时间
+                if(map.dynamicmsg){
+                    $("#cloName p").eq(1).text(getMDHM(map.dynamicmsg.createTime));
+                }
                 //是否已点赞
 
                 //点评下 评论
@@ -197,16 +199,16 @@
                             content = '<p>回复 <span class="comment-blue">'+list[i].toUserName+'</span> '+list[i].content+'</p>';
                         }
                         var div = '<div class="weui-media-box weui-media-box_appmsg">'+
-                            '<div class="weui-media-box__hd">'+
-                            '<img class="weui-media-box__thumb" src="'+list[i].fromUserHeadImg+'">'+
-                            '</div>'+
-                            ' <div class="weui-media-box__bd">'+
-                            '<div style="float: right;">'+getMD(list[i].createTime)+'</div>'+
-                            '<p class="comment-blue">'+list[i].fromUserName+'</p>'+
-                            content+
-                            '<a style="float: right;"  id="'+list[i].fromUserId+'" >回复</a>'
-                        '</div>'+
-                        '</div>';
+                                    '<div class="weui-media-box__hd">'+
+                                      '<img class="weui-media-box__thumb" src="'+list[i].fromUserHeadImg+'">'+
+                                    '</div>'+
+                                    ' <div class="weui-media-box__bd">'+
+                                         '<div style="float: right;">'+getMD(list[i].createTime)+'</div>'+
+                                         '<p class="comment-blue">'+list[i].fromUserName+'</p>'+
+                                          content+
+                                        '<a style="float: right;"  id="'+list[i].fromUserId+'" >回复</a>'
+                                     '</div>'+
+                                '</div>';
                         $("#classComment").append(div);
                     }
                     // @人回复评论
@@ -234,6 +236,11 @@
                 });
                 return;
             }
+            //获取该动态下评论条数，如果为0，则执行 完成 作业点评任务
+            var commentNums = $("#classComment").find(".weui-media-box").length;
+            if(commentNums == 0){
+                doneTask();
+            }
             //关闭评论框
 //            $("#addComment").hide();
             $.ajax("/cOrganComment/addComment",{
@@ -242,7 +249,7 @@
                 dataType: 'json',
                 data:{
                     itemId:taskId,
-                    type:2,//课堂点评评论
+                    type:3,//作业点评评论
                     fromUserId:frontUser.id,
                     fromUserName:frontUser.teacherName,
                     toUserId:toUserId,
@@ -251,6 +258,7 @@
 
                 },
                 success:function(json){
+
                     //提示操作结果
                     $.toast(json.data,'text',800,function(){
                         //提示完成后执行方法
@@ -288,6 +296,9 @@
                     toUserName = null;
                     //清空评论输入框
                     $("#addComment textarea").val("");
+
+
+
                 }
             });
         });
@@ -343,42 +354,23 @@
         });
     });
 
-    
-    //发布
-    function release() {
-        var content = $("#weui-textarea").val().trim();
-        if(content.length == 0){
-            $.toast("点评内容不能为空",'text',800,function(){
-                //提示完成后执行方法
-            });
-            return;
-        }
-        var power = $("#power").val();
-        var imgs = "";
-        var lis = $(".weui-uploader__file");
-        var temp;
-        for(var i=0;i<lis.length;i++){
-            temp =lis.eq(i).css("background-image");
-            temp =temp.split(",")[1];
-            temp = temp.substring(0,temp.length-2);
-            imgs += temp+",";
-        }
-        $.ajax("/cOrganTask/releaseClassComment",{
+    //完成作业点评任务
+    function doneTask() {
+        $.ajax("/cOrganTask/doneOrganTaskById",{
             async : false,
             type: 'post',
             dataType: 'json',
             data:{
-                taskId:taskId,
-                content:content,
-                power:power,
-                imgs:imgs},
+                taskId:taskId
+            },
             success:function(json){
-                $.toast(json.data,'text',800,function(){
-                    //提示完成后执行方法
-                });
+//                    $.toast(json.data,'text',800,function(){
+//                        //提示完成后执行方法
+//                    });
             }
         });
     }
+    
     //获取当前 时间的 月日  MM-dd
     function getCurMD(){
         var now = new Date();

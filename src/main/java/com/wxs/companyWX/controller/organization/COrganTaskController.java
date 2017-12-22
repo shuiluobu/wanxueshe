@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wxs.core.util.BASE64Util;
 import org.wxs.core.util.BaseUtil;
@@ -78,21 +79,26 @@ public class COrganTaskController {
     private String imgLoadPath;
 
     /**
-     * @Description : 获取任务详情
+     * @Description : 获取任务详情  type:1:课堂点评，2:课堂作业,3：作业点评
      * @return com.wxs.util.Result
      * @Author : wyh
      * @Creation Date : 10:42 2017/12/15
-     * @Params : [taskId, userId]
+     * @Params : [taskId, userId,type]
      **/
     @RequestMapping("/getByTaskId")
-    public Result getByTaskId(Long taskId,Long userId,Long type){
+    public Result getByTaskId(Long taskId,Long userId,@RequestParam(required = false,defaultValue = "0") Integer type){
 
         Map resultMap = new HashMap();
         try{
             TOrganTask organTask = organTaskService.getDetailByTaskId(taskId);
             resultMap.put("organTask",organTask);
             //任务内容，在动态表
-            Long dynamicmsgId;
+            Long dynamicmsgId = null;
+            //课堂点评
+            if(type == 1){
+                dynamicmsgId = organTask.getBusinessId();
+            }
+            //课堂作业
             if(type == 2){
                 // 课堂作业，获取规定完成时间 属于 星期几
                 TClassWork classWork = classWorkService.selectById(organTask.getBusinessId());
@@ -102,9 +108,16 @@ public class COrganTaskController {
                     resultMap.put("dayOfWeek","星期" + BaseUtil.getWeekOfDate(shouldDoneTime));
                 }
                 dynamicmsgId = classWork.getDynamicId();
-            }else{
-                dynamicmsgId = organTask.getBusinessId();
             }
+            //作业点评
+            if(type == 3){
+                //获取该 作业点评任务 对应的 发布作业任务，以获取 作业动态内容
+                TOrganTask jobPublish = organTaskService.getOneByASId(organTask.getAgendaId(),organTask.getStudentId(),3);
+                //获取课堂作业
+                TClassWork classWork = classWorkService.selectById(jobPublish.getBusinessId());
+                dynamicmsgId = classWork.getDynamicId();
+            }
+
             TDynamicmsg dynamicmsg = dynamicmsgService.selectById(dynamicmsgId);
             if(dynamicmsg != null){
                 resultMap.put("dynamicmsg",dynamicmsg);
@@ -133,7 +146,7 @@ public class COrganTaskController {
                 }
             }
             //获取任务下评论
-            List<TOrganComment> commentList = organCommentService.getAllById(taskId,2);
+            List<TOrganComment> commentList = organCommentService.getAllById(taskId,type);
             if(commentList.size()>0){
                 resultMap.put("commentList",commentList);
             }
@@ -476,8 +489,6 @@ public class COrganTaskController {
      **/
     @RequestMapping("/likeOne")
     public Result likeOne(Long dynamicId,Long userId,String userName,Integer status){
-
-
         try{
             TLike tempLike = likeService.getOneByDUId(dynamicId,userId);
             //取消点赞
@@ -624,6 +635,28 @@ public class COrganTaskController {
             //保存动态图片
             uploadCommentImg(imgs,dynamicmsgIds,2);
             return Result.of("发布任务成功!");
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * @Description : 根据 任务ID 完成 任务
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 11:04 2017/12/22
+     * @Params : [taskId]
+     **/
+    @RequestMapping("/doneOrganTaskById")
+    public Result doneOrganTaskById(Long taskId){
+
+        try{
+            TOrganTask organTask = organTaskService.selectById(taskId);
+            organTask.setDoneTime(new Date());
+            organTask.setStatus(1);
+            organTaskService.updateById(organTask);
+            return Result.of("完成任务成功!");
         }catch (Exception e){
             log.error(BaseUtil.getExceptionStackTrace(e));
             e.printStackTrace();
