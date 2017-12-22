@@ -1,8 +1,10 @@
 package com.wxs.service.task.impl;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.comment.TDyvideo;
@@ -14,6 +16,7 @@ import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TStudentWork;
 import com.wxs.enu.EnuDynamicTypeCode;
 import com.wxs.mapper.task.TClassWorkMapper;
+import com.wxs.mapper.task.TStudentWorkMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.task.ITClassWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,9 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
     @Autowired
     private TClassWorkMapper classWorkMapper;
     @Autowired
+    private TStudentWorkMapper studentWorkMapper;
+
+    @Autowired
     private ITDynamicmsgService dynamicmsgService;
 
     public Map<String, Object> getClassWorkOutline(Long taskId) {
@@ -51,6 +57,18 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         classTask.put("courseName",course.getCourseName());
 
         return classTask;
+    }
+    @Override
+    public List<Map<String,Object>> getMyClassWorks(Long userId){
+        List<Map<String,Object>> resultList = Lists.newArrayList();
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("userId",userId);
+        wrapper.orderBy("createTime",false);
+        List<TStudentWork> studentWorks = studentWorkMapper.selectList(wrapper);
+        for(TStudentWork studentWork : studentWorks) {
+            resultList.add(getClassWorkOutline(studentWork.getWorkId()));
+        }
+        return resultList;
     }
 
     @Override

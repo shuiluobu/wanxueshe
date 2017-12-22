@@ -15,6 +15,6 @@ import java.util.Map;
  * @since 2017-09-21
  */
 public interface ITParentService extends IService<TParent> {
-    List<Map<String,Object>> getStudentByParent(Long parentId);
+    Map<String, List> getMyFollow(Long userId); //我的关注
     List<Map<String, Object>> getFllowUsers(List<Long> userIds,Long loginUserId);
 }

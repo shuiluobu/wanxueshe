@@ -17,10 +17,11 @@ import java.util.Map;
  * @since 2017-09-21
  */
 public interface ITStudentService extends IService<TStudent> {
-    Map<String, List> getMyFollow(Long userId); //我的关注
+    List<Map<String,Object>> getStudentOfUser(Long userId);
     Map<String, Object> getMyCourses(Long userId); //我的课程
     List<Map<String,Object>> isEndMyCourses(Long userId,Integer isEnd);
     Map<String, Object> saveMygrowth(List<String> mediaUrls,String mediaType, TDynamicmsg dynamic, Long workId);
-    public Map<Long, String> queryStudentByUserId(Long userId);
+    public List<Map<String, Object>> queryStuInfoByUserId(Long userId);
     public Map<String,Object> saveStudent(TStudent student);
+    Integer delStudent(Long studentId,Long userId);
 }

@@ -27,6 +27,10 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     public final String LESSON_STUDY_STATUS = "LESSON_STUDY_STATUS"; //学生课时完成情况
 
+    public final String REMIND_MEDIA_TYPE = "REMIND_MEDIA_TYPE"; //消息通知媒介
+
+    public final String DATA_AUTHORITY = "DATA_AUTHORITY";
+
     @Override
     public Map<String,Object> queryCourseTypeDictes(){
         Map<String,Object> result = Maps.newHashMap();
@@ -94,16 +98,29 @@ public class DictionaryServiceImpl implements IDictionaryService {
      */
     @Override
     public Map<String,String> getLessonStudyStatus(){
-        Object codeCache = cache.getCache(LESSON_STUDY_STATUS);
+        return  getDictByType(LESSON_STUDY_STATUS);
+    }
+
+    @Override
+    public Map<String,String> getRemindMediaType(){
+        return  getDictByType(REMIND_MEDIA_TYPE);
+    }
+
+    @Override
+    public Map<String,String> getDataAuthority(){
+        return getDictByType(DATA_AUTHORITY);
+    }
+    private Map<String,String> getDictByType(String type){
+        Object codeCache = cache.getCache(type);
         if (codeCache == null) {
             Map<String, String> codeMap = new HashMap<String, String>();
             EntityWrapper wrapper = new EntityWrapper();
-            wrapper.eq("type",LESSON_STUDY_STATUS);
+            wrapper.eq("type",type);
             List<TDictionary> list = dictionaryMapper.selectList(wrapper);
             for (TDictionary dict : list) {
                 codeMap.put(dict.getKey(), dict.getValue());
             }
-            cache.putCache(LESSON_STUDY_STATUS, codeMap, 1000 * 60 * 60 * 24);
+            cache.putCache(type, codeMap, 1000 * 60 * 60 * 24);
             return codeMap;
         } else {
             return (Map<String, String>) codeCache;

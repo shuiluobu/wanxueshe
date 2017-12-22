@@ -1,14 +1,14 @@
 package com.wxs.service.customer.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.course.TStudentClassMapper;
-import com.wxs.mapper.customer.TFollowUserMapper;
-import com.wxs.mapper.customer.TParentMapper;
-import com.wxs.mapper.customer.TStudentMapper;
+import com.wxs.mapper.customer.*;
+import com.wxs.mapper.organ.TFollowOrganMapper;
 import com.wxs.service.customer.ITParentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,32 +28,31 @@ import java.util.Map;
  */
 @Service
 public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> implements ITParentService {
-
+    @Autowired
+    private TFollowOrganMapper fllowOrganMapper;
+    @Autowired
+    private TFollowTeacherMapper followTeacherMapper;
+    @Autowired
+    private TFollowCourseMapper fllowCourseMapper;
     @Autowired
     private TStudentMapper studentMapper;
-
     @Autowired
     private TStudentClassMapper studentClassMapper;
-
     @Autowired
     public TFollowUserMapper followUserMapper;
 
+    private static String MY_FOLLOW_ORGAN = "我关注的机构";
+    private static String MY_FOLLOW_TEACHER = "我关注的老师";
+    private static String MY_FOLLOW_COURSE = "我关注的课程";
 
-    @Override
-    public List<Map<String,Object>> getStudentByParent(Long parentId){
-        EntityWrapper<TStudent> wrapper = new EntityWrapper<>();
-        wrapper.eq("parentId",parentId);
-        List<TStudent> students =  studentMapper.selectList(wrapper);
-        List<Map<String,Object>> studentMapList = new ArrayList<>();
-        students.stream().forEach(tStudent -> {
-            Map<String,Object> studentMap = Maps.newHashMap();
-            studentMap.put("realName",tStudent.getRealName());
-            studentMap.put("parentType",tStudent.getParentType());
-            studentMap.put("courseCount",studentClassMapper.getStudentCourseCount(tStudent.getId()));
-            studentMapList.add(studentMap);
-        });
-        return studentMapList;
+    public Map<String, List> getMyFollow(Long userId) {
+        //我的关注分为：我关注的机构，我关注的课程，我关注的老师
+        List organs = fllowOrganMapper.getFllowOrganByUser(userId); //我关注的机构
+        List teachers = followTeacherMapper.getFllowTeacherByUser(userId); //我关注的老师
+        List courses = fllowCourseMapper.getFllowCoursesByUser(userId);//我关注的课程
+        return ImmutableMap.of(MY_FOLLOW_ORGAN, organs, MY_FOLLOW_TEACHER, teachers, MY_FOLLOW_COURSE, courses);
     }
+
 
     @Override
     public List<Map<String, Object>> getFllowUsers(List<Long> userIds,Long loginUserId) {

@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wxs.core.util.BaseUtil;
 
+import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -41,30 +43,12 @@ import java.util.Map;
  */
 @Service
 public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> implements ITStudentService {
-
-    @Autowired
-    private TFollowOrganMapper fllowOrganMapper;
-    @Autowired
-    private TFollowTeacherMapper followTeacherMapper;
-    @Autowired
-    private TFollowCourseMapper fllowCourseMapper;
     @Autowired
     private TStudentClassMapper studentClassMapper; //我的课程
     @Autowired
     private ITDynamicmsgService dynamicmsgService;
-
-
-    private static String MY_FOLLOW_ORGAN = "我关注的机构";
-    private static String MY_FOLLOW_TEACHER = "我关注的老师";
-    private static String MY_FOLLOW_COURSE = "我关注的课程";
-
-    public Map<String, List> getMyFollow(Long userId) {
-        //我的关注分为：我关注的机构，我关注的课程，我关注的老师
-        List organs = fllowOrganMapper.getFllowOrganByUser(userId); //我关注的机构
-        List teachers = followTeacherMapper.getFllowTeacherByUser(userId); //我关注的老师
-        List courses = fllowCourseMapper.getFllowCoursesByUser(userId);//我关注的课程
-        return ImmutableMap.of(MY_FOLLOW_ORGAN, organs, MY_FOLLOW_TEACHER, teachers, MY_FOLLOW_COURSE, courses);
-    }
+    @Autowired
+    private TStudentMapper studentMapper;
 
     /**
      * 个人首页，课程，我的课程
@@ -78,6 +62,22 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         result.put("0", isEndMyCourses(userId, 0)); //未完成课程
         result.put("1", isEndMyCourses(userId, 1)); //已完成课程
         return result;
+    }
+
+    @Override
+    public List<Map<String,Object>> getStudentOfUser(Long userId){
+        EntityWrapper<TStudent> wrapper = new EntityWrapper<>();
+        wrapper.eq("userId",userId);
+        List<TStudent> students =  studentMapper.selectList(wrapper);
+        List<Map<String,Object>> studentMapList = new ArrayList<>();
+        students.stream().forEach(tStudent -> {
+            Map<String,Object> studentMap = Maps.newHashMap();
+            studentMap.put("realName",tStudent.getRealName());
+            studentMap.put("parentType",tStudent.getParentType());
+            studentMap.put("courseCount",studentClassMapper.getStudentCourseCount(tStudent.getId()));
+            studentMapList.add(studentMap);
+        });
+        return studentMapList;
     }
 
     public List<Map<String, Object>> isEndMyCourses(Long userId, Integer isEnd) {
@@ -128,16 +128,8 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         return null;
     }
     @Override
-    public Map<Long, String> queryStudentByUserId(Long userId) {
-        EntityWrapper wrapper = new EntityWrapper();
-        wrapper.eq("userId", userId);
-        List<TStudent> students = baseMapper.selectList(wrapper);
-        Map<Long, String> result = Maps.newHashMap();
-        students.stream().forEach(tStudent -> {
-            result.put(tStudent.getId(),tStudent.getRealName());
-            //BaseUtil.getKeyValueMap(result, tStudent.getId(), tStudent.getRealName());
-        });
-        return result;
+    public List<Map<String,Object>> queryStuInfoByUserId(Long userId) {
+        return  baseMapper.getStudentInfoOfUser(userId);
     }
     @Override
     public Map<String,Object> saveStudent(TStudent student){
@@ -152,8 +144,12 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         return result;
     }
 
-    public void delStudent(Long studentId){
-        
+    @Override
+    public Integer delStudent(Long studentId,Long userId){
+        TStudent student = new TStudent().selectById(studentId);
+        EntityWrapper wrapper=new EntityWrapper();
+        wrapper.eq("userId",userId);
+     return    baseMapper.update(student,wrapper);
     }
 
 

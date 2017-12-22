@@ -29,8 +29,8 @@
 
 	</resultMap>
 
-	<select id="queryOrganByLikeName" parameterType="java.lang.String" resultType="java.util.Map">
-		SELECT id organId,organName FROM t_organization where organName LIKE '%#{organName}%'
+	<select id="queryOrganByLikeName"  resultType="java.util.Map">
+		SELECT id organId,organName FROM t_organization WHERE organName LIKE '%${organName}%'
 	</select>
 
 </mapper>

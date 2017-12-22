@@ -22,7 +22,6 @@
 		<result column="categoryType" property="categoryType" />
 		<result column="cover" property="cover" />
 		<result column="backgroundImg" property="backgroundImg"/>
-		<result column="authority" property="authority"/>
 	</resultMap>
 
 	<select id="pageData" parameterType="TCourseCategory" resultMap="BaseResultMap">

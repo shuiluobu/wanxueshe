@@ -28,5 +28,4 @@ public interface TClassWorkMapper extends BaseMapper<TClassWork> {
             "AND k.id=#{workId}")
     @ResultType(Map.class)
     public Map<String,Object> getClassWork(@Param("workId") Long workId);
-
 }

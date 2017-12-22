@@ -12,6 +12,7 @@ import com.wxs.service.customer.impl.TStudentServiceImpl;
 import com.wxs.service.message.ITRemindMessageService;
 import com.wxs.util.Result;
 import net.bytebuddy.asm.Advice;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,19 +36,8 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("app/homePage")
-public class MyHomePageController extends BaseWxController {
-    @RequestMapping(value = "/follow")
-    public Result follow(@RequestParam(value = "sessionId", required = true) String sessionId) {
-        Long userId = 1L; //之后需要从session中获取
-        return Result.of(studentService.getMyFollow(userId));
-    }
+public class MyHomeController extends BaseWxController {
 
-    @RequestMapping(value = "/myCourse")
-    public Result myCourse(@RequestParam(value = "sessionId", required = true) String sessionId) {
-        //我的课程
-        Long userId = 1L; //之后需要从session中获取
-        return Result.of(studentService.getMyCourses(userId));
-    }
 
     @RequestMapping(value = "/myRemind")
     public Result myRemind(@RequestParam(value = "sessionId", required = true) String sessionId) {
@@ -63,18 +53,11 @@ public class MyHomePageController extends BaseWxController {
         return Result.of(followUserService.getUserFriends(userId));
     }
 
-    @RequestMapping(value = "/myDynamic")
-    public Result myDynamic(@RequestParam(value = "sessionId", required = true) String sessionId, @RequestParam Long studentId) {
-        //我的动态记录
-        Long userId = 1L; //之后需要从session中获取
-        return Result.of(dynamicmsgService.getDynamicmListByMySelfId(userId, studentId));
-    }
-
     @RequestMapping(value = "/myStudents")
     public Result myStudents(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的学员
         Long parentId = 0L;
-        return Result.of(parentService.getStudentByParent(parentId));
+        return Result.of(studentService.getStudentOfUser(parentId));
     }
 
     @RequestMapping(value = "/saveMyGrowth")
@@ -131,6 +114,12 @@ public class MyHomePageController extends BaseWxController {
             e.printStackTrace();
         }
         return Result.error("保存失败");
+    }
+
+    @RequestMapping(value = "/delStudentByUserId")
+    public Result delStudentByUserId(@RequestParam(value = "sessionId", required = true) String sessionId,
+                              @RequestParam(required = true, value = "studentId", defaultValue = "") Long studentId) {
+        return Result.of(studentService.delStudent(studentId,userId));
     }
 
     @RequestMapping(value = "/editMyself")

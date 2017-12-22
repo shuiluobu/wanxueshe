@@ -28,4 +28,8 @@ public interface TStudentMapper extends BaseMapper<TStudent> {
     @ResultType(int.class)
     public int getParentStudentCount(@Param("userId") Long userId);
 
+    @Select("SELECT id studentId,realName,headImg FROM t_student WHERE userId = #{userId}")
+    @ResultType(Map.class)
+    public List<Map<String,Object>> getStudentInfoOfUser(@Param("userId") Long userId);
+
 }

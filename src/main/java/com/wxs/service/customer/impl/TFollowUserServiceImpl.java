@@ -61,16 +61,19 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
     }
 
     @Override
-    public void sendAddFriendReq(Long userId, Long friendId) {
+    public Map<String,Object> sendAddFriendReq(Long userId, Long friendId) {
         Map<String,Object> result = Maps.newHashMap();
         TFollowUser followUser = getOneFollowUser(userId, friendId, "20");
         if (followUser != null) {
             //不发送加好友的信息给对方，对方已经屏蔽了
-
+            result.put("success",false);
+            result.put("message","您已被该用户屏蔽，无法添加好友");
         } else {
             //发送加朋友的消息给对方
+            result.put("success",true);
+            result.put("message","您已请求已发送");
         }
-
+        return result;
     }
     @Override
     public Map<String, Object> addUserFriend(Long userId, Long friendId) {

@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wxs.entity.comment.*;
 import com.wxs.entity.customer.TFollowUser;
+import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.comment.*;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -56,17 +57,26 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     /**
      * 我自己的动态
      *
-     * @param userId
+     * @param studentId
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDynamicmListByMySelfId(Long userId, Long studentId) {
+    public List<Map<String, Object>> getStudentDynamicmList(Long studentId) {
         Map<String, Object> param = Maps.newHashMap();
-        param.put("userId", userId);
-        if (studentId != null) {
-            param.put("studentId", studentId);
-        }
+        param.put("studentId", studentId);
         List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
+        return buildDynamicmsgList(null, dynamicMsgs);
+    }
+
+    @Override
+    public List<Map<String, Object>> getParentUserDynamicmList(Long userId) {
+        Map<String, Object> param = Maps.newHashMap();
+        List<Map<String, Object>> dynamicMsgs = Lists.newArrayList();
+        List<TStudent>  students = new TStudent().selectList("userId={0}",userId);
+        for(TStudent student : students){
+            param.put("studentId",student.getId());
+            dynamicMsgs.addAll(dynamicmsgMapper.getDynamicmsgByParam(param));
+        }
         return buildDynamicmsgList(null, dynamicMsgs);
     }
 

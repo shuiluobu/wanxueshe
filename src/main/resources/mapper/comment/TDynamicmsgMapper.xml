@@ -57,9 +57,10 @@
 
     <select id="getFriendDynamicmsgByUserId" resultType="java.util.HashMap" parameterType="java.lang.Long">
         <include refid="querySql"></include>
-        INNER JOIN t_friend f on f.fuserId=d.userId
+        INNER JOIN t_follow_user f on f.fuserId=d.userId
         <where>
             d.`status`=0
+            AND f.relationType=10
             AND  power in (0,1)
             <if test="muserId!=null">
                 AND d.muserId = #{muserId}

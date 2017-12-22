@@ -30,5 +30,5 @@ public interface TOrganizationMapper extends BaseMapper<TOrganization> {
     @ResultType(TOrganization.class)
     public List<TOrganization> getNearOrgans(@Param("latitude") double latitude, @Param("longitude") double longitude, @Param("range") double range);
 
-    public List<Map<String,Object>> queryOrganByLikeName(String organName);
+    public List<Map<String,Object>> queryOrganByLikeName(@Param("organName") String organName);
 }

@@ -11,5 +11,7 @@ public interface IDictionaryService {
     public Map<String,Object> getCourseTypeDict();
     public String getCourseTypeValue(String code,String type);
     public Map<String,String>  getLessonStudyStatus();
+    public Map<String,String> getRemindMediaType();
+    Map<String,String> getDataAuthority();
 
 }

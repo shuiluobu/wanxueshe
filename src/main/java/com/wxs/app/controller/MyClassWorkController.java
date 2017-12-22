@@ -42,6 +42,15 @@ public class MyClassWorkController extends BaseWxController {
         return Result.of(classTaskService.getClassWorkOutline(workId));
     }
 
+    @RequestMapping(value = "/batchMyWorks")
+    public Result batchMyWorks(@RequestParam(value = "sessionId", required = true) String sessionId,
+                               @PathVariable("workId") Long workId) {
+        //展示我的所有作业
+        Long userId = 1L;
+        return Result.of(classTaskService.getMyClassWorks(userId));
+    }
+
+
     @RequestMapping(value = "/saveWork")
     public Result saveWork(@RequestParam(value = "sessionId", required = true) String sessionId,
                            @RequestParam MultipartFile[] imageOrVideos, HttpServletRequest request) throws IOException {
@@ -59,6 +68,6 @@ public class MyClassWorkController extends BaseWxController {
         dynamic.setContent(content);
         dynamic.setStudentId(studentId);
         dynamic.setUserId(userId); //用户
-        return Result.of(classTaskService.saveStudentWork(mediaUrls,mediaType, dynamic, workId));
+        return Result.of(classTaskService.saveStudentWork(mediaUrls, mediaType, dynamic, workId));
     }
 }

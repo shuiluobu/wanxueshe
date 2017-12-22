@@ -94,10 +94,7 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	private String cover;
 
 	private String backgroundImg;
-	/**
-	 * 权限
-	 */
-	private String authority;
+
 
 	//-----额外字段
 	@TableField(exist = false)
@@ -266,13 +263,6 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		this.organName = organName;
 	}
 
-	public String getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
 
 	public Integer getPage() {
 		return page;

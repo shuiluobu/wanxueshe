@@ -3,6 +3,7 @@ package org.wxs.core.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.xml.internal.rngom.parse.host.Base;
 import org.apache.commons.lang.StringUtils;
@@ -1158,10 +1159,16 @@ public class BaseUtil {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public static Map getKeyValueMap(Map map,Object key, Object value) {
-        map.put("key", key);
-        map.put("value", value);
-        return map;
+    public static List<Map<String,Object>> getMap2List(Map<String,String> map) {
+        List<Map<String,Object>> mapList = Lists.newArrayList();
+        for(String key : map.keySet()){
+            Map<String,Object> info = new HashMap();
+            info.put("key", key);
+            info.put("value", map.get(key));
+            mapList.add(info);
+        }
+
+        return mapList;
     }
 
     public static Map getKeyValueMap(Object key, Object value) {
