@@ -37,4 +37,8 @@ public interface TTeacherMapper extends BaseMapper<TTeacher> {
            " t.id=c.teacherId and c.courseCateId=cy.id and courseCateId = #{courseCateId}")
     @ResultType(Map.class)
     public List<Map<String,Object>> getTeacherNameListByCourseId(@Param("courseCateId") Long courseCateId);
+    //根据机构Id 和教师名称或姓名  获取 老师
+    @Select(" select * from t_teacher where organizationId = #{organId} " +
+            "and ( teacherName like concat('%',#{name},'%') or realName like concat('%',#{name},'%') ) ")
+    List<TTeacher> searchByName(@Param("organId") Long organId,@Param("name") String name);
 }

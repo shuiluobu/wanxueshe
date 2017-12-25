@@ -1,6 +1,7 @@
 package com.wxs.companyWX.controller.frontUser;
 
 import com.wxs.entity.customer.TFrontUser;
+import com.wxs.entity.customer.TTeacher;
 import com.wxs.service.customer.ITFrontUserService;
 import com.wxs.service.customer.ITTeacherService;
 import com.wxs.util.Result;
@@ -36,7 +37,9 @@ public class CFrontUserController {
             TFrontUser frontUser = frontUserService.selectById(userId);
             //如果是老师,则 赋值  教师名称
             if(frontUser.getUserType() == 2){
-                frontUser.setTeacherName(teacherService.getByUserId(userId).getTeacherName());
+                TTeacher teacher = teacherService.getByUserId(userId);
+                frontUser.setTeacherName(teacher.getTeacherName());
+                frontUser.setOrganId(teacher.getOrganizationId());
             }
              return Result.of(frontUser);
         }catch (Exception e){

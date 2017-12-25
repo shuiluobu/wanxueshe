@@ -10,9 +10,11 @@
 		<result column="courseId" property="courseId" />
 		<result column="lessonId" property="lessonId" />
 		<result column="content" property="content" />
+		<result column="pid" property="pid" />
 		<result column="type" property="type" />
 		<result column="startTime" property="startTime" />
 		<result column="endTime" property="endTime" />
+		<result column="warnTime" property="warnTime" />
 		<result column="remark" property="remark" />
 		<result column="createUser" property="createUser" />
 		<result column="createTime" property="createTime" />

@@ -3,6 +3,7 @@ package com.wxs.mapper.customer;
 import com.wxs.entity.customer.TStudent;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
@@ -31,5 +32,13 @@ public interface TStudentMapper extends BaseMapper<TStudent> {
     @Select("SELECT id studentId,realName,headImg FROM t_student WHERE userId = #{userId}")
     @ResultType(Map.class)
     public List<Map<String,Object>> getStudentInfoOfUser(@Param("userId") Long userId);
+    //根据 学生名字 搜索 学生
+    @Select(" select a.* " +
+            "from t_student_class t " +
+            "left join t_student a on a.id = t.studentId " +
+            "where organizationId = #{organId} " +
+            "and a.realName like concat('%',#{name},'%')")
+    @ResultMap("BaseResultMap")
+    List<TStudent> searchByName(@Param("name")String name,@Param("organId") Long organId);
 
 }

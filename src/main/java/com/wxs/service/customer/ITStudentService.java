@@ -24,4 +24,6 @@ public interface ITStudentService extends IService<TStudent> {
     public List<Map<String, Object>> queryStuInfoByUserId(Long userId);
     public Map<String,Object> saveStudent(TStudent student);
     Integer delStudent(Long studentId,Long userId);
+    //根据 教育机构Id 和 学生名字 模糊搜索 学生
+    List<TStudent> searchByName(String name,Long organId);
 }

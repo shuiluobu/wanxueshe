@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>新建待办</title>
+    <style>
+        select {
+            direction: rtl;
+        }
+        /*select option {*/
+            /*direction: ltr;*/
+        /*}*/
+        .weui-uploader__files li{
+            position: relative;
+            margin-top: 12px;
+            /*border: 1px solid red;*/
+            margin-right: 10px;
+        }
+        .weui-uploader__files img{
+            cursor: pointer;
+            display: inline-block;
+            position: absolute;
+            border-radius:  20px;
+            right: -9px;
+            top:-13px;
+            width: 21px;
+            height: 21px;
+            background-image: url("/weui/images/wyh/cancel.png");
+        }
+    </style>
+</head>
+<body>
+<!-- 标题头 S -->
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>新建待办</span></div>
+<!-- 标题头 E -->
+
+<div class="weui-cells weui-cells_form" style="padding: 20px 0;background-color: #F2F2F2">
+
+    <div class="weui-cell" style="background-color: #F2F2F2">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">任务信息</label></div>
+    </div>
+
+    <div class="weui-cell" style="background-color: #FFFFFF">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">类型</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" readonly style="text-align: right" value="销售 -  跟进" placeholder="">
+        </div>
+        <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+    </div>
+
+    <div class="weui-cell" style="background-color: #FFFFFF">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">跟进学生</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  readonly style="text-align: right">
+        </div>
+        <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+    </div>
+
+    <div class="weui-cell" style="background-color: #FFFFFF">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">课程顾问</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  readonly style="text-align: right" value="张老师" placeholder="">
+        </div>
+        <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+    </div>
+
+    <div class="weui-cell" style="background-color: #F2F2F2">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">完成时间</label></div>
+    </div>
+
+    <div class="weui-cell" style="background-color: #FFFFFF">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">日期</label></div>
+        <div class="weui-cell__bd"style="padding-right: 5px;">
+            <input type="text" class="weui-input" id="shouldDoneTime" style="text-align: right;" placeholder="请选择日期" />
+        </div>
+        <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+    </div>
+
+    <div class="weui-cell" style="background-color: #FFFFFF">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">提醒</label></div>
+        <div class="weui-cell__bd" >
+            <div style="float: right">
+                <span>提前</span>
+                <input style="height:18px; line-height: 18px;width: 30px;" >
+                <span>分钟</span>
+            </div>
+
+        </div>
+        <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+    </div>
+
+    <div class="weui-cell" style="background-color: #F2F2F2">
+        <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">任务备注</label></div>
+    </div>
+
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea class="weui-textarea" id="weui-textarea"  placeholder="请输入备注" rows="4"></textarea>
+        </div>
+    </div>
+
+</div>
+
+<div style="padding:20px;background-color: #F2F2F2" >
+    <a href="javascript:;" class="weui-btn weui-btn_primary" style="background-color: #CCCCCC" onclick="publish();">发 布</a>
+    <a href="javascript:;" class="weui-btn weui-btn_default" style="background-color: #FFFFFF">取 消</a>
+</div>
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    //教务待办Id
+    var agendaId;
+    //作业发布的学生Id
+    var studentIds;
+    $(function(){
+
+        //选择的学生Id
+        if(localStorage.getItem("studentId")){
+            $(".weui-cells input").eq(1).attr("id",localStorage.getItem("studentId"));
+        };
+        //选择的学生姓名
+        if(localStorage.getItem("studentName")){
+            $(".weui-cells input").eq(1).val(localStorage.getItem("studentName"))
+        };
+        //选择的学生Id
+        if(localStorage.getItem("teacherId")){
+            $(".weui-cells input").eq(2).attr("id",localStorage.getItem("teacherId"));
+        };
+        //选择的学生姓名
+        if(localStorage.getItem("teacherName")){
+            $(".weui-cells input").eq(2).val(localStorage.getItem("teacherName"))
+        };
+
+        //要发布的学员Id,从上个页面获取
+        studentIds = getParmVal("paramOne");
+        agendaId = getParmVal("itemId");
+
+        //完成时间选择
+        $("#shouldDoneTime").datetimePicker({
+            title: '作业需完成时间',
+            min: "1990-12-12",
+            max: "2022-12-12 12:12",
+            onChange: function (picker, values, displayValues) {
+//                console.log(values);
+            }
+        });
+
+        //跳转到选择学生页面
+        $(".weui-cells a").eq(1).click(function () {
+            window.location = "/organization/viewsTransfer?view=selectStudent";
+        });
+        //跳转到选择学生页面
+        $(".weui-cells a").eq(2).click(function () {
+            window.location = "/organization/viewsTransfer?view=selectTeacher";
+        });
+    });
+
+    
+    //发布作业
+    function publish() {
+        var pid = 2; //先自定义
+        var type = 2;//先自定义
+        var content = "清晰道具";//自定义
+        if(!localStorage.getItem("studentId")){
+            $.toast("请选择要跟进的学生!",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        if(!localStorage.getItem("teacherId")){
+            $.toast("请选择课程顾问!",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        var endTime = $("#shouldDoneTime").val().trim();
+        if(endTime.length == 0){
+            $.toast("日期不能为空",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        //自动填充秒
+        endTime += ":00";
+        var warnTime =  $(".weui-cells input").eq(4).val().trim();
+        if(warnTime.length == 0){
+            $.toast("提醒时间不能为空,单位/分钟!",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        var remark =  $(".weui-cells textarea").val();
+        if(remark.length == 0){
+            $.toast("任务备注不能为空!",'text',800,function(){
+                //提示完成后执行方法
+            });
+            return;
+        }
+        $.ajax("/cOrganAgenda/publishAgenda",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                userId:frontUser.id,
+                pid:pid,
+                type:type,
+                content:content,
+                organId:globalOrganId,
+                endTime:endTime,
+                warnTime:warnTime,
+                remark:remark,
+                createUser:frontUser.userName
+            },
+            success:function(json){
+                $.toast(json.data,'text',800,function(){
+                    //提示完成后执行方法
+                });
+            }
+        });
+    }
+
+</script>
+</html>

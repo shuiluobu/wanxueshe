@@ -242,6 +242,21 @@ public class COrganAgendaController {
         return resultMap;
     }
 
+    @RequestMapping("/publishAgenda")
+    public Result publishAgenda(TOrganAgenda organAgenda){
+
+        try{
+            organAgenda.setCreateTime(new Date());
+            organAgenda.setStartTime(new Date());
+            organAgendaService.insert(organAgenda);
+            return Result.of("发布待办成功!");
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     //获取首次完成时间
     private String getFirstDoneTime(List<TOrganTask> list){
         for(int i=0;i<list.size();i++){

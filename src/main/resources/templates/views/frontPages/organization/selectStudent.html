@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>选择学生</title>
+    <style>
+        .head div{
+            position: absolute;
+            left:40px;
+            top: 10px;
+            height:20px;
+            line-height: 20px;
+            width: 100%;
+        }
+        .head input{
+            border-left-width:0px;
+            border-top-width:0px;
+            border-right-width:0px;
+            border-bottom: 1px solid #797979
+        }
+    </style>
+</head>
+<body>
+<!-- 搜索   start -->
+<div class="head">
+    <a href="javascript:void(0);" class="return"></a>
+    <div>
+        <input style="width: calc(100% - 95px);height: 100%"></input>
+        <button style="width: 40px;height: 100%;background-color: #FFFFFF;" onclick="search()">搜索</button>
+    </div>
+</div>
+<!-- 搜索   end -->
+<div class="weui-panel" style="margin-top: 45px;">
+
+    <div class="weui-panel__bd" style="font-size: 13px" id="studentList">
+
+        <!--<div class="weui-media-box weui-media-box_appmsg ">-->
+            <!--<div class="weui-media-box__hd ">-->
+              <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+            <!--</div>-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<p class="comment-blue">王同学</p>-->
+                <!--<p>未报名</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+    </div>
+
+</div>
+
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    $(function () {
+        $(".head input").keyup(function () {
+            search();
+        });
+    });
+    
+    function search() {
+        var name = $(".head input").val().trim();
+        if(name.length == 0){
+            return;
+        }
+
+        $.ajax("/cStudent/searchByName",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                name:name,
+                organId:globalOrganId
+            },
+            success:function(json){
+                if(json.data){
+                    var list = json.data;
+                    $("#studentList").empty();
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div class="weui-media-box weui-media-box_appmsg" id="'+list[i].id+'">'+
+                            '<div class="weui-media-box__hd ">'+
+                            '<img class="weui-media-box__thumb" src="'+list[i].headImg+'">'+
+                            '</div>'+
+                            '<div class="weui-media-box__bd">'+
+                            '<p class="comment-blue">'+list[i].realName+'</p>'+
+                            '<p>未报名</p>'+
+                            '</div>'+
+                            '</div>';
+                        $("#studentList").append(div);
+                    }
+                    $(".weui-media-box").click(function (){
+                        var studentId = $(this).attr("id");
+                        var studentName = $(this).find("p").eq(0).text();
+                        //存入localStorage
+                        localStorage.setItem("studentId",studentId);
+                        localStorage.setItem("studentName",studentName);
+                        window.location ="/organization/viewsTransfer?view=newAgenda";
+                    });
+
+                }
+            }
+        });
+    }
+</script>
+</html>
