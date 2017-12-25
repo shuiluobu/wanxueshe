@@ -20,9 +20,10 @@ import java.util.Map;
  * @since 2017-12-21
  */
 public interface TFollowTeacherMapper extends BaseMapper<TFollowTeacher> {
-    @Select("SELECT t.* FROM t_follow_teacher f,t_teacher t where t.id=f.teacherId and f.userId =#{userId} ")
+    @Select("SELECT f.teacherId,t.leval,o.organName,t.headImg FROM t_follow_teacher f,t_teacher t,t_organization o" +
+            " where t.id=f.teacherId and o.id=t.organizationId and f.userId =#{userId} ")
     @ResultType(Map.class)
-    List<Map<String,Object>> getFllowTeacherByUser(@Param("userId") Long userId);
+    List<Map<String,Object>> getFollowTeacherByUser(@Param("userId") Long userId);
 
     TFollowTeacher getOneFllowTeacherByUser(@Param("userId") Long userId, @Param("teacherId") Long teacherId);
 
@@ -30,7 +31,11 @@ public interface TFollowTeacherMapper extends BaseMapper<TFollowTeacher> {
     @ResultType(Long.class)
     List<Long> getFllowUserIdsOfTeacherId(Long teacherId);
 
-    @Select("SELECT count(1) FROM t_follow_teacher f where f.status=0 and f.id=#{teacherId} ")
+    @Select("SELECT count(1) FROM t_follow_teacher f where f.status=0 and f.teacherId=#{teacherId} ")
     @ResultType(int.class)
     int getFllowTeacherByCount(@Param("teacherId") Long teacherId);
+
+    @Select("SELECT count(1) FROM t_follow_teacher f where f.status=0 and f.userId=#{userId} ")
+    @ResultType(int.class)
+    int getFollowTeachCounterByUserId(@Param("teacherId") Long userId);
 }

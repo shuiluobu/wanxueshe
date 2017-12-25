@@ -28,7 +28,6 @@ import java.util.List;
 @RequestMapping("app/mywork")
 public class MyClassWorkController extends BaseWxController {
 
-
     /**
      * 获取下发给我的作业详情
      *
@@ -39,7 +38,7 @@ public class MyClassWorkController extends BaseWxController {
     public Result view(@RequestParam(value = "sessionId", required = true) String sessionId,
                        @PathVariable("workId") Long workId) {
         //展示作业详情
-        return Result.of(classTaskService.getClassWorkOutline(workId));
+        return Result.of(classWorkService.getClassWorkOutline(workId));
     }
 
     @RequestMapping(value = "/batchMyWorks")
@@ -47,7 +46,7 @@ public class MyClassWorkController extends BaseWxController {
                                @PathVariable("workId") Long workId) {
         //展示我的所有作业
         Long userId = 1L;
-        return Result.of(classTaskService.getMyClassWorks(userId));
+        return Result.of(classWorkService.getMyClassWorks(userId));
     }
 
 
@@ -68,6 +67,6 @@ public class MyClassWorkController extends BaseWxController {
         dynamic.setContent(content);
         dynamic.setStudentId(studentId);
         dynamic.setUserId(userId); //用户
-        return Result.of(classTaskService.saveStudentWork(mediaUrls, mediaType, dynamic, workId));
+        return Result.of(classWorkService.saveStudentWork(mediaUrls, mediaType, dynamic, workId));
     }
 }

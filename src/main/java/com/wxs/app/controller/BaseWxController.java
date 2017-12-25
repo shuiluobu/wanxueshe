@@ -52,7 +52,7 @@ public class BaseWxController {
     @Autowired
     public ITCourseCategoryService courseCategoryService;
     @Autowired
-    public ITClassWorkService classTaskService;
+    public ITClassWorkService classWorkService;
     @Autowired
     public ITOrganizationService organizationService;
     @Autowired

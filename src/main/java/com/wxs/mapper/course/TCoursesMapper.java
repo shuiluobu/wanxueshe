@@ -30,6 +30,8 @@ public interface TCoursesMapper extends BaseMapper<TCourse> {
     @ResultType(int.class)
     public int getOrganCourseCount(@Param("organId") Long organId);
 
+
+
     /**
      * 课时计划
      * @param courseCateId

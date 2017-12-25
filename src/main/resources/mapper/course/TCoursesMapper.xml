@@ -74,6 +74,5 @@
         and c.teacherId=t.id
         and s.organizationId=o.id
         and  s.id = #{coursesId}
-
 	</select>
 </mapper>

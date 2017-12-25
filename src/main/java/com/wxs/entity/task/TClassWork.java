@@ -35,7 +35,7 @@ public class TClassWork extends Model<TClassWork> {
     private Date beginTime;
     private Date createTime;
     private Long createUserId;
-    private Integer status;
+    private Integer status=0;
 
 
     public Long getId() {

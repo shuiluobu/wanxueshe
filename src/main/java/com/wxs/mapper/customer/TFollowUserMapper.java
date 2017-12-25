@@ -21,9 +21,11 @@ import java.util.Map;
  */
 public interface TFollowUserMapper extends BaseMapper<TFollowUser> {
 
-    public List<Map<String,Object>> getMyFriend(Long userId);
-
     public int getIsFriednCount(Long userId,Long friendUserId);
-
-    public List<TFollowUser> getFollowUserByParam(Long userId,Long fuserId,String relationType);
+    @Select("select fuserId from t_follow_user where userId=#{userId} and relationType=#{relationType}")
+    @ResultType(long.class)
+    public List<Long> getFollowUserIdsByParam(@Param("userId") Long userId,@Param("relationType") String relationType);
+    @Select("select fuserId,memoName friendName from t_follow_user where userId=#{userId} and relationType=#{relationType} order by createTime")
+    @ResultType(Map.class)
+    public List<Map<String,Object>> getFollowUserByParam(Long userId,String relationType);
 }

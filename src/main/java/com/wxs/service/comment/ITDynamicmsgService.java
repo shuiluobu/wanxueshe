@@ -20,7 +20,7 @@ public interface ITDynamicmsgService extends IService<TDynamicmsg> {
 	List<Map<String,Object>> getMyFriendDynamicmList(Long loginUserId);
 	List<Map<String, Object>> getOtherParentUserDynamicmList(Long loginUserId,Long userId);
 	List<Map<String,Object>> getMyStudentDynamicmList(List<Long> studentId);
-	List<Map<String,Object>> getFollowTeacherDynamicmList(Long loginUserId);
+	List<Map<String,Object>> getFollowDynamicmList(Long loginUserId);
 	Map<String,Object> buildOneDynamic(Map<String,Object> dyn);
 	Boolean saveComment(Long userId,Long dynamicId,String content);
 }

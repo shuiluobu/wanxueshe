@@ -77,6 +77,8 @@ public class TCourse extends Model<TCourse> {
 	private Long  teacherId;
 
 	private String teacherName;
+
+	private Integer isEnd=0; //0:未完成，1：已完成
 	/**
 	 * 课程介绍
 	 */

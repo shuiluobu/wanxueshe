@@ -23,7 +23,7 @@ public class TFollowTeacher extends Model<TFollowTeacher> {
 	private Long teacherId;
 	private Date createTime;
 	private Date updateTime;
-	private Integer status;
+	private Integer status=0;
 
 
 	public Long getId() {

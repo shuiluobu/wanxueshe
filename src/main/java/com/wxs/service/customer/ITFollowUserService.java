@@ -17,7 +17,9 @@ import java.util.Map;
  * @since 2017-12-21
  */
 public interface ITFollowUserService extends IService<TFollowUser> {
-    public List<Map<String,Object>> getUserFriends(Long userId);
+    public List<Map<String,Object>> getMyFriendInfos(Long userId);
+    public List<Map<String, Object>> getMyShieldInfos(Long userId);
+    public List<Long> geFriendIdsByUserId(Long userId);
     Map<String,Object> sendAddFriendReq(Long userId,Long friendId);
     Map<String, Object> addUserFriend(Long userId, Long friendId);
     TFollowUser getOneFollowUser(Long userId,Long friendId,String relationType);

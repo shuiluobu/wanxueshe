@@ -21,4 +21,6 @@ public interface ITTeacherService extends IService<TTeacher> {
     public List<Map<String,Object>> getOrganFllowUserList(Long organId,Long loginUserId);
     //根据用户给Id 获取老师信息
     public TTeacher getByUserId(Long userId);
+
+    List<Map<String,Object>> getFollowTeachInfoByUserId(Long userId);
 }

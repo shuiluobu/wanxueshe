@@ -31,10 +31,10 @@
             <if test="userId!=null">
                 AND d.userId = #{userId}
             </if>
-            <if test="teacherUserIds!=null and teacherUserIds.size()>0">
+            <if test="userIds!=null and userIds.size()>0">
                 AND d.userId in
-                <foreach item="teaUserId" collection="teacherUserIds" separator="," open="(" close=")" index="">
-                    #{teaUserId}
+                <foreach item="userId" collection="userIds" separator="," open="(" close=")" index="">
+                    #{userId}
                 </foreach>
             </if>
             <if test="courseId!=null">

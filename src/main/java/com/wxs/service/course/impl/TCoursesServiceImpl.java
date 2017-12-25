@@ -1,5 +1,6 @@
 package com.wxs.service.course.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -243,6 +244,22 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         }
 
         return null;
+    }
+
+    @Override
+    public List<Map<String,Object>> getFollowCourseInfoByUserId(Long userId) {
+
+        List<Map<String,Object>> mapList = fllowCourseMapper.getFollowCoursesByUser(userId);
+        mapList.stream().forEach(bean->{
+
+            if(bean.get("courseType")!=null){
+                String courseType = bean.get("courseType").toString();
+                bean.put("courseType",dictionaryService.getCourseTypeValue(courseType,"1"));
+            }
+
+        });
+
+        return mapList;
     }
 
     public static LinkedHashMap<String, String> getWeekDateOfCycle(String beginDate, String endDate) {

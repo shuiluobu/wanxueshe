@@ -18,9 +18,14 @@ import java.util.Map;
  * @since 2017-09-21
  */
 public interface TFollowOrganMapper extends BaseMapper<TFollowOrgan> {
-    @Select("SELECT o.* FROM t_follow_organ f,t_organization o where f.organId=o.id and f.userId =#{userId} ")
+    @Select("SELECT f.organId,o.organName,o.leval,o.logoImg FROM t_follow_organ f,t_organization o where f.organId=o.id and f.userId =#{userId} ")
     @ResultType(Map.class)
-    List<Map<String,Object>> getFllowOrganByUser(@Param("userId") Long userId);
+    List<Map<String,Object>> getFollowOrganByUser(@Param("userId") Long userId);
+
+    @Select("SELECT count(1) FROM t_follow_organ f where  f.userId =#{userId} and status=0")
+    @ResultType(int.class)
+    public int getFollowOrganCountByUser(Long userId);
+
 
     @Select("SELECT count(1) FROM t_follow_organ f where  f.organId =#{organId} and status=0")
     @ResultType(int.class)

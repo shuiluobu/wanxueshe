@@ -14,6 +14,8 @@ import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.common.IDictionaryService;
+import com.wxs.service.customer.ITFollowUserService;
+import com.wxs.service.customer.impl.TFollowUserServiceImpl;
 import com.wxs.service.customer.impl.TStudentServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,8 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     public IDictionaryService dictionaryService;
     @Autowired
     public TFollowTeacherMapper followTeacherMapper;
+    @Autowired
+    public ITFollowUserService followUserService;
 
     @Override
     public List<Map<String, Object>> getDynamicmListByCourseId(Long loginUserId, Long couserId) {
@@ -106,11 +110,17 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
      * @return
      */
     @Override
-    public List<Map<String,Object>> getFollowTeacherDynamicmList(Long loginUserId){
+    public List<Map<String,Object>> getFollowDynamicmList(Long loginUserId){
+        //我关注的老师
         List<Long> userIds = followTeacherMapper.getFllowUserIdsOfTeacherId(loginUserId);
         Map<String, Object> param = Maps.newHashMap();
-        param.put("teacherUserIds", userIds);
+        param.put("userIds", userIds);
+        param.put("power","0,1");
         List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
+        //我关注的好友
+        userIds = followUserService.geFriendIdsByUserId(loginUserId);
+        param.put("userIds",userIds);
+        dynamicMsgs.addAll(dynamicmsgMapper.getDynamicmsgByParam(param));
         return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
 

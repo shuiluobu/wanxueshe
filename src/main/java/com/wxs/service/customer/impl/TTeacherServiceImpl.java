@@ -67,6 +67,14 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
         List<Long> userIds = followTeacherMapper.getFllowUserIdsOfTeacherId(loginUserId);
         return parentService.getFllowUsers(userIds,loginUserId);
     }
+    @Override
+    public List<Map<String,Object>> getFollowTeachInfoByUserId(Long userId){
+        List<Map<String,Object>> list = followTeacherMapper.getFollowTeacherByUser(userId);
+//        list.stream().forEach(bean->{
+//
+//        });
+        return list;
+    }
 
     @Override
     public TTeacher getByUserId(Long userId) {

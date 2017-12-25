@@ -17,4 +17,5 @@ import java.util.Map;
 public interface ITParentService extends IService<TParent> {
     Map<String, List> getMyFollow(Long userId); //我的关注
     List<Map<String, Object>> getFllowUsers(List<Long> userIds,Long loginUserId);
+    Map<String, Object> getParentOutline(Long userId, Long loginUserId);
 }

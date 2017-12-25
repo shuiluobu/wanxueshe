@@ -7,23 +7,16 @@
 		<id column="id" property="id" />
 		<result column="userId" property="userId" />
 		<result column="fuserId" property="fuserId" />
+		<result column="memoName" property="memoName"/>
 		<result column="relationType" property="relationType"/>
 		<result column="createTime" property="createTime" />
 		<result column="updateTime" property="updateTime" />
 		<result column="status" property="status" />
 	</resultMap>
-	<select id="getMyFriend" resultType="java.util.HashMap" parameterType="java.lang.Long">
-		SELECT fuserId,memoName friendName FROM  t_follow_user
-		 WHERE  relationType=20
-		 and userId = #{userId}
-		 ORDER BY createTime
-	</select>
 	<select id="getIsFriednCount" resultType="int" parameterType="java.util.HashMap">
 		SELECT count(1)  FROM  t_follow_user
-		 WHERE relationType=20
+		 WHERE relationType=10
 		 and userId = #{userId}
 		 and fuserId = #{freindUserId}
 	</select>
-	
-
 </mapper>

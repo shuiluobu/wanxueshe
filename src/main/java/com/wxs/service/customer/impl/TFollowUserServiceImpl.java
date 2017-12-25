@@ -36,12 +36,26 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
     @Autowired
     private TStudentClassMapper studentClassMapper;
 
+    public final static String relationType_10 ="10"; //朋友
+    public final static String relationType_20 ="20"; //屏蔽
+    public final static String relationType_30 ="30"; //删除
+
     @Override
-    public List<Map<String, Object>> getUserFriends(Long userId) {
-        List<Map<String, Object>> list = followUserMapper.getMyFriend(userId);
+    public List<Map<String, Object>> getMyFriendInfos(Long userId) {
+        List<Map<String, Object>> list = followUserMapper.getFollowUserByParam(userId,relationType_10);
         list.stream().forEach(friend -> {
             Long fUserId = Long.parseLong(friend.get("fuserId").toString());
-            //TParent parent = new TParent().selectOne(new EntityWrapper().where("userId={0}",fUserId));
+            friend.put("studentCount", studentMapper.getParentStudentCount(fUserId));
+            friend.put("courseCount", studentClassMapper.getParentCourseCount(fUserId));
+        });
+        return list;
+    }
+
+    @Override
+    public List<Map<String, Object>> getMyShieldInfos(Long userId) {
+        List<Map<String, Object>> list = followUserMapper.getFollowUserByParam(userId,relationType_20);
+        list.stream().forEach(friend -> {
+            Long fUserId = Long.parseLong(friend.get("fuserId").toString());
             friend.put("studentCount", studentMapper.getParentStudentCount(fUserId));
             friend.put("courseCount", studentClassMapper.getParentCourseCount(fUserId));
         });
@@ -61,9 +75,15 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
     }
 
     @Override
+    public List<Long> geFriendIdsByUserId(Long userId){
+      List<Long> fuserIds = followUserMapper.getFollowUserIdsByParam(userId,relationType_10);
+      return fuserIds;
+    }
+
+    @Override
     public Map<String,Object> sendAddFriendReq(Long userId, Long friendId) {
         Map<String,Object> result = Maps.newHashMap();
-        TFollowUser followUser = getOneFollowUser(userId, friendId, "20");
+        TFollowUser followUser = getOneFollowUser(userId, friendId, relationType_20);
         if (followUser != null) {
             //不发送加好友的信息给对方，对方已经屏蔽了
             result.put("success",false);
@@ -81,18 +101,18 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
         //20表示朋友
         TFollowUser friend = getOneFollowUser(userId,friendId,null);
         if(friend!=null){
-            if(!friend.getRelationType().equals("20")){
+            if(!friend.getRelationType().equals(relationType_20)){
                 result.put("message", "添加好友成功");
                 result.put("success",false);
             } else {
-                friend.setRelationType("10");
+                friend.setRelationType(relationType_10);
                 followUserMapper.updateById(friend);
             }
         } else {
              friend = new TFollowUser();
              friend.setUserId(userId);
              friend.setFuserId(friendId);
-             friend.setRelationType("10");
+             friend.setRelationType(relationType_10);
              friend.insert();
         }
         result.put("message", "添加好友成功");
@@ -105,7 +125,7 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
         TFollowUser followUser = new TFollowUser();
         followUser.setUserId(userId);
         followUser.setFuserId(friendId);
-        followUser.setRelationType("30");
+        followUser.setRelationType(relationType_30);
         Integer flag = followUserMapper.updateById(followUser);
         if (flag==0) {
             result.put("success", false);

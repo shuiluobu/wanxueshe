@@ -47,4 +47,6 @@ public interface ITCoursesService extends IService<TCourse> {
      * @return
      */
     Map<String,Object> addCourseByApp(Long userId,Map param);
+
+    List<Map<String,Object>> getFollowCourseInfoByUserId(Long userId);
 }

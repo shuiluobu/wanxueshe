@@ -12,14 +12,20 @@
         <result column="updateTime" property="updateTime"/>
         <result column="status" property="status"/>
     </resultMap>
-    <select id="getFllowCoursesByUser" parameterType="java.lang.Long" resultType="hashmap">
+    <select id="getFollowCoursesByUser" parameterType="java.lang.Long" resultType="hashmap">
 		SELECT
+		c.id courseCateId,
 		c.courseCategoryCode courseCode,
 		c.courseCategoryName courseName,
-		c.alreadyStudySum
+		c.alreadyStudySum,
+		c.courseType,
+		c.canQty
 		FROM
 		t_follow_course f,t_course_category c
 		WHERE f.courseCateId=c.id
+		AND f.userId=#{userId}
 	</select>
+
+
 
 </mapper>

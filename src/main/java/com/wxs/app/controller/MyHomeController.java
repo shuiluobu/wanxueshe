@@ -51,15 +51,36 @@ public class MyHomeController extends BaseWxController {
     public Result myFriend(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
-        return Result.of(followUserService.getUserFriends(userId));
+        return Result.of(followUserService.getMyFriendInfos(userId));
+    }
+
+    /**
+     * 我的屏蔽
+     * @param sessionId
+     * @return
+     */
+    @RequestMapping(value = "/myShield")
+    public Result myShield(@RequestParam(value = "sessionId", required = true) String sessionId) {
+        //我的好友列表
+        Long userId = 1L; //之后需要从session中获取
+        return Result.of(followUserService.getMyShieldInfos(userId));
     }
 
     @RequestMapping(value = "/myStudents")
     public Result myStudents(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的学员
-        Long parentId = 0L;
-        return Result.of(studentService.getStudentOfUser(parentId));
+        Long userId = 0L;
+        return Result.of(studentService.getStudentOfUser(userId));
     }
+
+    @RequestMapping(value = "/myClassWorks")
+    public Result myClassWorks(@RequestParam(value = "sessionId", required = true) String sessionId) {
+        //我的学员
+        Long userId = 0L;
+        return Result.of(classWorkService.getMyClassWorks(userId));
+    }
+
+
 
     @RequestMapping(value = "/myGrowth")
     public Result myGrowth(@RequestParam(value = "sessionId", required = true) String sessionId,
@@ -79,7 +100,7 @@ public class MyHomeController extends BaseWxController {
     @RequestMapping(value = "/myFollowDynamic")
     public Result myFollowDynamic(@RequestParam(value = "sessionId", required = true) String sessionId) throws IOException {
         Long userId = 1L; //登录人ID
-        return Result.of(dynamicmsgService.getFollowTeacherDynamicmList(userId));
+        return Result.of(dynamicmsgService.getFollowDynamicmList(userId));
     }
 
 

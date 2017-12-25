@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,4 +29,8 @@ public interface TClassWorkMapper extends BaseMapper<TClassWork> {
             "AND k.id=#{workId}")
     @ResultType(Map.class)
     public Map<String,Object> getClassWork(@Param("workId") Long workId);
+    @Select("select completion,s.workId,DATE_FORMAT(w.endTime,'%Y-%m-%d %H:%i') endTime from t_class_work w,t_student_work s" +
+            " where s.workId=w.id and s.userId=#{userId}")
+    @ResultType(Map.class)
+    public List<Map<String,Object>> getMyClassWorkInfo(@Param("userId") Long userId);
 }

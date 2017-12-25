@@ -26,4 +26,6 @@ public interface TClassMapper extends BaseMapper<TClass> {
     @ResultMap("BaseResultMap")
     public TClass getByCourseId(@Param("courseId") Long courseId);
 
+
+
 }

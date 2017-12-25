@@ -94,6 +94,15 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
         result.put("telePhone", organization.getTelePhone() == null ? organization.getMobilePhone() : organization.getTelePhone());
         return result;
     }
+    @Override
+    public List<Map<String,Object>> getFollowOrganInfoByUserId(Long userId){
+        List<Map<String,Object>> organInfoMaps = fllowOrganMapper.getFollowOrganByUser(userId);
+        organInfoMaps.stream().forEach(organ ->{
+            Long organId = Long.parseLong(organ.get("organId").toString());
+            organ.put("samllCount", smallCountOfOrgan(organId)); //小统计
+        });
+        return organInfoMaps;
+    }
 
 
     public String smallCountOfOrgan(Long organId) {

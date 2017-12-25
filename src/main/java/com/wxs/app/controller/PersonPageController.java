@@ -16,10 +16,16 @@ import java.util.List;
 @RestController
 @RequestMapping("app/person")
 public class PersonPageController extends BaseWxController {
+    @RequestMapping(value = "/view")
+    public Result view(@RequestParam(value = "sessionId", required = true) String sessionId,
+                       @RequestParam(value = "userId", required = false) Long userId) {
+        Long loginUserId = 1L;
+        return Result.of(parentService.getParentOutline(userId, loginUserId));
+    }
 
     @RequestMapping(value = "/follow")
     public Result follow(@RequestParam(value = "sessionId", required = true) String sessionId,
-                         @RequestParam(value = "userId", required = true) Long userId) {
+                         @RequestParam(value = "userId", required = false) Long userId) {
         return Result.of(parentService.getMyFollow(userId));
     }
 
@@ -36,6 +42,6 @@ public class PersonPageController extends BaseWxController {
                           @RequestParam(value = "userId", required = true) Long userId
     ) {
         Long loginUserId = 1L;
-        return Result.of(dynamicmsgService.getOtherParentUserDynamicmList(loginUserId,userId));
+        return Result.of(dynamicmsgService.getOtherParentUserDynamicmList(loginUserId, userId));
     }
 }

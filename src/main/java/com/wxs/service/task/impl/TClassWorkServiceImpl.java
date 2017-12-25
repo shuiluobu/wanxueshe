@@ -42,9 +42,18 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
     private TClassWorkMapper classWorkMapper;
     @Autowired
     private TStudentWorkMapper studentWorkMapper;
-
     @Autowired
     private ITDynamicmsgService dynamicmsgService;
+
+    /**
+     * 获取用户作业的基本信息，主要是我的功能里的《我的作业》用
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> getClassWorkInfosByUserId(Long userId){
+        return classWorkMapper.getMyClassWorkInfo(userId);
+    }
 
     public Map<String, Object> getClassWorkOutline(Long taskId) {
         Map<String, Object> classTask = classWorkMapper.getClassWork(taskId);
@@ -55,7 +64,6 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()));
         TCourse course = new TCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
         classTask.put("courseName",course.getCourseName());
-
         return classTask;
     }
     @Override
