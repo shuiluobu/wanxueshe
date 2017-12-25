@@ -73,6 +73,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         students.stream().forEach(tStudent -> {
             Map<String,Object> studentMap = Maps.newHashMap();
             studentMap.put("realName",tStudent.getRealName());
+            studentMap.put("studentId",tStudent.getId());
             studentMap.put("parentType",tStudent.getParentType());
             studentMap.put("courseCount",studentClassMapper.getStudentCourseCount(tStudent.getId()));
             studentMapList.add(studentMap);

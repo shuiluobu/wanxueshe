@@ -64,7 +64,7 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
 
     @Override
     public List<Map<String,Object>> getOrganFllowUserList(Long organId,Long loginUserId){
-        List<Long> userIds = followTeacherMapper.getFllowUserIdsOfTeacherId(organId);
+        List<Long> userIds = followTeacherMapper.getFllowUserIdsOfTeacherId(loginUserId);
         return parentService.getFllowUsers(userIds,loginUserId);
     }
 

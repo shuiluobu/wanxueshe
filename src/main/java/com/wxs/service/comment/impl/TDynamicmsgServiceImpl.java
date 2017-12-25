@@ -7,9 +7,14 @@ import com.google.common.collect.Maps;
 import com.wxs.entity.comment.*;
 import com.wxs.entity.customer.TFollowUser;
 import com.wxs.entity.customer.TStudent;
+import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.comment.*;
+import com.wxs.mapper.customer.TFollowTeacherMapper;
+import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.wxs.service.common.IDictionaryService;
+import com.wxs.service.customer.impl.TStudentServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +44,12 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     private TLikeMapper likeMapper;
     @Autowired
     private TCommentMapper commentMapper;
+    @Autowired
+    public TStudentMapper studentMapper;
+    @Autowired
+    public IDictionaryService dictionaryService;
+    @Autowired
+    public TFollowTeacherMapper followTeacherMapper;
 
     @Override
     public List<Map<String, Object>> getDynamicmListByCourseId(Long loginUserId, Long couserId) {
@@ -55,29 +66,52 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     }
 
     /**
-     * 我自己的动态
+     * 我自己的学生的动态
      *
-     * @param studentId
+     * @param studentIds
      * @return
      */
     @Override
-    public List<Map<String, Object>> getStudentDynamicmList(Long studentId) {
+    public List<Map<String, Object>> getMyStudentDynamicmList(List<Long> studentIds) {
         Map<String, Object> param = Maps.newHashMap();
-        param.put("studentId", studentId);
+        param.put("studentIds", studentIds);
         List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
         return buildDynamicmsgList(null, dynamicMsgs);
     }
 
+    /**
+     * 别人学生的动态
+     * @param loginUserId
+     * @param userId
+     * @return
+     */
     @Override
-    public List<Map<String, Object>> getParentUserDynamicmList(Long userId) {
+    public List<Map<String, Object>> getOtherParentUserDynamicmList(Long loginUserId,Long userId) {
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("userId", userId);
+        List<Long> studentIds = Lists.newArrayList();
+        List<TStudent> students = studentMapper.selectList(wrapper);
+        students.stream().forEach(student -> {
+            studentIds.add(student.getId());
+        });
         Map<String, Object> param = Maps.newHashMap();
-        List<Map<String, Object>> dynamicMsgs = Lists.newArrayList();
-        List<TStudent>  students = new TStudent().selectList("userId={0}",userId);
-        for(TStudent student : students){
-            param.put("studentId",student.getId());
-            dynamicMsgs.addAll(dynamicmsgMapper.getDynamicmsgByParam(param));
-        }
-        return buildDynamicmsgList(null, dynamicMsgs);
+        param.put("studentIds", studentIds);
+        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
+        return buildDynamicmsgList(loginUserId, dynamicMsgs);
+    }
+
+    /**
+     * 我关注的动态，主要是我关注老师的动态
+     * @param loginUserId
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> getFollowTeacherDynamicmList(Long loginUserId){
+        List<Long> userIds = followTeacherMapper.getFllowUserIdsOfTeacherId(loginUserId);
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("teacherUserIds", userIds);
+        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
+        return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
 
     /**
@@ -95,7 +129,9 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     public List<Map<String, Object>> buildDynamicmsgList(Long loginUserId, List<Map<String, Object>> dynamicMsgs) {
         List<Map<String, Object>> dynamiList = Lists.newArrayList();
         dynamicMsgs.stream().forEach(dyn -> {
-            dyn.put("dynamicType",""); //后去从字段中取值
+            String studentName = dyn.get("realName")==null?"":dyn.get("realName").toString();
+            String dynamicType = dyn.get("dynamicType")==null?"":dyn.get("dynamicType").toString();
+            dyn.put("dynamicType",studentName + dictionaryService.getDynamicType().get(dynamicType)); //后去从字段中取值
             if (loginUserId != null && loginUserId != 0) {
                 Long dynUserId = Long.parseLong(dyn.get("userId").toString());
                 String power = dyn.get("power").toString(); //动态权限0：公开，1：仅好友 2：仅自己
@@ -139,6 +175,12 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     }
     @Override
     public Map<String,Object> buildOneDynamic(Map<String,Object> dyn){
+        Long organId = Long.parseLong(dyn.get("organId").toString());
+        Map<String,Object> organMap = Maps.newHashMap();
+        organMap.put("organId",organId);
+        organMap.put("organName",new TOrganization().selectById(organId).getOrganName());
+        dyn.remove("organId");
+        dyn.put("organ",organMap);
         Long dynamicId = Long.parseLong(dyn.get("id").toString());
         List<TDyimg> dyimgs = imgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
         dyn.put("dyImgs", dyimgs); //图集

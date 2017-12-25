@@ -61,7 +61,7 @@
         SELECT
         organizationId,courseCode,courseName,courseRemark,marketPrice,preferenPrice,
         canQty,categoryCode,categoryName
-        FROM t_course WHERE id =
+        FROM t_course WHERE id in
         <foreach item="coursesId" collection="cIdList" separator="," open="(" close=")" index="">
             #{coursesId}
         </foreach>

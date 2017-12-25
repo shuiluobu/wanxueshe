@@ -31,6 +31,8 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     public final String DATA_AUTHORITY = "DATA_AUTHORITY";
 
+    public final String DYNAMIC_TYPE = "DYNAMIC_TYPE";
+
     @Override
     public Map<String,Object> queryCourseTypeDictes(){
         Map<String,Object> result = Maps.newHashMap();
@@ -104,6 +106,10 @@ public class DictionaryServiceImpl implements IDictionaryService {
     @Override
     public Map<String,String> getRemindMediaType(){
         return  getDictByType(REMIND_MEDIA_TYPE);
+    }
+    @Override
+    public Map<String,String> getDynamicType(){
+        return  getDictByType(DYNAMIC_TYPE);
     }
 
     @Override

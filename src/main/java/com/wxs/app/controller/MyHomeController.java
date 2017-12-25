@@ -1,5 +1,6 @@
 package com.wxs.app.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
@@ -60,6 +61,28 @@ public class MyHomeController extends BaseWxController {
         return Result.of(studentService.getStudentOfUser(parentId));
     }
 
+    @RequestMapping(value = "/myGrowth")
+    public Result myGrowth(@RequestParam(value = "sessionId", required = true) String sessionId,
+                           @RequestParam(value = "studentIds", required = false) List<Long> studentIds) throws IOException {
+        Long userId = 1L; //登录人ID
+        if (studentIds == null) {
+            EntityWrapper wrapper = new EntityWrapper();
+            wrapper.eq("userId", userId);
+            List<TStudent> students = studentService.selectList(wrapper);
+            students.stream().forEach(student -> {
+                studentIds.add(student.getId());
+            });
+        }
+        return Result.of(dynamicmsgService.getMyStudentDynamicmList(studentIds));
+    }
+
+    @RequestMapping(value = "/myFollowDynamic")
+    public Result myFollowDynamic(@RequestParam(value = "sessionId", required = true) String sessionId) throws IOException {
+        Long userId = 1L; //登录人ID
+        return Result.of(dynamicmsgService.getFollowTeacherDynamicmList(userId));
+    }
+
+
     @RequestMapping(value = "/saveMyGrowth")
     public Result saveMyGrowth(@RequestParam(value = "sessionId", required = true) String sessionId,
                                @RequestParam MultipartFile[] imageOrVideos,
@@ -118,8 +141,8 @@ public class MyHomeController extends BaseWxController {
 
     @RequestMapping(value = "/delStudentByUserId")
     public Result delStudentByUserId(@RequestParam(value = "sessionId", required = true) String sessionId,
-                              @RequestParam(required = true, value = "studentId", defaultValue = "") Long studentId) {
-        return Result.of(studentService.delStudent(studentId,userId));
+                                     @RequestParam(required = true, value = "studentId", defaultValue = "") Long studentId) {
+        return Result.of(studentService.delStudent(studentId, userId));
     }
 
     @RequestMapping(value = "/editMyself")
@@ -178,15 +201,15 @@ public class MyHomeController extends BaseWxController {
                             @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
         Long userId = 1L;
         //删除好友
-        return Result.of(followUserService.updateFollowUser(userId,friendId,"30"));
+        return Result.of(followUserService.updateFollowUser(userId, friendId, "30"));
     }
 
     @RequestMapping(value = "/shieldFriend")
     public Result shieldFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
-                            @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
+                               @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
         Long userId = 1L;
         //屏蔽好友
-        return Result.of(followUserService.updateFollowUser(userId,friendId,"20"));
+        return Result.of(followUserService.updateFollowUser(userId, friendId, "20"));
     }
 
 
