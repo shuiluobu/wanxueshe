@@ -3,6 +3,8 @@
 <script>
     //前端用户
     var frontUser;
+    var globalOrganId;
+    var localStorage = window.localStorage;
     $(function () {
         var userId = 1;
         $.ajax("/cFrontUser/getById",{
@@ -12,6 +14,7 @@
             data:{userId:userId},
             success:function(json){
                 frontUser = json.data;
+                globalOrganId = json.data.organId;
             }
         });
     });

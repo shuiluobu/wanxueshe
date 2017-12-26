@@ -153,5 +153,10 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
      return    baseMapper.update(student,wrapper);
     }
 
+    @Override
+    public List<TStudent> searchByName(String name,Long organId) {
+        return studentMapper.searchByName(name,organId);
+    }
+
 
 }

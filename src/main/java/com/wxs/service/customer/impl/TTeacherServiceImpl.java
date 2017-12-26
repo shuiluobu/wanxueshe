@@ -81,5 +81,10 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
         return teacherMapper.getByUserId(userId);
     }
 
+    @Override
+    public List<TTeacher> searchByName(Long organId, String name) {
+        return teacherMapper.searchByName(organId,name);
+    }
+
 
 }

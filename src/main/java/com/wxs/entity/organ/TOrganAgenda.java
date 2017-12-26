@@ -27,9 +27,11 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
     private Long courseId;  //所属课程Id
     private Long lessonId;  //所属课时Id
     private String content;  //待办工作内容
-    private Integer type;   //类型: 1:教务 , 2:销售, 3:市场, 4:行政
+    private Integer pid;    //一级分类Id
+    private Integer type;   //二级分类
     private Date startTime; //开始时间
     private Date endTime;   //结束时间
+    private Integer warnTime; //提前提醒时间: 单位/分钟
     private String remark;  //备注
     private String createUser; //创建人
     private Date createTime;   //创建时间
@@ -87,6 +89,14 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
         this.content = content;
     }
 
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
     public Integer getType() {
         return type;
     }
@@ -94,7 +104,7 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
     public void setType(Integer type) {
         this.type = type;
     }
-    @DateTimeFormat(pattern ="yyyy-MM-dd  HH:mm:ss")
+    @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getStartTime() {
         return startTime;
@@ -103,7 +113,7 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-    @DateTimeFormat(pattern ="yyyy-MM-dd  HH:mm:ss")
+    @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getEndTime() {
         return endTime;
@@ -128,7 +138,7 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
-    @DateTimeFormat(pattern ="yyyy-MM-dd  HH:mm:ss")
+    @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
@@ -152,6 +162,14 @@ public class TOrganAgenda extends Model<TOrganAgenda>{
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Integer getWarnTime() {
+        return warnTime;
+    }
+
+    public void setWarnTime(Integer warnTime) {
+        this.warnTime = warnTime;
     }
 
     @Override

@@ -82,6 +82,8 @@ public class TFrontUser extends Model<TFrontUser> {
 	//额外字段
 	@TableField(exist = false)
 	private String teacherName; //教师名称
+	@TableField(exist = false)
+	private Long organId;  //所属教育机构Id
 
 
 
@@ -204,6 +206,14 @@ public class TFrontUser extends Model<TFrontUser> {
 
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
+	}
+
+	public Long getOrganId() {
+		return organId;
+	}
+
+	public void setOrganId(Long organId) {
+		this.organId = organId;
 	}
 
 	@Override
