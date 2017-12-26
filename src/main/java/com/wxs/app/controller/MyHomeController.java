@@ -1,11 +1,14 @@
 package com.wxs.app.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDyimg;
 import com.wxs.entity.comment.TDynamicmsg;
 import com.wxs.entity.customer.TFollowUser;
+import com.wxs.entity.customer.TFrontUser;
 import com.wxs.entity.customer.TStudent;
+import com.wxs.entity.customer.TWxUser;
 import com.wxs.service.comment.ITDynamicmsgService;
 import com.wxs.service.customer.ITFrontUserService;
 import com.wxs.service.customer.ITParentService;
@@ -36,19 +39,25 @@ import java.util.Map;
  * 个人首页
  */
 @RestController
-@RequestMapping("app/homePage")
+@RequestMapping("app/myHome")
 public class MyHomeController extends BaseWxController {
+    @RequestMapping(value = "/view")
+    public Result view(@RequestParam(value = "sessionId", required = true) String sessionId) {
+        //我的提醒
+        Long userId = 1L; //之后需要从session中获取
+        return Result.of(parentService.getParentOutline(null, userId));
+    }
 
 
-    @RequestMapping(value = "/myRemind")
-    public Result myRemind(@RequestParam(value = "sessionId", required = true) String sessionId) {
+    @RequestMapping(value = "/reminds")
+    public Result reminds(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的提醒
         Long userId = 1L; //之后需要从session中获取
         return Result.of(remindMessageService.getRemindMsgByFromUid(userId));
     }
 
-    @RequestMapping(value = "/myFriend")
-    public Result myFriend(@RequestParam(value = "sessionId", required = true) String sessionId) {
+    @RequestMapping(value = "/friends")
+    public Result friends(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
         return Result.of(followUserService.getMyFriendInfos(userId));
@@ -56,35 +65,56 @@ public class MyHomeController extends BaseWxController {
 
     /**
      * 我的屏蔽
+     *
      * @param sessionId
      * @return
      */
-    @RequestMapping(value = "/myShield")
-    public Result myShield(@RequestParam(value = "sessionId", required = true) String sessionId) {
+    @RequestMapping(value = "/shields")
+    public Result shields(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的好友列表
         Long userId = 1L; //之后需要从session中获取
         return Result.of(followUserService.getMyShieldInfos(userId));
     }
 
-    @RequestMapping(value = "/myStudents")
-    public Result myStudents(@RequestParam(value = "sessionId", required = true) String sessionId) {
+    @RequestMapping(value = "/students")
+    public Result students(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的学员
-        Long userId = 0L;
+        Long userId = 1L;
         return Result.of(studentService.getStudentOfUser(userId));
     }
 
-    @RequestMapping(value = "/myClassWorks")
-    public Result myClassWorks(@RequestParam(value = "sessionId", required = true) String sessionId) {
+    @RequestMapping(value = "/getOneStudent")
+    public Result getOneStudent(@RequestParam(value = "sessionId", required = true) String sessionId,
+                                @RequestParam(value = "studentId", required = true) Long studentId) {
         //我的学员
-        Long userId = 0L;
-        return Result.of(classWorkService.getMyClassWorks(userId));
+        Long userId = 1L;
+        return Result.of(studentService.getOneStudentInfoById(studentId));
     }
 
+    @RequestMapping(value = "/getMySelfInfo")
+    public Result getMySelfInfo(@RequestParam(value = "sessionId", required = true) String sessionId,
+                                @RequestParam(value = "studentId", required = true) Long studentId) {
+        //我的学员
+        Long userId = 1L;
+        Map<String,Object> myselfMap = Maps.newHashMap();
+        TFrontUser user = new TFrontUser().selectById(userId);
+        myselfMap.put("userId",userId);
+        myselfMap.put("sex","");
+        myselfMap.put("headImg",user.getHeadImg());
+        myselfMap.put("mobilePhone",user.getMobilePhone());
+        return Result.of(myselfMap);
+    }
 
+    @RequestMapping(value = "/classWorks")
+    public Result classWorks(@RequestParam(value = "sessionId", required = true) String sessionId) {
+        //我的学员
+        Long userId = 0L;
+        return Result.of(classWorkService.getClassWorkInfosByUserId(userId));
+    }
 
-    @RequestMapping(value = "/myGrowth")
-    public Result myGrowth(@RequestParam(value = "sessionId", required = true) String sessionId,
-                           @RequestParam(value = "studentIds", required = false) List<Long> studentIds) throws IOException {
+    @RequestMapping(value = "/growthRecord")
+    public Result growthRecord(@RequestParam(value = "sessionId", required = true) String sessionId,
+                               @RequestParam(value = "studentIds", required = false) List<Long> studentIds) throws IOException {
         Long userId = 1L; //登录人ID
         if (studentIds == null) {
             EntityWrapper wrapper = new EntityWrapper();
@@ -97,8 +127,8 @@ public class MyHomeController extends BaseWxController {
         return Result.of(dynamicmsgService.getMyStudentDynamicmList(studentIds));
     }
 
-    @RequestMapping(value = "/myFollowDynamic")
-    public Result myFollowDynamic(@RequestParam(value = "sessionId", required = true) String sessionId) throws IOException {
+    @RequestMapping(value = "/followDynamic")
+    public Result followDynamic(@RequestParam(value = "sessionId", required = true) String sessionId) throws IOException {
         Long userId = 1L; //登录人ID
         return Result.of(dynamicmsgService.getFollowDynamicmList(userId));
     }
@@ -136,7 +166,8 @@ public class MyHomeController extends BaseWxController {
     public Result saveStudent(@RequestParam(value = "sessionId", required = true) String sessionId,
                               @RequestParam(required = false, defaultValue = "") MultipartFile file,
                               @RequestParam(required = true, value = "studentName", defaultValue = "") String studentName,
-                              @RequestParam(required = true, value = "sex", defaultValue = "0") int sex) {
+                              @RequestParam(required = false, value = "studentId", defaultValue = "") Long studentId,
+                              @RequestParam(required = false, value = "parentType", defaultValue = "1") Integer parentType) {
         try {
             String originalFilename = file.getOriginalFilename();
             String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
@@ -149,10 +180,13 @@ public class MyHomeController extends BaseWxController {
             //我的学员
             Long userId = 0L;
             TStudent student = new TStudent();
+            if (studentId != null) {
+                student.setId(studentId);
+            }
             student.setRealName(studentName);
             student.setHeadImg(headImgUrl);
-            student.setSex(sex);
             student.setUserId(userId);
+            student.setParentType(parentType);
             return Result.of(studentService.saveStudent(student));
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,11 +200,11 @@ public class MyHomeController extends BaseWxController {
         return Result.of(studentService.delStudent(studentId, userId));
     }
 
-    @RequestMapping(value = "/editMyself")
-    public Result editMyself(@RequestParam(value = "sessionId", required = true) String sessionId,
+    @RequestMapping(value = "/saveMyself")
+    public Result saveMyself(@RequestParam(value = "sessionId", required = true) String sessionId,
                              @RequestParam(required = false, value = "nickName", defaultValue = "") String nickName,
                              @RequestParam(required = false, defaultValue = "") MultipartFile file,
-                             @RequestParam(required = true, value = "sex", defaultValue = "0") int sex,
+                             @RequestParam(required = true, value = "sex", defaultValue = "1") int sex,
                              @RequestParam(required = true, value = "mobilePhone", defaultValue = "") String mobilePhone) {
         //我的学员
         Long userId = 0L;
@@ -229,7 +263,7 @@ public class MyHomeController extends BaseWxController {
     public Result shieldFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
                                @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
         Long userId = 1L;
-        //屏蔽好友
+
         return Result.of(followUserService.updateFollowUser(userId, friendId, "20"));
     }
 

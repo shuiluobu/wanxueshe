@@ -1,17 +1,11 @@
 package com.wxs.service.customer.impl;
-
-
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
-import com.wxs.entity.customer.TFollowTeacher;
 import com.wxs.entity.customer.TFollowUser;
-import com.wxs.entity.customer.TParent;
+import com.wxs.entity.customer.TFrontUser;
 import com.wxs.mapper.course.TStudentClassMapper;
-import com.wxs.mapper.customer.TFollowTeacherMapper;
 import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TStudentMapper;
-import com.wxs.service.customer.ITFollowTeacherService;
 import com.wxs.service.customer.ITFollowUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +39,8 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
         List<Map<String, Object>> list = followUserMapper.getFollowUserByParam(userId,relationType_10);
         list.stream().forEach(friend -> {
             Long fUserId = Long.parseLong(friend.get("fuserId").toString());
+            TFrontUser user = new TFrontUser().selectById(fUserId);
+            friend.put("headImg",user.getHeadImg());
             friend.put("studentCount", studentMapper.getParentStudentCount(fUserId));
             friend.put("courseCount", studentClassMapper.getParentCourseCount(fUserId));
         });
@@ -56,6 +52,8 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
         List<Map<String, Object>> list = followUserMapper.getFollowUserByParam(userId,relationType_20);
         list.stream().forEach(friend -> {
             Long fUserId = Long.parseLong(friend.get("fuserId").toString());
+            TFrontUser user = new TFrontUser().selectById(fUserId);
+            friend.put("headImg",user.getHeadImg());
             friend.put("studentCount", studentMapper.getParentStudentCount(fUserId));
             friend.put("courseCount", studentClassMapper.getParentCourseCount(fUserId));
         });
@@ -125,7 +123,7 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
         TFollowUser followUser = new TFollowUser();
         followUser.setUserId(userId);
         followUser.setFuserId(friendId);
-        followUser.setRelationType(relationType_30);
+        followUser.setRelationType(relationType);
         Integer flag = followUserMapper.updateById(followUser);
         if (flag==0) {
             result.put("success", false);

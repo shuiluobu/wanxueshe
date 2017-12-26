@@ -32,5 +32,5 @@ public interface TFollowCourseMapper extends BaseMapper<TFollowCourse> {
 
     @Select("select count(distinct courseCateId) from t_follow_course where status=0 and userId=#{userId}")
     @ResultType(int.class)
-    int getFollowCourseCountByUserId(@Param("uerId") Long userId);
+    int getFollowCourseCountByUserId(@Param("userId") Long userId);
 }

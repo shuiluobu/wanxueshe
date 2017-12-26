@@ -27,5 +27,5 @@ public interface TFollowUserMapper extends BaseMapper<TFollowUser> {
     public List<Long> getFollowUserIdsByParam(@Param("userId") Long userId,@Param("relationType") String relationType);
     @Select("select fuserId,memoName friendName from t_follow_user where userId=#{userId} and relationType=#{relationType} order by createTime")
     @ResultType(Map.class)
-    public List<Map<String,Object>> getFollowUserByParam(Long userId,String relationType);
+    public List<Map<String,Object>> getFollowUserByParam(@Param("userId") Long userId,@Param("relationType") String relationType);
 }

@@ -20,6 +20,7 @@ import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.mapper.organ.TFollowOrganMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.customer.ITStudentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     private ITDynamicmsgService dynamicmsgService;
     @Autowired
     private TStudentMapper studentMapper;
+    @Autowired
+    public IDictionaryService dictionaryService;
 
     /**
      * 个人首页，课程，我的课程
@@ -56,26 +59,44 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
      * @param userId
      * @return
      */
-    public Map<String, Object> getMyCourses(Long userId) {
+    public Map<String, Object> getMyCourses(Long userId, Integer isAll) {
         //我的课程
         Map<String, Object> result = Maps.newHashMap();
-        result.put("0", isEndMyCourses(userId, 0)); //未完成课程
+        List endList = new ArrayList();
+        if (isAll == 0) {
+            endList.add(isEndMyCourses(userId, 0).get(0));
+        } else {
+            endList = isEndMyCourses(userId, 0);
+        }
+        result.put("0", endList); //未完成课程
         result.put("1", isEndMyCourses(userId, 1)); //已完成课程
         return result;
     }
+    @Override
+    public Map<String,Object> getOneStudentInfoById(Long studentId){
+        Map<String,Object> studentInfo = Maps.newHashMap();
+        Map<String, String> parentTypeMap = dictionaryService.getStudentParentType();
+        TStudent student = new TStudent().selectById(studentId);
+        studentInfo.put("studentId",student.getId());
+        studentInfo.put("realName",student.getRealName());
+        studentInfo.put("headImg",student.getHeadImg());
+        studentInfo.put("parentType", ImmutableMap.of(student.getParentType(),parentTypeMap.get(student.getParentType().toString())));
+        return studentInfo;
+    }
 
     @Override
-    public List<Map<String,Object>> getStudentOfUser(Long userId){
+    public List<Map<String, Object>> getStudentOfUser(Long userId) {
         EntityWrapper<TStudent> wrapper = new EntityWrapper<>();
-        wrapper.eq("userId",userId);
-        List<TStudent> students =  studentMapper.selectList(wrapper);
-        List<Map<String,Object>> studentMapList = new ArrayList<>();
+        wrapper.eq("userId", userId);
+        List<TStudent> students = studentMapper.selectList(wrapper);
+        List<Map<String, Object>> studentMapList = new ArrayList<>();
+        Map<String, String> parentTypeMap = dictionaryService.getStudentParentType();
         students.stream().forEach(tStudent -> {
-            Map<String,Object> studentMap = Maps.newHashMap();
-            studentMap.put("realName",tStudent.getRealName());
-            studentMap.put("studentId",tStudent.getId());
-            studentMap.put("parentType",tStudent.getParentType());
-            studentMap.put("courseCount",studentClassMapper.getStudentCourseCount(tStudent.getId()));
+            Map<String, Object> studentMap = Maps.newHashMap();
+            studentMap.put("realName", tStudent.getRealName());
+            studentMap.put("studentId", tStudent.getId());
+            studentMap.put("parentType", parentTypeMap.get(tStudent.getParentType().toString()) == null ? "保密" : parentTypeMap.get(tStudent.getParentType().toString()));
+            studentMap.put("courseCount", studentClassMapper.getStudentCourseCount(tStudent.getId()));
             studentMapList.add(studentMap);
         });
         return studentMapList;
@@ -87,7 +108,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
 
     @Override
     @Transactional
-    public Map<String, Object> saveMygrowth(List<String> mediaUrls,String mediaType, TDynamicmsg dynamic, Long workId) {
+    public Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamicmsg dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
             TCourse course = new TCourse().selectById(classWork.getCourseId());
@@ -104,7 +125,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             studentTask.setStudentId(dynamic.getStudentId());
             studentTask.setCreateTime(new Date());
             studentTask.insert();//保存作业
-            if(mediaType.equals("IMG")){
+            if (mediaType.equals("IMG")) {
                 for (String mediaUrl : mediaUrls) {
                     TDyimg dyimg = new TDyimg();
                     dyimg.setDynamicId(dynamic.getId());
@@ -128,34 +149,42 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         }
         return null;
     }
+
     @Override
-    public List<Map<String,Object>> queryStuInfoByUserId(Long userId) {
-        return  baseMapper.getStudentInfoOfUser(userId);
+    public List<Map<String, Object>> queryStuInfoByUserId(Long userId) {
+        return baseMapper.getStudentInfoOfUser(userId);
     }
+
     @Override
-    public Map<String,Object> saveStudent(TStudent student){
-        Map<String,Object> result = Maps.newHashMap();
+    public Map<String, Object> saveStudent(TStudent student) {
+        Map<String, Object> result = Maps.newHashMap();
         EntityWrapper wrapper = new EntityWrapper();
-        wrapper.eq("userId",student.getUserId());
+        wrapper.eq("userId", student.getUserId());
         TParent parent = new TParent().selectOne(wrapper);
         student.setParentId(parent.getId());
-        baseMapper.insert(student);
-        result.put("success",true);
-        result.put("message","保存成功");
+        if (student.getId()!=null){
+            baseMapper.update(student,null);
+            result.put("message", "更新成功");
+        } else {
+            baseMapper.insert(student);
+            result.put("message", "保存成功");
+        }
+        result.put("success", true);
+
         return result;
     }
 
     @Override
-    public Integer delStudent(Long studentId,Long userId){
+    public Integer delStudent(Long studentId, Long userId) {
         TStudent student = new TStudent().selectById(studentId);
-        EntityWrapper wrapper=new EntityWrapper();
-        wrapper.eq("userId",userId);
-     return    baseMapper.update(student,wrapper);
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("userId", userId);
+        return baseMapper.update(student, wrapper);
     }
 
     @Override
-    public List<TStudent> searchByName(String name,Long organId) {
-        return studentMapper.searchByName(name,organId);
+    public List<TStudent> searchByName(String name, Long organId) {
+        return studentMapper.searchByName(name, organId);
     }
 
 

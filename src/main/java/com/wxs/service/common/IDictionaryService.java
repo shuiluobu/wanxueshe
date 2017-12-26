@@ -14,5 +14,7 @@ public interface IDictionaryService {
     public Map<String,String> getRemindMediaType();
     Map<String,String> getDataAuthority();
     Map<String,String> getDynamicType();
+    Map<String,String> getStudentParentType();
+    Map<String,String> getWorkcompletionStatus();
 
 }

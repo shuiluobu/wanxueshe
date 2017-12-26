@@ -21,35 +21,43 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("app/myDiscovery")
-public class MyDiscoveryController extends BaseWxController{
+public class MyDiscoveryController extends BaseWxController {
 
     @RequestMapping(value = "/view")
-    public Result view(@RequestParam(value = "sessionId" ,required = true) String sessionId) {
+    public Result view(@RequestParam(value = "sessionId", required = true) String sessionId) {
         List<Object> list = Lists.newArrayList();
         return Result.of(list);
     }
+
     @RequestMapping(value = "/nearInformation")
-    public Result nearInformation(@RequestParam(value = "sessionId" ,required = true) String sessionId,
-                                  @RequestParam double latitude,@RequestParam double longitude){
+    public Result nearInformation(@RequestParam(value = "sessionId", required = true) String sessionId,
+                                  @RequestParam double latitude, @RequestParam double longitude) {
         //根据经纬度查找附近的课程
-        List<TCourseCategory> list = courseCategoryService.getNearByCategorys(latitude,longitude);
+        List<TCourseCategory> list = courseCategoryService.getNearByCategorys(latitude, longitude);
         return Result.of(list);
     }
 
     @RequestMapping(value = "/nearOrgan")
-    public Result nearOrgan(@RequestParam(value = "sessionId" ,required = true) String sessionId,
-                            @RequestParam double latitude,@RequestParam double longitude){
+    public Result nearOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,
+                            @RequestParam double latitude, @RequestParam double longitude) {
         //根据经纬度查找附近机构
-        return Result.of(organizationService.getNearOrgans(latitude,longitude));
+        return Result.of(organizationService.getNearOrgans(latitude, longitude));
     }
 
-    @RequestMapping(value = "/findCourse/{courseType}")
-    public Result nearOrgan(@RequestParam(value = "sessionId" ,required = true) String sessionId,
-                            @RequestParam String courseType){
+    @RequestMapping(value = "/nearDynamics")
+    public Result nearDynamics(@RequestParam(value = "sessionId", required = true) String sessionId,
+                               @RequestParam double latitude, @RequestParam double longitude) {
         //根据经纬度查找附近机构
-        return Result.of(courseCategoryService.getCourseListByType(courseType));
+        Long loginUserId = 1L;
+        return Result.of(dynamicmsgService.getNearByDynamicms(loginUserId, latitude, longitude));
     }
-
+    @RequestMapping(value = "/findCourse")
+    public Result nearOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,
+                            @RequestParam(required = false, value = "courseType", defaultValue = "") String courseType,
+                            @RequestParam(required = false, value = "searchName", defaultValue = "") String searchName) {
+        //根据经纬度查找附近机构
+        return Result.of(courseCategoryService.searchCourseListForDiscovery(courseType, searchName));
+    }
 
 
 }

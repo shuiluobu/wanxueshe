@@ -123,6 +123,18 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
         dynamicMsgs.addAll(dynamicmsgMapper.getDynamicmsgByParam(param));
         return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
+    @Override
+    public List<Map<String,Object>> getNearByDynamicms(Long loginUserId,double latitude,double longitude){
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("userId", loginUserId);
+        List<Long> studentIds = Lists.newArrayList();
+        List<TStudent> students = studentMapper.selectList(wrapper);
+        students.stream().forEach(student -> {
+            studentIds.add(student.getId());
+        });
+        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getNearByDynamicms(studentIds,latitude,longitude,5); //5km之内的
+        return buildDynamicmsgList(null, dynamicMsgs);
+    }
 
     /**
      * 我的好友的动态

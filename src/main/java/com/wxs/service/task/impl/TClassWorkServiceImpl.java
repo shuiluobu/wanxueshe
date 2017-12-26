@@ -18,6 +18,7 @@ import com.wxs.enu.EnuDynamicTypeCode;
 import com.wxs.mapper.task.TClassWorkMapper;
 import com.wxs.mapper.task.TStudentWorkMapper;
 import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.task.ITClassWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,9 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
     @Autowired
     private TClassWorkMapper classWorkMapper;
     @Autowired
-    private TStudentWorkMapper studentWorkMapper;
-    @Autowired
     private ITDynamicmsgService dynamicmsgService;
+    @Autowired
+    public IDictionaryService dictionaryService;
 
     /**
      * 获取用户作业的基本信息，主要是我的功能里的《我的作业》用
@@ -52,7 +53,13 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
      */
     @Override
     public List<Map<String,Object>> getClassWorkInfosByUserId(Long userId){
-        return classWorkMapper.getMyClassWorkInfo(userId);
+        List<Map<String,Object>> list = classWorkMapper.getMyClassWorkInfo(userId);
+        Map<String,String> completionMap = dictionaryService.getWorkcompletionStatus();
+        list.stream().forEach(map->{
+            String completion = map.get("completion")==null?"":map.get("completion").toString();
+            map.put("completion",completionMap.get(completion)==null?"":completionMap.get(completion));
+        });
+        return list;
     }
 
     public Map<String, Object> getClassWorkOutline(Long taskId) {
@@ -66,18 +73,18 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         classTask.put("courseName",course.getCourseName());
         return classTask;
     }
-    @Override
-    public List<Map<String,Object>> getMyClassWorks(Long userId){
-        List<Map<String,Object>> resultList = Lists.newArrayList();
-        EntityWrapper wrapper = new EntityWrapper();
-        wrapper.eq("userId",userId);
-        wrapper.orderBy("createTime",false);
-        List<TStudentWork> studentWorks = studentWorkMapper.selectList(wrapper);
-        for(TStudentWork studentWork : studentWorks) {
-            resultList.add(getClassWorkOutline(studentWork.getWorkId()));
-        }
-        return resultList;
-    }
+//    @Override
+//    public List<Map<String,Object>> getMyClassWorks(Long userId){
+//        List<Map<String,Object>> resultList = Lists.newArrayList();
+//        EntityWrapper wrapper = new EntityWrapper();
+//        wrapper.eq("userId",userId);
+//        wrapper.orderBy("createTime",false);
+//        List<TStudentWork> studentWorks = studentWorkMapper.selectList(wrapper);
+//        for(TStudentWork studentWork : studentWorks) {
+//            resultList.add(getClassWorkOutline(studentWork.getWorkId()));
+//        }
+//        return resultList;
+//    }
 
     @Override
     @Transactional

@@ -20,7 +20,7 @@ import java.util.Map;
 public interface TClassWorkMapper extends BaseMapper<TClassWork> {
 
     @Select("SELECT k.id taskId, " +
-            "content," +
+            "d.content," +
             "DATE_FORMAT(k.endTime,'%Y-%m-%d') dayTime," +
             "DATE_FORMAT(k.endTime,'%H:%i') hourTime," +
             "DATE_FORMAT(k.createTime,'%Y-%m-%d %H:%i:%s') createTime," +

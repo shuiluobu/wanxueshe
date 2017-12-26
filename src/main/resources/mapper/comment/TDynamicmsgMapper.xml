@@ -24,7 +24,7 @@
     <select id="getDynamicmsgByParam" resultType="java.util.HashMap" parameterType="map">
         <include refid="querySql"></include>
         <where>
-             d.`status`=0
+            d.`status`=0
             <if test="power!=null">
                 AND d.power in (#{power})
             </if>
@@ -53,15 +53,15 @@
                 AND d.courseCateId = #{courseCateId}
             </if>
             <if test="classLessonId!=null">
-                AND  d.classLessonId = #{classLessonId}
+                AND d.classLessonId = #{classLessonId}
             </if>
             <if test="teacherId!=null">
-                AND  d.teacherId = #{teacherId}
+                AND d.teacherId = #{teacherId}
             </if>
         </where>
-         ORDER BY d.createTime DESC
+        ORDER BY d.createTime DESC
 
-	</select>
+    </select>
 
     <select id="getFriendDynamicmsgByUserId" resultType="java.util.HashMap" parameterType="java.lang.Long">
         <include refid="querySql"></include>
@@ -69,12 +69,26 @@
         <where>
             d.`status`=0
             AND f.relationType=10
-            AND  power in (0,1)
+            AND power in (0,1)
             <if test="muserId!=null">
                 AND d.muserId = #{muserId}
             </if>
         </where>
         ORDER BY d.createTime DESC
+    </select>
+    <select id="getNearByDynamicms" resultType="java.util.HashMap">
+        <include refid="querySql"></include>
+        <where>
+            d.`status`=0
+            AND d.studentId not in
+            <foreach item="studentId" collection="studentIds" separator="," open="(" close=")" index="">
+                #{studentId}
+            </foreach>
+            AND (acos(sin((#{latitude}*3.1415)/180) * sin((latitude*3.1415)/180) +
+            cos((#{latitude}*3.1415)/180) * cos((latitude*3.1415)/180) * cos((#{longitude}*3.1415)/180 -
+            (longitude*3.1415)/180)
+            )*6370.996) <![CDATA[<= ]]> #{range}
+        </where>
     </select>
 
     <sql id="querySql">
@@ -82,7 +96,7 @@
         d.id,
         d.userId,
         u.nickName,
-        content,
+        d.content,
         createPlace,
         DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') createTime,
         d.dynamicType,
@@ -91,14 +105,14 @@
         d.power,
         t.realName,
         d.classLessonId,
-        d.lessonName,
-        d.courseId,
-        e.courseName
+        l.lessonName,
+        l.courseId,
+        e.courseName,
+        d.organId
         FROM t_dynamicmsg d
         INNER JOIN t_front_user u ON u.id = d.userId
         LEFT JOIN t_class_lesson l on l.id=d.classLessonId
         LEFT JOIN t_course e ON  e.id=d.courseId
---         LEFT JOIN t_organization o ON o.id=d.organId
         LEFT JOIN t_student t on t.id=d.studentId
     </sql>
 </mapper>

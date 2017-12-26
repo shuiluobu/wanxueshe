@@ -19,6 +19,7 @@ import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.customer.ITParentService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -161,7 +162,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         String permissions = param.get("permissions").toString();
         String courseDetails = param.get("courseDetails").toString();
         String courseDates = param.get("courseDates").toString();
-        String students[] = StringUtils.split(param.get("students").toString(),","); //学员
+        String students[] = StringUtils.split(param.get("students").toString(), ","); //学员
         List<Map<String, Object>> lessonList = BaseUtil.parseJson(courseDates, List.class);
         if (way.equals("0")) {
             //单次
@@ -186,7 +187,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         classCourse.setTeacherName(teacherName); //授课老师
         classCourse.setCourseRemark(courseDetails);
         classCourse.insert();//保存课程
-        for(String studentId : students){
+        for (String studentId : students) {
             TStudentClass studentClass = new TStudentClass();
             studentClass.setUserId(userId);
             studentClass.setCoursesId(classCourse.getId());
@@ -230,11 +231,11 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
                 i++;
                 TRemindMessage remindMessage = new TRemindMessage();
                 remindMessage.setCreateTime(new Date());
-                remindMessage.setRemindTime( new Date(classLesson.getBeginTime().getTime() - remindMin * 60 * 1000)); //提醒时间
+                remindMessage.setRemindTime(new Date(classLesson.getBeginTime().getTime() - remindMin * 60 * 1000)); //提醒时间
                 remindMessage.setUserId(userId);
                 remindMessage.setFromUserId(0L);
                 remindMessage.setRemindMedia(remindWay); //提醒媒介
-                remindMessage.setTile(classLesson.getLessonName()+"提醒");
+                remindMessage.setTile(classLesson.getLessonName() + "提醒");
                 remindMessage.setMessageContent(BaseUtil.toJson(classLesson));
                 remindMessage.setReadStatus(0);
                 remindMessage.setJmsType("queue");
@@ -247,16 +248,13 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     }
 
     @Override
-    public List<Map<String,Object>> getFollowCourseInfoByUserId(Long userId) {
-
-        List<Map<String,Object>> mapList = fllowCourseMapper.getFollowCoursesByUser(userId);
-        mapList.stream().forEach(bean->{
-
-            if(bean.get("courseType")!=null){
+    public List<Map<String, Object>> getFollowCourseInfoByUserId(Long userId) {
+        List<Map<String, Object>> mapList = fllowCourseMapper.getFollowCoursesByUser(userId);
+        mapList.stream().forEach(bean -> {
+            if (bean.get("courseType") != null) {
                 String courseType = bean.get("courseType").toString();
-                bean.put("courseType",dictionaryService.getCourseTypeValue(courseType,"1"));
+                bean.put("courseType", dictionaryService.getCourseTypeValue(courseType, "1"));
             }
-
         });
 
         return mapList;
@@ -274,4 +272,32 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         }
         return weekDayMap;
     }
+
+//    @Override
+//    public List<Map<String, Object>> getUserCourseInfo(Long organId, Integer page, Integer endType) {
+//        EntityWrapper<TCourse> ew = new EntityWrapper<TCourse>();
+//        String nowDate = BaseUtil.toLongDate(new Date());
+//        ew.eq("organId", organId);
+//        if (endType.equals("0")) {
+//            //表示未完成
+//            ew.and("endTime>{0}", nowDate);
+//        } else if (endType.equals("1")) {
+//            //表示已完成
+//            ew.and("endTime<={0}", nowDate);
+//        }
+//        RowBounds rowBounds = new RowBounds(page - 1, 10);
+//        List<TCourse> list = coursesMapper.selectPage(rowBounds, ew);
+//        List<Map<String, Object>> mapList = Lists.newArrayList();
+//        list.stream().forEach(bean -> {
+//            TCourseCategory bigCourse = new TCourseCategory().selectById(bean.getCourseCateId());
+//            Map<String, Object> map = Maps.newHashMap();
+//            map.put("courseName", bean.getCourseName());
+//            map.put("courseType", dictionaryService.getCourseTypeValue(bean.getCourseType(), "2"));
+//            map.put("canQty", bean.getCanQty());
+//            map.put("alreadyStudySum", bigCourse.getAlreadyStudySum());
+//            map.put("cover", bigCourse.getCover() == null ? "" : bigCourse.getCover());//封面图片
+//            mapList.add(map);
+//        });
+//        return mapList;
+//    }
 }

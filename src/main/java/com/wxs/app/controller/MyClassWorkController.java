@@ -46,7 +46,7 @@ public class MyClassWorkController extends BaseWxController {
                                @PathVariable("workId") Long workId) {
         //展示我的所有作业
         Long userId = 1L;
-        return Result.of(classWorkService.getMyClassWorks(userId));
+        return Result.of(classWorkService.getClassWorkInfosByUserId(userId));
     }
 
 

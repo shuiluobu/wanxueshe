@@ -31,10 +31,11 @@ public class PersonPageController extends BaseWxController {
 
     @RequestMapping(value = "/course")
     public Result myCourse(@RequestParam(value = "sessionId", required = true) String sessionId,
-                           @RequestParam(value = "userId", required = true) Long userId) {
+                           @RequestParam(value = "userId", required = true) Long userId,
+                           @RequestParam(value = "isAll", required = false,defaultValue = "0") Integer isAll) {
         //我的课程
         userId = 1L; //之后需要从session中获取
-        return Result.of(studentService.getMyCourses(userId));
+        return Result.of(studentService.getMyCourses(userId,isAll));
     }
 
     @RequestMapping(value = "/dynamic")

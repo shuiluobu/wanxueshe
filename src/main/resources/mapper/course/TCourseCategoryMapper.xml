@@ -78,4 +78,18 @@
 			categoryType = #{categoryType}
 		</if>
 	</select>
+	<select id="searchCourseListForDiscovery" resultMap="BaseResultMap">
+		SELECT * FROM t_course_category WHERE 1=1
+		<if test="courseType!=null">
+			AND courseType=#{courseType}
+		</if>
+		<if test="organIds==null and courseName!=null">
+			AND courseName LIKE '%${courseName}%'
+		</if>
+		<if test="organIds!=null and courseName!=null">
+			AND (courseName LIKE '%${courseName}%' or organId in (${organIds}))
+		</if>
+
+
+	</select>
 </mapper>

@@ -8,12 +8,14 @@ import com.google.common.collect.Maps;
 import com.wxs.entity.course.TCourseCategory;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TCourseCategoryMapper;
+import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.course.ITCourseCategoryService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wxs.core.util.BaseUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,9 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
     private TCourseCategoryMapper courseCategoryMapper;
     @Autowired
     public IDictionaryService dictionaryService;
+    @Autowired
+    public TOrganizationMapper organizationMapper;
+
 
 
     @Override
@@ -46,24 +51,15 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
         ew.eq("organId",organId);
         RowBounds rowBounds = new RowBounds(page-1,10);
         List<TCourseCategory> list =  courseCategoryMapper.selectPage(rowBounds,ew);
-        List<Map<String,Object>> mapList = Lists.newArrayList();
-        list.stream().forEach(bean->{
-            Map<String,Object> map = Maps.newHashMap();
-            map.put("courseName",bean.getCourseCategoryName());
-            map.put("courseType",dictionaryService.getCourseTypeValue(bean.getCategoryType(),"2"));
-            map.put("canQty",bean.getCanQty());
-            map.put("alreadyStudySum",bean.getAlreadyStudySum());
-            map.put("cover",bean.getCover()==null?"": bean.getCover());//封面图片
-            mapList.add(map);
-        });
-        return mapList;
+        return  catBean2MapList(list);
     }
 
     @Override
-    public List<TCourseCategory> getCourseListByType(String categoryType) {
-        EntityWrapper<TCourseCategory> ew = new EntityWrapper<TCourseCategory>();
-        ew.eq("categoryType",categoryType);
-        return courseCategoryMapper.selectList(ew);
+    public List<Map<String,Object>> searchCourseListForDiscovery(String categoryType,String searchName) {
+        List<Long> organIdList = organizationMapper.queryOrganIdByLikeName(searchName);
+        String organIds = StringUtils.join(organIdList,",");
+        List<TCourseCategory> list = courseCategoryMapper.searchCourseListForDiscovery(organIds,categoryType,searchName);
+        return  catBean2MapList(list);
     }
 
     @Override
@@ -78,20 +74,29 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
      * @return
      */
     public List<Map<String,Object>> getTeacherCourseList(Long teacherId){
-        Map<String,Object> courseTypeDictMap = dictionaryService.getCourseTypeDict();
-        List<Map<String,Object>> list =   courseCategoryMapper.getCourseListByTeacher(teacherId);
-        list.stream().forEach(map->{
-            String typeCode = map.get("courseType").toString();
-            map.put("courseType",dictionaryService.getCourseTypeValue(typeCode,"2"));
-        });
-        return list;
+        List<TCourseCategory> list =   courseCategoryMapper.getAllCategoryByTeacher(teacherId);
+        return catBean2MapList(list);
     }
-
 
     @Override
     public List<TCourseCategory> getNearByCategorys(double latitude, double longitude) {
         //用sql查找5公里范围内的
         return courseCategoryMapper.getNearByCategorys(latitude, longitude, 5);
 
+    }
+
+    private List<Map<String,Object>> catBean2MapList(List<TCourseCategory> list){
+        List<Map<String,Object>> mapList = Lists.newArrayList();
+        list.stream().forEach(bean->{
+            Map<String,Object> map = Maps.newHashMap();
+            map.put("courseId",bean.getId());
+            map.put("courseName",bean.getCourseCategoryName());
+            map.put("courseType",dictionaryService.getCourseTypeValue(bean.getCategoryType(),"2"));
+            map.put("canQty",bean.getCanQty());
+            map.put("alreadyStudySum",bean.getAlreadyStudySum());
+            map.put("cover",bean.getCover()==null?"": bean.getCover());//封面图片
+            mapList.add(map);
+        });
+        return mapList;
     }
 }

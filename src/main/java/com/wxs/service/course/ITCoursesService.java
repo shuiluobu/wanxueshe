@@ -49,4 +49,13 @@ public interface ITCoursesService extends IService<TCourse> {
     Map<String,Object> addCourseByApp(Long userId,Map param);
 
     List<Map<String,Object>> getFollowCourseInfoByUserId(Long userId);
+
+    /**
+     * 获取用户的课程基本信息
+     * @param organId
+     * @param page
+     * @param endType
+     * @return
+     */
+    //List<Map<String,Object>> getUserCourseInfo(Long organId,Integer page,Integer endType);
 }

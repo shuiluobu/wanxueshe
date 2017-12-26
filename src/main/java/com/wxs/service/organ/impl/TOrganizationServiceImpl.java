@@ -1,5 +1,7 @@
 package com.wxs.service.organ.impl;
 
+import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleCreateTableStatement;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wxs.entity.course.TStudentClass;
 import com.wxs.entity.organ.TOrganization;
@@ -42,7 +44,6 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     @Autowired
     private ITParentService parentService;
 
-
     /**
      * 机构概要
      *
@@ -52,15 +53,15 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
      */
     @Override
     public Map<String, Object> getOrganOutline(Long organId, Long userId) {
-        Map<String, Object> result = Maps.newHashMap();
         TOrganization organization = organizationMapper.selectById(organId);
         return buildOrganInfo(organization, userId);
     }
 
     @Override
-    public List<TOrganization> getNearOrgans(double latitude, double longitude) {
+    public List<Map<String,Object>> getNearOrgans(double latitude, double longitude) {
         //先搜索5公里之内的机构
-        return organizationMapper.getNearOrgans(latitude, longitude, 5);
+        List<TOrganization> organs = organizationMapper.getNearOrgans(latitude, longitude, 5);
+        return bean2MapList(organs);
     }
 
     @Override
@@ -96,12 +97,22 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     }
     @Override
     public List<Map<String,Object>> getFollowOrganInfoByUserId(Long userId){
-        List<Map<String,Object>> organInfoMaps = fllowOrganMapper.getFollowOrganByUser(userId);
-        organInfoMaps.stream().forEach(organ ->{
-            Long organId = Long.parseLong(organ.get("organId").toString());
-            organ.put("samllCount", smallCountOfOrgan(organId)); //小统计
+        List<TOrganization> organs = fllowOrganMapper.getFollowOrganByUser(userId);
+        return bean2MapList(organs);
+    }
+
+    public List<Map<String,Object>> bean2MapList(List<TOrganization> organs){
+        List<Map<String,Object>> mapList = Lists.newArrayList();
+        organs.stream().forEach(bean->{
+            Map<String,Object> map = Maps.newHashMap();
+            map.put("organId",bean.getId());
+            map.put("organName",bean.getOrganName());
+            map.put("leval",bean.getLeval());
+            map.put("logoImg",bean.getLogoImg());
+            map.put("samllCount",smallCountOfOrgan(bean.getId()));
+            mapList.add(map);
         });
-        return organInfoMaps;
+        return mapList;
     }
 
 

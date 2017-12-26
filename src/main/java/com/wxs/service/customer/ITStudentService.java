@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public interface ITStudentService extends IService<TStudent> {
     List<Map<String,Object>> getStudentOfUser(Long userId);
-    Map<String, Object> getMyCourses(Long userId); //我的课程
+    Map<String, Object> getMyCourses(Long userId,Integer isAll); //我的课程
     List<Map<String,Object>> isEndMyCourses(Long userId,Integer isEnd);
     Map<String, Object> saveMygrowth(List<String> mediaUrls,String mediaType, TDynamicmsg dynamic, Long workId);
     public List<Map<String, Object>> queryStuInfoByUserId(Long userId);
@@ -26,4 +26,11 @@ public interface ITStudentService extends IService<TStudent> {
     Integer delStudent(Long studentId,Long userId);
     //根据 教育机构Id 和 学生名字 模糊搜索 学生
     List<TStudent> searchByName(String name,Long organId);
+
+    /**
+     * 获取一个学省的基本信息
+     * @param studentId
+     * @return
+     */
+    Map<String,Object> getOneStudentInfoById(Long studentId);
 }

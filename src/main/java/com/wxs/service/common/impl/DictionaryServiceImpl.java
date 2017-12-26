@@ -33,17 +33,21 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     public final String DYNAMIC_TYPE = "DYNAMIC_TYPE";
 
+    public final String STUDENT_PARENT_TYPE = "STUDENT_PARENT_TYPE";//学生与家长关系
+
+    public final String WORK_COMPLETION_STATUS = "WORK_COMPLETION_STATUS";//作业完成情况
+
     @Override
-    public Map<String,Object> queryCourseTypeDictes(){
-        Map<String,Object> result = Maps.newHashMap();
-        List<Map<String,Object>> dicts = courseTypeDictMapper.getCourseTypeByParentCode("00");
-        result.put("levalA",dicts);
-        Map<String,Object> dict2Map = new HashMap<>();
-        for(Map<String,Object> dict : dicts) {
-            List<Map<String,Object>> dict2s = courseTypeDictMapper.getCourseTypeByParentCode(dict.get("code").toString());
-            dict2Map.put(dict.get("code").toString(),dict2s);
+    public Map<String, Object> queryCourseTypeDictes() {
+        Map<String, Object> result = Maps.newHashMap();
+        List<Map<String, Object>> dicts = courseTypeDictMapper.getCourseTypeByParentCode("00");
+        result.put("levalA", dicts);
+        Map<String, Object> dict2Map = new HashMap<>();
+        for (Map<String, Object> dict : dicts) {
+            List<Map<String, Object>> dict2s = courseTypeDictMapper.getCourseTypeByParentCode(dict.get("code").toString());
+            dict2Map.put(dict.get("code").toString(), dict2s);
         }
-        result.put("levalB",dict2Map);
+        result.put("levalB", dict2Map);
         return result;
     }
 
@@ -65,13 +69,12 @@ public class DictionaryServiceImpl implements IDictionaryService {
     }
 
     /**
-     *
      * @param code
      * @param type 返回类型，返回一级目录，还是两个都返回 type=1，返回一级目录，type=2 返回两个都返回
      * @return
      */
     @Override
-    public String getCourseTypeValue(String code,String type) {
+    public String getCourseTypeValue(String code, String type) {
         String type1 = "";
         String type2 = "";
         if (code != null) {
@@ -83,8 +86,8 @@ public class DictionaryServiceImpl implements IDictionaryService {
                 type2 = dict2.getCourseTypeName();
             }
         }
-        if(type.equals("1")){
-            return  type2;
+        if (type.equals("1")) {
+            return type2;
         } else {
             if (!StringUtils.isEmpty(type1)) {
                 return type2 + "-" + type1;
@@ -96,32 +99,45 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     /**
      * 获取课时完成情况
+     *
      * @return
      */
     @Override
-    public Map<String,String> getLessonStudyStatus(){
-        return  getDictByType(LESSON_STUDY_STATUS);
+    public Map<String, String> getLessonStudyStatus() {
+        return getDictByType(LESSON_STUDY_STATUS);
     }
 
     @Override
-    public Map<String,String> getRemindMediaType(){
-        return  getDictByType(REMIND_MEDIA_TYPE);
-    }
-    @Override
-    public Map<String,String> getDynamicType(){
-        return  getDictByType(DYNAMIC_TYPE);
+    public Map<String, String> getRemindMediaType() {
+        return getDictByType(REMIND_MEDIA_TYPE);
     }
 
     @Override
-    public Map<String,String> getDataAuthority(){
+    public Map<String, String> getDynamicType() {
+        return getDictByType(DYNAMIC_TYPE);
+    }
+
+    @Override
+    public Map<String, String> getStudentParentType() {
+
+        return getDictByType(STUDENT_PARENT_TYPE);
+    }
+    @Override
+    public Map<String,String> getWorkcompletionStatus(){
+        return getDictByType(WORK_COMPLETION_STATUS);
+    }
+
+    @Override
+    public Map<String, String> getDataAuthority() {
         return getDictByType(DATA_AUTHORITY);
     }
-    private Map<String,String> getDictByType(String type){
+
+    private Map<String, String> getDictByType(String type) {
         Object codeCache = cache.getCache(type);
         if (codeCache == null) {
             Map<String, String> codeMap = new HashMap<String, String>();
             EntityWrapper wrapper = new EntityWrapper();
-            wrapper.eq("type",type);
+            wrapper.eq("type", type);
             List<TDictionary> list = dictionaryMapper.selectList(wrapper);
             for (TDictionary dict : list) {
                 codeMap.put(dict.getKey(), dict.getValue());

@@ -60,31 +60,32 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
         List courses = coursesService.getFollowCourseInfoByUserId(userId);//我关注的课程
         return ImmutableMap.of(MY_FOLLOW_ORGAN, organs, MY_FOLLOW_TEACHER, teachers, MY_FOLLOW_COURSE, courses);
     }
+
     @Override
     public Map<String, Object> getParentOutline(Long userId, Long loginUserId) {
         Map<String, Object> resultMap = Maps.newHashMap();
         Integer studentCount = studentMapper.getParentStudentCount(userId); //学生个数
         Integer courseCount = studentClassMapper.getParentCourseCount(userId); //我的课程数量
         TFrontUser user = new TFrontUser();
-        if (userId == null || userId==loginUserId) {
+        if (userId == null || userId == loginUserId) {
             user = user.selectById(loginUserId);//表示查自己
             resultMap.put("isFriend", 3);
         } else {
             user = user.selectById(userId);
-            resultMap.put("isFriend",0); //默认不是好友
+            resultMap.put("isFriend", 0); //默认不是好友
         }
-        resultMap.put("followCount",getParentFollowCount(userId));
-        resultMap.put("studentCount",studentCount);
-        resultMap.put("courseCount",courseCount);
+        resultMap.put("followCount", getParentFollowCount(userId));
+        resultMap.put("studentCount", studentCount);
+        resultMap.put("courseCount", courseCount);
         TFollowUser followUser = new TFollowUser().selectOne("userId={0} and fuserId={1}", loginUserId, userId);
         if (followUser != null) {
             resultMap.put("userName", followUser.getMemoName());
-            resultMap.put("isFriend",1);
+            resultMap.put("isFriend", 1);
         } else {
             resultMap.put("userName", user.getUserName());
-            resultMap.put("isFriend",0);
+            resultMap.put("isFriend", 0);
         }
-        resultMap.put("headImg",user.getHeadImg());
+        resultMap.put("headImg", user.getHeadImg());
         resultMap.put("userId", user.getId());
         return resultMap;
     }
@@ -94,11 +95,12 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
         List<Map<String, Object>> resultList = Lists.newArrayList();
         userIds.stream().forEach(friendUserId -> {
             Map<String, Object> map = Maps.newHashMap();
-            TParent parent = new TParent().selectOne(new EntityWrapper().where("userId={0}", friendUserId));
+            TFollowUser followUser = new TFollowUser().selectOne("userId={0} and fuserId={1}", loginUserId, friendUserId);
+            TFrontUser friendUser = new TFrontUser().selectById(friendUserId);
             map.put("userId", friendUserId);
-            map.put("realName", parent.getRealName());
+            map.put("realName", followUser.getMemoName() == null ? friendUser.getUserName() : followUser.getMemoName());
             map.put("studentCount", studentMapper.getParentStudentCount(friendUserId));
-            map.put("courseCount", studentClassMapper.getParentCourseCount(parent.getId()));
+            map.put("courseCount", studentClassMapper.getParentCourseCount(friendUserId));
             Integer isFriednCount = followUserMapper.getIsFriednCount(loginUserId, friendUserId);
             if (isFriednCount > 0) {
                 map.put("isFriend", 1);//1：表示已经是好友
@@ -110,7 +112,7 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
         return resultList;
     }
 
-    private int getParentFollowCount(Long userId){
+    private int getParentFollowCount(Long userId) {
         int organCount = followOrganMapper.getFollowOrganCountByUser(userId); //我关注的机构
         int teacherCount = followTeacherMapper.getFollowTeachCounterByUserId(userId); //我关注的老师
         int courseCount = followCourseMapper.getFollowCourseCountByUserId(userId);//我关注的课程

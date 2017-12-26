@@ -2,6 +2,7 @@ package com.wxs.mapper.organ;
 
 import com.wxs.entity.organ.TFollowOrgan;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.wxs.entity.organ.TOrganization;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -18,9 +19,9 @@ import java.util.Map;
  * @since 2017-09-21
  */
 public interface TFollowOrganMapper extends BaseMapper<TFollowOrgan> {
-    @Select("SELECT f.organId,o.organName,o.leval,o.logoImg FROM t_follow_organ f,t_organization o where f.organId=o.id and f.userId =#{userId} ")
-    @ResultType(Map.class)
-    List<Map<String,Object>> getFollowOrganByUser(@Param("userId") Long userId);
+    @Select("SELECT o.* FROM t_follow_organ f,t_organization o where f.organId=o.id and f.userId =#{userId} ")
+    @ResultType(TOrganization.class)
+    List<TOrganization> getFollowOrganByUser(@Param("userId") Long userId);
 
     @Select("SELECT count(1) FROM t_follow_organ f where  f.userId =#{userId} and status=0")
     @ResultType(int.class)

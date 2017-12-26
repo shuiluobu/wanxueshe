@@ -21,5 +21,5 @@ public interface ITClassWorkService extends IService<TClassWork> {
     List<Map<String,Object>> getClassWorkInfosByUserId(Long userId);
     Map<String,Object> getClassWorkOutline(Long workId);
     Map<String,Object> saveStudentWork(List<String> mediaUrls, String mediaType,TDynamicmsg dynamic, Long workId);
-    List<Map<String,Object>> getMyClassWorks(Long userId);
+    //List<Map<String,Object>> getMyClassWorks(Long userId);
 }

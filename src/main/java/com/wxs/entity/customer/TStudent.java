@@ -54,7 +54,7 @@ public class TStudent extends Model<TStudent> {
     /**
      * 1:儿子，2：女儿，3：我自己
      */
-	private Long parentType;
+	private Integer parentType;
     /**
      * 头像
      */
@@ -122,11 +122,11 @@ public class TStudent extends Model<TStudent> {
 		this.sex = sex;
 	}
 
-	public Long getParentType() {
+	public Integer getParentType() {
 		return parentType;
 	}
 
-	public void setParentType(Long parentType) {
+	public void setParentType(Integer parentType) {
 		this.parentType = parentType;
 	}
 
