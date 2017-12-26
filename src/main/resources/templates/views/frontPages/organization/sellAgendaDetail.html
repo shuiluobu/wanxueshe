@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>销售待办详情</title>
+    <style>
+        select {
+            direction: rtl;
+        }
+        .icon_add:before{
+            content: url("/weui/images/wyh/add.png");
+            text-align: center;
+            color: white;
+            width: 20px;
+            height: 20px;
+            background:#333333;
+            border: 1px solid;
+            border-radius:  50%;
+            display: inline-block;
+            position: absolute;
+            left: 5px;
+        }
+        .icon_wait:before{
+            content: url("/weui/images/wyh/wait.png");
+            text-align: center;
+            color: white;
+            width: 20px;
+            height: 20px;
+            background:#333333;
+            border: 1px solid;
+            border-radius:  50%;
+            display: inline-block;
+            position: absolute;
+            left: 3px;
+        }
+        .comment-blue{
+            color: #0066CC;
+        }
+        .classDetail{
+            padding-right: 21px;
+            position: relative;
+            text-align: right;
+            color: #999;
+            display: block;
+        }
+        .status_a a{
+            margin: 0 2px;
+            color: #0066CC;
+        }
+        .remark{
+            font-family: 'Arial Normal', 'Arial';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 13px;
+            color: #333333;
+            line-height: normal;
+        }
+    </style>
+</head>
+<body>
+<div class="head"><a href="javascript:void(0);" class="return"></a><span>待办详情-销售</span> </div>
+<!-- 待办详情 S -->
+<div class="weui-cells" style="margin-top: 45px;background-color: #F2F2F2">
+    <div class="weui-cell ">
+        <div class="weui-cell__bd" id="agendaDetail">
+            </br>
+            <h3></h3>
+            <p>销售 &bull; <span></span></p>
+            <p>经办人:<span></span></p>
+            </br>
+            <p style="color: #B4A6C2;">任务备注</p>
+        </div>
+        <a class="classDetail">2个跟进记录 <img src="/weui/images/wyh/toRightGray.png">
+        </a>
+    </div>
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea readonly  class="remark weui-textarea" id="weui-textarea"   rows="3"></textarea>
+        </div>
+    </div>
+</div>
+<!-- 待办详情 E -->
+
+<!-- 待办创建详情 S -->
+<div class="weui-cell" style="background-color: #F2F2F2;font-size: 13px">
+    <div class="weui-cell__bd">
+        <p class="icon_add" style="padding-left: 23px"></p>
+        </br>
+        <p class="icon_wait" style="padding-left: 23px;">09-01 12:12 课堂表  指派任务给 <span style="font-weight: bold">张老师</span></p>
+        </br>
+        <p style="color: #A69999">跟进结果</p>
+    </div>
+</div>
+<!-- 待办创建详情 E -->
+
+<!-- 待办完成详情 S -->
+<div class="weui-cell" style="background-color: #FFFFFF">
+    <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">跟进方法</label></div>
+    <div class="weui-cell__bd">
+        <select class="weui-select">
+            <option value="">请选择</option>
+        </select>
+    </div>
+    <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+</div>
+
+<div class="weui-cell" style="background-color: #FFFFFF">
+    <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">是否应答</label></div>
+    <div class="weui-cell__bd">
+        <select class="weui-select">
+            <option value="">请选择</option>
+            <option value="1">是</option>
+            <option value="0">否</option>
+        </select>
+    </div>
+    <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+</div>
+
+<div class="weui-cell" style="background-color: #FFFFFF">
+    <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">报名意向</label></div>
+    <div class="weui-cell__bd">
+        <select class="weui-select">
+            <option value="">请选择</option>
+        </select>
+    </div>
+    <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+</div>
+
+
+<div class="weui-cell" style="background-color: #FFFFFF">
+    <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">接下来</label></div>
+    <div class="weui-cell__bd" >
+        <select class="weui-select">
+            <option value="">请选择</option>
+        </select>
+    </div>
+    <a><img style="height: 25px;" src="/weui/images/wyh/toRight.png"/></a>
+</div>
+
+<!-- 待办完成详情 S -->
+
+<!-- 评论 S -->
+<div class="weui-panel " >
+    <div class="weui-panel__bd" style="font-size: 13px" id="agendaComment">
+        <!--<div class="weui-media-box weui-media-box_appmsg">-->
+            <!--<div class="weui-media-box__hd">-->
+                <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+            <!--</div>-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<div style="float: right;">09-01</div>-->
+                <!--<p class="comment-blue">王老师</p>-->
+                <!--<p>王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论-->
+                    <!--王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论王老师的评论-->
+                    <!--王老师的评论王老师的评论王老师的评论王老师的评论</p>-->
+                <!--<a style="float: right;">回复</a>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="weui-media-box weui-media-box_appmsg">-->
+            <!--<div class="weui-media-box__hd">-->
+                <!--<img class="weui-media-box__thumb" src="/images/userface2.jpg">-->
+            <!--</div>-->
+            <!--<div class="weui-media-box__bd">-->
+                <!--<div style="float: right">09-01</div>-->
+                <!--<p class="comment-blue">张老师</p>-->
+                <!--<p>回复 <span class="comment-blue">王老师</span> 回复的评论</p>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+<!-- 评论 E -->
+
+<!-- 待办状态 S -->
+<div class="weui-cell" id="agendaStatus">
+    <div class="weui-cell__bd">
+        <p></p>
+    </div>
+    <div class="weui-cell__ft status_a">
+        <a>修改时间</a>
+        <a>转交</a>
+        <a>完成</a>
+        <a>评论</a>
+    </div>
+</div>
+<!-- 待办状态 E -->
+
+<!-- 添加评论 S -->
+<div class="weui-panel " id="addComment" >
+    <div class="weui-panel__bd" style="font-size: 13px">
+        <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+                <img class="weui-media-box__thumb" src="">
+            </div>
+            <div class="weui-media-box__bd">
+               <textarea style="height: 50px;width: 85%"></textarea>
+                <div  style="height: 50px;width: 13%;float: right;background-color: #D7D7D7" id="submitAddComment">
+                    <div style="padding-top: 15px;text-align: center;color: #0066CC;cursor: pointer;" id="submitAddComment1">评论</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加评论 E -->
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    var agendaId;
+    //课程+课时 名称
+    var courseLName;
+    $(function () {
+        agendaId = 8;
+        // 页面全局  变量  用于回复评论使用
+        var toUserId;   //@的人的 用户Id
+        var toUserName;//@的人的 教师名称
+
+        //添加评论 中 用户头像
+        $("#addComment img").attr("src",frontUser.headImg);
+
+       //获取 待办-教务 详情
+        $.ajax({
+            url:"/cOrganAgenda/OrganAgendaDetail",
+            type:"get",
+            data:{agendaId:agendaId},
+            dataType:"json",
+            success:function(json){
+                var data = json.data;
+                //待办详情
+                var agendaDetail = data.agendaDetail;
+                //工作内容
+                $("#agendaDetail h3").text(agendaDetail.content);
+                courseLName = agendaDetail.content;
+                //时间
+                $("#agendaDetail span").eq(0).text(getHM(agendaDetail.startTime)+"-"+getHM(agendaDetail.startTime) );
+                //经办人
+                $("#agendaDetail span").eq(1).text(agendaDetail.userName);
+                //创建人 创建时间
+                $(".icon_add").text( getMDHM(agendaDetail.createTime)+" "+agendaDetail.createUser+" 创建待办任务" );
+                //任务备注
+                $("#weui-textarea").val(agendaDetail.remark);
+                //状态
+                var status;
+                if(agendaDetail.status == 1){
+                    status = "已完成";
+                }else{
+                    status = "未完成";
+                }
+                $("#agendaStatus p").text(status);
+                //待办执行情况--------------
+                //已有执行情况
+                if(json.data.agendaCompletion){
+                    var agendaCompletion = json.data.agendaCompletion;
+                    var list = json.data.agendaCompletionDicts;
+                    //跟进方法
+                    var method = agendaCompletion.method;
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].type == 1){
+                            var op;
+                            if(list[i].typeCode == method ){
+                                op = '<option selected value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            }else{
+                                op = '<option value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            }
+                            $(".weui-select").eq(0).append(op);
+                        }
+                    }
+                    //是否应答
+                    $(".weui-select").eq(1).val(agendaCompletion.response);
+                    //意向
+                    var intention = agendaCompletion.intention;
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].type == 2){
+                            var op;
+                            if(list[i].typeCode == intention ){
+                                op = '<option selected value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            }else{
+                                op = '<option value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            }
+                            $(".weui-select").eq(2).append(op);
+                        }
+                    }
+                    //意向
+                    var nextAction = agendaCompletion.nextAction;
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].type == 3){
+                            var op;
+                            if(list[i].typeCode == nextAction ){
+                                op = '<option selected value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            }else{
+                                op = '<option value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            }
+                            $(".weui-select").eq(3).append(op);
+                        }
+                    }
+                }else{
+                    var list = json.data.agendaCompletionDicts;
+                    //跟进方法
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].type == 1){
+                            var op = '<option value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            $(".weui-select").eq(0).append(op);
+                        }
+                    }
+                    //是否应答
+                    //意向
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].type == 2){
+                            var op = '<option value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            $(".weui-select").eq(2).append(op);
+                        }
+                    }
+                    //意向
+                    for(var i=0;i<list.length;i++){
+                        if(list[i].type == 3){
+                            var op = '<option value="'+list[i].typeCode+'">'+list[i].typeName+'</option>';
+                            $(".weui-select").eq(3).append(op);
+                        }
+                    }
+                }
+
+
+            }
+        });
+        //跳转到 签到完成详情 页面
+        $(".weui-logistics-li").eq(0).click(function () {
+            window.location.href="/organization/viewsTransfer?view=signInCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
+        });
+        //跳转到 课堂点评完成详情 页面
+        $(".weui-logistics-li").eq(1).click(function () {
+            window.location.href="/organization/viewsTransfer?view=classCommentCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
+        });
+        //跳转到 发布作业完成详情  页面
+        $(".weui-logistics-li").eq(2).click(function () {
+            window.location.href="/organization/viewsTransfer?view=jobPublishCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
+        });
+        //跳转到 作业点评完成详情 页面
+        $(".weui-logistics-li").eq(3).click(function () {
+            window.location.href="/organization/viewsTransfer?view=classworkCommentCompleteDetail&itemId="+agendaId+"&paramOne="+courseLName;
+        });
+
+        //获取待办下的所有评论
+        $.ajax("/cOrganComment/getAllById",{
+            async : false,
+            type: 'get',
+            dataType: 'json',
+            data:{itemId:agendaId,type:4},
+            success:function(json){
+                $("#agendaComment").empty();
+
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var content;
+                        if(list[i].toUserId == null){
+                            content = '<p>'+list[i].content+'</p>';
+                        }else{
+                            content = '<p>回复 <span class="comment-blue">'+list[i].toUserName+'</span> '+list[i].content+'</p>';
+                        }
+                        var div = '<div class="weui-media-box weui-media-box_appmsg">'+
+                            '<div class="weui-media-box__hd">'+
+                            '<img class="weui-media-box__thumb" src="'+list[i].fromUserHeadImg+'">'+
+                            '</div>'+
+                            ' <div class="weui-media-box__bd">'+
+                            '<div style="float: right;">'+getMD(list[i].createTime)+'</div>'+
+                            '<p class="comment-blue">'+list[i].fromUserName+'</p>'+
+                            content+
+                            '<a style="float: right;"  id="'+list[i].fromUserId+'" >回复</a>'
+                        '</div>'+
+                        '</div>';
+                        $("#agendaComment").append(div);
+                    }
+                    // @人回复评论
+                    $("#agendaComment a").click(function () {
+                        //打开评论框
+                        $("#addComment").show();
+                        //鼠标指针移动到评论输入框
+                        $("#addComment textarea").focus();
+                        toUserId =$(this).attr("id");
+                        toUserName = $(this).parent().find("p").eq(0).text();
+                        $("#addComment textarea").attr("placeholder"," @ "+$(this).parent().find("p").eq(0).text()+" :");
+                    });
+                }
+            }
+        });
+
+        //完成待办
+        $(".status_a a").eq(2).click(function () {
+            $.ajax("/cOrganAgenda/doneOrganAgenda",{
+                async : false,
+                type: 'get',
+                dataType: 'json',
+                data:{agendaId:agendaId},
+                success:function(json){
+                    //状态变为已完成
+                    $("#agendaStatus p").text("已完成");
+                    //提示操作结果
+                    $.toast(json.data,'text',800,function(){
+                        //提示完成后执行方法
+
+                    });
+                }
+            });
+        });
+
+        //单评论,不@人的
+        $(".status_a a").eq(3).click(function () {
+            //打开评论框
+            $("#addComment").show();
+            //鼠标指针移动到评论输入框
+            $("#addComment textarea").focus();
+            //归null  页面全局  变量
+            toUserId = null;
+            toUserName = null;
+            $("#addComment textarea").attr("placeholder","");
+        });
+
+        //添加评论
+        $("#submitAddComment ").click(function () {
+            var content = $("#addComment textarea").val();
+            if(content.length == 0){
+                $.toast("评论内容不能为空!",'text',800,function(){
+                    //提示完成后执行方法
+                });
+                return;
+            }
+            //关闭评论框
+            $("#addComment").hide();
+            $.ajax("/cOrganComment/addComment",{
+                async : false,
+                type: 'get',
+                dataType: 'json',
+                data:{
+                    itemId:agendaId,
+                    type:4,//跟进评论
+                    fromUserId:frontUser.id,
+                    fromUserName:frontUser.teacherName,
+                    toUserId:toUserId,
+                    toUserName:toUserName,
+                    content: content
+
+                },
+                success:function(json){
+                    //提示操作结果
+                    $.toast(json.data,'text',800,function(){
+                        //提示完成后执行方法
+                    });
+                    //动态刷新上该条评论
+                    if(toUserId == null){
+                        content = '<p>'+content+'</p>';
+                    }else{
+                        content = '<p>回复 <span class="comment-blue">'+toUserName+'</span> '+content+'</p>';
+                    }
+                    var div = '<div class="weui-media-box weui-media-box_appmsg">'+
+                        '<div class="weui-media-box__hd">'+
+                        '<img class="weui-media-box__thumb" src="'+frontUser.headImg+'">'+
+                        '</div>'+
+                        ' <div class="weui-media-box__bd">'+
+                        '<div style="float: right;">'+getCurMD()+'</div>'+
+                        '<p class="comment-blue">'+frontUser.teacherName+'</p>'+
+                        content+
+                        '<a style="float: right;"  id="'+toUserId+'" >回复</a>'
+                    '</div>'+
+                    '</div>';
+                    $("#agendaComment").append(div);
+                    // @人回复评论
+                    $("#agendaComment a").click(function () {
+                        //打开评论框
+                        $("#addComment").show();
+                        //鼠标指针移动到评论输入框
+                        $("#addComment textarea").focus();
+                        toUserId =$(this).attr("id");
+                        toUserName = $(this).parent().find("p").eq(0).text();
+                        $("#addComment textarea").attr("placeholder"," @ "+$(this).parent().find("p").eq(0).text()+" :");
+                    });
+                    //归null  页面全局  变量
+                    toUserId = null;
+                    toUserName = null;
+                    //清空评论输入框
+                    $("#addComment textarea").val("");
+                }
+            });
+        });
+
+
+    });
+
+    //获取当前 时间的 月日  MM-dd
+    function getCurMD(){
+        var now = new Date();
+        var month = now.getMonth()+1;
+        month = month<10?"0"+month:month;
+        var day = now.getDate();
+        day = day<10?"0"+day:day;
+        return month+"-"+day;
+    }
+    //获取时间的 时分 HH:mm
+    function getHM(pataTime){
+        return pataTime.substring(11,16);
+    }
+
+    //获取时间的 月日 MM-dd
+    function getMD(pataTime){
+        return pataTime.substring(5,10);
+    }
+
+    //获取时间的 月日时分 MM-dd HH:mm
+    function getMDHM(pataTime){
+        return pataTime.substring(5,16);
+    }
+</script>
+</html>
