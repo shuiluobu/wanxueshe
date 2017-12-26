@@ -1,8 +1,12 @@
 package com.wxs.companyWX.controller.organization;
 
+import com.wxs.entity.organ.TAgendaCompletion;
+import com.wxs.entity.organ.TAgendaCompletionDict;
 import com.wxs.entity.organ.TOrganAgenda;
 import com.wxs.entity.organ.TOrganTask;
 import com.wxs.service.customer.ITTeacherService;
+import com.wxs.service.organ.ITAgendaCompletionDictService;
+import com.wxs.service.organ.ITAgendaCompletionService;
 import com.wxs.service.organ.ITOrganAgendaService;
 import com.wxs.service.organ.ITOrganTaskService;
 import com.wxs.util.Result;
@@ -30,6 +34,10 @@ public class COrganAgendaController {
     private ITTeacherService teacherService;
     @Autowired
     private ITOrganTaskService organTaskService;
+    @Autowired
+    private ITAgendaCompletionService agendaCompletionService;
+    @Autowired
+    private ITAgendaCompletionDictService agendaCompletionDictService;
 
     /**
      * 获取 我的今日和明日待办
@@ -130,7 +138,7 @@ public class COrganAgendaController {
             organAgenda.setUserName(teacherService.selectById(organAgenda.getUserId()).getTeacherName());
             resultMap.put("agendaDetail",organAgenda);
             //教务待办 - 获取其下的 四个任务 的 完成情况
-            if(organAgenda.getType() == 1){
+            if(organAgenda.getPid() == 1){
                 Map detailsMap = getDoneDetails(agendaId);
                 //签到 统计
                 resultMap.put("signInDetail",detailsMap.get("signInDetail"));
@@ -145,6 +153,15 @@ public class COrganAgendaController {
                 resultMap.put("taskCommentDetail",detailsMap.get("taskCommentDetail"));
                 resultMap.put("firstTaskCommentTime",detailsMap.get("firstTaskCommentTime") == null ? "未点评":detailsMap.get("firstTaskCommentTime"));
 
+            }
+            //销售待办 -  暂时只写 跟进
+            if(organAgenda.getPid() == 2){
+                //获取待办执行情况
+                TAgendaCompletion agendaCompletion = agendaCompletionService.getByAgendaId(agendaId);
+                resultMap.put("agendaCompletion",agendaCompletion);
+                //获取 待办执行情况 字典
+                List<TAgendaCompletionDict> agendaCompletionDicts = agendaCompletionDictService.getAll();
+                resultMap.put("agendaCompletionDicts",agendaCompletionDicts);
             }
             Calendar calendar = Calendar.getInstance();
         }catch (Exception e){

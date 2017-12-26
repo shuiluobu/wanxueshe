@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.organ.TAgendaCompletionMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.organ.TAgendaCompletion">
+		<id column="id" property="id" />
+		<result column="agendaId" property="agendaId" />
+		<result column="method" property="method" />
+		<result column="response" property="response" />
+		<result column="intention" property="intention" />
+		<result column="nextAction" property="nextAction" />
+		<result column="createTime" property="createTime" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>
