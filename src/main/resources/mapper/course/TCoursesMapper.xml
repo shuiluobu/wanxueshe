@@ -9,7 +9,7 @@
         <result column="courseCode" property="courseCode"/>
         <result column="courseName" property="courseName"/>
         <result column="canQty" property="canQty"/>
-        <result column="courseType" property="courseType"/>
+        <result column="subjectType" property="subjectType"/>
         <result column="courseCateId" property="courseCateId"/>
         <result column="beginTime" property="beginTime"/>
         <result column="endTime" property="endTime"/>

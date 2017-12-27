@@ -392,8 +392,7 @@ CREATE TABLE `t_course_category` (
   `preferStartTime` datetime DEFAULT NULL COMMENT '优惠时间',
   `preferEndTime` datetime DEFAULT NULL COMMENT '课程介绍',
   `courseRemark` text,
-  `courseType` varchar(20) DEFAULT NULL COMMENT '课程类型',
-  `categoryType` varchar(20) DEFAULT NULL COMMENT '课程分类',
+  `subjectType` varchar(20) DEFAULT NULL COMMENT '学科类型',
   `cover` varchar(255) DEFAULT NULL COMMENT '封面',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;

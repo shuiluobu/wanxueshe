@@ -20,7 +20,7 @@ public interface ITCourseCategoryService extends IService<TCourseCategory> {
     public List<TCourseCategory> pageData(TCourseCategory courseCategory);
     public List<Map<String,Object>> getCourseListByOrgan(Long organId,Integer offset);
     public List<TCourseCategory> getAllCategoryByTeacher(Long teacherId);
-    public List<Map<String,Object>> searchCourseListForDiscovery(String categoryType,String searchName);
+    public List<Map<String,Object>> searchCourseListForDiscovery(String subjectType,String searchName);
     public List<Map<String,Object>> getTeacherCourseList(Long teacherId);
     public List<TCourseCategory> getNearByCategorys(double latitude,double  longitude);
 }

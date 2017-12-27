@@ -18,10 +18,8 @@
 		<result column="preferStartTime" property="preferStartTime" />
 		<result column="preferEndTime" property="preferEndTime" />
 		<result column="courseRemark" property="courseRemark" />
-		<result column="courseType" property="courseType" />
-		<result column="categoryType" property="categoryType" />
+		<result column="subjectType" property="subjectType" />
 		<result column="cover" property="cover" />
-		<result column="backgroundImg" property="backgroundImg"/>
 	</resultMap>
 
 	<select id="pageData" parameterType="TCourseCategory" resultMap="BaseResultMap">
@@ -74,14 +72,14 @@
 	  <if test="organId!=null">
 		  organId = #{organId}
 	  </if>
-		<if test="categoryType!=null">
-			categoryType = #{categoryType}
+		<if test="subjectType!=null">
+			subjectType = #{subjectType}
 		</if>
 	</select>
 	<select id="searchCourseListForDiscovery" resultMap="BaseResultMap">
 		SELECT * FROM t_course_category WHERE 1=1
-		<if test="courseType!=null">
-			AND courseType=#{courseType}
+		<if test="subjectType!=null">
+			AND subjectType=#{subjectType}
 		</if>
 		<if test="organIds==null and courseName!=null">
 			AND courseName LIKE '%${courseName}%'

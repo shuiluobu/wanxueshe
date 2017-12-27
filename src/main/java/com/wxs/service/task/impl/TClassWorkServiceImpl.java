@@ -68,7 +68,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         classTask.put("teacherName",new TTeacher().selectById(teacherId).getTeacherName());
         Long organId = Long.parseLong(classTask.get("organ").toString());
         TOrganization organ = new TOrganization().selectById(organId); //todo 从缓存中获取
-        classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()));
+        classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()==1?"已认证":""));
         TCourse course = new TCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
         classTask.put("courseName",course.getCourseName());
         return classTask;

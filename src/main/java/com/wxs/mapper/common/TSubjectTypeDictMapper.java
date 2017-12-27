@@ -1,7 +1,7 @@
 package com.wxs.mapper.common;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.wxs.entity.common.TCourseTypeDict;
+import com.wxs.entity.common.TSubjectTypeDict;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
  * @author skyer
  * @since 2017-12-15
  */
-public interface TCourseTypeDictMapper extends BaseMapper<TCourseTypeDict> {
-    public List<Map<String,Object>> getCourseTypeByParentCode(@Param("parentCode") String parentCode);
+public interface TSubjectTypeDictMapper extends BaseMapper<TSubjectTypeDict> {
+    public List<Map<String,Object>> getSubjectTypeByParentCode(@Param("parentCode") String parentCode);
 
 }

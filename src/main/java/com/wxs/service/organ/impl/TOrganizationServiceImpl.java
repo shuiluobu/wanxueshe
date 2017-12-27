@@ -88,7 +88,7 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
         int organStudentCount = studentClassMapper.getClassStudentCountByParam(stuClass);
         result.put("isParkIn", organStudentCount > 0 ? 1 : 0);
         result.put("ifFllow", fllowOrganMapper.getFllowByUserId(userId, organization.getId()) == null ? 0 : 1); //是否关注
-        result.put("leval", organization.getLeval());
+        result.put("leval", organization.getLeval()==1?"已认证":"");
         result.put("foundingTime", BaseUtil.toChinaDate(organization.getFoundingTime())); //成立时间
         result.put("address", organization.getAddress());
         result.put("organRemark", organization.getOrganRemark());
@@ -107,7 +107,7 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
             Map<String,Object> map = Maps.newHashMap();
             map.put("organId",bean.getId());
             map.put("organName",bean.getOrganName());
-            map.put("leval",bean.getLeval());
+            map.put("leval",bean.getLeval()==1?"已认证":"");
             map.put("logoImg",bean.getLogoImg());
             map.put("samllCount",smallCountOfOrgan(bean.getId()));
             mapList.add(map);

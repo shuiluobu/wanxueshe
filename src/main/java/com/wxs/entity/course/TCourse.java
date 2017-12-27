@@ -44,7 +44,7 @@ public class TCourse extends Model<TCourse> {
 	/**
 	 * 课程类型
 	 */
-	private String courseType;
+	//private String courseType;
 	/**
 	 * 课时数量
 	 */
@@ -120,13 +120,13 @@ public class TCourse extends Model<TCourse> {
 		return courseName;
 	}
 
-	public String getCourseType() {
-		return courseType;
-	}
-
-	public void setCourseType(String courseType) {
-		this.courseType = courseType;
-	}
+//	public String getCourseType() {
+//		return courseType;
+//	}
+//
+//	public void setCourseType(String courseType) {
+//		this.courseType = courseType;
+//	}
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;

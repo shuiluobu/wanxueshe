@@ -47,7 +47,7 @@ public class TCourseCategory extends Model<TCourseCategory> {
     /**
      * 所属机构Id
      */
-	private Long organId;
+	private Long organId; //如果是私人课程，则机构为空
 	/**
 	 * 状态 1：启用，0：禁止
 	 */
@@ -80,20 +80,20 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	 * 课程介绍
 	 */
 	private String courseRemark;
+//    /**
+//     * 课程类型
+//     */
+//	private String courseType;
     /**
-     * 课程类型
+     * 学科分类
      */
-	private String courseType;
-    /**
-     * 课程分类
-     */
-	private String categoryType;
+	private String subjectType;
     /**
      * 封面
      */
 	private String cover;
 
-	private String backgroundImg;
+	private String createUserId; //如果是私人课程，则创建人为所属用户
 
 
 	//-----额外字段
@@ -223,28 +223,20 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		this.courseRemark = courseRemark;
 	}
 
-	public String getCourseType() {
-		return courseType;
+//	public String getCourseType() {
+//		return courseType;
+//	}
+//
+//	public void setCourseType(String courseType) {
+//		this.courseType = courseType;
+//	}
+
+	public String getSubjectType() {
+		return subjectType;
 	}
 
-	public void setCourseType(String courseType) {
-		this.courseType = courseType;
-	}
-
-	public String getCategoryType() {
-		return categoryType;
-	}
-
-	public void setCategoryType(String categoryType) {
-		this.categoryType = categoryType;
-	}
-
-	public String getBackgroundImg() {
-		return backgroundImg;
-	}
-
-	public void setBackgroundImg(String backgroundImg) {
-		this.backgroundImg = backgroundImg;
+	public void setSubjectType(String subjectType) {
+		this.subjectType = subjectType;
 	}
 
 	public String getCover() {
@@ -282,6 +274,14 @@ public class TCourseCategory extends Model<TCourseCategory> {
 
 	public Integer getPageStartIndex() {
 		return pageStartIndex;
+	}
+
+	public String getCreateUserId() {
+		return createUserId;
+	}
+
+	public void setCreateUserId(String createUserId) {
+		this.createUserId = createUserId;
 	}
 
 	public void setPageStartIndex(Integer pageStartIndex) {

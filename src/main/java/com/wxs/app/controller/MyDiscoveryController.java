@@ -53,10 +53,10 @@ public class MyDiscoveryController extends BaseWxController {
     }
     @RequestMapping(value = "/findCourse")
     public Result nearOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,
-                            @RequestParam(required = false, value = "courseType", defaultValue = "") String courseType,
+                            @RequestParam(required = false, value = "subjectType", defaultValue = "") String subjectType,
                             @RequestParam(required = false, value = "searchName", defaultValue = "") String searchName) {
         //根据经纬度查找附近机构
-        return Result.of(courseCategoryService.searchCourseListForDiscovery(courseType, searchName));
+        return Result.of(courseCategoryService.searchCourseListForDiscovery(subjectType, searchName));
     }
 
 
