@@ -38,4 +38,23 @@ public class CStudentController {
         }
         return null;
     }
+
+    /**
+     * @Description : 根据 教育机构Id 获取其下 所有学员
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 16:10 2017/12/27
+     * @Params : [organId]
+     **/
+    @RequestMapping("/getAllByOrganId")
+    public Result getAllByOrganId(Long organId){
+
+        try{
+            return Result.of(studentService.getAllByOrganId(organId));
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

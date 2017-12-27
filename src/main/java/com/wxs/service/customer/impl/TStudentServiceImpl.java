@@ -187,5 +187,10 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         return studentMapper.searchByName(name, organId);
     }
 
+    @Override
+    public List<TStudent> getAllByOrganId(Long organId) {
+        return studentMapper.getAllByOrganId(organId);
+    }
+
 
 }

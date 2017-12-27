@@ -26,6 +26,8 @@ public interface ITStudentService extends IService<TStudent> {
     Integer delStudent(Long studentId,Long userId);
     //根据 教育机构Id 和 学生名字 模糊搜索 学生
     List<TStudent> searchByName(String name,Long organId);
+    //根据 教育机构Id  获取其下 所有学生
+    List<TStudent> getAllByOrganId(Long organId);
 
     /**
      * 获取一个学省的基本信息

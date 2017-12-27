@@ -36,9 +36,17 @@ public interface TStudentMapper extends BaseMapper<TStudent> {
     @Select(" select a.* " +
             "from t_student_class t " +
             "left join t_student a on a.id = t.studentId " +
-            "where organizationId = #{organId} " +
+            "where t.organizationId = #{organId} " +
             "and a.realName like concat('%',#{name},'%')")
     @ResultMap("BaseResultMap")
     List<TStudent> searchByName(@Param("name")String name,@Param("organId") Long organId);
+
+    //根据 教育机构Id  获取其下 所有学生
+    @Select(" select a.* " +
+            "from t_student_class t " +
+            "left join t_student a on a.id = t.studentId " +
+            "where t.organizationId = #{organId} ")
+    @ResultMap("BaseResultMap")
+    List<TStudent> getAllByOrganId(Long organId);
 
 }

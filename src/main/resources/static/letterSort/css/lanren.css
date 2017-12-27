@@ -1,0 +1,119 @@
+html,body,div,ul,li,ol,a,input,textarea,p,dl,dt,dd{margin:0;padding:0;}
+/*::-webkit-scrollbar{width:5px;}*/
+/*::-webkit-scrollbar-track{background-color:#FFFFFF;}*/
+/*::-webkit-scrollbar-thumb{background-color:#C8C8CD;}*/
+/*::-webkit-scrollbar-thumb:hover {background-color:#C8C8CD}*/
+/*::-webkit-scrollbar-thumb:active {background-color:#C8C8CD}*/
+ul li{
+    list-style: none;
+    padding-top: 5px;
+}
+a{text-decoration: none;cursor: pointer;}
+html{height: 100%;}
+/*body{height: 100%;background: #f5f5f5;position: relative;font-family: '微软雅黑';max-width: 640px;margin:auto;}*/
+a,input,img,textarea,span,div{outline: 0;-webkit-tap-highlight-color:rgba(255,0,0,0);}
+header{
+    width:100%;
+    height: 45px;
+    background: #ececea;
+    border-bottom: 1px solid #ddd;
+}
+header.fixed{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+}
+.header{
+    margin:0 20px;
+    text-align: center;
+    color: #4e4a49;
+    font-size: 1em;
+    height: 45px;
+    line-height: 45px;
+    position: relative;
+}
+#letter{
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    font-size: 75px;
+    color: #555;
+    text-align: center;
+    line-height: 100px;
+    background: rgba(145,145,145,0.6);
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin:-50px 0px 0px -50px;
+    z-index: 99;
+    display: none;
+}
+#letter img{
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin:25px 0px 0px 25px;
+}
+.sort_box{
+    width: 100%;
+    overflow: hidden;
+}
+.sort_list{
+    padding:10px 60px 10px 80px;
+    position: relative;
+    height: 45px;
+    line-height: 45px;
+    border-bottom:1px solid #ddd;
+}
+
+.sort_list .num_logo{
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+.sort_list .num_logo img{
+    width: 50px;
+    height: 50px;
+}
+
+.sort_list .name_div{
+    margin-top: -4px;
+}
+.sort_list p{
+    height: 22px;
+    line-height: 22px;
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+}
+
+.sort_letter{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 20px;
+    color:#787878;
+    font-size: 14px;
+    border-bottom:1px solid #ddd;
+}
+.initials{
+    position: absolute;
+    top: 45px;
+    right: 0px;
+    height: 100%;
+    width: 15px;
+    padding-right: 10px;
+    text-align: center;
+    font-size: 12px;
+    z-index: 99;
+    background: rgba(145,145,145,0);
+}
+.initials li img{
+    width: 14px;
+}
+/* 代码整理：懒人之家 www.lanrenzhijia.com */

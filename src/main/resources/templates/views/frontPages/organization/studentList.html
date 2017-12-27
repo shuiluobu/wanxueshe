@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <link rel="stylesheet" href="/letterSort/css/lanren.css">
+    <title>Title</title>
+    <style>
+        .head .right{
+            position: absolute;
+            right: 5px;
+            top: 0;
+            width: 100px;
+            height: 45px;
+        }
+        .right a{
+            padding-left: 20px;
+        }
+        .search_div{
+            height: 55px;
+            line-height:55px;
+            text-align:center;
+            background-color: #F2F2F2;
+        }
+        .search_div input{
+            height: 32px;
+            line-height:32px;
+            width: 90%;
+        }
+        .father{
+            background-color: #F4F4F4;
+        }
+    </style>
+</head>
+<body>
+<div class="head">
+    <a href="javascript:void(0);" class="return"></a><span>学员</span>
+    <div class="right">
+        <a href="javascript:void(0);"><img src="/weui/images/wyh/search.png"></a>
+        <a href="javascript:void(0);"><img src="/weui/images/wyh/addStudent.png"></a>
+    </div>
+</div>
+
+<div class="weui-tab" style="margin-top: 45px;width: 100%;">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            学员
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            班级
+        </a>
+        <a class="weui-navbar__item" href="#tab3">
+            课程顾问
+        </a>
+        <a class="weui-navbar__item" href="#tab4">
+            标签分组
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div id="letter" ></div>
+            <div class="sort_box">
+                <!--<div class="sort_list">-->
+                    <!--<div class="num_logo"><img src="/letterSort/images/img.png" /></div>-->
+                    <!--<div class="name_div">-->
+                        <!--<p class="num_name">赵</p>-->
+                        <!--<p>描述</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="initials">
+                <ul>
+                    <li><img src="/letterSort/images/068.png"></li>
+                </ul>
+            </div>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+
+            <div class="weui-cells weui-cells_checkbox">
+                <div class="search_div"><input placeholder="班级搜索"></div>
+                <label class="weui-cell weui-check__label">
+                    <div class="weui-cell__bd">
+                        <p>我的班级</p>
+                    </div>
+                    <div class="weui-cell__hd">
+                        <input type="radio" class="weui-check" name="checkbox_class"  checked="checked">
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </label>
+                <label class="weui-cell weui-check__label">
+                    <div class="weui-cell__bd">
+                        <p>不限</p>
+                    </div>
+                    <div class="weui-cell__hd">
+                        <input type="radio" name="checkbox1" class="checkbox_class" >
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label new">
+                    <div class="weui-cell__bd">
+                        <p> 启蒙1版暑期班</p>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label new">
+                    <div class="weui-cell__bd">
+                        <p>启蒙2版暑期班</p>
+                    </div>
+                </label>
+
+            </div>
+
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+            <div class="weui-cells weui-cells_checkbox">
+                <div class="search_div"><input placeholder="课程顾问搜索"></div>
+                <label class="weui-cell weui-check__label">
+                    <div class="weui-cell__bd">
+                        <p>不限</p>
+                    </div>
+                    <div class="weui-cell__hd">
+                        <input type="radio" checked name="checkbox_counselor" class="weui-check" >
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label new">
+                    <div class="weui-cell__bd">
+                        <p>张老师</p>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label new">
+                    <div class="weui-cell__bd">
+                        <p>李老师</p>
+                    </div>
+                </label>
+
+            </div>
+        </div>
+        <div id="tab4" class="weui-tab__bd-item">
+            <div class="weui-cells weui-cells_checkbox">
+                <div class="search_div"><input placeholder="标签搜索"></div>
+
+                <label class="weui-cell weui-check__label">
+                    <div class="weui-cell__bd">
+                        <p>不限</p>
+                    </div>
+                    <div class="weui-cell__hd">
+                        <input type="radio" checked name="checkbox_tag" class="weui-check">
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label father">
+                    <div class="weui-cell__bd">
+                        <p>标签分组1</p>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label son">
+                    <div class="weui-cell__bd">
+                        <p>标签A（5）</p>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label new">
+                    <div class="weui-cell__bd">
+                        <p>标签B（53）</p>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label father">
+                    <div class="weui-cell__bd">
+                        <p>标签分组2</p>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label son">
+                    <div class="weui-cell__bd">
+                        <p>标签C（5）</p>
+                    </div>
+                </label>
+
+                <label class="weui-cell weui-check__label new">
+                    <div class="weui-cell__bd">
+                        <p>标签D（53）</p>
+                    </div>
+                </label>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    $(function () {
+       //获取机构的所有学生
+        $.ajax("/cStudent/getAllByOrganId",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                organId:globalOrganId
+                },
+            success:function(json){
+                $(".sort_box").empty();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div class="sort_list">'+
+                                        '<div class="num_logo"><img src="'+list[i].headImg+'" /></div>'+
+                                        '<div class="name_div">'+
+                                            '<p class="num_name">'+list[i].realName+'</p>'+
+                                            '<p>未报名-test</p>'+
+                                        '</div>'+
+                                     '</div>';
+                        $(".sort_box").append(div);
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script src="/letterSort/js/jquery.charfirst.pinyin.js"></script>
+<script src="/letterSort/js/sort.js"></script>
+</html>
