@@ -20,6 +20,8 @@
 		<result column="courseRemark" property="courseRemark" />
 		<result column="subjectType" property="subjectType" />
 		<result column="cover" property="cover" />
+		<result column="createUserId" property="createUserId" />
+		<result column="leval" property="leval" />
 	</resultMap>
 
 	<select id="pageData" parameterType="TCourseCategory" resultMap="BaseResultMap">

@@ -17,10 +17,17 @@ public class SequenceServiceImpl implements ISequenceService {
     @Autowired
     public SequenceMapper sequenceMapper;
     @Override
-    public String getCourseCode(Long userId){
+    public String getCourseCode(Long userId,String type){
         Integer seq = sequenceMapper.getCourseCodeSeq();
         DecimalFormat df = new DecimalFormat("0000");
-        return "CC" + BaseUtil.toString(new Date(),"yyMM") + df.format(seq) + "C" + df.format(userId);
+        return type + BaseUtil.toString(new Date(),"yyMMdd") + df.format(seq)+"KC" + userId;
+    }
+
+    @Override
+    public String getOrganCode(Long userId,String type){
+        Integer seq = sequenceMapper.getCourseCodeSeq();
+        DecimalFormat df = new DecimalFormat("0000");
+        return type + BaseUtil.toString(new Date(),"yyMMdd") + df.format(seq)+"JG" + userId;
     }
 
     @Override

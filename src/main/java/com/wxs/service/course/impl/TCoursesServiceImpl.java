@@ -1,6 +1,5 @@
 package com.wxs.service.course.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -20,7 +19,6 @@ import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.customer.ITParentService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,15 +69,15 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
             TOrganization organization = new TOrganization().selectById(category.getOrganId());
             Map<String, Object> organMap = Maps.newHashMap();
             organMap.put("organName", organization.getOrganName());
-            organMap.put("leval", organization.getLeval()==1?"已认证":""); //等级
+            organMap.put("leval", organization.getLeval() == 1 ? "已认证" : ""); //等级
             organMap.put("organId", organization.getId());
-            result.put("courseName",category.getCourseCategoryName());
+            result.put("courseName", category.getCourseCategoryName());
             result.put("organ", organMap);
             result.put("coursePlans", coursesMapper.getCoursePlans(category.getId())); //课时计划
             result.put("canQty", category.getCanQty()); //课时
             result.put("coverImg", category.getCover()); //封面头像图
-            result.put("subjectType",category.getSubjectType()); //学科分类
-            result.put("cateoryType", "课程类型");
+            result.put("subjectType", category.getSubjectType()); //学科分类
+            result.put("courseType", category.getCourseType()); //课程类型，如试听课
             result.put("courseRemark", category.getCourseRemark()); //简介
             result.put("fllowCount", fllowCourseMapper.getFllowCountOfCourseId(coursesId)); //关注数
             result.put("areadyStudCount", category.getAlreadyStudySum());
@@ -96,13 +94,14 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
                     studentNames.append(map.get("studentName").toString());
                 });
                 TCourse course = new TCourse().selectById(stuClass.getCoursesId());
-                result.put("joinTime",course.getCreateTime()); //参加时间
+                result.put("joinTime", course.getCreateTime()); //参加时间
                 result.put("smallRemark", "我的上课时间：" + BaseUtil.toChinaDate(course.getBeginTime()) + "-" + BaseUtil.toChinaDate(course.getEndTime())
                         + " 我参与的学员：" + StringUtils.split(studentNames.toString(), ","));
             } else {
                 result.put("smallRemark", "");
-                result.put("createUserName","");
-                result.put("createUserId","");
+                TFrontUser createUser = new TFrontUser().selectById(category.getCreateUserId());
+                result.put("createUserName", createUser.getUserName());
+                result.put("createUserId", category.getCreateUserId());
             }
             return result;
         } catch (Exception e) {
@@ -153,9 +152,9 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     @Override
     @Transactional
     public Map<String, Object> addCourseByApp(Long userId, Map param) {
-        String courseCode = sequenceService.getCourseCode(userId);//code
         String subjectType = param.get("types").toString();
         String courseName = param.get("courseName").toString();
+
         String organName = param.get("organName").toString();
         String way = param.get("way").toString(); //周期或者单次
         String beginDays = "";
@@ -168,6 +167,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         String courseDetails = param.get("courseDetails").toString();
         String courseDates = param.get("courseDates").toString();
         String students[] = StringUtils.split(param.get("students").toString(), ","); //学员
+        Long organId = param.get("organId") != null ? Long.parseLong(param.get("organId").toString()) : null;
         List<Map<String, Object>> lessonList = BaseUtil.parseJson(courseDates, List.class);
         if (way.equals("0")) {
             //单次
@@ -180,13 +180,41 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
             beginDays = param.get("beginDays") == null ? "" : param.get("beginDays").toString();
             endDays = param.get("endDays") == null ? "" : param.get("endDays").toString();
         }
-        TCourseCategory classCourse = new TCourseCategory();
-        classCourse.setCourseRemark(courseDetails);
-        classCourse.insert();//保存课程
+
+        TOrganization organ = null;
+        if (organId != null) {
+            organ = new TOrganization().selectById(organId);
+        }
+        if(organ==null){
+            organ = new TOrganization();
+            organ.setOrganCode(sequenceService.getOrganCode(userId, "C")); //有c端产生的机构
+            organ.setAddress(courseAddress);
+            organ.insert();
+            organId= organ.getId();
+        }
+
+        TCourseCategory courseCategory = new TCourseCategory();
+        courseCategory.setCanQty(lessonList.size()); //总课时
+        courseCategory.setAlreadyStudySum(students.length); //已经上课学生
+        courseCategory.setCourseCategoryName(courseName);
+        courseCategory.setCourseCategoryCode(sequenceService.getCourseCode(userId, "C")); //有c端用户产生
+        courseCategory.setCreateUserId(userId);
+        courseCategory.setCourseRemark(courseDetails);
+        courseCategory.setSubjectType(subjectType);
+        courseCategory.setOrganId(organId);
+        courseCategory.insert();//保存创建的大课程
+
+        TCourse classCourse = new TCourse();
+        classCourse.setCanQty(courseCategory.getCanQty()); //冗余
+        classCourse.setCourseName(courseCategory.getCourseCategoryName()); //课程名称 冗余
+        classCourse.setCourseCateId(courseCategory.getId());
+        classCourse.setTeacherName(teacherName);
+        classCourse.setOrganizationId(null); //自己创建的不关联机构
+        classCourse.setTeacherId(null); //自己创建的不关联老师
         for (String studentId : students) {
             TStudentClass studentClass = new TStudentClass();
             studentClass.setUserId(userId);
-            studentClass.setCoursesId(classCourse.getId());
+            studentClass.setCoursesId(courseCategory.getId());
             studentClass.setCreateTime(new Date());
             studentClass.setIsEnd(0); //未完成
             studentClass.setStudentId(Long.parseLong(studentId));

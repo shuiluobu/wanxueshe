@@ -59,8 +59,8 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
         try {
             TClassLesson lesson = this.selectById(lessionId);
             Map<String, Object> course = coursesMapper.selectMap(lesson.getCourseId());
-            result.put("realTearcherName",lesson.getRealTearcherName());
-            result.put("shouldTearcherName",lesson.getShouldTearcherName());
+           // result.put("realTearcherName",lesson.getRealTearcherName());
+            result.put("teacherName",lesson.getShouldTearcherName()==null?"":lesson.getShouldTearcherName());
             result.put("createTime",BaseUtil.toLongDate(lesson.getCreateTime()));
             result.put("content",lesson.getContent());
             result.put("lessonName",lesson.getLessonName());

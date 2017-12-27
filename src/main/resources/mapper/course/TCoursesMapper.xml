@@ -6,10 +6,8 @@
     <resultMap id="BaseResultMap" type="com.wxs.entity.course.TCourse">
         <id column="id" property="id"/>
         <result column="organizationId" property="organizationId"/>
-        <result column="courseCode" property="courseCode"/>
         <result column="courseName" property="courseName"/>
         <result column="canQty" property="canQty"/>
-        <result column="subjectType" property="subjectType"/>
         <result column="courseCateId" property="courseCateId"/>
         <result column="beginTime" property="beginTime"/>
         <result column="endTime" property="endTime"/>
@@ -55,16 +53,6 @@
             </if>
         </where>
         limit #{pageStartIndex},#{limit}
-    </select>
-
-    <select id="selectCoursesByIds" parameterType="java.util.List" resultType="java.util.HashMap">
-        SELECT
-        organizationId,courseCode,courseName,courseRemark,marketPrice,preferenPrice,
-        canQty,categoryCode,categoryName
-        FROM t_course WHERE id in
-        <foreach item="coursesId" collection="cIdList" separator="," open="(" close=")" index="">
-            #{coursesId}
-        </foreach>
     </select>
 
     <select id="selectMap" parameterType="java.lang.Long" resultType="java.util.HashMap">

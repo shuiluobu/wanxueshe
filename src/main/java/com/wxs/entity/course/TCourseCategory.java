@@ -35,7 +35,7 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	/**
 	 * 课程分类编号
 	 */
-	private Integer courseCategoryCode;
+	private String courseCategoryCode;
     /**
      * 课时数量
      */
@@ -51,7 +51,7 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	/**
 	 * 状态 1：启用，0：禁止
 	 */
-	private Integer status;
+	private Integer status=0;
 	/**
 	 * 创建时间
 	 */
@@ -80,10 +80,10 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	 * 课程介绍
 	 */
 	private String courseRemark;
-//    /**
-//     * 课程类型
-//     */
-//	private String courseType;
+    /**
+     * 课程类型
+     */
+	private String courseType;
     /**
      * 学科分类
      */
@@ -93,8 +93,17 @@ public class TCourseCategory extends Model<TCourseCategory> {
      */
 	private String cover;
 
-	private String createUserId; //如果是私人课程，则创建人为所属用户
+	private Long createUserId; //如果是私人课程，则创建人为所属用户
 
+	private Integer leval;
+
+	public Integer getLeval() {
+		return leval;
+	}
+
+	public void setLeval(Integer leval) {
+		this.leval = leval;
+	}
 
 	//-----额外字段
 	@TableField(exist = false)
@@ -124,11 +133,11 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		this.courseCategoryName = courseCategoryName;
 	}
 
-	public Integer getCourseCategoryCode() {
+	public String getCourseCategoryCode() {
 		return courseCategoryCode;
 	}
 
-	public void setCourseCategoryCode(Integer courseCategoryCode) {
+	public void setCourseCategoryCode(String courseCategoryCode) {
 		this.courseCategoryCode = courseCategoryCode;
 	}
 
@@ -223,13 +232,13 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		this.courseRemark = courseRemark;
 	}
 
-//	public String getCourseType() {
-//		return courseType;
-//	}
-//
-//	public void setCourseType(String courseType) {
-//		this.courseType = courseType;
-//	}
+	public String getCourseType() {
+		return courseType;
+	}
+
+	public void setCourseType(String courseType) {
+		this.courseType = courseType;
+	}
 
 	public String getSubjectType() {
 		return subjectType;
@@ -255,7 +264,6 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		this.organName = organName;
 	}
 
-
 	public Integer getPage() {
 		return page;
 	}
@@ -276,11 +284,11 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		return pageStartIndex;
 	}
 
-	public String getCreateUserId() {
+	public Long getCreateUserId() {
 		return createUserId;
 	}
 
-	public void setCreateUserId(String createUserId) {
+	public void setCreateUserId(Long createUserId) {
 		this.createUserId = createUserId;
 	}
 
