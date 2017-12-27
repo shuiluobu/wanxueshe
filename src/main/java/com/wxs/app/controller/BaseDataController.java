@@ -27,9 +27,9 @@ public class BaseDataController {
     @Autowired
     public ITStudentService studentService;
 
-    @RequestMapping(value = "/courseTypes")
-    public Result queryCourseTypeDictes() {
-        return Result.of(dictionaryService.queryCourseTypeDictes());
+    @RequestMapping(value = "/subjectTypes")
+    public Result querySubjectTypeDicts() {
+        return Result.of(dictionaryService.querySubjectTypeDicts());
     }
 
     /**

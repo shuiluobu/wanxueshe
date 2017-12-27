@@ -15,15 +15,15 @@ import java.io.Serializable;
  * @since 2017-12-15
  */
 @TableName("t_course_type_dict")
-public class TCourseTypeDict extends Model<TCourseTypeDict> {
+public class TSubjectTypeDict extends Model<TSubjectTypeDict> {
 
     private static final long serialVersionUID = 1L;
 
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
 	private String parentCode;
-	private String courseTypeCode;
-	private String courseTypeName;
+	private String subjectTypeCode;
+	private String subjectTypeName;
 	private Integer status;
 
 
@@ -43,20 +43,24 @@ public class TCourseTypeDict extends Model<TCourseTypeDict> {
 		this.parentCode = parentCode;
 	}
 
-	public String getCourseTypeCode() {
-		return courseTypeCode;
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
 	}
 
-	public void setCourseTypeCode(String courseTypeCode) {
-		this.courseTypeCode = courseTypeCode;
+	public String getSubjectTypeCode() {
+		return subjectTypeCode;
 	}
 
-	public String getCourseTypeName() {
-		return courseTypeName;
+	public void setSubjectTypeCode(String subjectTypeCode) {
+		this.subjectTypeCode = subjectTypeCode;
 	}
 
-	public void setCourseTypeName(String courseTypeName) {
-		this.courseTypeName = courseTypeName;
+	public String getSubjectTypeName() {
+		return subjectTypeName;
+	}
+
+	public void setSubjectTypeName(String subjectTypeName) {
+		this.subjectTypeName = subjectTypeName;
 	}
 
 	public Integer getStatus() {

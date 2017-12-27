@@ -7,6 +7,7 @@ import java.util.Date;
  */
 public interface ISequenceService {
 
-   public String getCourseCode(Long userId);
+   public String getCourseCode(Long userId,String type);
    public String getCourseClassCode(Long userId);
+   String getOrganCode(Long userId,String type);
 }

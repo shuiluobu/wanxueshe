@@ -7,9 +7,9 @@ import java.util.Map;
  */
 
 public interface IDictionaryService {
-    public Map<String,Object> queryCourseTypeDictes();
-    public Map<String,Object> getCourseTypeDict();
-    public String getCourseTypeValue(String code,String type);
+    public Map<String,Object> querySubjectTypeDicts();
+    public Map<String,Object> getSubjectTypeDict();
+    public String getSubjectTypeValue(String code,String type);
     public Map<String,String>  getLessonStudyStatus();
     public Map<String,String> getRemindMediaType();
     Map<String,String> getDataAuthority();

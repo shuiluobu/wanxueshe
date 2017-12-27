@@ -3,9 +3,9 @@ package com.wxs.service.common.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Maps;
 import com.wxs.cache.ICache;
-import com.wxs.entity.common.TCourseTypeDict;
 import com.wxs.entity.common.TDictionary;
-import com.wxs.mapper.common.TCourseTypeDictMapper;
+import com.wxs.entity.common.TSubjectTypeDict;
+import com.wxs.mapper.common.TSubjectTypeDictMapper;
 import com.wxs.mapper.common.TDictionaryMapper;
 import com.wxs.service.common.IDictionaryService;
 import org.apache.commons.lang.StringUtils;
@@ -19,11 +19,11 @@ public class DictionaryServiceImpl implements IDictionaryService {
     @Autowired
     private ICache cache;
     @Autowired
-    public TCourseTypeDictMapper courseTypeDictMapper;
+    public TSubjectTypeDictMapper subjectTypeDictMapper;
     @Autowired
     public TDictionaryMapper dictionaryMapper;
 
-    public final String COURSE_TYPE_DICT = "COURSE_TYPE_DICT"; //课程类型
+    public final String SUBJECT_TYPE_DICT = "SUBJECT_TYPE_DICT"; //课程的学科分类类型
 
     public final String LESSON_STUDY_STATUS = "LESSON_STUDY_STATUS"; //学生课时完成情况
 
@@ -38,13 +38,13 @@ public class DictionaryServiceImpl implements IDictionaryService {
     public final String WORK_COMPLETION_STATUS = "WORK_COMPLETION_STATUS";//作业完成情况
 
     @Override
-    public Map<String, Object> queryCourseTypeDictes() {
+    public Map<String, Object> querySubjectTypeDicts() {
         Map<String, Object> result = Maps.newHashMap();
-        List<Map<String, Object>> dicts = courseTypeDictMapper.getCourseTypeByParentCode("00");
+        List<Map<String, Object>> dicts = subjectTypeDictMapper.getSubjectTypeByParentCode("00");
         result.put("levalA", dicts);
         Map<String, Object> dict2Map = new HashMap<>();
         for (Map<String, Object> dict : dicts) {
-            List<Map<String, Object>> dict2s = courseTypeDictMapper.getCourseTypeByParentCode(dict.get("code").toString());
+            List<Map<String, Object>> dict2s = subjectTypeDictMapper.getSubjectTypeByParentCode(dict.get("code").toString());
             dict2Map.put(dict.get("code").toString(), dict2s);
         }
         result.put("levalB", dict2Map);
@@ -53,15 +53,15 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
 
     @Override
-    public Map<String, Object> getCourseTypeDict() {
-        Object codeCache = cache.getCache(COURSE_TYPE_DICT);
+    public Map<String, Object> getSubjectTypeDict() {
+        Object codeCache = cache.getCache(SUBJECT_TYPE_DICT);
         if (codeCache == null) {
             Map<String, Object> codeMap = new HashMap<String, Object>();
-            List<TCourseTypeDict> dicts = courseTypeDictMapper.selectList(null);
-            for (TCourseTypeDict dict : dicts) {
-                codeMap.put(dict.getCourseTypeCode(), dict);
+            List<TSubjectTypeDict> dicts = subjectTypeDictMapper.selectList(null);
+            for (TSubjectTypeDict dict : dicts) {
+                codeMap.put(dict.getParentCode(), dict);
             }
-            cache.putCache(COURSE_TYPE_DICT, codeMap, 1000 * 60 * 60 * 24);
+            cache.putCache(SUBJECT_TYPE_DICT, codeMap, 1000 * 60 * 60 * 24);
             return codeMap;
         } else {
             return (Map<String, Object>) codeCache;
@@ -74,16 +74,16 @@ public class DictionaryServiceImpl implements IDictionaryService {
      * @return
      */
     @Override
-    public String getCourseTypeValue(String code, String type) {
+    public String getSubjectTypeValue(String code, String type) {
         String type1 = "";
         String type2 = "";
         if (code != null) {
-            TCourseTypeDict dict = (TCourseTypeDict) getCourseTypeDict().get(code);
-            type1 = dict.getCourseTypeName();
+            TSubjectTypeDict dict = (TSubjectTypeDict) getSubjectTypeDict().get(code);
+            type1 = dict.getSubjectTypeName();
             if (!dict.getParentCode().equals("00")) {
                 String code2 = dict.getParentCode();
-                TCourseTypeDict dict2 = (TCourseTypeDict) getCourseTypeDict().get(code2);
-                type2 = dict2.getCourseTypeName();
+                TSubjectTypeDict dict2 = (TSubjectTypeDict) getSubjectTypeDict().get(code2);
+                type2 = dict2.getSubjectTypeName();
             }
         }
         if (type.equals("1")) {

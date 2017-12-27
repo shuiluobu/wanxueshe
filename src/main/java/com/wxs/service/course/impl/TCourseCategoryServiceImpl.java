@@ -55,10 +55,10 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
     }
 
     @Override
-    public List<Map<String,Object>> searchCourseListForDiscovery(String categoryType,String searchName) {
+    public List<Map<String,Object>> searchCourseListForDiscovery(String subjectType,String searchName) {
         List<Long> organIdList = organizationMapper.queryOrganIdByLikeName(searchName);
         String organIds = StringUtils.join(organIdList,",");
-        List<TCourseCategory> list = courseCategoryMapper.searchCourseListForDiscovery(organIds,categoryType,searchName);
+        List<TCourseCategory> list = courseCategoryMapper.searchCourseListForDiscovery(organIds,subjectType,searchName);
         return  catBean2MapList(list);
     }
 
@@ -91,7 +91,7 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
             Map<String,Object> map = Maps.newHashMap();
             map.put("courseId",bean.getId());
             map.put("courseName",bean.getCourseCategoryName());
-            map.put("courseType",dictionaryService.getCourseTypeValue(bean.getCategoryType(),"2"));
+            map.put("subjectType",dictionaryService.getSubjectTypeValue(bean.getSubjectType(),"2"));
             map.put("canQty",bean.getCanQty());
             map.put("alreadyStudySum",bean.getAlreadyStudySum());
             map.put("cover",bean.getCover()==null?"": bean.getCover());//封面图片

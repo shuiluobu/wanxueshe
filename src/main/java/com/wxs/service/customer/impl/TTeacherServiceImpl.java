@@ -49,7 +49,7 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
         TOrganization organization = new TOrganization().selectById(teacher.getOrganizationId());
         result.put("teacherId",teacher.getId());
         result.put("teacherName",teacher.getTeacherName());
-        result.put("leval",teacher.getLeval());//教师等级，是否认证
+        result.put("leval",teacher.getLeval()==1?"已认证":"");//教师等级，是否认证
         result.put("organ", ImmutableMap.of("organName",organization.getOrganName(),"organId",organization.getId()));
         int fllowCount = followTeacherMapper.getFllowTeacherByCount(teacherId);
         int studentCount = teacherMapper.getTeacherStudentCount(teacherId);

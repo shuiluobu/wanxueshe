@@ -35,7 +35,7 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	/**
 	 * 课程分类编号
 	 */
-	private Integer courseCategoryCode;
+	private String courseCategoryCode;
     /**
      * 课时数量
      */
@@ -47,11 +47,11 @@ public class TCourseCategory extends Model<TCourseCategory> {
     /**
      * 所属机构Id
      */
-	private Long organId;
+	private Long organId; //如果是私人课程，则机构为空
 	/**
 	 * 状态 1：启用，0：禁止
 	 */
-	private Integer status;
+	private Integer status=0;
 	/**
 	 * 创建时间
 	 */
@@ -85,16 +85,25 @@ public class TCourseCategory extends Model<TCourseCategory> {
      */
 	private String courseType;
     /**
-     * 课程分类
+     * 学科分类
      */
-	private String categoryType;
+	private String subjectType;
     /**
      * 封面
      */
 	private String cover;
 
-	private String backgroundImg;
+	private Long createUserId; //如果是私人课程，则创建人为所属用户
 
+	private Integer leval;
+
+	public Integer getLeval() {
+		return leval;
+	}
+
+	public void setLeval(Integer leval) {
+		this.leval = leval;
+	}
 
 	//-----额外字段
 	@TableField(exist = false)
@@ -124,11 +133,11 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		this.courseCategoryName = courseCategoryName;
 	}
 
-	public Integer getCourseCategoryCode() {
+	public String getCourseCategoryCode() {
 		return courseCategoryCode;
 	}
 
-	public void setCourseCategoryCode(Integer courseCategoryCode) {
+	public void setCourseCategoryCode(String courseCategoryCode) {
 		this.courseCategoryCode = courseCategoryCode;
 	}
 
@@ -231,20 +240,12 @@ public class TCourseCategory extends Model<TCourseCategory> {
 		this.courseType = courseType;
 	}
 
-	public String getCategoryType() {
-		return categoryType;
+	public String getSubjectType() {
+		return subjectType;
 	}
 
-	public void setCategoryType(String categoryType) {
-		this.categoryType = categoryType;
-	}
-
-	public String getBackgroundImg() {
-		return backgroundImg;
-	}
-
-	public void setBackgroundImg(String backgroundImg) {
-		this.backgroundImg = backgroundImg;
+	public void setSubjectType(String subjectType) {
+		this.subjectType = subjectType;
 	}
 
 	public String getCover() {
@@ -262,7 +263,6 @@ public class TCourseCategory extends Model<TCourseCategory> {
 	public void setOrganName(String organName) {
 		this.organName = organName;
 	}
-
 
 	public Integer getPage() {
 		return page;
@@ -282,6 +282,14 @@ public class TCourseCategory extends Model<TCourseCategory> {
 
 	public Integer getPageStartIndex() {
 		return pageStartIndex;
+	}
+
+	public Long getCreateUserId() {
+		return createUserId;
+	}
+
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
 	}
 
 	public void setPageStartIndex(Integer pageStartIndex) {

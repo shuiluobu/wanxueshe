@@ -29,26 +29,12 @@ public class TCourse extends Model<TCourse> {
      */
 	@TableId(value="id", type= IdType.AUTO)
 	private Long id;
-	/**
-	 * 所属机构Id
-	 */
-	private Long organizationId;
-	/**
-	 * 课程代码
-	 */
-	private String courseCode;
-	/**
-	 * 课程名称
-	 */
-	private String courseName;
-	/**
-	 * 课程类型
-	 */
-	private String courseType;
+
+	private String courseName; //冗余字段
 	/**
 	 * 课时数量
 	 */
-	private Integer canQty;
+	private Integer canQty;//冗余字段
     /**
      * 开始时间
      */
@@ -77,10 +63,8 @@ public class TCourse extends Model<TCourse> {
 	private Long  teacherId;
 
 	private String teacherName;
-	/**
-	 * 课程介绍
-	 */
-	private String courseRemark;
+
+	private Long organizationId;//冗余字段
 
 	@TableField(exist = false)
 	private String organName; //所属教育机构名称
@@ -98,38 +82,6 @@ public class TCourse extends Model<TCourse> {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
-	}
-
-	public String getCourseCode() {
-		return courseCode;
-	}
-
-	public void setCourseCode(String courseCode) {
-		this.courseCode = courseCode;
-	}
-
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public String getCourseType() {
-		return courseType;
-	}
-
-	public void setCourseType(String courseType) {
-		this.courseType = courseType;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
 	}
 
 	public Integer getCanQty() {
@@ -239,12 +191,20 @@ public class TCourse extends Model<TCourse> {
 		this.teacherName = teacherName;
 	}
 
-	public String getCourseRemark() {
-		return courseRemark;
+	public Long getOrganizationId() {
+		return organizationId;
 	}
 
-	public void setCourseRemark(String courseRemark) {
-		this.courseRemark = courseRemark;
+	public void setOrganizationId(Long organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 
 	@Override
