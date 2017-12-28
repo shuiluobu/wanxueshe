@@ -1,4 +1,4 @@
-package com.wxs.mapper.comment;
+package com.wxs.mapper.dynamic;
 
 import com.wxs.entity.comment.TLike;
 import com.baomidou.mybatisplus.mapper.BaseMapper;

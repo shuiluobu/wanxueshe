@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wxs.mapper.comment.TDynamicmsgMapper">
+<mapper namespace="com.wxs.mapper.dynamic.TDynamicMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.wxs.entity.comment.TDynamicmsg">
+    <resultMap id="BaseResultMap" type="com.wxs.entity.comment.TDynamic">
         <id column="id" property="id"/>
         <result column="userId" property="userId"/>
         <result column="content" property="content"/>
@@ -109,7 +109,7 @@
         l.courseId,
         e.courseName,
         d.organId
-        FROM t_dynamicmsg d
+        FROM t_dynamic d
         INNER JOIN t_front_user u ON u.id = d.userId
         LEFT JOIN t_class_lesson l on l.id=d.classLessonId
         LEFT JOIN t_course e ON  e.id=d.courseId

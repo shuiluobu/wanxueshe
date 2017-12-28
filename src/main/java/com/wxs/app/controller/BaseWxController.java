@@ -3,7 +3,7 @@ package com.wxs.app.controller;
 import com.wxs.app.service.WxService;
 import com.wxs.cache.ICache;
 import com.wxs.service.activity.ITOrganActivityService;
-import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.dynamic.ITDynamicService;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.common.ISequenceService;
 import com.wxs.service.course.ITClassLessonService;
@@ -14,7 +14,6 @@ import com.wxs.service.customer.impl.TStudentServiceImpl;
 import com.wxs.service.message.ITRemindMessageService;
 import com.wxs.service.organ.ITOrganizationService;
 import com.wxs.service.task.ITClassWorkService;
-import com.wxs.service.task.ITStudentWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,7 +47,7 @@ public class BaseWxController {
     @Autowired
     public ITTeacherService teacherService;
     @Autowired
-    public ITDynamicmsgService dynamicmsgService;
+    public ITDynamicService dynamicService;
     @Autowired
     public ITCourseCategoryService courseCategoryService;
     @Autowired

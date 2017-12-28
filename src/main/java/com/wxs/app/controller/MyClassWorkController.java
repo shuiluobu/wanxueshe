@@ -1,23 +1,16 @@
 package com.wxs.app.controller;
 
-import com.wxs.entity.comment.TDyimg;
-import com.wxs.entity.comment.TDynamicmsg;
-import com.wxs.entity.comment.TDyvideo;
-import com.wxs.entity.task.TStudentWork;
+
+import com.wxs.entity.comment.TDynamic;
 import com.wxs.util.Result;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.wxs.core.util.BaseUtil;
-import org.wxs.core.util.OsppyUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,7 +55,7 @@ public class MyClassWorkController extends BaseWxController {
         Integer power = Integer.parseInt(request.getParameter("power")); //是否公开
         Long studentId = Long.parseLong(request.getParameter("studentId"));
         Long workId = Long.parseLong(request.getParameter("workId"));
-        TDynamicmsg dynamic = new TDynamicmsg();
+        TDynamic dynamic = new TDynamic();
         dynamic.setPower(power); //权限
         dynamic.setContent(content);
         dynamic.setStudentId(studentId);

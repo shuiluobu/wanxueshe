@@ -2,8 +2,7 @@ package com.wxs.service.task;
 
 
 import com.baomidou.mybatisplus.service.IService;
-import com.wxs.entity.comment.TDyimg;
-import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.comment.TDynamic;
 import com.wxs.entity.task.TClassWork;
 
 import java.util.List;
@@ -20,6 +19,6 @@ import java.util.Map;
 public interface ITClassWorkService extends IService<TClassWork> {
     List<Map<String,Object>> getClassWorkInfosByUserId(Long userId);
     Map<String,Object> getClassWorkOutline(Long workId);
-    Map<String,Object> saveStudentWork(List<String> mediaUrls, String mediaType,TDynamicmsg dynamic, Long workId);
+    Map<String,Object> saveStudentWork(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId);
     //List<Map<String,Object>> getMyClassWorks(Long userId);
 }

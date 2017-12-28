@@ -3,23 +3,18 @@ package com.wxs.service.customer.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.wxs.entity.comment.TDyimg;
-import com.wxs.entity.comment.TDynamicmsg;
-import com.wxs.entity.comment.TDyvideo;
+import com.wxs.entity.comment.TDynamic;
+import com.wxs.entity.comment.TDynamicImg;
+import com.wxs.entity.comment.TDynamicVideo;
 import com.wxs.entity.course.TCourse;
-import com.wxs.entity.customer.TFollowTeacher;
 import com.wxs.entity.customer.TParent;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TStudentWork;
 import com.wxs.enu.EnuDynamicTypeCode;
 import com.wxs.mapper.course.TStudentClassMapper;
-import com.wxs.mapper.customer.TFollowCourseMapper;
-import com.wxs.mapper.customer.TFollowTeacherMapper;
-import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TStudentMapper;
-import com.wxs.mapper.organ.TFollowOrganMapper;
-import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.dynamic.ITDynamicService;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.customer.ITStudentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -28,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wxs.core.util.BaseUtil;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +41,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     @Autowired
     private TStudentClassMapper studentClassMapper; //我的课程
     @Autowired
-    private ITDynamicmsgService dynamicmsgService;
+    private ITDynamicService dynamicmsgService;
     @Autowired
     private TStudentMapper studentMapper;
     @Autowired
@@ -108,7 +102,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
 
     @Override
     @Transactional
-    public Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamicmsg dynamic, Long workId) {
+    public Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
             TCourse course = new TCourse().selectById(classWork.getCourseId());
@@ -127,7 +121,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             studentTask.insert();//保存作业
             if (mediaType.equals("IMG")) {
                 for (String mediaUrl : mediaUrls) {
-                    TDyimg dyimg = new TDyimg();
+                    TDynamicImg dyimg = new TDynamicImg();
                     dyimg.setDynamicId(dynamic.getId());
                     dyimg.setStatus(0);
                     dyimg.setCreateTime(new Date());
@@ -136,7 +130,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
                 }
             } else {
                 String mediaUrl = mediaUrls.get(0);
-                TDyvideo dyvideo = new TDyvideo();
+                TDynamicVideo dyvideo = new TDynamicVideo();
                 dyvideo.setDynamicId(dynamic.getId());
                 dyvideo.setCreateTime(new Date());
                 dyvideo.setVideoUrl(mediaUrl);

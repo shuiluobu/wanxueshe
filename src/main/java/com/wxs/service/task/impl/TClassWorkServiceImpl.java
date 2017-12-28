@@ -1,14 +1,11 @@
 package com.wxs.service.task.impl;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.wxs.entity.comment.TDyimg;
-import com.wxs.entity.comment.TDynamicmsg;
-import com.wxs.entity.comment.TDyvideo;
-import com.wxs.entity.course.TClass;
+import com.wxs.entity.comment.TDynamic;
+import com.wxs.entity.comment.TDynamicImg;
+import com.wxs.entity.comment.TDynamicVideo;
 import com.wxs.entity.course.TCourse;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
@@ -16,8 +13,7 @@ import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TStudentWork;
 import com.wxs.enu.EnuDynamicTypeCode;
 import com.wxs.mapper.task.TClassWorkMapper;
-import com.wxs.mapper.task.TStudentWorkMapper;
-import com.wxs.service.comment.ITDynamicmsgService;
+import com.wxs.service.dynamic.ITDynamicService;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.task.ITClassWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +38,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
     @Autowired
     private TClassWorkMapper classWorkMapper;
     @Autowired
-    private ITDynamicmsgService dynamicmsgService;
+    private ITDynamicService dynamicmsgService;
     @Autowired
     public IDictionaryService dictionaryService;
 
@@ -88,7 +84,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
 
     @Override
     @Transactional
-    public Map<String, Object> saveStudentWork(List<String> mediaUrls,String mediaType, TDynamicmsg dynamic, Long workId) {
+    public Map<String, Object> saveStudentWork(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
             TCourse course = new TCourse().selectById(classWork.getCourseId());
@@ -107,7 +103,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
             studentWork.insert();//保存作业
             if(mediaType.equals("IMG")){
                 for (String mediaUrl : mediaUrls) {
-                    TDyimg dyimg = new TDyimg();
+                    TDynamicImg dyimg = new TDynamicImg();
                     dyimg.setDynamicId(dynamic.getId());
                     dyimg.setStatus(0);
                     dyimg.setCreateTime(new Date());
@@ -116,7 +112,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
                 }
             } else {
                 String mediaUrl = mediaUrls.get(0);
-                TDyvideo dyvideo = new TDyvideo();
+                TDynamicVideo dyvideo = new TDynamicVideo();
                 dyvideo.setDynamicId(dynamic.getId());
                 dyvideo.setCreateTime(new Date());
                 dyvideo.setVideoUrl(mediaUrl);

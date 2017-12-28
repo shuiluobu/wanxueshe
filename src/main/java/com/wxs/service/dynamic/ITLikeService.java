@@ -1,4 +1,4 @@
-package com.wxs.service.comment;
+package com.wxs.service.dynamic;
 
 import com.wxs.entity.comment.TLike;
 import com.baomidou.mybatisplus.service.IService;

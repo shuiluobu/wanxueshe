@@ -18,8 +18,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-21
  */
-@TableName("t_dynamicmsg")
-public class TDynamicmsg extends Model<TDynamicmsg> {
+@TableName("t_dynamic")
+public class TDynamic extends Model<TDynamic> {
 
     private static final long serialVersionUID = 1L;
 	@TableId(value="id", type= IdType.AUTO)

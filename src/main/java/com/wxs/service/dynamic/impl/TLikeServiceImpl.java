@@ -1,9 +1,9 @@
-package com.wxs.service.comment.impl;
+package com.wxs.service.dynamic.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.entity.comment.TLike;
-import com.wxs.mapper.comment.TLikeMapper;
-import com.wxs.service.comment.ITLikeService;
+import com.wxs.mapper.dynamic.TLikeMapper;
+import com.wxs.service.dynamic.ITLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

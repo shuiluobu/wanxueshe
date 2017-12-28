@@ -1,15 +1,11 @@
-package com.wxs.mapper.comment;
+package com.wxs.mapper.dynamic;
 
-import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.comment.TDynamic;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.wxs.entity.course.TCourseCategory;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultType;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * <p>
@@ -19,7 +15,7 @@ import java.util.Optional;
  * @author skyer
  * @since 2017-09-21
  */
-public interface TDynamicmsgMapper extends BaseMapper<TDynamicmsg> {
+public interface TDynamicMapper extends BaseMapper<TDynamic> {
     public List<Map<String, Object>> getDynamicmsgByParam(Map<String, Object> param);
     public List<Map<String,Object>> getFriendDynamicmsgByUserId(Long userId);
 

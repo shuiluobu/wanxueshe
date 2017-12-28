@@ -350,10 +350,10 @@ CREATE TABLE `t_clocks` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for t_comment
+-- Table structure for t_dynamic_comment
 -- ----------------------------
-DROP TABLE IF EXISTS `t_comment`;
-CREATE TABLE `t_comment` (
+DROP TABLE IF EXISTS `t_dynamic_comment`;
+CREATE TABLE `t_dynamic_comment` (
   `id` bigint(20) NOT NULL,
   `dynamicId` bigint(20) DEFAULT NULL,
   `fromUserId` bigint(20) DEFAULT NULL COMMENT '评论者',
@@ -369,7 +369,7 @@ CREATE TABLE `t_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_comment
+-- Records of t_dynamic_comment
 -- ----------------------------
 
 -- ----------------------------
@@ -420,10 +420,10 @@ CREATE TABLE `t_dictionarie` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for t_dyimg
+-- Table structure for t_dynamic_img
 -- ----------------------------
-DROP TABLE IF EXISTS `t_dyimg`;
-CREATE TABLE `t_dyimg` (
+DROP TABLE IF EXISTS `t_dynamic_img`;
+CREATE TABLE `t_dynamic_img` (
   `id` bigint(20) NOT NULL,
   `thumbImgUrl` varchar(512) DEFAULT NULL COMMENT '缩略图',
   `originalImgUrl` varchar(512) DEFAULT NULL COMMENT '原图',
@@ -433,14 +433,14 @@ CREATE TABLE `t_dyimg` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_dyimg
+-- Records of t_dynamic_img
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for t_dynamicmsg
+-- Table structure for t_dynamic
 -- ----------------------------
-DROP TABLE IF EXISTS `t_dynamicmsg`;
-CREATE TABLE `t_dynamicmsg` (
+DROP TABLE IF EXISTS `t_dynamic`;
+CREATE TABLE `t_dynamic` (
   `id` bigint(20) NOT NULL,
   `userId` bigint(20) DEFAULT NULL,
   `content` varchar(1024) DEFAULT NULL COMMENT '动态正文',
@@ -455,14 +455,14 @@ CREATE TABLE `t_dynamicmsg` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_dynamicmsg
+-- Records of t_dynamic
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for t_dyvideo
+-- Table structure for t_dynamic_video
 -- ----------------------------
-DROP TABLE IF EXISTS `t_dyvideo`;
-CREATE TABLE `t_dyvideo` (
+DROP TABLE IF EXISTS `t_dynamic_video`;
+CREATE TABLE `t_dynamic_video` (
   `id` bigint(20) NOT NULL,
   `bookImg` varchar(512) DEFAULT NULL COMMENT '封面图片',
   `videoUrl` varchar(512) DEFAULT NULL,
@@ -473,7 +473,7 @@ CREATE TABLE `t_dyvideo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_dyvideo
+-- Records of t_dynamic_video
 -- ----------------------------
 
 -- ----------------------------

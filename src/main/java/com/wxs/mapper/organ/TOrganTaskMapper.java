@@ -41,7 +41,7 @@ public interface TOrganTaskMapper extends BaseMapper<TOrganTask> {
             "from t_organ_task t " +
             "left join t_class_work a on a.id = t.businessId " +
             "left join t_student_work b on b.workId = a.id and b.studentId = t.studentId " +
-            "left join t_dynamicmsg l on l.id = b.dynamicId " +
+            "left join t_dynamic l on l.id = b.dynamicId " +
             "where agendaId = #{agendaId} and type = 3 ")
     @ResultMap("BaseResultMap")
     public List<TOrganTask> getClassworkCompletions(@Param("agendaId") Long agendaId);

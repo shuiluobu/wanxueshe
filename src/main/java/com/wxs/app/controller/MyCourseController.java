@@ -1,14 +1,8 @@
 package com.wxs.app.controller;
 
-import com.wxs.entity.course.TCourse;
-import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.customer.TWxUser;
-import com.wxs.service.comment.ITDynamicmsgService;
-import com.wxs.service.course.ITCoursesService;
 import com.wxs.util.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.wxs.core.controller.BaseController;
 
 import java.util.Map;
 
@@ -39,7 +33,7 @@ public class MyCourseController extends BaseWxController {
                               @PathVariable("coursesId") Long coursesId) {
         //课程动态基本信息
         Long userId = 0L;
-        return Result.of(dynamicmsgService.getDynamicmListByCourseId(userId, coursesId));
+        return Result.of(dynamicService.getDynamicmListByCourseId(userId, coursesId));
     }
 
     @RequestMapping(value = "/fllowMe/{courseId}")

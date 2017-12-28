@@ -1,4 +1,4 @@
-package com.wxs.service.comment.impl;
+package com.wxs.service.dynamic.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
@@ -8,20 +8,17 @@ import com.wxs.entity.comment.*;
 import com.wxs.entity.customer.TFollowUser;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.entity.organ.TOrganization;
-import com.wxs.mapper.comment.*;
+import com.wxs.mapper.dynamic.*;
 import com.wxs.mapper.customer.TFollowTeacherMapper;
 import com.wxs.mapper.customer.TStudentMapper;
-import com.wxs.service.comment.ITDynamicmsgService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.customer.ITFollowUserService;
-import com.wxs.service.customer.impl.TFollowUserServiceImpl;
-import com.wxs.service.customer.impl.TStudentServiceImpl;
+import com.wxs.service.dynamic.ITDynamicService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,17 +32,17 @@ import java.util.Map;
  * @since 2017-09-21
  */
 @Service
-public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDynamicmsg> implements ITDynamicmsgService {
+public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> implements ITDynamicService {
     @Autowired
-    private TDynamicmsgMapper dynamicmsgMapper;
+    private TDynamicMapper dynamicMapper;
     @Autowired
-    private TDyimgMapper imgMapper;
+    private TDynamicImgMapper dynamicImgMapper;
     @Autowired
-    private TDyvideoMapper videMapper;
+    private TDynamicVideoMapper dynamicVideoMapper;
     @Autowired
     private TLikeMapper likeMapper;
     @Autowired
-    private TCommentMapper commentMapper;
+    private TDynamicCommentMapper dynamicCommentMapper;
     @Autowired
     public TStudentMapper studentMapper;
     @Autowired
@@ -58,14 +55,14 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     @Override
     public List<Map<String, Object>> getDynamicmListByCourseId(Long loginUserId, Long couserId) {
         String power = "0,1"; //权限管理
-        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(ImmutableMap.of("courseCateId", couserId, "power", power));
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(ImmutableMap.of("courseCateId", couserId, "power", power));
         return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
 
     @Override
     public List<Map<String, Object>> getDynamicmListByTeacherId(Long loginUserId, Long teacherUserId) {
         String power = "0,1"; //权限管理
-        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(ImmutableMap.of("userId", teacherUserId, "power", power));
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(ImmutableMap.of("userId", teacherUserId, "power", power));
         return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
 
@@ -79,7 +76,7 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
     public List<Map<String, Object>> getMyStudentDynamicmList(List<Long> studentIds) {
         Map<String, Object> param = Maps.newHashMap();
         param.put("studentIds", studentIds);
-        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(param);
         return buildDynamicmsgList(null, dynamicMsgs);
     }
 
@@ -100,7 +97,7 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
         });
         Map<String, Object> param = Maps.newHashMap();
         param.put("studentIds", studentIds);
-        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(param);
         return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
 
@@ -116,11 +113,11 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
         Map<String, Object> param = Maps.newHashMap();
         param.put("userIds", userIds);
         param.put("power","0,1");
-        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getDynamicmsgByParam(param);
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(param);
         //我关注的好友
         userIds = followUserService.geFriendIdsByUserId(loginUserId);
         param.put("userIds",userIds);
-        dynamicMsgs.addAll(dynamicmsgMapper.getDynamicmsgByParam(param));
+        dynamicMsgs.addAll(dynamicMapper.getDynamicmsgByParam(param));
         return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
     @Override
@@ -132,7 +129,7 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
         students.stream().forEach(student -> {
             studentIds.add(student.getId());
         });
-        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getNearByDynamicms(studentIds,latitude,longitude,5); //5km之内的
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getNearByDynamicms(studentIds,latitude,longitude,5); //5km之内的
         return buildDynamicmsgList(null, dynamicMsgs);
     }
 
@@ -144,7 +141,7 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
      */
     @Override
     public List<Map<String, Object>> getMyFriendDynamicmList(Long loginUserId) {
-        List<Map<String, Object>> dynamicMsgs = dynamicmsgMapper.getFriendDynamicmsgByUserId(loginUserId);
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getFriendDynamicmsgByUserId(loginUserId);
         return buildDynamicmsgList(loginUserId, dynamicMsgs);
     }
 
@@ -204,26 +201,26 @@ public class TDynamicmsgServiceImpl extends ServiceImpl<TDynamicmsgMapper, TDyna
         dyn.remove("organId");
         dyn.put("organ",organMap);
         Long dynamicId = Long.parseLong(dyn.get("id").toString());
-        List<TDyimg> dyimgs = imgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
+        List<TDynamicImg> dyimgs = dynamicImgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
         dyn.put("dyImgs", dyimgs); //图集
-        TDyvideo dyvideo = new TDyvideo();
+        TDynamicVideo dyvideo = new TDynamicVideo();
         dyvideo.setDynamicId(dynamicId);
-        dyn.put("dyVideo", videMapper.selectOne(dyvideo)==null?"": videMapper.selectOne(dyvideo)); //视频
+        dyn.put("dyVideo", dynamicVideoMapper.selectOne(dyvideo)==null?"": dynamicVideoMapper.selectOne(dyvideo)); //视频
         List<TLike> likes = likeMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
         dyn.put("likes", likes);
-        List<TComment> comments = commentMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
+        List<TDynamicComment> comments = dynamicCommentMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
         dyn.put("comments", comments);
         return dyn;
     }
 
     @Override
     public Boolean saveComment(Long userId,Long dynamicId,String content){
-        TComment comment = new TComment();
+        TDynamicComment comment = new TDynamicComment();
         comment.setContent(content);
         comment.setDynamicId(dynamicId);
         comment.setCreateTime(new Date());
         comment.setFromUserId(userId);
-        TDynamicmsg dynamic = new TDynamicmsg().selectById(dynamicId);
+        TDynamic dynamic = new TDynamic().selectById(dynamicId);
         comment.setToUserId(dynamic.getUserId());
         comment.setStatus(0);
         return  comment.insert();

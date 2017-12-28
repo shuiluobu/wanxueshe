@@ -13,8 +13,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-21
  */
-@TableName("t_comment")
-public class TComment extends Model<TComment> {
+@TableName("t_dynamic_comment")
+public class TDynamicComment extends Model<TDynamicComment> {
 
     private static final long serialVersionUID = 1L;
 

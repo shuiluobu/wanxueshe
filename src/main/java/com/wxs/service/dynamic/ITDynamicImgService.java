@@ -1,7 +1,7 @@
-package com.wxs.service.comment;
+package com.wxs.service.dynamic;
 
-import com.wxs.entity.comment.TDyimg;
 import com.baomidou.mybatisplus.service.IService;
+import com.wxs.entity.comment.TDynamicImg;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
  * @author skyer
  * @since 2017-09-21
  */
-public interface ITDyimgService extends IService<TDyimg> {
+public interface ITDynamicImgService extends IService<TDynamicImg> {
 
     //根据动态Id  dynamicID 获取  其下 所有动态图片
-    public List<TDyimg> getAllByDynamicId(Long dynamicId);
+    public List<TDynamicImg> getAllByDynamicId(Long dynamicId);
 }

@@ -13,8 +13,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-21
  */
-@TableName("t_dyvideo")
-public class TDyvideo extends Model<TDyvideo> {
+@TableName("t_dynamic_video")
+public class TDynamicVideo extends Model<TDynamicVideo> {
 
     private static final long serialVersionUID = 1L;
 

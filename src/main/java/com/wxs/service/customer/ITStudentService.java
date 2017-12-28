@@ -1,7 +1,6 @@
 package com.wxs.service.customer;
 
-import com.wxs.entity.comment.TDyimg;
-import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.comment.TDynamic;
 import com.wxs.entity.customer.TStudent;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -20,7 +19,7 @@ public interface ITStudentService extends IService<TStudent> {
     List<Map<String,Object>> getStudentOfUser(Long userId);
     Map<String, Object> getMyCourses(Long userId,Integer isAll); //我的课程
     List<Map<String,Object>> isEndMyCourses(Long userId,Integer isEnd);
-    Map<String, Object> saveMygrowth(List<String> mediaUrls,String mediaType, TDynamicmsg dynamic, Long workId);
+    Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId);
     public List<Map<String, Object>> queryStuInfoByUserId(Long userId);
     public Map<String,Object> saveStudent(TStudent student);
     Integer delStudent(Long studentId,Long userId);

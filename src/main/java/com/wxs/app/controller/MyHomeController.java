@@ -1,36 +1,20 @@
 package com.wxs.app.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.wxs.entity.comment.TDyimg;
-import com.wxs.entity.comment.TDynamicmsg;
-import com.wxs.entity.customer.TFollowUser;
+import com.wxs.entity.comment.TDynamic;
 import com.wxs.entity.customer.TFrontUser;
 import com.wxs.entity.customer.TStudent;
-import com.wxs.entity.customer.TWxUser;
-import com.wxs.service.comment.ITDynamicmsgService;
-import com.wxs.service.customer.ITFrontUserService;
-import com.wxs.service.customer.ITParentService;
-import com.wxs.service.customer.impl.TStudentServiceImpl;
-import com.wxs.service.message.ITRemindMessageService;
 import com.wxs.util.Result;
-import net.bytebuddy.asm.Advice;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.wxs.core.util.BaseUtil;
-import org.wxs.core.util.OsppyUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -124,13 +108,13 @@ public class MyHomeController extends BaseWxController {
                 studentIds.add(student.getId());
             });
         }
-        return Result.of(dynamicmsgService.getMyStudentDynamicmList(studentIds));
+        return Result.of(dynamicService.getMyStudentDynamicmList(studentIds));
     }
 
     @RequestMapping(value = "/followDynamic")
     public Result followDynamic(@RequestParam(value = "sessionId", required = true) String sessionId) throws IOException {
         Long userId = 1L; //登录人ID
-        return Result.of(dynamicmsgService.getFollowDynamicmList(userId));
+        return Result.of(dynamicService.getFollowDynamicmList(userId));
     }
 
 
@@ -146,7 +130,7 @@ public class MyHomeController extends BaseWxController {
         Integer power = Integer.parseInt(request.getParameter("power")); //是否公开
         Long studentId = Long.parseLong(request.getParameter("studentId"));
         Long workId = Long.parseLong(request.getParameter("workId"));
-        TDynamicmsg dynamic = new TDynamicmsg();
+        TDynamic dynamic = new TDynamic();
         dynamic.setPower(power); //权限
         dynamic.setContent(content);
         dynamic.setStudentId(studentId);
@@ -159,7 +143,7 @@ public class MyHomeController extends BaseWxController {
                               @RequestParam String content, @RequestParam Long dynamicId) {
         //我的学员
         Long userId = 0L;
-        return Result.of(dynamicmsgService.saveComment(userId, dynamicId, content));
+        return Result.of(dynamicService.saveComment(userId, dynamicId, content));
     }
 
     @RequestMapping(value = "/saveStudent")

@@ -43,6 +43,6 @@ public class PersonPageController extends BaseWxController {
                           @RequestParam(value = "userId", required = true) Long userId
     ) {
         Long loginUserId = 1L;
-        return Result.of(dynamicmsgService.getOtherParentUserDynamicmList(loginUserId, userId));
+        return Result.of(dynamicService.getOtherParentUserDynamicmList(loginUserId, userId));
     }
 }

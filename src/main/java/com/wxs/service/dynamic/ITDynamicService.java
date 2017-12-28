@@ -1,6 +1,6 @@
-package com.wxs.service.comment;
+package com.wxs.service.dynamic;
 
-import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.comment.TDynamic;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author skyer
  * @since 2017-09-21
  */
-public interface ITDynamicmsgService extends IService<TDynamicmsg> {
+public interface ITDynamicService extends IService<TDynamic> {
 	public List<Map<String,Object>> getDynamicmListByCourseId(Long loginUserId,Long couserId);
 	public List<Map<String,Object>> getDynamicmListByTeacherId(Long loginUserId,Long teacherId);
 	List<Map<String,Object>> getMyFriendDynamicmList(Long loginUserId);

@@ -18,8 +18,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-21
  */
-@TableName("t_dyimg")
-public class TDyimg extends Model<TDyimg> {
+@TableName("t_dynamic_img")
+public class TDynamicImg extends Model<TDynamicImg> {
 
     private static final long serialVersionUID = 1L;
 	@TableId(value="id", type= IdType.AUTO)

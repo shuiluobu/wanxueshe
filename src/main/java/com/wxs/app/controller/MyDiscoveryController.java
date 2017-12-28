@@ -49,7 +49,7 @@ public class MyDiscoveryController extends BaseWxController {
                                @RequestParam double latitude, @RequestParam double longitude) {
         //根据经纬度查找附近机构
         Long loginUserId = 1L;
-        return Result.of(dynamicmsgService.getNearByDynamicms(loginUserId, latitude, longitude));
+        return Result.of(dynamicService.getNearByDynamicms(loginUserId, latitude, longitude));
     }
     @RequestMapping(value = "/findCourse")
     public Result nearOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,

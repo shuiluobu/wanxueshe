@@ -1,7 +1,7 @@
 package com.wxs.companyWX.controller.organization;
 
-import com.wxs.entity.comment.TDyimg;
-import com.wxs.entity.comment.TDynamicmsg;
+import com.wxs.entity.comment.TDynamic;
+import com.wxs.entity.comment.TDynamicImg;
 import com.wxs.entity.comment.TLike;
 import com.wxs.entity.course.TClass;
 import com.wxs.entity.course.TCourse;
@@ -11,9 +11,9 @@ import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TClock;
 import com.wxs.entity.task.TStudentWork;
 import com.wxs.enu.EnumClassworkCompletion;
-import com.wxs.service.comment.ITDyimgService;
-import com.wxs.service.comment.ITDynamicmsgService;
-import com.wxs.service.comment.ITLikeService;
+import com.wxs.service.dynamic.ITDynamicImgService;
+import com.wxs.service.dynamic.ITDynamicService;
+import com.wxs.service.dynamic.ITLikeService;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITClassService;
 import com.wxs.service.course.ITCoursesService;
@@ -55,9 +55,9 @@ public class COrganTaskController {
     @Autowired
     private ITOrganCommentService organCommentService;
     @Autowired
-    private ITDynamicmsgService dynamicmsgService;
+    private ITDynamicService dynamicmsgService;
     @Autowired
-    private ITDyimgService dyimgService;
+    private ITDynamicImgService dyimgService;
     @Autowired
     private ITCoursesService coursesService;
     @Autowired
@@ -118,7 +118,7 @@ public class COrganTaskController {
                 dynamicmsgId = classWork.getDynamicId();
             }
 
-            TDynamicmsg dynamicmsg = dynamicmsgService.selectById(dynamicmsgId);
+            TDynamic dynamicmsg = dynamicmsgService.selectById(dynamicmsgId);
             if(dynamicmsg != null){
                 resultMap.put("dynamicmsg",dynamicmsg);
                 //是否已点赞
@@ -140,7 +140,7 @@ public class COrganTaskController {
                     resultMap.put("likeUserNames",likeUserNames);
                 }
                 //获取动态下图片
-                List<TDyimg> imgList = dyimgService.getAllByDynamicId(dynamicmsgId);
+                List<TDynamicImg> imgList = dyimgService.getAllByDynamicId(dynamicmsgId);
                 if(imgList.size()>0){
                     resultMap.put("imgList",imgList);
                 }
@@ -385,7 +385,7 @@ public class COrganTaskController {
 //            Long userId = frontUser.getId();
             Long userId = 1l;
             //插入到动态表
-            TDynamicmsg dynamicmsg = new TDynamicmsg();
+            TDynamic dynamicmsg = new TDynamic();
             dynamicmsg.setContent(content);//动态内容
             dynamicmsg.setCreateTime(new Date());//创建时间
             dynamicmsg.setUserId(userId);//创建人Id
@@ -453,7 +453,7 @@ public class COrganTaskController {
                 String img = null;
                 String tempSavePath = null;
                 String tempLoadPath = null;
-                TDyimg dyimg = null;
+                TDynamicImg dyimg = null;
                 for(int i=0;i<arr.length;i++){
                     img = arr[i];
                     //当前时间 年月日
@@ -467,7 +467,7 @@ public class COrganTaskController {
                     BASE64Util.uploadImg(img,tempSavePath);
                     for( int j=0;j<dynamicIds.size();j++){
                         //插入数据库
-                        dyimg = new TDyimg();
+                        dyimg = new TDynamicImg();
                         dyimg.setDynamicId(dynamicIds.get(j));
                         dyimg.setOriginalImgUrl(tempLoadPath);
                         dyimg.setCreateTime(new Date());
@@ -586,7 +586,7 @@ public class COrganTaskController {
             //所属课程
             TCourse course = coursesService.selectById(courseId);
             //插入到动态表 ,所有选中的学生只用插一条
-            TDynamicmsg dynamicmsg = new TDynamicmsg();
+            TDynamic dynamicmsg = new TDynamic();
             dynamicmsg.setContent(content);//动态内容
             dynamicmsg.setCreateTime(new Date());//创建时间
             dynamicmsg.setUserId(userId);//创建人Id

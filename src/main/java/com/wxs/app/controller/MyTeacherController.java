@@ -35,7 +35,7 @@ public class MyTeacherController extends BaseWxController{
         //教师动态基本信息
         TTeacher teacher = teacherService.selectById(teacherId);
         Long userId = 0L;
-        return Result.of(dynamicmsgService.getDynamicmListByTeacherId(userId,teacherId));
+        return Result.of(dynamicService.getDynamicmListByTeacherId(userId,teacherId));
     }
 
     @RequestMapping(value = "courseList/{teacherId}")
