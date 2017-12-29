@@ -82,7 +82,7 @@
                         <p>我的班级</p>
                     </div>
                     <div class="weui-cell__hd">
-                        <input type="radio" class="weui-check" name="checkbox_class"  checked="checked">
+                        <input type="radio" class="weui-check" name="checkbox_class" value="1"  checked="checked">
                         <i class="weui-icon-checked"></i>
                     </div>
                 </label>
@@ -91,22 +91,17 @@
                         <p>不限</p>
                     </div>
                     <div class="weui-cell__hd">
-                        <input type="radio" name="checkbox1" class="checkbox_class" >
+                        <input type="radio" class="weui-check" name="checkbox_class" value="2"  >
                         <i class="weui-icon-checked"></i>
                     </div>
                 </label>
 
-                <label class="weui-cell weui-check__label new">
-                    <div class="weui-cell__bd">
-                        <p> 启蒙1版暑期班</p>
-                    </div>
-                </label>
+                <!--<label class="weui-cell weui-check__label new">-->
+                    <!--<div class="weui-cell__bd">-->
+                        <!--<p> 启蒙1版暑期班</p>-->
+                    <!--</div>-->
+                <!--</label>-->
 
-                <label class="weui-cell weui-check__label new">
-                    <div class="weui-cell__bd">
-                        <p>启蒙2版暑期班</p>
-                    </div>
-                </label>
 
             </div>
 
@@ -124,17 +119,12 @@
                     </div>
                 </label>
 
-                <label class="weui-cell weui-check__label new">
-                    <div class="weui-cell__bd">
-                        <p>张老师</p>
-                    </div>
-                </label>
+                <!--<label class="weui-cell weui-check__label new">-->
+                    <!--<div class="weui-cell__bd">-->
+                        <!--<p>张老师</p>-->
+                    <!--</div>-->
+                <!--</label>-->
 
-                <label class="weui-cell weui-check__label new">
-                    <div class="weui-cell__bd">
-                        <p>李老师</p>
-                    </div>
-                </label>
 
             </div>
         </div>
@@ -222,7 +212,82 @@
                 }
             }
         });
+        //输入框 keyup 搜索 班级
+        $("#tab2 .search_div input").keyup(function () {
+            searchClass();
+        });
+        //checkbox_class 变化时 搜索 班级
+        $("input[name='checkbox_class']").change(function () {
+            searchClass();
+        });
+
+        //输入框 keyup 搜索 课程顾问
+        $("#tab3 .search_div input").keyup(function () {
+            searchAdvisor();
+        });
     });
+
+    //搜索班级
+    function searchClass() {
+        var type = $("input[name='checkbox_class']:checked").val();
+        var name =  $("#tab2 .search_div input").val();
+        $.ajax("/cClass/searchByName",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                name:name,
+                type:type,
+                userId:frontUser.id,
+                organId:globalOrganId
+            },
+            success:function(json){
+                $("#tab2 .new").remove();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var lab = '<label class="weui-cell weui-check__label new" id="'+list[i].id+'">'+
+                            '<div class="weui-cell__bd">'+
+                            '<p>'+list[i].className+'</p>'+
+                            '</div>'+
+                            '</label>';
+                        $("#tab2  .weui-cells").append(lab);
+                    }
+                }
+                console.log(json.data);
+            }
+        });
+    }
+
+    //搜索 课程顾问
+    function searchAdvisor() {
+        var type = $("input[name='checkbox_class']:checked").val();
+        var name =  $("#tab3 .search_div input").val();
+        $.ajax("/cOrganStudent/searchAdvisorByName",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                name:name,
+                organId:globalOrganId
+            },
+            success:function(json){
+                $("#tab3 .new").remove();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var lab = '<label class="weui-cell weui-check__label new" id="'+list[i].id+'">'+
+                            '<div class="weui-cell__bd">'+
+                            '<p>'+list[i].teacherName+'</p>'+
+                            '</div>'+
+                            '</label>';
+                        $("#tab3  .weui-cells").append(lab);
+                    }
+                }
+            }
+        });
+    }
+
 </script>
 <script src="/letterSort/js/jquery.charfirst.pinyin.js"></script>
 <script src="/letterSort/js/sort.js"></script>

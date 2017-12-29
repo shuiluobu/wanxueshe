@@ -26,6 +26,6 @@ public class TOrganStudentServiceImpl extends ServiceImpl<TOrganStudentMapper, T
 
     @Override
     public List<TTeacher> searchAdvisorByName(Long organId, String name) {
-        return null;
+        return organStudentMapper.searchAdvisorByName(organId,name);
     }
 }

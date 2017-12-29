@@ -18,4 +18,14 @@
 		<result column="status" property="status" />
 	</resultMap>
 
+	<select id="searchAdvisorByName"  resultType="TTeacher">
+		select t.* from t_teacher t
+		inner join t_organ_student a on a.advisorTeacherId = t.id
+		where a.organId = #{organId}
+		<if test=" name != null and !''.equals(name)">
+			and ( t.teacherName like concat('%',#{name},'%') or  t.realName like concat('%',#{name},'%'))
+		</if>
+
+	</select>
+
 </mapper>

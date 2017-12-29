@@ -3,6 +3,7 @@ package com.wxs.mapper.organ;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganStudent;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -18,10 +19,6 @@ import java.util.List;
 public interface TOrganStudentMapper extends BaseMapper<TOrganStudent> {
 
     //根据 机构Id  和 课程顾问名字 搜索 该机构的 课程顾问
-    @Select(" select t.* from t_teacher t " +
-            "inner join t_organ_student a on a.advisorTeacherId = t.id " +
-            "where a.organId = #{organId} " +
-            "and ( t.teacherName like concat('%',#{name},'%') or  t.realName like concat('%',#{name},'%'))")
-    List<TTeacher> searchAdvisorByName(Long organId, String name);
+    List<TTeacher> searchAdvisorByName(@Param("organId") Long organId, @Param("name")String name);
 
 }
