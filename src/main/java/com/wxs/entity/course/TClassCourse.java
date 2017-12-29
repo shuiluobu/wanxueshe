@@ -64,6 +64,8 @@ public class TClassCourse extends Model<TClassCourse> {
 
 	private String teacherName;
 
+	private String assistantIds; //助教集合，来自教师表
+
 	private Long organizationId;//冗余字段
 
 
@@ -76,6 +78,13 @@ public class TClassCourse extends Model<TClassCourse> {
 	@TableField(exist = false)
 	private Integer pageStartIndex; //分页查询 起始下表
 
+	public String getAssistantIds() {
+		return assistantIds;
+	}
+
+	public void setAssistantIds(String assistantIds) {
+		this.assistantIds = assistantIds;
+	}
 
 	public Long getId() {
 		return id;
