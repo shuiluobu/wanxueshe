@@ -25,6 +25,8 @@ public interface TClassMapper extends BaseMapper<TClass> {
     @Select(" select * from t_class where courseId = #{courseId}")
     @ResultMap("BaseResultMap")
     public TClass getByCourseId(@Param("courseId") Long courseId);
+    //根据 班级名称，机构Id,类型(我的班级,不限-所属机构的),用户Id  搜索 班级
+    List<TClass> searchByName(@Param("name") String name, @Param("organId")Long organId,@Param("type")Integer type,@Param("userId")Long userId);
 
 
 

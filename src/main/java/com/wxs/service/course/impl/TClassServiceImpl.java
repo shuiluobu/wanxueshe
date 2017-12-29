@@ -31,4 +31,9 @@ public class TClassServiceImpl extends ServiceImpl<TClassMapper, TClass> impleme
     public TClass getByCourseId(Long courseId) {
         return classMapper.getByCourseId(courseId);
     }
+
+    @Override
+    public List<TClass> searchByName(String name, Long organId, Integer type, Long userId) {
+        return classMapper.searchByName(name,organId,type,userId);
+    }
 }

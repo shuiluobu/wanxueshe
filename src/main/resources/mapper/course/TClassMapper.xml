@@ -58,5 +58,23 @@
 		</where>
 			limit #{pageStartIndex},#{limit}
 	</select>
+	
+	<select id="searchByName" resultMap="BaseResultMap">
+		select t.*
+		from t_class t
+		inner join t_teacher a on a.id = t.teacherId
+		inner join t_front_user b on b.id = a.userId
+		where 1=1
+		<if test=" type == 1 ">
+			 and b.id = #{userId}
+		</if>
+		<if test=" type == 2 ">
+			 and t.organId = #{organId}
+		</if>
+		<if test=" name != null and !''.equals(name)">
+			and t.className like concat('%',#{name},'%')
+		</if>
+
+	</select>
 
 </mapper>
