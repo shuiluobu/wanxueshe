@@ -1,14 +1,13 @@
 package com.wxs.service.customer.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wxs.entity.customer.*;
-import com.wxs.mapper.course.TStudentClassMapper;
+import com.wxs.mapper.course.TStudentCourseMapper;
 import com.wxs.mapper.customer.*;
 import com.wxs.mapper.organ.TFollowOrganMapper;
-import com.wxs.service.course.ITCoursesService;
+import com.wxs.service.course.ITClassCoursesService;
 import com.wxs.service.customer.ITParentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wxs.service.customer.ITTeacherService;
@@ -16,7 +15,6 @@ import com.wxs.service.organ.ITOrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,11 +33,11 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
     @Autowired
     private ITTeacherService teacherService;
     @Autowired
-    private ITCoursesService coursesService;
+    private ITClassCoursesService coursesService;
     @Autowired
     private TStudentMapper studentMapper;
     @Autowired
-    private TStudentClassMapper studentClassMapper;
+    private TStudentCourseMapper studentCourseMapper;
     @Autowired
     public TFollowUserMapper followUserMapper;
     @Autowired
@@ -65,7 +63,7 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
     public Map<String, Object> getParentOutline(Long userId, Long loginUserId) {
         Map<String, Object> resultMap = Maps.newHashMap();
         Integer studentCount = studentMapper.getParentStudentCount(userId); //学生个数
-        Integer courseCount = studentClassMapper.getParentCourseCount(userId); //我的课程数量
+        Integer courseCount = studentCourseMapper.getParentCourseCount(userId); //我的课程数量
         TFrontUser user = new TFrontUser();
         if (userId == null || userId == loginUserId) {
             user = user.selectById(loginUserId);//表示查自己
@@ -100,7 +98,7 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
             map.put("userId", friendUserId);
             map.put("realName", followUser.getMemoName() == null ? friendUser.getUserName() : followUser.getMemoName());
             map.put("studentCount", studentMapper.getParentStudentCount(friendUserId));
-            map.put("courseCount", studentClassMapper.getParentCourseCount(friendUserId));
+            map.put("courseCount", studentCourseMapper.getParentCourseCount(friendUserId));
             Integer isFriednCount = followUserMapper.getIsFriednCount(loginUserId, friendUserId);
             if (isFriednCount > 0) {
                 map.put("isFriend", 1);//1：表示已经是好友

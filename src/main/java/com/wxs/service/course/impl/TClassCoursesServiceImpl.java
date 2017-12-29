@@ -8,15 +8,15 @@ import com.wxs.entity.customer.TFrontUser;
 import com.wxs.entity.message.TRemindMessage;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TClassLessonMapper;
-import com.wxs.mapper.course.TCoursesMapper;
-import com.wxs.mapper.course.TStudentClassMapper;
+import com.wxs.mapper.course.TClassCoursesMapper;
+import com.wxs.mapper.course.TStudentCourseMapper;
 import com.wxs.mapper.course.TStudentLessonesMapper;
 import com.wxs.mapper.customer.TFollowCourseMapper;
 import com.wxs.mapper.customer.TTeacherMapper;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.common.ISequenceService;
-import com.wxs.service.course.ITCoursesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.wxs.service.course.ITClassCoursesService;
 import com.wxs.service.customer.ITParentService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,10 @@ import java.util.*;
  * @since 2017-09-21
  */
 @Service
-public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> implements ITCoursesService {
+public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, TClassCourse> implements ITClassCoursesService {
 
     @Autowired
-    private TCoursesMapper coursesMapper; //课程基本信息
+    private TClassCoursesMapper coursesMapper; //课程基本信息
     @Autowired
     private TClassLessonMapper classLessonMapper; //课时基本信息
     @Autowired
@@ -48,7 +48,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     @Autowired
     private ITParentService parentService;
     @Autowired
-    private TStudentClassMapper studentClassMapper;
+    private TStudentCourseMapper studentCourseMapper;
     @Autowired
     private TTeacherMapper teacherMapper;
     @Autowired
@@ -57,7 +57,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
     public ISequenceService sequenceService;
 
     @Override
-    public List<TCourse> pageData(TCourse course) {
+    public List<TClassCourse> pageData(TClassCourse course) {
         return coursesMapper.pageData(course);
     }
 
@@ -82,18 +82,18 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
             result.put("fllowCount", fllowCourseMapper.getFllowCountOfCourseId(coursesId)); //关注数
             result.put("areadyStudCount", category.getAlreadyStudySum());
             result.put("teacherList", teacherMapper.getTeacherNameListByCourseId(coursesId)); //教师信息
-            TStudentClass stuClass = new TStudentClass(); //参数传递
+            TStudentCourse stuClass = new TStudentCourse(); //参数传递
             stuClass.setCourseCateId(category.getId());
             stuClass.setUserId(userId);
-            int ifIn = studentClassMapper.getClassStudentCountByParam(stuClass);
+            int ifIn = studentCourseMapper.getClassStudentCountByParam(stuClass);
             result.put("isPartake", ifIn > 0 ? true : false); //是否参与
             if (ifIn > 0) {
-                List<Map<String, Object>> studentClassMapList = studentClassMapper.getMyCourses(ImmutableMap.of("userId", userId));
+                List<Map<String, Object>> studentClassMapList = studentCourseMapper.getMyCourses(ImmutableMap.of("userId", userId));
                 StringBuffer studentNames = new StringBuffer();
                 studentClassMapList.stream().forEach(map -> {
                     studentNames.append(map.get("studentName").toString());
                 });
-                TCourse course = new TCourse().selectById(stuClass.getCoursesId());
+                TClassCourse course = new TClassCourse().selectById(stuClass.getCoursesId());
                 result.put("joinTime", course.getCreateTime()); //参加时间
                 result.put("smallRemark", "我的上课时间：" + BaseUtil.toChinaDate(course.getBeginTime()) + "-" + BaseUtil.toChinaDate(course.getEndTime())
                         + " 我参与的学员：" + StringUtils.split(studentNames.toString(), ","));
@@ -112,7 +112,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
 
     @Override
     public List<Map<String, Object>> getCourseFllowUserList(Long coursesId, Long loginUserId) {
-        TCourse course = new TCourse().selectById(coursesId);
+        TClassCourse course = new TClassCourse().selectById(coursesId);
         List<Long> userIds = fllowCourseMapper.getFllowUserIdsOfCourseId(course.getCourseCateId());
         return parentService.getFllowUsers(userIds, loginUserId);
 
@@ -120,7 +120,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
 
     @Override
     public Map<String, Object> getLessesonByCourse(Long courseId, Long userId) {
-        TCourse course = new TCourse().selectById(courseId);
+        TClassCourse course = new TClassCourse().selectById(courseId);
         Map<String, Object> resultMap = Maps.newHashMap();
         if (userId != null) {
             Integer sumQty = 0, finishQty = 0;
@@ -204,7 +204,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         courseCategory.setOrganId(organId);
         courseCategory.insert();//保存创建的大课程
 
-        TCourse classCourse = new TCourse();
+        TClassCourse classCourse = new TClassCourse();
         classCourse.setCanQty(courseCategory.getCanQty()); //冗余
         classCourse.setCourseName(courseCategory.getCourseCategoryName()); //课程名称 冗余
         classCourse.setCourseCateId(courseCategory.getId());
@@ -212,7 +212,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
         classCourse.setOrganizationId(null); //自己创建的不关联机构
         classCourse.setTeacherId(null); //自己创建的不关联老师
         for (String studentId : students) {
-            TStudentClass studentClass = new TStudentClass();
+            TStudentCourse studentClass = new TStudentCourse();
             studentClass.setUserId(userId);
             studentClass.setCoursesId(courseCategory.getId());
             studentClass.setCreateTime(new Date());
@@ -299,7 +299,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
 
 //    @Override
 //    public List<Map<String, Object>> getUserCourseInfo(Long organId, Integer page, Integer endType) {
-//        EntityWrapper<TCourse> ew = new EntityWrapper<TCourse>();
+//        EntityWrapper<TClassCourse> ew = new EntityWrapper<TClassCourse>();
 //        String nowDate = BaseUtil.toLongDate(new Date());
 //        ew.eq("organId", organId);
 //        if (endType.equals("0")) {
@@ -310,7 +310,7 @@ public class TCoursesServiceImpl extends ServiceImpl<TCoursesMapper, TCourse> im
 //            ew.and("endTime<={0}", nowDate);
 //        }
 //        RowBounds rowBounds = new RowBounds(page - 1, 10);
-//        List<TCourse> list = coursesMapper.selectPage(rowBounds, ew);
+//        List<TClassCourse> list = coursesMapper.selectPage(rowBounds, ew);
 //        List<Map<String, Object>> mapList = Lists.newArrayList();
 //        list.stream().forEach(bean -> {
 //            TCourseCategory bigCourse = new TCourseCategory().selectById(bean.getCourseCateId());

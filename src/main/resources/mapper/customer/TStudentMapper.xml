@@ -5,7 +5,7 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.wxs.entity.customer.TStudent">
 		<id column="id" property="id" />
-		<result column="parentId" property="parentId" />
+		<!--<result column="parentId" property="parentId" />-->
 		<result column="birthDay" property="birthDay" />
 		<result column="nickName" property="nickName" />
 		<result column="realName" property="realName" />

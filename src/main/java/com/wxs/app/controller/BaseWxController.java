@@ -8,7 +8,7 @@ import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.common.ISequenceService;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITCourseCategoryService;
-import com.wxs.service.course.ITCoursesService;
+import com.wxs.service.course.ITClassCoursesService;
 import com.wxs.service.customer.*;
 import com.wxs.service.customer.impl.TStudentServiceImpl;
 import com.wxs.service.message.ITRemindMessageService;
@@ -35,7 +35,7 @@ public class BaseWxController {
     @Autowired
     public ICache cache;
     @Autowired
-    public ITCoursesService coursesService;
+    public ITClassCoursesService coursesService;
     @Autowired
     public TStudentServiceImpl studentService;
     @Autowired

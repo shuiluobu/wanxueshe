@@ -4,7 +4,7 @@ import com.wxs.entity.comment.TDynamic;
 import com.wxs.entity.comment.TDynamicImg;
 import com.wxs.entity.comment.TLike;
 import com.wxs.entity.course.TClass;
-import com.wxs.entity.course.TCourse;
+import com.wxs.entity.course.TClassCourse;
 import com.wxs.entity.organ.TOrganComment;
 import com.wxs.entity.organ.TOrganTask;
 import com.wxs.entity.task.TClassWork;
@@ -16,7 +16,7 @@ import com.wxs.service.dynamic.ITDynamicService;
 import com.wxs.service.dynamic.ITLikeService;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITClassService;
-import com.wxs.service.course.ITCoursesService;
+import com.wxs.service.course.ITClassCoursesService;
 import com.wxs.service.organ.ITOrganCommentService;
 import com.wxs.service.organ.ITOrganTaskService;
 import com.wxs.service.task.ITClassWorkService;
@@ -59,7 +59,7 @@ public class COrganTaskController {
     @Autowired
     private ITDynamicImgService dyimgService;
     @Autowired
-    private ITCoursesService coursesService;
+    private ITClassCoursesService coursesService;
     @Autowired
     private ITClassService classService;
     @Autowired
@@ -380,7 +380,7 @@ public class COrganTaskController {
             tempOrganTask = organTaskService.selectById(taskId);
             Long courseId = tempOrganTask.getCourseId();
             //所属课程
-            TCourse course = coursesService.selectById(tempOrganTask.getCourseId());
+            TClassCourse course = coursesService.selectById(tempOrganTask.getCourseId());
 //            TFrontUser frontUser = (TFrontUser)session.getAttribute("fronUser");
 //            Long userId = frontUser.getId();
             Long userId = 1l;
@@ -584,7 +584,7 @@ public class COrganTaskController {
             tempOrganTask = organTaskService.getOneByASId(agendaId,Long.parseLong(idArr[0]),3);
             Long courseId = tempOrganTask.getCourseId();
             //所属课程
-            TCourse course = coursesService.selectById(courseId);
+            TClassCourse course = coursesService.selectById(courseId);
             //插入到动态表 ,所有选中的学生只用插一条
             TDynamic dynamicmsg = new TDynamic();
             dynamicmsg.setContent(content);//动态内容

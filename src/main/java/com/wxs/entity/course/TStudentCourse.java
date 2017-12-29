@@ -13,8 +13,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-09-23
  */
-@TableName("t_student_class")
-public class TStudentClass extends Model<TStudentClass> {
+@TableName("t_student_course")
+public class TStudentCourse extends Model<TStudentCourse> {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,9 @@ public class TStudentClass extends Model<TStudentClass> {
     /**
      * 所属学生Id
      */
-	private Long studentId;
+	private Long studentId; //家长端学生id，通过扫码跟机构端学生id关联起来
+
+	private Long ostudentId;//机构端学生id
 
     /**
      * 用户Id
@@ -38,10 +40,10 @@ public class TStudentClass extends Model<TStudentClass> {
 	 * 大课程ID
 	 */
 	private Long courseCateId;
-    /**
-     * 课堂，班级ID
-     */
-	private Long classId;
+//    /**
+//     * 课堂，班级ID
+//     */
+//	private Long classId;
     /**
      * 状态
      */
@@ -124,9 +126,7 @@ public class TStudentClass extends Model<TStudentClass> {
 		this.coursePrice = coursePrice;
 	}
 
-    public Long getClassId() {
-        return classId;
-    }
+
 
 	public Long getCourseCateId() {
 		return courseCateId;
@@ -135,12 +135,22 @@ public class TStudentClass extends Model<TStudentClass> {
 	public void setCourseCateId(Long courseCateId) {
 		this.courseCateId = courseCateId;
 	}
+//	public Long getClassId() {
+//		return classId;
+//	}
+//	public void setClassId(Long classId) {
+//        this.classId = classId;
+//    }
 
-	public void setClassId(Long classId) {
-        this.classId = classId;
-    }
+	public Long getOstudentId() {
+		return ostudentId;
+	}
 
-    @Override
+	public void setOstudentId(Long ostudentId) {
+		this.ostudentId = ostudentId;
+	}
+
+	@Override
 	protected Serializable pkVal() {
 		return this.id;
 	}

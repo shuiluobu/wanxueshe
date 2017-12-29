@@ -6,7 +6,7 @@ import java.util.Arrays;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITClassService;
 import com.wxs.service.course.ITCourseCategoryService;
-import com.wxs.service.course.ITCoursesService;
+import com.wxs.service.course.ITClassCoursesService;
 import com.wxs.service.customer.ITTeacherService;
 import com.wxs.service.organ.ITOrganizationService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -42,7 +42,7 @@ public abstract class CrudController<T extends Serializable,S extends IService<T
 	protected ITClassService tClassService; //班级
 
 	@Autowired
-	protected ITCoursesService courseService; //课程
+	protected ITClassCoursesService courseService; //课程
 
 	@Autowired
 	protected ITCourseCategoryService courseCategoryService; //课程类型

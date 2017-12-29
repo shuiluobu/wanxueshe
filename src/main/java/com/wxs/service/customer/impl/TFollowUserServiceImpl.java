@@ -3,7 +3,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import com.wxs.entity.customer.TFollowUser;
 import com.wxs.entity.customer.TFrontUser;
-import com.wxs.mapper.course.TStudentClassMapper;
+import com.wxs.mapper.course.TStudentCourseMapper;
 import com.wxs.mapper.customer.TFollowUserMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.customer.ITFollowUserService;
@@ -28,7 +28,7 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
     @Autowired
     private TStudentMapper studentMapper;
     @Autowired
-    private TStudentClassMapper studentClassMapper;
+    private TStudentCourseMapper studentCourseMapper;
 
     public final static String relationType_10 ="10"; //朋友
     public final static String relationType_20 ="20"; //屏蔽
@@ -42,7 +42,7 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
             TFrontUser user = new TFrontUser().selectById(fUserId);
             friend.put("headImg",user.getHeadImg());
             friend.put("studentCount", studentMapper.getParentStudentCount(fUserId));
-            friend.put("courseCount", studentClassMapper.getParentCourseCount(fUserId));
+            friend.put("courseCount", studentCourseMapper.getParentCourseCount(fUserId));
         });
         return list;
     }
@@ -55,7 +55,7 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
             TFrontUser user = new TFrontUser().selectById(fUserId);
             friend.put("headImg",user.getHeadImg());
             friend.put("studentCount", studentMapper.getParentStudentCount(fUserId));
-            friend.put("courseCount", studentClassMapper.getParentCourseCount(fUserId));
+            friend.put("courseCount", studentCourseMapper.getParentCourseCount(fUserId));
         });
         return list;
     }

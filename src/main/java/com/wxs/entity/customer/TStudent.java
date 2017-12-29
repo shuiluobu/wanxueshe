@@ -29,10 +29,10 @@ public class TStudent extends Model<TStudent> {
 	 * 学号
 	 */
 	private String studentCode;
-    /**
-     * 学生家长ID
-     */
-	private Long parentId;
+//    /**
+//     * 学生家长ID
+//     */
+//	private Long parentId;
 
 	private Long userId;
     /**
@@ -81,13 +81,13 @@ public class TStudent extends Model<TStudent> {
 		this.id = id;
 	}
 
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
+//	public Long getParentId() {
+//		return parentId;
+//	}
+//
+//	public void setParentId(Long parentId) {
+//		this.parentId = parentId;
+//	}
 	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	public Date getBirthDay() {

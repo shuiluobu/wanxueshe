@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wxs.mapper.course.TCoursesMapper">
+<mapper namespace="com.wxs.mapper.course.TClassCoursesMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.wxs.entity.course.TCourse">
+    <resultMap id="BaseResultMap" type="com.wxs.entity.course.TClassCourse">
         <id column="id" property="id"/>
         <result column="organizationId" property="organizationId"/>
         <result column="courseName" property="courseName"/>
@@ -57,7 +57,7 @@
 
     <select id="selectMap" parameterType="java.lang.Long" resultType="java.util.HashMap">
 		SELECT s.*,c.className,t.teacherName,o.organName,s.organizationId,o.leval
-		FROM t_course s,t_class c,t_teacher t,t_organization o
+		FROM t_class_course s,t_class c,t_teacher t,t_organization o
         where c.courseId=s.id
         and c.teacherId=t.id
         and s.organizationId=o.id

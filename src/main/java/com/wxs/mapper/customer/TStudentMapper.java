@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public interface TStudentMapper extends BaseMapper<TStudent> {
 
-    @Select("SELECT Group_concat(t.realName) studentName from t_student t,t_student_class c where t.id=c.studentId and c.userId=#{userId} " +
+    @Select("SELECT Group_concat(t.realName) studentName from t_student t,t_student_course c where t.id=c.studentId and c.userId=#{userId} " +
             "and c.coursesId=#{coursesId} ")
     @ResultType(String.class)
     public String getStudentByCourse(@Param("coursesId") Long coursesId,@Param("userId") Long userId);
@@ -34,7 +34,7 @@ public interface TStudentMapper extends BaseMapper<TStudent> {
     public List<Map<String,Object>> getStudentInfoOfUser(@Param("userId") Long userId);
     //根据 学生名字 搜索 学生
     @Select(" select a.* " +
-            "from t_student_class t " +
+            "from t_student_course t " +
             "left join t_student a on a.id = t.studentId " +
             "where t.organizationId = #{organId} " +
             "and a.realName like concat('%',#{name},'%')")
@@ -43,7 +43,7 @@ public interface TStudentMapper extends BaseMapper<TStudent> {
 
     //根据 教育机构Id  获取其下 所有学生
     @Select(" select a.* " +
-            "from t_student_class t " +
+            "from t_student_course t " +
             "left join t_student a on a.id = t.studentId " +
             "where t.organizationId = #{organId} ")
     @ResultMap("BaseResultMap")

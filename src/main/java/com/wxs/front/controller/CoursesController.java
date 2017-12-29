@@ -1,11 +1,10 @@
 package com.wxs.front.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.wxs.entity.course.TCourse;
+import com.wxs.entity.course.TClassCourse;
 import com.wxs.entity.course.TCourseCategory;
-import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
-import com.wxs.service.course.ITCoursesService;
+import com.wxs.service.course.ITClassCoursesService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,17 +27,17 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/course")
-public class CoursesController  extends CrudController<TCourse,ITCoursesService> {
+public class CoursesController  extends CrudController<TClassCourse,ITClassCoursesService> {
 
     //日志管理
     public static final Logger logger = Logger.getLogger(CoursesController.class);
 
     @ResponseBody
     @RequestMapping("/page")
-    public Rest page(TCourse course){
+    public Rest page(TClassCourse course){
         //mysql ,mapper.xml中不能加减，在这里处理,直接处理为 起始下标
         course.setPageStartIndex( (course.getPage()-1)*course.getLimit() );
-        List<TCourse> list = getS().pageData(course);
+        List<TClassCourse> list = getS().pageData(course);
         return Rest.okPageData(list,list.size());
     }
 
@@ -61,7 +60,7 @@ public class CoursesController  extends CrudController<TCourse,ITCoursesService>
      */
     @RequestMapping("/doAdd")
     @ResponseBody
-    public Rest doAdd(TCourse course){
+    public Rest doAdd(TClassCourse course){
         try{
             course.setCreateTime(new Date());
             courseService.insert(course);
@@ -92,7 +91,7 @@ public class CoursesController  extends CrudController<TCourse,ITCoursesService>
      */
     @RequestMapping("/doEdit")
     @ResponseBody
-    public Rest doEdit(TCourse course){
+    public Rest doEdit(TClassCourse course){
         try{
             courseService.updateById(course);
         }catch (Exception e){

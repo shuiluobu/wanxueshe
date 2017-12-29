@@ -29,7 +29,7 @@ public interface TClassLessonMapper extends BaseMapper<TClassLesson> {
             " DATE_FORMAT(l.beginTime,'%h:%i') beginTime," +
             " DATE_FORMAT(l.endTime,'%h:%i') endTime," +
             " l.lessonSeq,r.canQty,r.courseName,o.organName,r.subjectType " +
-            " from t_student_class c,t_course r,t_class_lesson l,t_organization o " +
+            " from t_student_course c,t_class_course r,t_class_lesson l,t_organization o " +
             " where c.coursesId=l.courseId and c.coursesId=r.id and o.id=c.organizationId" +
             " and l.beginTime>#{beginTime} and l.beginTime<=#{endTime} and c.userId=#{userId}")
     @ResultType(Map.class)

@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.wxs.entity.comment.TDynamic;
 import com.wxs.entity.comment.TDynamicImg;
 import com.wxs.entity.comment.TDynamicVideo;
-import com.wxs.entity.course.TCourse;
+import com.wxs.entity.course.TClassCourse;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.entity.task.TClassWork;
@@ -65,7 +65,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         Long organId = Long.parseLong(classTask.get("organ").toString());
         TOrganization organ = new TOrganization().selectById(organId); //todo 从缓存中获取
         classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()==1?"已认证":""));
-        TCourse course = new TCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
+        TClassCourse course = new TClassCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
         classTask.put("courseName",course.getCourseName());
         return classTask;
     }
@@ -87,7 +87,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
     public Map<String, Object> saveStudentWork(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
-            TCourse course = new TCourse().selectById(classWork.getCourseId());
+            TClassCourse course = new TClassCourse().selectById(classWork.getCourseId());
             dynamic.setClassLessonId(classWork.getLessonId()); //课节
             dynamic.setOrganId(course.getOrganizationId()); //机构
             dynamic.setCourseId(classWork.getCourseId()); //课程

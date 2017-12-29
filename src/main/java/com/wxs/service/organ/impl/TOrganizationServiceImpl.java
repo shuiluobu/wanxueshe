@@ -1,12 +1,11 @@
 package com.wxs.service.organ.impl;
 
-import com.alibaba.druid.sql.dialect.oracle.ast.stmt.OracleCreateTableStatement;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.wxs.entity.course.TStudentClass;
+import com.wxs.entity.course.TStudentCourse;
 import com.wxs.entity.organ.TOrganization;
-import com.wxs.mapper.course.TCoursesMapper;
-import com.wxs.mapper.course.TStudentClassMapper;
+import com.wxs.mapper.course.TClassCoursesMapper;
+import com.wxs.mapper.course.TStudentCourseMapper;
 import com.wxs.mapper.organ.TFollowOrganMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.customer.ITParentService;
@@ -33,10 +32,10 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     public TOrganizationMapper organizationMapper;
 
     @Autowired
-    public TStudentClassMapper studentClassMapper;
+    public TStudentCourseMapper studentCourseMapper;
 
     @Autowired
-    public TCoursesMapper coursesMapper;
+    public TClassCoursesMapper coursesMapper;
 
     @Autowired
     public TFollowOrganMapper fllowOrganMapper; //关注机构表
@@ -82,10 +81,10 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
         result.put("logoImg", organization.getLogoImg());//logo头像
         result.put("smallIntroduce", organization.getIntroduce()); //小介绍，个性签名
         result.put("samllCount", smallCountOfOrgan(organization.getId())); //小统计
-        TStudentClass stuClass = new TStudentClass();
+        TStudentCourse stuClass = new TStudentCourse();
         stuClass.setOrganizationId(organization.getId());
         stuClass.setUserId(userId);
-        int organStudentCount = studentClassMapper.getClassStudentCountByParam(stuClass);
+        int organStudentCount = studentCourseMapper.getClassStudentCountByParam(stuClass);
         result.put("isParkIn", organStudentCount > 0 ? 1 : 0);
         result.put("ifFllow", fllowOrganMapper.getFllowByUserId(userId, organization.getId()) == null ? 0 : 1); //是否关注
         result.put("leval", organization.getLeval()==1?"已认证":"");
@@ -119,9 +118,9 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     public String smallCountOfOrgan(Long organId) {
         //获取机构的小统计，主要统计多少学员，多少人关注，多少课程
         int organFllowCount = fllowOrganMapper.getOrganFllowCount(organId);
-        TStudentClass stuClass = new TStudentClass();
+        TStudentCourse stuClass = new TStudentCourse();
         stuClass.setOrganizationId(organId);
-        int organStudentCount = studentClassMapper.getClassStudentCountByParam(stuClass);
+        int organStudentCount = studentCourseMapper.getClassStudentCountByParam(stuClass);
         int organCourseCount = coursesMapper.getOrganCourseCount(organId);
         return organFllowCount + "人关注，" + organStudentCount + "学员，" + organCourseCount + "课程";
     }

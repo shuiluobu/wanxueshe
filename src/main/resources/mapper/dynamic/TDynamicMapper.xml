@@ -40,9 +40,6 @@
             <if test="courseId!=null">
                 AND d.courseId = #{courseId}
             </if>
-            <if test="classId!=null">
-                AND d.classId = #{classId}
-            </if>
             <if test="studentIds!=null and studentIds.size()>0">
                 AND studentId in
                 <foreach item="studentId" collection="studentIds" separator="," open="(" close=")" index="">
@@ -112,7 +109,7 @@
         FROM t_dynamic d
         INNER JOIN t_front_user u ON u.id = d.userId
         LEFT JOIN t_class_lesson l on l.id=d.classLessonId
-        LEFT JOIN t_course e ON  e.id=d.courseId
+        LEFT JOIN t_class_course e ON  e.id=d.courseId
         LEFT JOIN t_student t on t.id=d.studentId
     </sql>
 </mapper>

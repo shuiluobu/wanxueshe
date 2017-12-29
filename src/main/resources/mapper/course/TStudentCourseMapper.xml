@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wxs.mapper.course.TStudentClassMapper">
+<mapper namespace="com.wxs.mapper.course.TStudentCourseMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.wxs.entity.course.TStudentClass">
+    <resultMap id="BaseResultMap" type="com.wxs.entity.course.TStudentCourse">
         <id column="id" property="id"/>
         <result column="studentId" property="studentId"/>
+        <result column="ostudentId" property="ostudentId"/>
         <result column="userId" property="userId"/>
         <result column="organizationId" property="organizationId"/>
         <result column="coursesId" property="coursesId"/>
@@ -14,7 +15,7 @@
         <result column="createTime" property="createTime"/>
     </resultMap>
     <select id="getCoursesIds" parameterType="map" resultType="java.lang.String">
-        SELECT group_concat(coursesId) FROM t_student_class WHERE `status` = 0
+        SELECT group_concat(coursesId) FROM t_student_course WHERE `status` = 0
         <if test="studentId !=null">
             AND studentId = #{studentId}
         </if>
@@ -37,8 +38,8 @@
         t.studentName,
         s.isEnd
         FROM
-        t_student_class s,
-        t_course c,
+        t_student_course s,
+        t_class_course c,
         t_course_category y,
         t_student t
         WHERE
@@ -52,8 +53,8 @@
             AND s.isEnd = #{isEnd}
         </if>
     </select>
-    <select id="getClassStudentCountByParam" parameterType="com.wxs.entity.course.TStudentClass" resultType="int">
-        select count(1) from t_student_class c where 1=1
+    <select id="getClassStudentCountByParam" parameterType="com.wxs.entity.course.TStudentCourse" resultType="int">
+        select count(1) from t_student_course c where 1=1
         <if test="organizationId!=null">
             and c.organizationId=#{organizationId}
         </if>

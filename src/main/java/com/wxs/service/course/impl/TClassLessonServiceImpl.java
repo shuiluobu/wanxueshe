@@ -1,13 +1,10 @@
 package com.wxs.service.course.impl;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.wxs.entity.course.TClassLesson;
-import com.wxs.entity.course.TStudentClass;
 import com.wxs.entity.course.TStudentLessones;
-import com.wxs.entity.customer.TStudent;
 import com.wxs.mapper.course.TClassLessonMapper;
-import com.wxs.mapper.course.TCoursesMapper;
+import com.wxs.mapper.course.TClassCoursesMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.course.ITClassLessonService;
@@ -33,7 +30,7 @@ import java.util.Map;
 @Service
 public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TClassLesson> implements ITClassLessonService {
     @Autowired
-    private TCoursesMapper coursesMapper;
+    private TClassCoursesMapper coursesMapper;
     @Autowired
     private TClassLessonMapper classLessonMapper;
     @Autowired

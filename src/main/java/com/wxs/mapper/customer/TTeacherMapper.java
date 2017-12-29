@@ -23,7 +23,7 @@ public interface TTeacherMapper extends BaseMapper<TTeacher> {
     //使用@Param注解后，可以在mapper映射文件中不用 parameterType参数
     Map selectTeacherById(@Param("tid") Long tid);
 
-    @Select("SELECT COUNT(s.studentId) from t_class c,t_student_class s  where  c.id=s.classId  and c.teacherId=#{teacherId} ")
+    @Select("SELECT COUNT(s.studentId) from t_class_course c,t_student_course s  where c.id=s.coursesId  and c.teacherId=#{teacherId} ")
     @ResultType(int.class)
     int getTeacherStudentCount(@Param("teacherId") Long teacherId);
 
@@ -33,7 +33,7 @@ public interface TTeacherMapper extends BaseMapper<TTeacher> {
     public TTeacher getByUserId(@Param("userId") Long userId);
 
     @Select(" SELECT DISTINCT t.id teacherId,t.teacherName" +
-           " from t_teacher t,t_course c,t_course_category cy where " +
+           " from t_teacher t,t_class_course c,t_course_category cy where " +
            " t.id=c.teacherId and c.courseCateId=cy.id and courseCateId = #{courseCateId}")
     @ResultType(Map.class)
     public List<Map<String,Object>> getTeacherNameListByCourseId(@Param("courseCateId") Long courseCateId);

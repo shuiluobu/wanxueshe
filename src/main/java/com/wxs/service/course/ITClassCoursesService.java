@@ -1,7 +1,7 @@
 package com.wxs.service.course;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.wxs.entity.course.TCourse;
+import com.wxs.entity.course.TClassCourse;
 
 import java.util.List;
 import java.util.Map;
@@ -14,10 +14,10 @@ import java.util.Map;
  * @author skyer
  * @since 2017-09-21
  */
-public interface ITCoursesService extends IService<TCourse> {
+public interface ITClassCoursesService extends IService<TClassCourse> {
 
     //分页+混合条件 查询课程
-    List<TCourse> pageData(TCourse course);
+    List<TClassCourse> pageData(TClassCourse course);
     /**
      * 课程基本信息
      * @param coursesId

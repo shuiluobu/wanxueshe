@@ -6,13 +6,12 @@ import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDynamic;
 import com.wxs.entity.comment.TDynamicImg;
 import com.wxs.entity.comment.TDynamicVideo;
-import com.wxs.entity.course.TCourse;
-import com.wxs.entity.customer.TParent;
+import com.wxs.entity.course.TClassCourse;
 import com.wxs.entity.customer.TStudent;
 import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TStudentWork;
 import com.wxs.enu.EnuDynamicTypeCode;
-import com.wxs.mapper.course.TStudentClassMapper;
+import com.wxs.mapper.course.TStudentCourseMapper;
 import com.wxs.mapper.customer.TStudentMapper;
 import com.wxs.service.dynamic.ITDynamicService;
 import com.wxs.service.common.IDictionaryService;
@@ -39,7 +38,7 @@ import java.util.Map;
 @Service
 public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> implements ITStudentService {
     @Autowired
-    private TStudentClassMapper studentClassMapper; //我的课程
+    private TStudentCourseMapper studentCourseMapper; //我的课程
     @Autowired
     private ITDynamicService dynamicmsgService;
     @Autowired
@@ -90,14 +89,14 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             studentMap.put("realName", tStudent.getRealName());
             studentMap.put("studentId", tStudent.getId());
             studentMap.put("parentType", parentTypeMap.get(tStudent.getParentType().toString()) == null ? "保密" : parentTypeMap.get(tStudent.getParentType().toString()));
-            studentMap.put("courseCount", studentClassMapper.getStudentCourseCount(tStudent.getId()));
+            studentMap.put("courseCount", studentCourseMapper.getStudentCourseCount(tStudent.getId()));
             studentMapList.add(studentMap);
         });
         return studentMapList;
     }
 
     public List<Map<String, Object>> isEndMyCourses(Long userId, Integer isEnd) {
-        return studentClassMapper.getMyCourses(ImmutableMap.of("userId", userId, "isEnd", isEnd));
+        return studentCourseMapper.getMyCourses(ImmutableMap.of("userId", userId, "isEnd", isEnd));
     }
 
     @Override
@@ -105,7 +104,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     public Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId) {
         try {
             TClassWork classWork = new TClassWork().selectById(workId);
-            TCourse course = new TCourse().selectById(classWork.getCourseId());
+            TClassCourse course = new TClassCourse().selectById(classWork.getCourseId());
             dynamic.setCourseId(classWork.getCourseId()); //班级
             dynamic.setClassLessonId(classWork.getLessonId()); //课节
             dynamic.setOrganId(course.getOrganizationId()); //机构
@@ -152,10 +151,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     @Override
     public Map<String, Object> saveStudent(TStudent student) {
         Map<String, Object> result = Maps.newHashMap();
-        EntityWrapper wrapper = new EntityWrapper();
-        wrapper.eq("userId", student.getUserId());
-        TParent parent = new TParent().selectOne(wrapper);
-        student.setParentId(parent.getId());
+
         if (student.getId()!=null){
             baseMapper.update(student,null);
             result.put("message", "更新成功");

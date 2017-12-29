@@ -20,8 +20,8 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-10-25
  */
-@TableName("t_course")
-public class TCourse extends Model<TCourse> {
+@TableName("t_class_course")
+public class TClassCourse extends Model<TClassCourse> {
 
 	private static final long serialVersionUID = 1L;
     /**
@@ -65,6 +65,7 @@ public class TCourse extends Model<TCourse> {
 	private String teacherName;
 
 	private Long organizationId;//冗余字段
+
 
 	@TableField(exist = false)
 	private String organName; //所属教育机构名称

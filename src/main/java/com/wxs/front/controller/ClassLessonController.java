@@ -2,7 +2,7 @@ package com.wxs.front.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.wxs.entity.course.TClassLesson;
-import com.wxs.entity.course.TCourse;
+import com.wxs.entity.course.TClassCourse;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.service.course.ITClassLessonService;
 import org.apache.log4j.Logger;
@@ -49,7 +49,7 @@ public class ClassLessonController extends CrudController<TClassLesson,ITClassLe
     @RequestMapping("/toAdd")
     public String toAdd(Model model){
         //所有课程
-        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TCourse>()));
+        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TClassCourse>()));
         //所有老师
         model.addAttribute("teachers",teacherService.selectList(new EntityWrapper<TTeacher>()));
         return "classLesson/add";
@@ -79,7 +79,7 @@ public class ClassLessonController extends CrudController<TClassLesson,ITClassLe
     @RequestMapping("/toEdit")
     public String toEdit(String id,Model model){
         //所有课程
-        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TCourse>()));
+        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TClassCourse>()));
         //所有老师
         model.addAttribute("teachers",teacherService.selectList(new EntityWrapper<TTeacher>()));
         model.addAttribute("classLesson",getS().selectById(id) );

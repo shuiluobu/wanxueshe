@@ -42,6 +42,7 @@ public class TTeacher extends Model<TTeacher> {
     private Integer status;		//状态 1：启用，0：禁止
 	private String headImg; //头像图片
     private Integer leval; //等级
+	private String teacherRole; //教师角色，如授课老师，课程顾问等
     @TableField(exist = false)
     private TOrganization organization;
 

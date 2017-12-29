@@ -1,13 +1,11 @@
 package com.wxs.front.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.wxs.entity.course.TClass;
-import com.wxs.entity.course.TCourse;
+import com.wxs.entity.course.TClassCourse;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.service.course.ITClassService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +15,7 @@ import org.wxs.core.controller.CrudController;
 import org.wxs.core.util.BaseUtil;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -59,7 +55,7 @@ public class ClassController extends CrudController<TClass,ITClassService> {
         //所有教育机构
         model.addAttribute("organizations",organizationService.selectList(new EntityWrapper<TOrganization>()));
         //所有课程
-        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TCourse>()));
+        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TClassCourse>()));
         return "tClass/add";
     }
 
@@ -93,7 +89,7 @@ public class ClassController extends CrudController<TClass,ITClassService> {
         //所有教育机构
         model.addAttribute("organizations",organizationService.selectList(new EntityWrapper<TOrganization>()));
         //所有课程
-        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TCourse>()));
+        model.addAttribute("courses",courseService.selectList(new EntityWrapper<TClassCourse>()));
         model.addAttribute("tClass",tClassService.selectById(id));
         return "tClass/edit";
     }
