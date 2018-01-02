@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.wxs.core.anno.PassLogin;
 import org.wxs.core.bean.Rest;
 import org.wxs.core.controller.CrudController;
 import org.wxs.core.util.BaseUtil;
@@ -23,6 +24,9 @@ import org.wxs.core.util.OsppyUtil;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -50,7 +54,21 @@ public class OrganizationContorller extends CrudController<TOrganization,ITOrgan
 
     @RequestMapping("/toTemp")
     public String toTemp(){
-        return "frontPages/organization/classCommentDetail";
+        return "frontPages/organization/selectJobTo";
+    }
+    @PassLogin
+    @RequestMapping("/viewsTransfer")
+    public String viewsTransfer(String view,String itemId,String paramOne,String paramTwo,Model model){
+        try{
+            model.addAttribute("itemId", itemId);
+            model.addAttribute("paramOne",paramOne);
+            model.addAttribute("paramTwo", paramTwo);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(BaseUtil.getExceptionStackTrace(e));
+        }
+
+        return "frontPages/organization/"+view;
     }
 
     @RequestMapping("/page")
