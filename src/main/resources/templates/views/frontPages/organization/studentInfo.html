@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>学员资料</title>
+    <style>
+        .head .right{
+            position: absolute;
+            right: 5px;
+            top: 0;
+            width: 100px;
+            height: 45px;
+        }
+        .right a{
+            float: right;
+            padding-right: 20px;
+        }
+        .personal .weui-input {
+            color: #999;
+        }
+        .tag{
+            height: 25px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .tag div{
+            display: inline;
+            margin-left: 5px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border: 1px solid #797979;
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            padding: 2px 5px;
+        }
+        .test{
+            margin-top: 3px;
+            width: 10px;
+            height: 5px;
+            background: inherit;
+            background-color: rgba(51, 51, 51, 1);
+            border: none;
+            border-radius: 2px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            display: block;
+            font-family: 'Arial Normal', 'Arial';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 13px;
+            color: #333333;
+            text-align: center;
+            line-height: normal;
+        }
+        .search_table{
+            margin-left: 46%;
+            color: #CCCCCC
+        }
+        .search_table td{
+            padding: 0 2px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="head">
+    <a href="javascript:void(0);" class="return"></a><span>学员</span>
+    <div class="right">
+        <a href="javascript:void(0);"><img src="/weui/images/wyh/threePoint.png"></a>
+    </div>
+</div>
+<div style="margin-top: 45px;width: 100%;">
+    <div style="text-align: center;">
+        <img  style="height: 100px;width: 100px;padding-top: 12px;" src="/images/userface5.jpg"/>
+        <p>王大贺</p>
+        <p><span>2在读课程，233余额</span>&nbsp;&nbsp;&nbsp;<a><span style="color: #0066CC"> 详情</span></a></p>
+    </div>
+    <div style="display: table;width: 100%">
+        <div style="display: table-cell;width: 33%;text-align: center">
+            <img  height="40px" width="40px" src="/weui/images/wyh/tel.png">
+            <p>电话</p>
+        </div>
+        <div style="display: table-cell;width: 33%;text-align: center">
+            <img height="40px" width="40px" src="/weui/images/wyh/SMS.jpg">
+            <p>短信</p>
+        </div>
+        <div style="display: table-cell;width: 33%;text-align: center">
+            <img height="40px" width="40px" src="/weui/images/wyh/wx.png">
+            <p>微信</p>
+        </div>
+    </div>
+</div>
+
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item " href="#tab1">
+            待办
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            记录
+        </a>
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab3">
+            资料
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item ">
+            <h1>页面一</h1>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <h1>页面二</h1>
+        </div>
+        <div id="tab3" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div style="background-color: #F2F2F2;height: 40px;line-height: 40px;">
+                <p style="padding-left: 20px;">成长印象（来自<span>12</span>次评价）</p>
+            </div>
+            <div style="height: 86px;">
+                <div class="tag">
+                    <div>聪明 <span>1</span></div>
+                    <div>动手能力强 <span>3</span></div>
+                    <div>积极  <span>3</span></div>
+                </div>
+                <div class="tag">
+                    <div>乐于助人 <span>2</span></div>
+                    <div>勤奋  <span>1</span></div>
+                </div>
+                <div>
+                    <table class="search_table">
+                        <tr>
+                            <td><div class="test"></div></td>
+                            <td>&bull;</td>
+                            <td>&bull;</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="personal f15">
+
+                <div class="weui-cells mt5">
+
+                    <div class="weui-cell weui-cell_access">
+                        <div>标签分组</div>
+                        <div class="weui-cell__bd">
+                            <input type="text" class="weui-input tar" id='picker' placeholder="5">
+                        </div>
+                        <div class="weui-cell__ft">
+                    </div>
+                        </div>
+                    </div>
+
+                    <div class="weui-cell" style="background-color: #F2F2F2">
+                        <div class="weui-cell__bd">
+                            基本资料
+                        </div>
+                    </div>
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            联系手机
+                        </div>
+                        <div class="weui-cell__price">18537100192</div>
+                    </div>
+
+                    <div class="weui-cell ">
+                        <div class="weui-cell__bd">
+                            学员性别
+                        </div>
+                        <div class="weui-cell__price">男</div>
+                    </div>
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            学员年龄
+                        </div>
+                        <div class="weui-cell__price">15</div>
+                    </div>
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            课程顾问
+                        </div>
+                        <div class="weui-cell__price">张老师</div>
+                    </div>
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            来源
+                        </div>
+                        <div class="weui-cell__price">地推活动</div>
+                    </div>
+
+                    <div class="weui-cell" style="background-color: #F2F2F2">
+                        <div class="weui-cell__bd">
+                            其他信息
+                        </div>
+                    </div>
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            家长姓名
+                        </div>
+                        <div class="weui-cell__price">张大雪</div>
+                    </div>
+
+                    <div class="weui-cell weui-cell_access">
+                        <div class="weui-cell__bd">
+                            与学生关系
+                        </div>
+                        <div class="weui-cell__price">父亲</div>
+                    </div>
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            所在学校
+                        </div>
+                        <div class="weui-cell__price">关成璐小学</div>
+                    </div>
+
+                </div>
+
+            <div style="padding:20px;background-color: #F2F2F2" >
+                <a href="javascript:;" class="weui-btn weui-btn_primary" style="background-color: #CCCCCC" >编 辑</a>
+                <a href="javascript:;" class="weui-btn weui-btn_default" style="background-color: #FFFFFF">删 除</a>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    $(function () {
+
+        //成长印象   分页栏点击切换样式
+        $(".search_table td").click(function () {
+            var div = '<div class="test"></div>';
+            $(this).siblings().html("&bull;");
+            $(this).html(div);
+        });
+    });
+</script>
+</html>
