@@ -68,6 +68,8 @@ public class TClassCourse extends Model<TClassCourse> {
 
 	private Long organizationId;//冗余字段
 
+	private String subjectType;//学科分类
+
 
 	@TableField(exist = false)
 	private String organName; //所属教育机构名称
@@ -215,6 +217,14 @@ public class TClassCourse extends Model<TClassCourse> {
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+	public String getSubjectType() {
+		return subjectType;
+	}
+
+	public void setSubjectType(String subjectType) {
+		this.subjectType = subjectType;
 	}
 
 	@Override

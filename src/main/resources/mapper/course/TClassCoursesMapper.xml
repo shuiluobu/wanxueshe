@@ -14,11 +14,12 @@
         <result column="createTime" property="createTime"/>
         <result column="status" property="status"/>
         <result column="teacherId" property="teacherId"/>
+        <result column="subjectType" property="subjectType"/>
         <result column="assistantIds" property="assistantIds"/>
         <result column="surplusClassLesson" property="surplusClassLesson"/>
     </resultMap>
 
-    <select id="pageData" parameterType="TCourse" resultMap="BaseResultMap">
+    <select id="pageData" parameterType="TClassCourse" resultMap="BaseResultMap">
         select t.*,a.organName,b.courseCategoryName
         from t_course t
         left join t_organization a on a.id = t.organizationId

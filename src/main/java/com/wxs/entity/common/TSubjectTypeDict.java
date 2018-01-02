@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author skyer
  * @since 2017-12-15
  */
-@TableName("t_course_type_dict")
+@TableName("t_subject_type_dict")
 public class TSubjectTypeDict extends Model<TSubjectTypeDict> {
 
     private static final long serialVersionUID = 1L;
