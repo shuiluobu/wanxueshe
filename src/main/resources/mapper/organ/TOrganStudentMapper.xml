@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.organ.TOrganStudentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.organ.TOrganStudent">
+		<id column="id" property="id" />
+		<result column="organId" property="organId" />
+		<result column="studentName" property="studentName" />
+		<result column="studentMobilePhone" property="studentMobilePhone" />
+		<result column="sourceType" property="sourceType" />
+		<result column="advisorTeacherId" property="advisorTeacherId" />
+		<result column="gender" property="gender" />
+		<result column="school" property="school" />
+		<result column="birthday" property="birthday" />
+		<result column="createUserId" property="createUserId" />
+		<result column="createTime" property="createTime" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<select id="searchAdvisorByName"  resultType="TTeacher">
+		select t.* from t_teacher t
+		inner join t_organ_student a on a.advisorTeacherId = t.id
+		where a.organId = #{organId}
+		<if test=" name != null and !''.equals(name)">
+			and ( t.teacherName like concat('%',#{name},'%') or  t.realName like concat('%',#{name},'%'))
+		</if>
+
+	</select>
+
+</mapper>
