@@ -16,6 +16,6 @@ import java.util.List;
 public interface ITOrganParentService extends IService<TOrganParent> {
 
     //根据学生Id 获取 其 所有家长
-    List<TOrganParent> getAlByStuId(Long studentId);
+    List<TOrganParent> getAllByStuId(Long studentId);
 	
 }

@@ -19,7 +19,7 @@ import java.util.List;
 public interface TOrganParentMapper extends BaseMapper<TOrganParent> {
 
     //根据学生Id 获取 其 所有家长
-    @Select(" select * from t_organ_partent where studentId = #{studentId}")
+    @Select(" select * from t_organ_parent where studentId = #{studentId}")
     @ResultMap("BaseResultMap")
-    List<TOrganParent> getAlByStuId(@Param("studentId") Long studentId);
+    List<TOrganParent> getAllByStuId(@Param("studentId") Long studentId);
 }

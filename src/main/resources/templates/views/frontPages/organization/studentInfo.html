@@ -74,10 +74,10 @@
     </div>
 </div>
 <div style="margin-top: 45px;width: 100%;">
-    <div style="text-align: center;">
+    <div style="text-align: center;" id="INCNB">
         <img  style="height: 100px;width: 100px;padding-top: 12px;" src="/images/userface5.jpg"/>
         <p>王大贺</p>
-        <p><span>2在读课程，233余额</span>&nbsp;&nbsp;&nbsp;<a><span style="color: #0066CC"> 详情</span></a></p>
+        <p><span>0</span>在读课程，<span>0</span>余额&nbsp;&nbsp;&nbsp;<a><span style="color: #0066CC"> 详情</span></a></p>
     </div>
     <div style="display: table;width: 100%">
         <div style="display: table-cell;width: 33%;text-align: center">
@@ -116,24 +116,25 @@
         </div>
         <div id="tab3" class="weui-tab__bd-item weui-tab__bd-item--active">
             <div style="background-color: #F2F2F2;height: 40px;line-height: 40px;">
-                <p style="padding-left: 20px;">成长印象（来自<span>12</span>次评价）</p>
+                <p style="padding-left: 20px;">成长印象（来自<span>0</span>次评价）</p>
             </div>
             <div style="height: 86px;">
-                <div class="tag">
-                    <div>聪明 <span>1</span></div>
-                    <div>动手能力强 <span>3</span></div>
-                    <div>积极  <span>3</span></div>
-                </div>
-                <div class="tag">
-                    <div>乐于助人 <span>2</span></div>
-                    <div>勤奋  <span>1</span></div>
+                <div id="impressTag">
+                    <div class="tag">
+                        <div>聪明 <span>1</span></div>
+                        <div>动手能力强 <span>3</span></div>
+                        <div>积极  <span>3</span></div>
+                    </div>
+                    <div class="tag">
+                        <div>乐于助人 <span>2</span></div>
+                        <div>勤奋  <span>1</span></div>
+                    </div>
                 </div>
                 <div>
                     <table class="search_table">
                         <tr>
                             <td><div class="test"></div></td>
-                            <td>&bull;</td>
-                            <td>&bull;</td>
+                            <!--<td>&bull;</td>-->
                         </tr>
                     </table>
                 </div>
@@ -145,7 +146,7 @@
                     <div class="weui-cell weui-cell_access">
                         <div>标签分组</div>
                         <div class="weui-cell__bd">
-                            <input type="text" class="weui-input tar" id='picker' placeholder="5">
+                            <input readonly type="text" class="weui-input tar" id="groupLabelNum"   placeholder="0">
                         </div>
                         <div class="weui-cell__ft">
                     </div>
@@ -162,35 +163,35 @@
                         <div class="weui-cell__bd">
                             联系手机
                         </div>
-                        <div class="weui-cell__price">18537100192</div>
+                        <div class="weui-cell__price" id="mobilePhone"></div>
                     </div>
 
                     <div class="weui-cell ">
                         <div class="weui-cell__bd">
                             学员性别
                         </div>
-                        <div class="weui-cell__price">男</div>
+                        <div class="weui-cell__price" id="gender"></div>
                     </div>
 
                     <div class="weui-cell">
                         <div class="weui-cell__bd">
                             学员年龄
                         </div>
-                        <div class="weui-cell__price">15</div>
+                        <div class="weui-cell__price" id="age"></div>
                     </div>
 
                     <div class="weui-cell">
                         <div class="weui-cell__bd">
                             课程顾问
                         </div>
-                        <div class="weui-cell__price">张老师</div>
+                        <div class="weui-cell__price" id="advisorTeacher"></div>
                     </div>
 
                     <div class="weui-cell">
                         <div class="weui-cell__bd">
                             来源
                         </div>
-                        <div class="weui-cell__price">地推活动</div>
+                        <div class="weui-cell__price" id="sourceType"></div>
                     </div>
 
                     <div class="weui-cell" style="background-color: #F2F2F2">
@@ -203,21 +204,21 @@
                         <div class="weui-cell__bd">
                             家长姓名
                         </div>
-                        <div class="weui-cell__price">张大雪</div>
+                        <div class="weui-cell__price" id="parentName"></div>
                     </div>
 
                     <div class="weui-cell weui-cell_access">
                         <div class="weui-cell__bd">
                             与学生关系
                         </div>
-                        <div class="weui-cell__price">父亲</div>
+                        <div class="weui-cell__price" id="parentType"></div>
                     </div>
 
                     <div class="weui-cell">
                         <div class="weui-cell__bd">
                             所在学校
                         </div>
-                        <div class="weui-cell__price">关成璐小学</div>
+                        <div class="weui-cell__price" id="school"></div>
                     </div>
 
                 </div>
@@ -237,14 +238,127 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
+    var studentId;
+    var tagList;//用于印象标签 分页显示
     $(function () {
+        studentId = 1;
+        //获取机构的所有学生
+        $.ajax("/cStudent/studentInfo",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                studentId:studentId
+            },
+            success:function(json){
+                var student = json.data.student;
+                //学生头像
+                $("#INCNB img").attr("src",student.headImg);
+                //学生姓名
+                $("#INCNB p").eq(0).text(student.studentName);
+                //在读课程数量
+                $("#INCNB span").eq(0).text(json.data.courseNum);
+                //余额
+                $("#INCNB span").eq(1).text(student.balance);
+                //印象标签
+                if(json.data.impressTag){
+                    tagList = json.data.impressTag;
+                    //标签总个数
+                    var nums = 0;
+                    for(var i=0;i<tagList.length;i++){
+                        nums+=tagList[i].num;
+                    }
+                    $("#tab3 span").eq(0).text(nums);
+                    //分页签个数
+                    var pages = Math.ceil(tagList.length/6);
+                    $(".search_table tr").empty();
+                    $(".search_table tr").append('<td><div class="test"></div></td>');
+                    for(var i=1;i<pages;i++){
+                        $(".search_table tr").append('<td>&bull;</td>');
+                    }
+                    var tagDiv = '<div class="tag">';
+                    $("#impressTag").empty();
+                    var times = 0;
+                    for(var i=0;i<tagList.length;i++){
+                        tagDiv += '<div>'+tagList[i].tagDesc+' <span>'+tagList[i].num+'</span></div>';
+                        if(  (i+1)%3  == 0 || i+1 == tagList.length  ){
+                            tagDiv += '</div>';
+                            $("#impressTag").append(tagDiv);
+                            var tagDiv = '<div class="tag">';
+                        }
+                        if( ( i+1%6 == 0 || i+1 == tagList.length)  &&  ++times < 4){
+                            $("#impressTag").append('  <div class="tag"></div>');
+                        }
+                        if(++times == 6){
+                            break;
+                        }
+
+                    }
+                }
+                //所属 分组标签 个数
+                $("#groupLabelNum").val(json.data.groupLabelNum);
+                //联系手机
+                $("#mobilePhone").text(student.studentMobilePhone);
+                //学员性别
+                $("#gender").text(student.gender == 1?"男":"女");
+                //年龄
+                $("#age").text(getAge(student.birthday));
+                //课程顾问
+                if(json.data.advisorTeacher)
+                    $("#advisorTeacher").text(json.data.advisorTeacher);
+                //来源
+                $("#sourceType").text(student.sourceType);
+                //家长姓名
+                if(json.data.parent){
+                    var parent = json.data.parent[0];
+                    //家长姓名
+                    $("#parentName").text(parent.realName);
+                    //与学生关系
+                    $("#parentType").text(parent.type == 1?"父亲":"母亲");
+
+                }
+                //所在学校
+                $("#school").text(student.school);
+
+
+            }
+        });
+
+
 
         //成长印象   分页栏点击切换样式
         $(".search_table td").click(function () {
             var div = '<div class="test"></div>';
             $(this).siblings().html("&bull;");
             $(this).html(div);
+            var index = $(this).index();
+            var times = 0;
+            var tagDiv = '<div class="tag">';
+            $("#impressTag").empty();
+            for(var i=(index * 6 );i<tagList.length;i++){
+                tagDiv += '<div>'+tagList[i].tagDesc+' <span>'+tagList[i].num+'</span></div>';
+                if(  (i+1)%3  == 0 || i+1 == tagList.length  ){
+                    tagDiv += '</div>';
+                    $("#impressTag").append(tagDiv);
+                    var tagDiv = '<div class="tag">';
+                }
+                if( ( i+1%6 == 0 || i+1 == tagList.length)  &&  ++times < 4){
+                    $("#impressTag").append('  <div class="tag"></div>');
+                }
+                if(++times == 6){
+                    break;
+                }
+
+            }
         });
     });
+    
+    
+    function getAge(birthday) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var birthYeay = birthday.substring(0,4);
+        return year - birthYeay;
+    }
 </script>
 </html>

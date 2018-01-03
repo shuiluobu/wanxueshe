@@ -28,4 +28,14 @@ public class TOrganStudentServiceImpl extends ServiceImpl<TOrganStudentMapper, T
     public List<TTeacher> searchAdvisorByName(Long organId, String name) {
         return organStudentMapper.searchAdvisorByName(organId,name);
     }
+
+    @Override
+    public List<TOrganStudent> searchByName(String name, Long organId) {
+        return organStudentMapper.searchByName(name,organId);
+    }
+
+    @Override
+    public List<TOrganStudent> getAllByOrganId(Long organId) {
+        return organStudentMapper.getAllByOrganId(organId);
+    }
 }

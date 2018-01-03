@@ -24,7 +24,7 @@ public class TOrganParentServiceImpl extends ServiceImpl<TOrganParentMapper, TOr
     private TOrganParentMapper organParentMapper;
 
     @Override
-    public List<TOrganParent> getAlByStuId(Long studentId) {
-        return organParentMapper.getAlByStuId(studentId);
+    public List<TOrganParent> getAllByStuId(Long studentId) {
+        return organParentMapper.getAllByStuId(studentId);
     }
 }
