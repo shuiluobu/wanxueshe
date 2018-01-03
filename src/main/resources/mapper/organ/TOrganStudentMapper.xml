@@ -13,6 +13,8 @@
 		<result column="gender" property="gender" />
 		<result column="school" property="school" />
 		<result column="birthday" property="birthday" />
+		<result column="headImg" property="headImg" />
+		<result column="balance" property="balance" />
 		<result column="createUserId" property="createUserId" />
 		<result column="createTime" property="createTime" />
 		<result column="status" property="status" />

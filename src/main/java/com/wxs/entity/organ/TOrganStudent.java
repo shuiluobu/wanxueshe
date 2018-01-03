@@ -59,6 +59,10 @@ public class TOrganStudent extends Model<TOrganStudent> {
      * 生日
      */
 	private Date birthday;
+	/**
+	 * 余额
+	 */
+	private Double balance;
     /**
      * 创建人用户ID
      */
@@ -144,6 +148,14 @@ public class TOrganStudent extends Model<TOrganStudent> {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public Double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Double balance) {
+		this.balance = balance;
 	}
 
 	public Long getCreateUserId() {

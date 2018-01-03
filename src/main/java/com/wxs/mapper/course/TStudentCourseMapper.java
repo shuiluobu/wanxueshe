@@ -2,6 +2,8 @@ package com.wxs.mapper.course;
 
 import com.wxs.entity.course.TStudentCourse;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
@@ -36,5 +38,9 @@ public interface TStudentCourseMapper extends BaseMapper<TStudentCourse> {
     @Select("select count(c.coursesId) from t_student_course c,t_student s where c.studentId=s.id and s.userId=#{userId} ")
     @ResultType(int.class)
     public int getParentCourseCount(Long userId); //获取每个家长下所有学员总共课程
+    //获取 机构端 某学生的 所有课程
+    @Select(" select * from t_student_course where ostudentId = #{oStudentId} ")
+    @ResultMap("BaseResultMap")
+    List<TStudentCourse> getAllByOStudentId(@Param("oStudentId") Long oStudentId);
 
 }
