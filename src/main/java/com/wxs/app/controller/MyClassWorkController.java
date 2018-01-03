@@ -31,7 +31,8 @@ public class MyClassWorkController extends BaseWxController {
     public Result view(@RequestParam(value = "sessionId", required = true) String sessionId,
                        @PathVariable("workId") Long workId) {
         //展示作业详情
-        return Result.of(classWorkService.getClassWorkOutline(workId));
+        Long userId =1L;
+        return Result.of(classWorkService.getClassWorkOutline(workId,userId));
     }
 
     @RequestMapping(value = "/batchMyWorks")

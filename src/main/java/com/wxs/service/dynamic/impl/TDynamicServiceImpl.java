@@ -225,4 +225,12 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         comment.setStatus(0);
         return  comment.insert();
     }
+    @Override
+    public Map<String,Object> queryDynamicOfWork(Long dynamicId){
+        Map<String,Object> contentMap = Maps.newHashMap();
+        TDynamic dynamic = new TDynamic().selectById(dynamicId);
+        contentMap.put("text",dynamic.getContent());
+        contentMap.put("images",dynamicImgMapper.getImgsByDynamicId(dynamicId));
+        return contentMap;
+    }
 }

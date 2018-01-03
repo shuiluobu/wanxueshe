@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ConfigurationProperties(prefix="system")
-@PropertySource("systemConfig.properties")
+@PropertySource("classpath:config/systemConfig.properties")
 public class SystemConfig {
 	
 	private String maxCount;

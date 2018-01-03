@@ -3,10 +3,12 @@ package com.wxs.service.task.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDynamic;
 import com.wxs.entity.comment.TDynamicImg;
 import com.wxs.entity.comment.TDynamicVideo;
 import com.wxs.entity.course.TClassCourse;
+import com.wxs.entity.customer.TStudent;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.entity.task.TClassWork;
@@ -16,6 +18,7 @@ import com.wxs.mapper.task.TClassWorkMapper;
 import com.wxs.service.dynamic.ITDynamicService;
 import com.wxs.service.common.IDictionaryService;
 import com.wxs.service.task.ITClassWorkService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +41,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
     @Autowired
     private TClassWorkMapper classWorkMapper;
     @Autowired
-    private ITDynamicService dynamicmsgService;
+    private ITDynamicService dynamicService;
     @Autowired
     public IDictionaryService dictionaryService;
 
@@ -58,11 +61,14 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         return list;
     }
 
-    public Map<String, Object> getClassWorkOutline(Long taskId) {
+    public Map<String, Object> getClassWorkOutline(Long taskId,Long userId) {
         Map<String, Object> classTask = classWorkMapper.getClassWork(taskId);
         Long teacherId = Long.parseLong(classTask.get("teacherId").toString());
         classTask.put("teacherName",new TTeacher().selectById(teacherId).getTeacherName());
         Long organId = Long.parseLong(classTask.get("organ").toString());
+        Long dynamicId = Long.parseLong(classTask.get("dynamicId").toString());
+        classTask.put("workContent",dynamicService.queryDynamicOfWork(dynamicId));
+        classTask.put("plan", StringUtils.join(classWorkMapper.getStudentNameByWorkId(taskId,userId),","));
         TOrganization organ = new TOrganization().selectById(organId); //todo 从缓存中获取
         classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()==1?"已认证":""));
         TClassCourse course = new TClassCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
@@ -119,7 +125,7 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
                 dyvideo.insert(); //动态小视频
             }
             Map<String, Object> dynMap = BaseUtil.convertBeanToMap(dynamic);
-            return dynamicmsgService.buildOneDynamic(dynMap);
+            return dynamicService.buildOneDynamic(dynMap);
         } catch (Exception e) {
             e.printStackTrace();
         }

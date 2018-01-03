@@ -31,6 +31,9 @@ public class TClassCourse extends Model<TClassCourse> {
 	private Long id;
 
 	private String courseName; //冗余字段
+
+	@TableField(exist = false)
+	private String courseCode; //课程编号
 	/**
 	 * 课时数量
 	 */
@@ -225,6 +228,14 @@ public class TClassCourse extends Model<TClassCourse> {
 
 	public void setSubjectType(String subjectType) {
 		this.subjectType = subjectType;
+	}
+
+	public String getCourseCode() {
+		return courseCode;
+	}
+
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
 	}
 
 	@Override

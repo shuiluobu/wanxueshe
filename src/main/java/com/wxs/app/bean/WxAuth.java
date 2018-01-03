@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "wxapp")
-@PropertySource("systemConfig.properties")
+@PropertySource("classpath:config/systemConfig.properties")
 @Component("wxAuth")
 public class WxAuth {
 	private String appId;
