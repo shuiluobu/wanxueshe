@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.organ.TOstudentContactsMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.organ.TOstudentContacts">
+		<id column="id" property="id" />
+		<result column="ostudentId" property="ostudentId" />
+		<result column="contactsName" property="contactsName" />
+		<result column="contactsPhone" property="contactsPhone" />
+		<result column="relationType" property="relationType" />
+		<result column="createTime" property="createTime" />
+		<result column="createUserId" property="createUserId" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>

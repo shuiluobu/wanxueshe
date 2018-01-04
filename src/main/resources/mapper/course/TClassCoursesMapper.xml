@@ -14,6 +14,8 @@
         <result column="createTime" property="createTime"/>
         <result column="status" property="status"/>
         <result column="teacherId" property="teacherId"/>
+        <result column="subjectType" property="subjectType"/>
+        <result column="assistantIds" property="assistantIds"/>
         <result column="surplusClassLesson" property="surplusClassLesson"/>
     </resultMap>
 

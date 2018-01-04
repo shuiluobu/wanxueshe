@@ -24,4 +24,5 @@ public interface ITDynamicService extends IService<TDynamic> {
 	List<Map<String,Object>> getNearByDynamicms(Long loginUserId,double latitude,double longitude);
 	Map<String,Object> buildOneDynamic(Map<String,Object> dyn);
 	Boolean saveComment(Long userId,Long dynamicId,String content);
+	Map<String,Object> queryDynamicOfWork(Long dynamicId);
 }

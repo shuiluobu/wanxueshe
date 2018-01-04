@@ -31,6 +31,9 @@ public class TClassCourse extends Model<TClassCourse> {
 	private Long id;
 
 	private String courseName; //冗余字段
+
+	@TableField(exist = false)
+	private String courseCode; //课程编号
 	/**
 	 * 课时数量
 	 */
@@ -64,7 +67,11 @@ public class TClassCourse extends Model<TClassCourse> {
 
 	private String teacherName;
 
+	private String assistantIds; //助教集合，来自教师表
+
 	private Long organizationId;//冗余字段
+
+	private String subjectType;//学科分类
 
 
 	@TableField(exist = false)
@@ -76,6 +83,13 @@ public class TClassCourse extends Model<TClassCourse> {
 	@TableField(exist = false)
 	private Integer pageStartIndex; //分页查询 起始下表
 
+	public String getAssistantIds() {
+		return assistantIds;
+	}
+
+	public void setAssistantIds(String assistantIds) {
+		this.assistantIds = assistantIds;
+	}
 
 	public Long getId() {
 		return id;
@@ -206,6 +220,22 @@ public class TClassCourse extends Model<TClassCourse> {
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+	public String getSubjectType() {
+		return subjectType;
+	}
+
+	public void setSubjectType(String subjectType) {
+		this.subjectType = subjectType;
+	}
+
+	public String getCourseCode() {
+		return courseCode;
+	}
+
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
 	}
 
 	@Override

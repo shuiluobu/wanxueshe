@@ -7,6 +7,7 @@
 		<id column="id" property="id" />
 		<result column="lessonId" property="lessonId" />
 		<result column="courseId" property="courseId" />
+		<result column="workName" property="workName"/>
 		<result column="dynamicId" property="dynamicId"/>
 		<result column="endTime" property="endTime" />
 		<result column="beginTime" property="beginTime" />

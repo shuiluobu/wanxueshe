@@ -92,7 +92,7 @@ public class MyHomeController extends BaseWxController {
     @RequestMapping(value = "/classWorks")
     public Result classWorks(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的学员
-        Long userId = 0L;
+        Long userId = 1L;
         return Result.of(classWorkService.getClassWorkInfosByUserId(userId));
     }
 

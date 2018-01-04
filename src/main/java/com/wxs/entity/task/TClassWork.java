@@ -30,7 +30,8 @@ public class TClassWork extends Model<TClassWork> {
      * 课程Id，课程可以查询到
      */
     private Long courseId;
-    private Long dynamicId; //动态
+    private String workName; //作业名称
+    private Long dynamicId; //作业内容也是一种动态
     private Date endTime;
     private Date beginTime;
     private Date createTime;
@@ -104,6 +105,14 @@ public class TClassWork extends Model<TClassWork> {
 
     public Integer getStatus() {
         return status;
+    }
+
+    public String getWorkName() {
+        return workName;
+    }
+
+    public void setWorkName(String workName) {
+        this.workName = workName;
     }
 
     public void setStatus(Integer status) {

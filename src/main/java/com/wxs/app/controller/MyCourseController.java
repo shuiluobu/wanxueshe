@@ -16,8 +16,9 @@ public class MyCourseController extends BaseWxController {
     @RequestMapping(value = "/course/{coursesId}")
     public Result outline(@RequestParam(value = "sessionId", required = true) String sessionId,
                           @PathVariable("coursesId") Long coursesId) {
-        TWxUser wxUser = wxService.session2User(sessionId);
-        return Result.of(coursesService.getCourseOutlineInfo(coursesId, wxUser.getUserId()));
+        Long userId =1L;
+        //TWxUser wxUser = wxService.session2User(sessionId);
+        return Result.of(coursesService.getCourseOutlineInfo(coursesId, userId));
     }
 
     @RequestMapping(value = "/lessones/{coursesId}")

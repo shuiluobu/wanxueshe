@@ -79,12 +79,15 @@ public class DictionaryServiceImpl implements IDictionaryService {
         String type2 = "";
         if (code != null) {
             TSubjectTypeDict dict = (TSubjectTypeDict) getSubjectTypeDict().get(code);
-            type1 = dict.getSubjectTypeName();
-            if (!dict.getParentCode().equals("00")) {
-                String code2 = dict.getParentCode();
-                TSubjectTypeDict dict2 = (TSubjectTypeDict) getSubjectTypeDict().get(code2);
-                type2 = dict2.getSubjectTypeName();
+            if(dict!=null){
+                type1 = dict.getSubjectTypeName();
+                if (!dict.getParentCode().equals("00")) {
+                    String code2 = dict.getParentCode();
+                    TSubjectTypeDict dict2 = (TSubjectTypeDict) getSubjectTypeDict().get(code2);
+                    type2 = dict2.getSubjectTypeName();
+                }
             }
+
         }
         if (type.equals("1")) {
             return type2;

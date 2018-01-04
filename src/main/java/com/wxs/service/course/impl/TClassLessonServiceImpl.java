@@ -103,7 +103,7 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
             map.put("min",StringUtils.split(time,":")[1]);
             map.put("month",StringUtils.split(day,"-")[0]);
             map.put("day",StringUtils.split(day,"-")[1]);
-            String code = map.get("subjectType").toString();
+            String code = map.get("subjectType")==null?"":map.get("subjectType").toString();
             map.put("subjectType",dictionaryService.getSubjectTypeValue(code,"1"));
         });
         return list;
