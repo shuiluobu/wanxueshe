@@ -4,11 +4,13 @@ import com.wxs.entity.organ.TAgendaCompletion;
 import com.wxs.entity.organ.TAgendaCompletionDict;
 import com.wxs.entity.organ.TOrganAgenda;
 import com.wxs.entity.organ.TOrganTask;
+import com.wxs.enu.EnumClassworkCompletion;
 import com.wxs.service.customer.ITTeacherService;
 import com.wxs.service.organ.ITAgendaCompletionDictService;
 import com.wxs.service.organ.ITAgendaCompletionService;
 import com.wxs.service.organ.ITOrganAgendaService;
 import com.wxs.service.organ.ITOrganTaskService;
+import com.wxs.service.task.ITStudentWorkService;
 import com.wxs.util.Result;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,9 @@ public class COrganAgendaController {
     @Autowired
     private ITAgendaCompletionDictService agendaCompletionDictService;
 
+    @Autowired
+    private ITStudentWorkService studentWorkService;
+
     /**
      * 获取 我的今日和明日待办
      * @param userId
@@ -59,6 +64,38 @@ public class COrganAgendaController {
             startTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 00:00:00";
             endTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 23:59:59";
             resultMap.put("tomorrows",organAgendaService.myOrganAgenda(userId,startTime,endTime));
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error(BaseUtil.getExceptionStackTrace(e));
+        }
+
+        return Result.of(resultMap);
+    }
+
+    /**
+     * @Description : 获取某机构 某学生 的 今日 和明日 待办 上课和课堂作业
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 10:59 2018/1/4
+     * @Params : [studentId, organId]
+     **/
+    @RequestMapping("/studentAgenda")
+    public Result studentAgenda(Long studentId,Long organId){
+        Map resultMap = new HashMap();
+
+        try{
+            Calendar calendar = Calendar.getInstance();
+            //今日待办-上课
+            String startTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 00:00:00";
+            String endTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 23:59:59";
+            resultMap.put("today_class",organAgendaService.studentAgenda(studentId,organId,startTime,endTime));
+            resultMap.put("today_works",studentWorkService.studentWork(studentId,organId,startTime,endTime, EnumClassworkCompletion.NOT_HAND_IN.getTypeCode()));
+            //明日待办
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+            startTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 00:00:00";
+            endTime = BaseUtil.toString(calendar.getTime(),"yyyy-MM-dd") +" 23:59:59";
+            resultMap.put("tomorrow_class",organAgendaService.studentAgenda(studentId,organId,startTime,endTime));
+            resultMap.put("tomorrow_works",studentWorkService.studentWork(studentId,organId,startTime,endTime,EnumClassworkCompletion.NOT_HAND_IN.getTypeCode()));
         }catch (Exception e){
             e.printStackTrace();
             log.error(BaseUtil.getExceptionStackTrace(e));
