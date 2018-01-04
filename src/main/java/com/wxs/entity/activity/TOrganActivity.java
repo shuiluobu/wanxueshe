@@ -2,7 +2,9 @@ package com.wxs.entity.activity;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +22,7 @@ import java.io.Serializable;
 public class TOrganActivity extends Model<TOrganActivity> {
 
     private static final long serialVersionUID = 1L;
-
+	@TableId(value="activityId", type= IdType.AUTO)
 	private Long activityId;
 	private Long organId;
 	private String activityTitle;
