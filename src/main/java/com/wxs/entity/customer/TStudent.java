@@ -70,7 +70,7 @@ public class TStudent extends Model<TStudent> {
 	/**
 	 * 状态 1:启用，0:禁止
 	 */
-	private Integer status;
+	private Integer status=0;
 
 
 	public Long getId() {

@@ -1,5 +1,6 @@
 package com.wxs.config;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,7 +74,10 @@ public class RedisPoolConfig {
 			@Qualifier("jedisPoolConfig")JedisPoolConfig jedisPoolConfig){
 		List<JedisShardInfo> shards = new ArrayList<>();
 		JedisShardInfo jedisShardInfo = new JedisShardInfo(host, port);
-		//jedisShardInfo.setPassword(password);
+		if(!StringUtils.isEmpty(password)){
+			jedisShardInfo.setPassword(password);
+		}
+
 		shards.add(jedisShardInfo);
 		return new ShardedJedisPool(jedisPoolConfig, shards);
 	}
