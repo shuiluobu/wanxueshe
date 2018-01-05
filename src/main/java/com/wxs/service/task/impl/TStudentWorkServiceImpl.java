@@ -10,6 +10,7 @@ import com.wxs.service.task.ITStudentWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +25,9 @@ import java.util.Map;
 public class TStudentWorkServiceImpl extends ServiceImpl<TStudentWorkMapper, TStudentWork> implements ITStudentWorkService {
     @Autowired
     private ITClassWorkService classWorkService;
+    @Autowired
+    private TStudentWorkMapper studentWorkMapper;
+
     public Map<String,Object> getStudentWorkDetail(Long studentWorkId){
         Map<String,Object> studentTaskMap = Maps.newHashMap();
         try{
@@ -37,5 +41,10 @@ public class TStudentWorkServiceImpl extends ServiceImpl<TStudentWorkMapper, TSt
         //todo
         return  studentTaskMap;
 
+    }
+
+    @Override
+    public List<Map> studentWork(Long studentId, Long organId, String startTime, String endTime,String completion) {
+        return studentWorkMapper.studentWork(studentId,organId,startTime,endTime,completion);
     }
 }
