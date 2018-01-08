@@ -79,9 +79,10 @@ public class TCourseCategoryServiceImpl extends ServiceImpl<TCourseCategoryMappe
     }
 
     @Override
-    public List<TCourseCategory> getNearByCategorys(double latitude, double longitude) {
+    public List<Map<String,Object>> getNearByCategorys(double latitude, double longitude) {
         //用sql查找5公里范围内的
-        return courseCategoryMapper.getNearByCategorys(latitude, longitude, 5);
+        List<TCourseCategory> list =  courseCategoryMapper.getNearByCategorys(latitude, longitude, 5);
+        return  catBean2MapList(list);
 
     }
 

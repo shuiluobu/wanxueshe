@@ -94,7 +94,14 @@ public class TParentServiceImpl extends ServiceImpl<TParentMapper, TParent> impl
         userIds.stream().forEach(friendUserId -> {
             Map<String, Object> map = Maps.newHashMap();
             TFollowUser followUser = new TFollowUser().selectOne("userId={0} and fuserId={1}", loginUserId, friendUserId);
+            if(followUser==null){
+                followUser = new TFollowUser();
+            }
             TFrontUser friendUser = new TFrontUser().selectById(friendUserId);
+
+            if(friendUser==null){
+                friendUser = new TFrontUser();
+            }
             map.put("userId", friendUserId);
             map.put("realName", followUser.getMemoName() == null ? friendUser.getUserName() : followUser.getMemoName());
             map.put("studentCount", studentMapper.getParentStudentCount(friendUserId));

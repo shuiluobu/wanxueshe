@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public interface TFollowUserMapper extends BaseMapper<TFollowUser> {
 
-    public int getIsFriednCount(Long userId,Long friendUserId);
+    public int getIsFriednCount(@Param("userId") Long userId,@Param("friendUserId") Long friendUserId);
     @Select("select fuserId from t_follow_user where userId=#{userId} and relationType=#{relationType}")
     @ResultType(long.class)
     public List<Long> getFollowUserIdsByParam(@Param("userId") Long userId,@Param("relationType") String relationType);

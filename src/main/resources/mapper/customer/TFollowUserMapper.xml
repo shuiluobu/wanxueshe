@@ -13,10 +13,10 @@
 		<result column="updateTime" property="updateTime" />
 		<result column="status" property="status" />
 	</resultMap>
-	<select id="getIsFriednCount" resultType="int" parameterType="java.util.HashMap">
+	<select id="getIsFriednCount" resultType="int">
 		SELECT count(1)  FROM  t_follow_user
-		 WHERE relationType=10
+		 WHERE relationType='10'
 		 and userId = #{userId}
-		 and fuserId = #{freindUserId}
+		 and fuserId = #{friendUserId}
 	</select>
 </mapper>
