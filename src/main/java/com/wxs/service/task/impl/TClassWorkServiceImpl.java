@@ -61,14 +61,18 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
         return list;
     }
 
-    public Map<String, Object> getClassWorkOutline(Long taskId,Long userId) {
-        Map<String, Object> classTask = classWorkMapper.getClassWork(taskId);
+    public Map<String, Object> getClassWorkOutline(Long sWorkId,Long userId) {
+        TStudentWork studentWork = new TStudentWork().selectById(sWorkId);
+        Long workId = studentWork.getWorkId();
+        TStudent student = new TStudent().selectById(studentWork.getStudentId());
+        Map<String, Object> classTask = classWorkMapper.getClassWork(workId);
         Long teacherId = Long.parseLong(classTask.get("teacherId").toString());
         classTask.put("teacherName",new TTeacher().selectById(teacherId).getTeacherName());
         Long organId = Long.parseLong(classTask.get("organ").toString());
         Long dynamicId = Long.parseLong(classTask.get("dynamicId").toString());
         classTask.put("workContent",dynamicService.queryDynamicOfWork(dynamicId));
-        classTask.put("plan", StringUtils.join(classWorkMapper.getStudentNameByWorkId(taskId,userId),","));
+        classTask.put("studentName", student.getRealName());
+        classTask.put("studentId",student.getId());
         TOrganization organ = new TOrganization().selectById(organId); //todo 从缓存中获取
         classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()==1?"已认证":""));
         TClassCourse course = new TClassCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
