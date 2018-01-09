@@ -221,58 +221,109 @@
             <!-- 待办   end -->
         </div>
         <div id="tab2" class="weui-tab__bd-item weui-tab__bd-item--active">
-            <div>
-                <div class="record_div">
-                    <p class="record_time">2017-08-22  22:33:11</p>
-                    <h5 class="record_p">上课签到</h5>
-                    <p>来自 <span class="comment-blue">张老师</span>  的任务</p>
-                    <p>消耗课时费用：<span>220</span>元 | 剩余课时费用：<span>2200</span></p>
-                    <div class="weui-panel weui-panel_access" >
-                        <div class="weui-panel__bd">
-                            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg" style="background-color: #E4E4E4">
-                                <div class="weui-media-box__hd">
-                                    <img class="weui-media-box__thumb" src="/weui/images/wyh/note_right.png">
-                                </div>
-                                <div class="weui-media-box__bd">
-                                    <h4 class="weui-media-box__title">机器人机器-1/3课时</h4>
-                                    <h4 class="weui-media-box__title">2017-07-23 11:00  完成</h4>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="record_div">
-                    <p class="record_time">2017-08-22  22:33:11</p>
-                    <h5 class="record_p done">上课点评</h5>
-                    <p>来自 <span class="comment-blue">张老师</span>  的点评</p>
-                    <div id="impressTag1" style="margin: 10px -4px">
-                        <div class="tag">
-                        <div>聪明 <span>1</span></div>
-                        <div>动手能力强 <span>3</span></div>
-                        <div>积极  <span>3</span></div>
-                        </div>
-                        <div class="tag">
-                        <div>乐于助人 <span>2</span></div>
-                        <div>勤奋  <span>1</span></div>
-                        </div>
-                    </div>
-                    <p>上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错</p>
-                    <div class="weui-uploader" style="margin-top: 10px;">
-                        <div class="weui-uploader__bd">
-                            <ul class="weui-uploader__files" id="uploaderFiles">
-                                <li class="weui-uploader__file comment_img" style="background-image:url(/images/userface1.jpg);bottom: 0px;"></li>
-                                <li class="weui-uploader__file comment_img" style="background-image:url(/images/userface2.jpg);bottom: 0px;"></li>
-                                <li class="weui-uploader__file comment_img" style="background-image:url(/images/userface3.jpg);bottom: 0px;"></li>
-                                <li class="weui-uploader__file comment_img" style="background-image:url(/images/userface4.jpg);bottom: 0px;"></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <p class="comment-blue">机器人课程 课时1/32</p>
-                </div>
-                <!-- 图片放大  S -->
-                <div class="weui-gallery" id="gallery" >
-                    <span class="weui-gallery__img"  id="galleryImg" style="background-image:url(/weui/images/pic_160.png);bottom: 0px;"></span>
-                </div>
+            <div id="recordDiv">
+
+                <!--<div class="record_div">-->
+                    <!--<p class="record_time">2017-08-22  22:33:11</p>-->
+                    <!--<h5 class="record_p">上课签到</h5>-->
+                    <!--<p>来自 <span class="comment-blue">张老师</span>  的任务</p>-->
+                    <!--<p>消耗课时费用：<span>220</span>元 | 剩余课时费用：<span>2200</span></p>-->
+                    <!--<div class="weui-panel weui-panel_access" >-->
+                        <!--<div class="weui-panel__bd">-->
+                            <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg" style="background-color: #E4E4E4">-->
+                                <!--<div class="weui-media-box__hd">-->
+                                    <!--<img class="weui-media-box__thumb" src="/weui/images/wyh/note_right.png">-->
+                                <!--</div>-->
+                                <!--<div class="weui-media-box__bd">-->
+                                    <!--<h4 class="weui-media-box__title">机器人机器-1/3课时</h4>-->
+                                    <!--<h4 class="weui-media-box__title">2017-07-23 11:00  完成</h4>-->
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="record_div">-->
+                    <!--<p class="record_time">2017-08-22  22:33:11</p>-->
+                    <!--<h5 class="record_p done">上课点评</h5>-->
+                    <!--<p>来自 <span class="comment-blue">张老师</span>  的点评</p>-->
+                    <!--<div id="impressTag1" style="margin: 10px -4px">-->
+                        <!--<div class="tag">-->
+                        <!--<div>聪明</div>-->
+                        <!--<div>动手能力强</div>-->
+                        <!--<div>积极</div>-->
+                        <!--</div>-->
+                        <!--<div class="tag">-->
+                        <!--<div>乐于助人</div>-->
+                        <!--<div>勤奋</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<p>上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错上课表现不错</p>-->
+                    <!--<div class="weui-uploader" style="margin-top: 10px;">-->
+                        <!--<div class="weui-uploader__bd">-->
+                            <!--<ul class="weui-uploader__files" id="uploaderFiles">-->
+                                <!--<li class="weui-uploader__file comment_img" style="background-image:url(/images/userface1.jpg);bottom: 0px;"></li>-->
+                                <!--<li class="weui-uploader__file comment_img" style="background-image:url(/images/userface2.jpg);bottom: 0px;"></li>-->
+                                <!--<li class="weui-uploader__file comment_img" style="background-image:url(/images/userface3.jpg);bottom: 0px;"></li>-->
+                                <!--<li class="weui-uploader__file comment_img" style="background-image:url(/images/userface4.jpg);bottom: 0px;"></li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<p class="comment-blue">机器人课程 课时1/32</p>-->
+                <!--</div>-->
+
+                <!--<div class="record_div">-->
+                    <!--<p class="record_time">2017-08-22  22:33:11</p>-->
+                    <!--<h5 class="record_p">报名</h5>-->
+                    <!--<p>来自 <span class="comment-blue">王大贺</span>  的操作</p>-->
+                    <!--<p>缴纳学费：2200元，加入班级：<span class="comment-blue">机器人中级班</span>-->
+                        <!--，课时：<span class="comment-blue">40课时</span>，时任老师：<span class="comment-blue">张老师</span></p>-->
+                <!--</div>-->
+
+                <!--<div class="record_div">-->
+                    <!--<p class="record_time">2017-08-22  22:33:11</p>-->
+                    <!--<h5 class="record_p">回访</h5>-->
+                    <!--<p>来自 <span class="comment-blue">王大贺</span>  的任务</p>-->
+                    <!--<p>学员家长计划周日到学校报名，报名意向很强烈</p>-->
+                    <!--<div class="weui-panel weui-panel_access" >-->
+                        <!--<div class="weui-panel__bd">-->
+                            <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg" style="background-color: #E4E4E4">-->
+                                <!--<div class="weui-media-box__hd">-->
+                                    <!--<img class="weui-media-box__thumb" src="/weui/images/wyh/note_right.png">-->
+                                <!--</div>-->
+                                <!--<div class="weui-media-box__bd">-->
+                                    <!--<h4 class="weui-media-box__title">回访 学员王大贺</h4>-->
+                                    <!--<h4 class="weui-media-box__title">2017-07-23 11:00  完成</h4>-->
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="record_div">-->
+                    <!--<p class="record_time">2017-08-22  22:33:11</p>-->
+                    <!--<h5 class="record_p">来源</h5>-->
+                    <!--<p>来自 <span class="comment-blue">王大贺</span>  的任务</p>-->
+                    <!--<div class="weui-panel weui-panel_access" >-->
+                        <!--<div class="weui-panel__bd">-->
+                            <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg" style="background-color: #E4E4E4">-->
+                                <!--<div class="weui-media-box__hd">-->
+                                    <!--<img class="weui-media-box__thumb" src="/weui/images/wyh/note_right.png">-->
+                                <!--</div>-->
+                                <!--<div class="weui-media-box__bd">-->
+                                    <!--<h4 class="weui-media-box__title">地推 鑫苑小学</h4>-->
+                                    <!--<h4 class="weui-media-box__title">2017-07-23 11:00  完成</h4>-->
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            </div>
+
+            <!-- 图片放大  S -->
+            <div class="weui-gallery" id="gallery" >
+                <span class="weui-gallery__img"  id="galleryImg" style="background-image:url(/weui/images/pic_160.png);bottom: 0px;"></span>
             </div>
         </div>
         <div id="tab3" class="weui-tab__bd-item ">
@@ -563,18 +614,124 @@
         });
 
         //获取学生的记录
-//        $.ajax("/cOrganTask/releaseClassComment",{
-//            async : false,
-//            type: 'post',
-//            dataType: 'json',
-//            data:{
-//                taskId:taskId,
-//                content:content,
-//            },
-//            success:function(json){
-//
-//            }
-//        });
+        $.ajax("/cBusinessRecord/studentRecord",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                studentId:studentId
+            },
+            success:function(json){
+                if(json.data){
+                    var list = json.data;
+                    $("#recordDiv").empty();
+                    for(var i=0;i<list.length;i++){
+                        var type = list[i].businessType;
+                        var remark = '';
+                        if(type != "SOURCE" ){
+                            remark = '<p>#remark#</p>';
+                        }
+//                        if(type == "APPLY"){
+//                            remark = '<p>缴纳学费：2200元，加入班级：<span class="comment-blue">机器人中级班</span> '+
+//                            '，课时：<span class="comment-blue">40课时</span>，时任老师：<span class="comment-blue">张老师</span></p>';
+//                        }
+                        var tags = '';
+                        if(type == "CLASS_COMMENT"){
+                            var tagList = list[i].impressTags;
+                            if(tagList){
+                                tags = '<div style="margin: 10px -4px">';
+                                var tagDiv = '<div class="tag">';
+                                for( var j=0;j<tagList.length;j++){
+                                    tagDiv += '<div>'+tagList[j].tagDesc+'</div>';
+                                    if( (j+1)%4 == 0  || (j+1) == tagList.length){
+                                        tagDiv += '</div>';
+                                        tags += tagDiv;
+                                        tagDiv = '<div class="tag">';
+                                    }
+                                }
+                                tags += '</div>';
+                            }
+                        }
+                        var imgs = '';
+                        if( type == "CLASS_COMMENT"){
+                            var imgList = list[i].dynamicImgs;
+                            if(imgList){
+                                imgs = '<div class="weui-uploader" style="margin-top: 10px;">'+
+                                    '<div class="weui-uploader__bd">'+
+                                    '<ul class="weui-uploader__files" id="uploaderFiles">';
+                                for( var j=0;j<imgList.length;j++){
+                                    imgs+= '<li class="weui-uploader__file comment_img" style="background-image:url('+imgList[j].originalImgUrl+');bottom: 0px;"></li>';
+                                }
+                                imgs+='</ul>'+
+                                    '</div>'+
+                                    '</div>'+
+                                '<p class="comment-blue">#clName#</p>';
+                            }
+                        }
+                        var panel = '';
+                        if( type != "CLASS_COMMENT" && type != "APPLY" ){
+                            panel =  '<div class="weui-panel weui-panel_access" >'+
+                                        '<div class="weui-panel__bd">'+
+                                            '<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg" style="background-color: #E4E4E4">'+
+                                                '<div class="weui-media-box__hd">'+
+                                                 '<img class="weui-media-box__thumb" src="/weui/images/wyh/note_right.png">'+
+                                                '</div>'+
+                                                '<div class="weui-media-box__bd">'+
+                                                    '<h4 class="weui-media-box__title">#title#</h4>'+
+                                                    '<h4 class="weui-media-box__title">#doneTime#  完成</h4>'+
+                                                '</div>'+
+                                            '</a>'+
+                                        '</div>'+
+                                    '</div>';
+                        }
+                        var div = '<div class="record_div">'+
+                                        '<p class="record_time">#doneTime#</p>'+
+                                        '<h5 class="record_p">#type#</h5>'+
+                                        '<p>来自 <span class="comment-blue">#userName#</span>  的#operation#</p>'+
+                                        tags+
+                                        remark+
+                                        imgs+
+                                        panel+
+                                    '</div>';
+                        div = div.replaceAll('#doneTime#',list[i].createTime);
+                        if(type == "SOURCE"){
+                            div = div.replace('#type#','来源');
+                            div = div.replace('#userName#',list[i].studentName);
+                            div = div.replace('#operation#','任务');
+                            div = div.replace('#title#',list[i].remark);
+                        }
+                        if(type == "RETURN_VISIT"){
+                            div = div.replace('#type#','回访');
+                            div = div.replace('#userName#',list[i].studentName);
+                            div = div.replace('#remark#',list[i].remark);
+                            div = div.replace('#operation#','任务');
+                            div = div.replace('#title#','回访 学员'+list[i].studentName);
+                        }
+                        if(type == "APPLY"){
+                            div = div.replace('#type#','报名');
+                            div = div.replace('#userName#',list[i].studentName);
+                            div = div.replace('#remark#',list[i].remark);
+                            div = div.replace('#operation#','操作');
+                        }
+                        if(type == "SIGN_IN"){
+                            div = div.replace('#type#','上课签到');
+                            div = div.replace('#remark#',list[i].remark);
+                            div = div.replace('#userName#',list[i].teacherName);
+                            div = div.replace('#operation#','任务');
+                            div = div.replace('#title#',list[i].clName);
+                        }
+                        if(type == "CLASS_COMMENT"){
+                            div = div.replace('#type#','课堂点评');
+                            div = div.replace('#userName#',list[i].teacherName);
+                            div = div.replace('#operation#','点评');
+                            div = div.replace('#remark#',list[i].dynamicContent);
+                            div = div.replace('#clName#',list[i].clName);
+                        }
+                        $("#recordDiv").append(div);
+                    }
+                }
+            }
+        });
 
 
         //预览图片
