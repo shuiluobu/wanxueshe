@@ -34,12 +34,12 @@ public interface TClassWorkMapper extends BaseMapper<TClassWork> {
             "completion," +
             "w.id as workId," +
             "DATE_FORMAT(w.endTime,'%Y-%m-%d %H:%i') endTime " +
-            "from t_class_work w,t_student_work s" +
+            "from t_class_work w,t_student_work s " +
             " where s.workId=w.id and s.userId=#{userId}")
     @ResultType(Map.class)
     public List<Map<String,Object>> getMyClassWorkInfo(@Param("userId") Long userId);
 
-    @Select("SELECT s.realName from t_student s,t_student_work w" +
+    @Select("SELECT s.realName from t_student s,t_student_work w " +
             "where s.id=w.studentId and w.id=#{workId} and w.userId=#{userId}")
     @ResultType(String.class)
     public List<String> getStudentNameByWorkId(@Param("workId") Long workId,@Param("userId") Long userId);

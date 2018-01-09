@@ -6,6 +6,8 @@ import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.course.ITCourseCategoryService;
 import com.wxs.service.organ.ITOrganizationService;
 import com.wxs.util.Result;
+import freemarker.template.utility.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +35,7 @@ public class MyDiscoveryController extends BaseWxController {
     public Result nearInformation(@RequestParam(value = "sessionId", required = true) String sessionId,
                                   @RequestParam double latitude, @RequestParam double longitude) {
         //根据经纬度查找附近的课程
-        List<TCourseCategory> list = courseCategoryService.getNearByCategorys(latitude, longitude);
+        List<Map<String,Object>> list = courseCategoryService.getNearByCategorys(latitude, longitude);
         return Result.of(list);
     }
 
@@ -53,10 +55,16 @@ public class MyDiscoveryController extends BaseWxController {
     }
     @RequestMapping(value = "/findCourse")
     public Result nearOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,
+                            @RequestParam double latitude, @RequestParam double longitude,
                             @RequestParam(required = false, value = "subjectType", defaultValue = "") String subjectType,
                             @RequestParam(required = false, value = "searchName", defaultValue = "") String searchName) {
         //根据经纬度查找附近机构
-        return Result.of(courseCategoryService.searchCourseListForDiscovery(subjectType, searchName));
+        if (StringUtils.isEmpty(searchName)){
+          return   Result.of(courseCategoryService.getNearByCategorys(latitude, longitude));
+        } else {
+            return Result.of(courseCategoryService.searchCourseListForDiscovery(subjectType, searchName));
+        }
+
     }
 
 

@@ -81,6 +81,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     public List<Map<String, Object>> getStudentOfUser(Long userId) {
         EntityWrapper<TStudent> wrapper = new EntityWrapper<>();
         wrapper.eq("userId", userId);
+        wrapper.eq("status",0);
         List<TStudent> students = studentMapper.selectList(wrapper);
         List<Map<String, Object>> studentMapList = new ArrayList<>();
         Map<String, String> parentTypeMap = dictionaryService.getStudentParentType();
@@ -153,7 +154,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         Map<String, Object> result = Maps.newHashMap();
 
         if (student.getId()!=null){
-            baseMapper.update(student,null);
+            baseMapper.updateById(student);
             result.put("message", "更新成功");
         } else {
             baseMapper.insert(student);
@@ -167,9 +168,8 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     @Override
     public Integer delStudent(Long studentId, Long userId) {
         TStudent student = new TStudent().selectById(studentId);
-        EntityWrapper wrapper = new EntityWrapper();
-        wrapper.eq("userId", userId);
-        return baseMapper.update(student, wrapper);
+        student.setStatus(1);
+        return baseMapper.updateById(student);
     }
 
     @Override

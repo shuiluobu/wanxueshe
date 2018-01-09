@@ -35,8 +35,8 @@ public interface TCourseCategoryMapper extends BaseMapper<TCourseCategory> {
     @Select("SELECT c.* from t_course_category c,t_organization o where c.organId=o.id " +
             " and (" +
             "    acos(" +
-            "     sin((#{latitude}*3.1415)/180) * sin((latitude*3.1415)/180) + \n" +
-            "     cos((#{latitude}*3.1415)/180) * cos((latitude*3.1415)/180) * cos((#{longitude}*3.1415)/180 - (longitude*3.1415)/180)\n" +
+            "     sin((#{latitude}*3.1415)/180) * sin((#{latitude}*3.1415)/180) + \n" +
+            "     cos((#{latitude}*3.1415)/180) * cos((#{latitude}*3.1415)/180) * cos((#{longitude}*3.1415)/180 - (#{longitude}*3.1415)/180)\n" +
             "     )*6370.996 " +
             "     )<=#{range}")
     @ResultType(TCourseCategory.class)

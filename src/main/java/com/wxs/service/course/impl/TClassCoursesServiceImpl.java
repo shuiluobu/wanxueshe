@@ -100,8 +100,11 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
             } else {
                 result.put("smallRemark", "");
                 TFrontUser createUser = new TFrontUser().selectById(category.getCreateUserId());
-                result.put("createUserName", createUser.getUserName());
-                result.put("createUserId", category.getCreateUserId());
+                if(createUser!=null){
+                    result.put("createUserName", createUser.getUserName());
+                    result.put("createUserId", category.getCreateUserId());
+                }
+
             }
             return result;
         } catch (Exception e) {

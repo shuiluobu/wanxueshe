@@ -73,11 +73,11 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
     public Map<String, Object> editUserInfoByMySelf(Long userId, String nickName, String headImg, int gener, String mobilePhone) {
         Map<String, Object> result = Maps.newHashMap();
         TFrontUser user = baseMapper.selectById(userId);
-        EntityWrapper wrapper = new EntityWrapper();
-        wrapper.eq("nickName", nickName);
-        wrapper.eq("mobilePhone", mobilePhone);
-        wrapper.eq("headImg", headImg);
-        baseMapper.update(user, wrapper);
+
+        user.setNickName(nickName);
+        user.setMobilePhone(mobilePhone);
+        user.setHeadImg(headImg);
+        baseMapper.updateById(user);
         result.put("success", true);
         result.put("message", "保存成功");
         return result;
