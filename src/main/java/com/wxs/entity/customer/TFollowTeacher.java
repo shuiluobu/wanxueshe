@@ -20,6 +20,7 @@ public class TFollowTeacher extends Model<TFollowTeacher> {
 
 	private Long id;
 	private Long userId;
+	//private Long fuserId; //教师所属的用户ID
 	private Long teacherId;
 	private Date createTime;
 	private Date updateTime;
