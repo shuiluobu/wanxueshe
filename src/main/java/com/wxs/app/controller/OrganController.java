@@ -63,17 +63,17 @@ public class OrganController extends BaseWxController {
         return Result.of(organAdvice);
     }
 
-    @RequestMapping(value = "/organ/choosePhotos")
+    @RequestMapping(value = "/choosePhotos/{organId}")
     public Result choosePhotos(@RequestParam(value = "sessionId", required = false) String sessionId,
-                               @RequestParam(value = "sessionId", required = true) Long organId,
-                               @RequestParam(value = "sessionId", required = false, defaultValue = "1") int page,
-                               @RequestParam(value = "sessionId", required = false, defaultValue = "6") int rows) {
+                               @PathVariable(value = "organId", required = true) Long organId,
+                               @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                               @RequestParam(value = "rows", required = false, defaultValue = "6") int rows) {
         return Result.of(organizationService.choicenessPhotos(organId, page, rows));
     }
 
-    @RequestMapping(value = "/organ/newestDynamic")
+    @RequestMapping(value = "/newestDynamic/{organId}")
     public Result newestDynamic(@RequestParam(value = "sessionId", required = false) String sessionId,
-                                @RequestParam(value = "sessionId", required = true) Long organId) {
+                                @PathVariable(value = "organId", required = true) Long organId) {
         Long userId = 1L;
         return Result.of(dynamicService.getNewestDynamicByOrganId(userId, organId));
     }

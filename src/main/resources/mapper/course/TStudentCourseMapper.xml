@@ -28,14 +28,14 @@
     </select>
     <select id="getMyCourses" parameterType="java.util.HashMap" resultType="java.util.HashMap">
         SELECT
-        y.courseCategoryCode courseCode,
-        y.courseCategoryName courseName,
-        y.alreadyStudySum alreadyStudySum,
+        y.courseCategoryCode as courseCode,
+        y.courseCategoryName as courseName,
+        y.alreadyStudySum as alreadyStudySum,
         c.canQty,
         s.coursesId,
         s.userId,
         s.studentId,
-        t.studentName,
+        t.realName,
         s.isEnd
         FROM
         t_student_course s,

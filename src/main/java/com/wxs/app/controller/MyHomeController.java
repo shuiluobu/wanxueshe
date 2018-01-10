@@ -216,8 +216,7 @@ public class MyHomeController extends BaseWxController {
 
         //添加好友的请求
         Long userId = 1L;
-        followUserService.sendAddFriendReq(userId, friendId);
-        return Result.of("发送请求成功");
+        return Result.of(followUserService.sendAddFriendReq(userId, friendId));
     }
 
     @RequestMapping(value = "/addFriend")

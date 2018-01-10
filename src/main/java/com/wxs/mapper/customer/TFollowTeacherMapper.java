@@ -20,7 +20,7 @@ import java.util.Map;
  * @since 2017-12-21
  */
 public interface TFollowTeacherMapper extends BaseMapper<TFollowTeacher> {
-    @Select("SELECT f.teacherId,t.leval,o.organName,t.headImg FROM t_follow_teacher f,t_teacher t,t_organization o" +
+    @Select("SELECT f.teacherId,t.teacherName,t.leval,o.organName,t.headImg FROM t_follow_teacher f,t_teacher t,t_organization o" +
             " where t.id=f.teacherId and o.id=t.organizationId and f.userId =#{userId} ")
     @ResultType(Map.class)
     List<Map<String,Object>> getFollowTeacherByUser(@Param("userId") Long userId);
