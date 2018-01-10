@@ -37,6 +37,8 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     public final String WORK_COMPLETION_STATUS = "WORK_COMPLETION_STATUS";//作业完成情况
 
+    public final String BUSINESS_RECORD_TYPE = "BUSINESS_RECORD_TYPE";//操作记录类型
+
     @Override
     public Map<String, Object> querySubjectTypeDicts() {
         Map<String, Object> result = Maps.newHashMap();
@@ -128,6 +130,11 @@ public class DictionaryServiceImpl implements IDictionaryService {
     @Override
     public Map<String,String> getWorkcompletionStatus(){
         return getDictByType(WORK_COMPLETION_STATUS);
+    }
+
+    @Override
+    public Map<String, String> getBusinessRecordType() {
+        return getDictByType(BUSINESS_RECORD_TYPE);
     }
 
     @Override

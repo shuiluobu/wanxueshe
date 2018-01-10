@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxs.mapper.record.TBusinessRecordMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.wxs.entity.record.TBusinessRecord">
+		<id column="id" property="id" />
+		<result column="teacherId" property="teacherId" />
+		<result column="organId" property="organId" />
+		<result column="studentId" property="studentId" />
+		<result column="businessId" property="businessId" />
+		<result column="businessType" property="businessType" />
+		<result column="remark" property="remark" />
+		<result column="createUserId" property="createUserId" />
+		<result column="createTime" property="createTime" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>

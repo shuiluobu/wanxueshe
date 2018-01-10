@@ -28,13 +28,13 @@ public class MpGenerator {
 		AutoGenerator mpg = new AutoGenerator();
 		// 全局配置
 		GlobalConfig gc = new GlobalConfig();
-		gc.setOutputDir("C://");
+		gc.setOutputDir("E://");
 		gc.setFileOverride(true);
 		gc.setActiveRecord(true);
 		gc.setEnableCache(false);// XML 二级缓存
 		gc.setBaseResultMap(true);// XML ResultMap
 		gc.setBaseColumnList(false);// XML columList
-		gc.setAuthor("skyer");
+		gc.setAuthor("wyh");
 
 		mpg.setGlobalConfig(gc);
 		// 数据源配置
@@ -42,20 +42,20 @@ public class MpGenerator {
 		dsc.setDbType(DbType.MYSQL);
 		dsc.setDriverName("com.mysql.jdbc.Driver");
 		dsc.setUsername("root");
-		dsc.setPassword("root");
-		dsc.setUrl("jdbc:mysql://127.0.0.1:3306/wanxueshe?characterEncoding=utf8");
+		dsc.setPassword("blh2014");
+		dsc.setUrl("jdbc:mysql://115.29.193.18:3306/wanxueshe?characterEncoding=utf8");
 		mpg.setDataSource(dsc);
 		// 策略配置
 		StrategyConfig strategy = new StrategyConfig();
 		//strategy.setTablePrefix("beautiful_");// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-		strategy.setInclude(new String[] { "t_organ_advice" }); // 需要生成的表
+		strategy.setInclude(new String[] { "t_grouping_label" }); // 需要生成的表
 
 		mpg.setStrategy(strategy);
 		// 包配置
 		PackageConfig pc = new PackageConfig();
 		pc.setParent("com.wxs");
-		pc.setModuleName("remind");
+		pc.setModuleName("");
 		pc.setXml("mapper");
 		mpg.setPackageInfo(pc);
 		// 注入自定义配置，可以在 VM 中使用 cfg.abc 设置的值

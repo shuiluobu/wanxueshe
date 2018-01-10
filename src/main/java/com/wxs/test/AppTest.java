@@ -3,7 +3,7 @@ package com.wxs.test;
 import com.google.common.collect.Maps;
 import com.wxs.app.controller.BaseWxController;
 import com.wxs.cache.IGeoRedisService;
-import com.wxs.mapper.common.TCourseTypeDictMapper;
+//import com.wxs.mapper.course.TCourseTypeDictMapper;
 import com.wxs.util.Result;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +21,8 @@ import java.util.Map;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AppTest extends BaseWxController{
 
-    @Autowired
-    protected TCourseTypeDictMapper courseTypeDictMapper;
+//    @Autowired
+//    protected TCourseTypeDictMapper courseTypeDictMapper;
     @Test
     public void test1() {
 
@@ -33,7 +33,7 @@ public class AppTest extends BaseWxController{
 
 //        System.out.println(
 //                BaseUtil.toJson(Result.of(dictionaryService.queryCourseTypeDictes())));
-       System.out.println(sequenceService.getCourseCode(1L));
+//       System.out.println(sequenceService.getCourseCode(1L));
 //        List<TCourseTypeDict> dicts = courseTypeDictMapper.selectList(null);
 //        System.out.println(BaseUtil.toJson(dicts));
     }
