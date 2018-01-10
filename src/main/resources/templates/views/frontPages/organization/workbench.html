@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>工作台</title>
+    <style>
+        .workbench .right{
+            position: absolute;
+            right: 5px;
+            top: -3px;
+            width: 100px;
+            height: 45px;
+        }
+        .right a{
+            float: right;
+            padding-right: 20px;
+        }
+        .workbench{
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+        }
+        .month_data{
+            width: 100%;
+            display: table;
+        }
+        .month_data div{
+            height: 80px;
+        }
+        .month_data .one{
+            display: table-cell;
+            width: 7%;
+        }
+        .month_data .two{
+            display: table-cell;
+            width: 16%;
+        }
+        .two div{
+            height: 60px;
+            width: 60px;
+            background-color: #F2F2F2;
+            text-align: center;
+            line-height: 60px;
+        }
+        .month_data_deep{
+            width: 100%;
+            display: table;
+        }
+        .month_data_deep div{
+            height: 60px;
+        }
+        .month_data_deep .one{
+            display: table-cell;
+            width: 7%;
+        }
+        .month_data .deep_two{
+            display: table-cell;
+            width: 16%;
+        }
+        .deep_two div{
+            height: 60px;
+            width: 60px;
+            background-color: #CCCCCC;
+            text-align: center;
+            line-height: 60px;
+        }
+        .two p{
+            height: 10px;
+            width: 60px;
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #666666;
+            text-align: center;
+        }
+        .notice{
+            display: inline-block;
+            height: 20px;
+            width: 30px;
+            background-color: #F2F2F2;
+        }
+        .small_font{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #1E1E1E;
+        }
+        .this_title{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #999999;
+            background-color: #F2F2F2;
+            height: 35px;
+            line-height: 35px;
+            padding-left: 20px;
+        }
+        .app_font{
+            font-family: 'Arial Normal', 'Arial';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 13px;
+            color: #333333;
+            text-align: center;
+            line-height: normal;
+        }
+        .weui-fixed-btm div{
+            border-right: 1px solid #D9D9D9;
+        }
+
+    </style>
+</head>
+<body>
+<div class="workbench">
+    <p>工作台</p>
+    <div class="right">
+        <a href="javascript:void(0);"><img src="/weui/images/wyh/gear.png"></a>
+    </div>
+</div>
+<!-- 月度数据 S -->
+<div style="padding-left: 20px;">
+    <p class="small_font">月度数据</p>
+    <div class="month_data small_font">
+        <!--<div class="one"></div>-->
+        <div class="two">
+            <div >10</div>
+            <p>机构招生</p>
+        </div>
+        <div class="one"></div>
+        <div class="two">
+            <div >1000230</div>
+            <p>机构收入</p>
+        </div>
+        <div class="one"></div>
+        <div class="two">
+            <div >10</div>
+            <p>我的招生</p>
+        </div>
+        <div class="one"></div>
+        <div class="two">
+            <div >10</div>
+            <p>我的课消</p>
+        </div>
+        <div class="one"></div>
+    </div>
+    <div class="small_font" style="margin-top: 10px">
+        <div class="notice">
+           公告
+        </div>
+        <div style="display: inline">
+            下午两点到大会议室开会！
+        </div>
+    </div>
+</div>
+<!-- 月度数据 E -->
+
+<!-- 常用应用 S -->
+<div class="this_title" style="margin-top: 5px;">常见应用</div>
+<div style="padding-left: 20px;margin: 10px 0;">
+    <div class="month_data_deep app_font">
+        <!--<div class="one"></div>-->
+        <div class="deep_two" id="studentList">
+            <div >学员</div>
+        </div>
+        <div class="one"></div>
+        <div class="deep_two" id="classList">
+            <div >班级</div>
+        </div>
+        <div class="one"></div>
+        <div class="deep_two">
+            <div >招生</div>
+        </div>
+        <div class="one"></div>
+        <div class="deep_two">
+            <div >作业</div>
+        </div>
+        <div class="one"></div>
+    </div>
+</div>
+<!-- 常用应用 E -->
+
+<!-- 更多应用 S -->
+<div class="this_title">更多应用</div>
+<div style="padding-left: 20px;margin: 10px 0;">
+    <div class="month_data_deep app_font">
+        <div class="deep_two">
+            <div >补课</div>
+        </div>
+        <div class="one"></div>
+        <div class="deep_two">
+            <div >报名</div>
+        </div>
+        <div class="one"></div>
+        <div class="deep_two">
+            <div >转班</div>
+        </div>
+        <div class="one"></div>
+        <div class="deep_two">
+            <div >缴费</div>
+        </div>
+        <div class="one"></div>
+    </div>
+</div>
+<!-- 更多应用 E -->
+
+<!-- 空白 S -->
+<div style=" height: 200px;background-color: #F2F2F2">
+
+</div>
+<!-- 空白 E -->
+
+
+<!-- 底部导航栏 S -->
+<div class="weui-flex weui-fixed-btm">
+    <div class="weui-flex__item "><a href="javascript:;" class="weui-fixed-btn">待办</a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-fixed-btn">消息</a></div>
+    <div class="weui-flex__item btm_selected" ><a href="javascript:;" class="weui-fixed-btn">工作台</a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-fixed-btn">联系人</a></div>
+    <div class="weui-flex__item"><a href="javascript:;" class="weui-fixed-btn">我的</a></div>
+</div>
+<!-- 底部导航栏 E -->
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+
+    $(function () {
+        $(".deep_two").click(function () {
+            var id = $(this).attr("id");
+            window.location.href="/organization/viewsTransfer?view="+id
+        })
+    });
+</script>
+</html>

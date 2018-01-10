@@ -60,6 +60,10 @@ public class TOrganStudent extends Model<TOrganStudent> {
      */
 	private Date birthday;
 	/**
+	 * 头像
+	 */
+	private String headImg;
+	/**
 	 * 余额
 	 */
 	private Double balance;
@@ -148,6 +152,14 @@ public class TOrganStudent extends Model<TOrganStudent> {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getHeadImg() {
+		return headImg;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
 	}
 
 	public Double getBalance() {

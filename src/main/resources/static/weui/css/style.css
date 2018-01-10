@@ -73,7 +73,9 @@ select{-moz-appearance:none;-webkit-appearance:none;appearance:none;background:#
 /*底部浮动导航*/
 .weui-fixed-btm{ position: fixed; left: 0; bottom:0; width: 100%; border-top:1px solid #D9D9D9; background:#fff; -webkit-box-sizing:border-box;}
 .weui-fixed-btm .weui-flex__item{ text-align: center; }
-.weui-fixed-btm .weui-fixed-btn{ padding:15px 15px; display: block; border-right:1px solid #D9D9D9; }
+.weui-fixed-btm .weui-fixed-btn{ padding:15px 15px; display: block;
+	/*border-right:1px solid #D9D9D9;*/
+}
 
 /*按钮平分*/
 .weui-list-btm{ padding:10px 5px; }

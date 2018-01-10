@@ -17,5 +17,6 @@ public interface IDictionaryService {
     Map<String,String> getStudentParentType();
     Map<String,String> getWorkcompletionStatus();
     Map<String,String> getBusinessRecordType();
+    Map<String,String> getClassType();
 
 }
