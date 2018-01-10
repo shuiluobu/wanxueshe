@@ -17,6 +17,7 @@ import java.util.Map;
 public interface ITDynamicService extends IService<TDynamic> {
 	public List<Map<String,Object>> getDynamicmListByCourseId(Long loginUserId,Long couserId);
 	public List<Map<String,Object>> getDynamicmListByTeacherId(Long loginUserId,Long teacherId);
+	Map<String,Object> getNewestDynamicByOrganId(Long loginUserId,Long organId);
 	List<Map<String,Object>> getMyFriendDynamicmList(Long loginUserId);
 	List<Map<String, Object>> getOtherParentUserDynamicmList(Long loginUserId,Long userId);
 	List<Map<String,Object>> getMyStudentDynamicmList(List<Long> studentId);

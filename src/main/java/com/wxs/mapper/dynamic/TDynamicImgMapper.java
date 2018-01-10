@@ -27,4 +27,6 @@ public interface TDynamicImgMapper extends BaseMapper<TDynamicImg> {
     @Select(" select id,thumbImgUrl as image from t_dynamic_img where dynamicId = #{dynamicId}")
     @ResultType(Map.class)
     public List<Map<String,Object>> getImgsByDynamicId(@Param("dynamicId") Long dynamicId);
+    //获取一个机构的
+    public List<Map<String,Object>> getChoicenessPhotosByOrganId(@Param("organId") Long organId,@Param("offset") int offset,@Param("rows") int rows);
 }

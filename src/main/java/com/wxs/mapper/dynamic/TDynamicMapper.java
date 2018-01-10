@@ -20,6 +20,6 @@ public interface TDynamicMapper extends BaseMapper<TDynamic> {
     public List<Map<String,Object>> getFriendDynamicmsgByUserId(Long userId);
 
     public List<Map<String, Object>> getNearByDynamicms(@Param("studentIds") List<Long> studentIds,@Param("latitude") double latitude, @Param("longitude") double longitude, @Param("range") double range);
-
+    public List<Map<String,Object>> getNewestDynamicmByOrganId(@Param("organId") Long organId);
 
 }

@@ -56,14 +56,19 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
     public List<Map<String, Object>> getDynamicmListByCourseId(Long loginUserId, Long couserId) {
         String power = "0,1"; //权限管理
         List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(ImmutableMap.of("courseCateId", couserId, "power", power));
-        return buildDynamicmsgList(loginUserId, dynamicMsgs);
+        return buildDynamicList(loginUserId, dynamicMsgs);
     }
 
     @Override
     public List<Map<String, Object>> getDynamicmListByTeacherId(Long loginUserId, Long teacherUserId) {
         String power = "0,1"; //权限管理
         List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(ImmutableMap.of("userId", teacherUserId, "power", power));
-        return buildDynamicmsgList(loginUserId, dynamicMsgs);
+        return buildDynamicList(loginUserId, dynamicMsgs);
+    }
+    @Override
+    public Map<String,Object> getNewestDynamicByOrganId(Long loginUserId,Long organId){
+        List<Map<String,Object>> dynamics= dynamicMapper.getNewestDynamicmByOrganId(organId);
+        return buildDynamicList(loginUserId, dynamics).get(0);
     }
 
     /**
@@ -77,7 +82,7 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         Map<String, Object> param = Maps.newHashMap();
         param.put("studentIds", studentIds);
         List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(param);
-        return buildDynamicmsgList(null, dynamicMsgs);
+        return buildDynamicList(null, dynamicMsgs);
     }
 
     /**
@@ -98,7 +103,7 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         Map<String, Object> param = Maps.newHashMap();
         param.put("studentIds", studentIds);
         List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(param);
-        return buildDynamicmsgList(loginUserId, dynamicMsgs);
+        return buildDynamicList(loginUserId, dynamicMsgs);
     }
 
     /**
@@ -118,7 +123,7 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         userIds = followUserService.geFriendIdsByUserId(loginUserId);
         param.put("userIds",userIds);
         dynamicMsgs.addAll(dynamicMapper.getDynamicmsgByParam(param));
-        return buildDynamicmsgList(loginUserId, dynamicMsgs);
+        return buildDynamicList(loginUserId, dynamicMsgs);
     }
     @Override
     public List<Map<String,Object>> getNearByDynamicms(Long loginUserId,double latitude,double longitude){
@@ -130,7 +135,7 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
             studentIds.add(student.getId());
         });
         List<Map<String, Object>> dynamicMsgs = dynamicMapper.getNearByDynamicms(studentIds,latitude,longitude,5); //5km之内的
-        return buildDynamicmsgList(null, dynamicMsgs);
+        return buildDynamicList(null, dynamicMsgs);
     }
 
     /**
@@ -142,10 +147,10 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
     @Override
     public List<Map<String, Object>> getMyFriendDynamicmList(Long loginUserId) {
         List<Map<String, Object>> dynamicMsgs = dynamicMapper.getFriendDynamicmsgByUserId(loginUserId);
-        return buildDynamicmsgList(loginUserId, dynamicMsgs);
+        return buildDynamicList(loginUserId, dynamicMsgs);
     }
 
-    public List<Map<String, Object>> buildDynamicmsgList(Long loginUserId, List<Map<String, Object>> dynamicMsgs) {
+    public List<Map<String, Object>> buildDynamicList(Long loginUserId, List<Map<String, Object>> dynamicMsgs) {
         List<Map<String, Object>> dynamiList = Lists.newArrayList();
         dynamicMsgs.stream().forEach(dyn -> {
             String studentName = dyn.get("realName")==null?"":dyn.get("realName").toString();

@@ -11,5 +11,13 @@
 		<result column="status" property="status" />
 		<result column="createTime" property="createTime" />
 	</resultMap>
+	
+	<select id="getChoicenessPhotosByOrganId" resultType="java.util.HashMap">
+		SELECT i.thumbImgUrl AS image,i.id from t_teacher t,t_dynamic d,t_dynamic_img i where
+		t.userId=d.userId
+		and d.id=i.dynamicId
+		and t.organizationId=#{organId}
+		limit #{offset},#{rows}
+	</select>
 
 </mapper>

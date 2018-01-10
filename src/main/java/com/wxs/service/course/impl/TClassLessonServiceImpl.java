@@ -75,14 +75,14 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
             if (userId != null) {
                 //如果是登录状态
                 Map<String,Object>  student = Maps.newHashMap();
-
                 student.put("studentName", studentMapper.getStudentByCourse(lesson.getCourseId(), userId));
                 TStudentLessones stuLesson = new TStudentLessones().selectOne("userId={0} and lessonId={1}",userId,lessionId);
                 String statusValue = dictionaryService.getLessonStudyStatus().get(stuLesson.getScheduleStatus().toString());
                 student.put("scheduleStatus",  BaseUtil.getKeyValueMap(stuLesson.getScheduleStatus(),statusValue)); //完成情况
                 student.put("userId",userId);
                 result.put("student",student);
-
+            } else {
+                result.put("student",null);
             }
 
             return result;

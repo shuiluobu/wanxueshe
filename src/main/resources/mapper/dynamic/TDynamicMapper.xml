@@ -87,6 +87,12 @@
             )*6370.996) <![CDATA[<= ]]> #{range}
         </where>
     </select>
+    <select id="getNewestDynamicmByOrganId" resultType="java.util.HashMap">
+        <include refid="querySql"></include>
+        INNER JOIN  t_teacher ts
+        where d.userId=ts.userId and ts.organizationId=#{organId}
+        order by d.createTime DESC  limit 1
+    </select>
 
     <sql id="querySql">
         SELECT

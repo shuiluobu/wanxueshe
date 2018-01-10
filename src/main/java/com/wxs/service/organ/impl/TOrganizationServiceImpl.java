@@ -2,10 +2,12 @@ package com.wxs.service.organ.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.wxs.entity.comment.TDynamicImg;
 import com.wxs.entity.course.TStudentCourse;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TClassCoursesMapper;
 import com.wxs.mapper.course.TStudentCourseMapper;
+import com.wxs.mapper.dynamic.TDynamicImgMapper;
 import com.wxs.mapper.organ.TFollowOrganMapper;
 import com.wxs.mapper.organ.TOrganizationMapper;
 import com.wxs.service.customer.ITParentService;
@@ -39,6 +41,9 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
 
     @Autowired
     public TFollowOrganMapper fllowOrganMapper; //关注机构表
+
+    @Autowired
+    public TDynamicImgMapper dynamicImgMapper;
 
     @Autowired
     private ITParentService parentService;
@@ -112,6 +117,11 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
             mapList.add(map);
         });
         return mapList;
+    }
+    @Override
+    public List<Map<String,Object>> choicenessPhotos(Long organId,int page,int rows){
+        int offset = (page-1) * rows;
+        return  dynamicImgMapper.getChoicenessPhotosByOrganId(organId,offset,rows);
     }
 
 
