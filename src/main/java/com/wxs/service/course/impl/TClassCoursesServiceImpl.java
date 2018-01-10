@@ -82,25 +82,23 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
             result.put("fllowCount", fllowCourseMapper.getFllowCountOfCourseId(coursesId)); //关注数
             result.put("areadyStudCount", category.getAlreadyStudySum());
             result.put("teacherList", teacherMapper.getTeacherNameListByCourseId(coursesId)); //教师信息
-            TStudentCourse stuClass = new TStudentCourse(); //参数传递
-            stuClass.setCourseCateId(category.getId());
-            stuClass.setUserId(userId);
-            int ifIn = studentCourseMapper.getClassStudentCountByParam(stuClass);
-            result.put("isPartake", ifIn > 0 ? true : false); //是否参与
-            if (ifIn > 0) {
+            TStudentCourse stuClass = new TStudentCourse().selectOne("courseCateId={0} and userId={1}", category.getId(), userId); //参数传递
+
+            result.put("isPartake", stuClass != null ? true : false); //是否参与
+            if (stuClass != null) {
                 List<Map<String, Object>> studentClassMapList = studentCourseMapper.getMyCourses(ImmutableMap.of("userId", userId));
                 StringBuffer studentNames = new StringBuffer();
                 studentClassMapList.stream().forEach(map -> {
-                    studentNames.append(map.get("studentName").toString());
+                    studentNames.append(map.get("realName").toString());
                 });
                 TClassCourse course = new TClassCourse().selectById(stuClass.getCoursesId());
-                result.put("joinTime", course.getCreateTime()); //参加时间
+                result.put("joinTime", stuClass.getCreateTime()); //参加时间
                 result.put("smallRemark", "我的上课时间：" + BaseUtil.toChinaDate(course.getBeginTime()) + "-" + BaseUtil.toChinaDate(course.getEndTime())
                         + " 我参与的学员：" + StringUtils.split(studentNames.toString(), ","));
             } else {
                 result.put("smallRemark", "");
                 TFrontUser createUser = new TFrontUser().selectById(category.getCreateUserId());
-                if(createUser!=null){
+                if (createUser != null) {
                     result.put("createUserName", createUser.getUserName());
                     result.put("createUserId", category.getCreateUserId());
                 }
@@ -188,12 +186,12 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
         if (organId != null) {
             organ = new TOrganization().selectById(organId);
         }
-        if(organ==null){
+        if (organ == null) {
             organ = new TOrganization();
             organ.setOrganCode(sequenceService.getOrganCode(userId, "C")); //有c端产生的机构
             organ.setAddress(courseAddress);
             organ.insert();
-            organId= organ.getId();
+            organId = organ.getId();
         }
 
         TCourseCategory courseCategory = new TCourseCategory();
@@ -281,6 +279,8 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
             if (bean.get("subjectType") != null) {
                 String subjectType = bean.get("subjectType").toString();
                 bean.put("subjectType", dictionaryService.getSubjectTypeValue(subjectType, "1"));
+            } else {
+                bean.put("subjectType","");
             }
         });
 

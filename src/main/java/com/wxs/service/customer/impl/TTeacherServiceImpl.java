@@ -70,9 +70,10 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
     @Override
     public List<Map<String,Object>> getFollowTeachInfoByUserId(Long userId){
         List<Map<String,Object>> list = followTeacherMapper.getFollowTeacherByUser(userId);
-//        list.stream().forEach(bean->{
-//
-//        });
+        list.stream().forEach(bean->{
+            String leval = bean.get("leval")==null?"0":bean.get("leval").toString();
+            bean.put("leval",leval.equals("1")?"已认证":"未认证");
+        });
         return list;
     }
 

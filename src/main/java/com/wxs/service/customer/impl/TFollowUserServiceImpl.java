@@ -89,7 +89,7 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
         } else {
             //发送加朋友的消息给对方
             result.put("success",true);
-            result.put("message","您已请求已发送");
+            result.put("message","您的请求已发送");
         }
         return result;
     }

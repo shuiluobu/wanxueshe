@@ -19,7 +19,8 @@
 		c.courseCategoryName courseName,
 		c.alreadyStudySum,
 		c.subjectType,
-		c.canQty
+		c.canQty,
+		c.cover
 		FROM
 		t_follow_course f,t_course_category c
 		WHERE f.courseCateId=c.id
