@@ -38,6 +38,7 @@ public class DictionaryServiceImpl implements IDictionaryService {
     public final String WORK_COMPLETION_STATUS = "WORK_COMPLETION_STATUS";//作业完成情况
 
     public final String BUSINESS_RECORD_TYPE = "BUSINESS_RECORD_TYPE";//操作记录类型
+    public final String CLASS_TYPE = "CLASS_TYPE";//班级类型
 
     @Override
     public Map<String, Object> querySubjectTypeDicts() {
@@ -135,6 +136,11 @@ public class DictionaryServiceImpl implements IDictionaryService {
     @Override
     public Map<String, String> getBusinessRecordType() {
         return getDictByType(BUSINESS_RECORD_TYPE);
+    }
+
+    @Override
+    public Map<String, String> getClassType() {
+        return getDictByType(CLASS_TYPE);
     }
 
     @Override

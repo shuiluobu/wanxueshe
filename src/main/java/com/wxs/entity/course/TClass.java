@@ -37,6 +37,10 @@ public class TClass extends Model<TClass> {
      */
 	private String className;
 	/**
+	 * 班级类型
+	 */
+	private String classType;
+	/**
 	 * 课程ID
 	 */
 	private Long courseId;
@@ -79,6 +83,18 @@ public class TClass extends Model<TClass> {
 	@TableField(exist = false)
 	private String courseName;  //课程名称
 	@TableField(exist = false)
+	private Integer doneLessonNum;  //已完成课时数
+	@TableField(exist = false)
+	private Integer totalLessonNum; //总课时数
+	@TableField(exist = false)
+	private Long nextLessonId;      //接下来需上课的  课时Id
+	@TableField(exist = false)
+	private String nextLessonName;  //接下来需上课的  课时名称
+	@TableField(exist = false)
+	private Date nextLessonSTime;  //接下来需上课的  课时 的 开始时间
+	@TableField(exist = false)
+	private Date nextLessonETime;  //接下来需上课的  课时 的 结束时间
+	@TableField(exist = false)
 	private String organName;   //所属教育机构名称
 	@TableField(exist = false)
 	private Integer page = 1;       //分页查询  页码
@@ -110,6 +126,14 @@ public class TClass extends Model<TClass> {
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public String getClassType() {
+		return classType;
+	}
+
+	public void setClassType(String classType) {
+		this.classType = classType;
 	}
 
 	public Long getTeacherId() {
@@ -231,6 +255,54 @@ public class TClass extends Model<TClass> {
 
 	public void setPageStartIndex(Integer pageStartIndex) {
 		this.pageStartIndex = pageStartIndex;
+	}
+
+	public Integer getDoneLessonNum() {
+		return doneLessonNum;
+	}
+
+	public void setDoneLessonNum(Integer doneLessonNum) {
+		this.doneLessonNum = doneLessonNum;
+	}
+
+	public Integer getTotalLessonNum() {
+		return totalLessonNum;
+	}
+
+	public void setTotalLessonNum(Integer totalLessonNum) {
+		this.totalLessonNum = totalLessonNum;
+	}
+
+	public Long getNextLessonId() {
+		return nextLessonId;
+	}
+
+	public void setNextLessonId(Long nextLessonId) {
+		this.nextLessonId = nextLessonId;
+	}
+
+	public String getNextLessonName() {
+		return nextLessonName;
+	}
+
+	public void setNextLessonName(String nextLessonName) {
+		this.nextLessonName = nextLessonName;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	public Date getNextLessonSTime() {
+		return nextLessonSTime;
+	}
+
+	public void setNextLessonSTime(Date nextLessonSTime) {
+		this.nextLessonSTime = nextLessonSTime;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	public Date getNextLessonETime() {
+		return nextLessonETime;
+	}
+
+	public void setNextLessonETime(Date nextLessonETime) {
+		this.nextLessonETime = nextLessonETime;
 	}
 
 	@Override

@@ -38,6 +38,7 @@ public class CFrontUserController {
             //如果是老师,则 赋值  教师名称
             if(frontUser.getUserType() == 2){
                 TTeacher teacher = teacherService.getByUserId(userId);
+                frontUser.setTeacherId(teacher.getId());
                 frontUser.setTeacherName(teacher.getTeacherName());
                 frontUser.setOrganId(teacher.getOrganizationId());
             }

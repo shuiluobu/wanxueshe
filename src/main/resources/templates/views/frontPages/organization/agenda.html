@@ -5,7 +5,7 @@
     <title>我的待办</title>
     <link rel="stylesheet"  href="/weui/css/calendar.css">
     <style>
-    .adendaDone{
+    .agendaDone{
         text-decoration:line-through;
         color: #999999;
     }
@@ -58,10 +58,10 @@
                 </a>
                 <!--<a class="weui-cell weui-cell_access " href="javascript:;" >-->
                     <!--<div class="doneDiv">&radic;</div>-->
-                    <!--<div class="weui-cell__bd adendaDone">-->
+                    <!--<div class="weui-cell__bd agendaDone">-->
                         <!--<p>积木搭建基础-1/3课时</p><p>10:00-11:00</p>-->
                     <!--</div>-->
-                    <!--<div class="hint-val adendaDone">教务</div>-->
+                    <!--<div class="hint-val agendaDone">教务</div>-->
                 <!--</a>-->
                 <!--<a class="weui-cell weui-cell_access" href="javascript:;">-->
                     <!--<div class="notDoneDiv"></div>-->
@@ -149,10 +149,10 @@
                     if(todays[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                                         '<div class="doneDiv">&radic;</div>'+
-                                        '<div class="weui-cell__bd adendaDone">'+
+                                        '<div class="weui-cell__bd agendaDone">'+
                                         '<p>'+todays[i].content+'</p><p>'+todays[i].userName+" &bull; "+getHM(todays[i].startTime)+'-'+getHM(todays[i].endTime)+'</p>'+
                                         '</div>'+
-                                        ' <div class="hint-val adendaDone">'+getAgendaType(todays[i].type)+'</div>'+
+                                        ' <div class="hint-val agendaDone">'+getAgendaType(todays[i].type)+'</div>'+
                                     '</a>';
                         $("#myAgenda").append(done);
                     }else{
@@ -179,10 +179,10 @@
                     if(tomorrows[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                             '<div class="doneDiv">&radic;</div>'+
-                            '<div class="weui-cell__bd adendaDone">'+
+                            '<div class="weui-cell__bd agendaDone">'+
                             '<p>'+tomorrows[i].content+'</p><p>'+tomorrows[i].userName+" &bull; "+getHM(tomorrows[i].startTime)+'-'+getHM(tomorrows[i].endTime)+'</p>'+
                             '</div>'+
-                            ' <div class="hint-val adendaDone">'+getAgendaType(tomorrows[i].type)+'</div>'+
+                            ' <div class="hint-val agendaDone">'+getAgendaType(tomorrows[i].type)+'</div>'+
                             '</a>';
                         $("#myAgenda").append(done);
                     }else{
@@ -233,10 +233,10 @@
                     if(todays[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                             '<div class="doneDiv">&radic;</div>'+
-                            '<div class="weui-cell__bd adendaDone">'+
+                            '<div class="weui-cell__bd agendaDone">'+
                             '<p>'+todays[i].content+'</p><p>'+todays[i].userName+" &bull; "+getHM(todays[i].startTime)+'-'+getHM(todays[i].endTime)+'</p>'+
                             '</div>'+
-                            ' <div class="hint-val adendaDone">'+getAgendaType(todays[i].type)+'</div>'+
+                            ' <div class="hint-val agendaDone">'+getAgendaType(todays[i].type)+'</div>'+
                             '</a>';
                         $("#organAgenda").append(done);
                     }else{
@@ -263,10 +263,10 @@
                     if(tomorrows[i].status == 1){
                         var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                             '<div class="doneDiv">&radic;</div>'+
-                            '<div class="weui-cell__bd adendaDone">'+
+                            '<div class="weui-cell__bd agendaDone">'+
                             '<p>'+tomorrows[i].content+'</p><p>'+tomorrows[i].userName+" &bull; "+getHM(tomorrows[i].startTime)+'-'+getHM(tomorrows[i].endTime)+'</p>'+
                             '</div>'+
-                            ' <div class="hint-val adendaDone">'+getAgendaType(tomorrows[i].type)+'</div>'+
+                            ' <div class="hint-val agendaDone">'+getAgendaType(tomorrows[i].type)+'</div>'+
                             '</a>';
                         $("#organAgenda").append(done);
                     }else{
@@ -319,10 +319,10 @@
                         if(todays[i].status == 1){
                             var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                                 '<div class="doneDiv">&radic;</div>'+
-                                '<div class="weui-cell__bd adendaDone">'+
+                                '<div class="weui-cell__bd agendaDone">'+
                                 '<p>'+todays[i].content+'</p><p>'+todays[i].userName+" &bull; "+getHM(todays[i].startTime)+'-'+getHM(todays[i].endTime)+'</p>'+
                                 '</div>'+
-                                ' <div class="hint-val adendaDone">'+getAgendaType(todays[i].type)+'</div>'+
+                                ' <div class="hint-val agendaDone">'+getAgendaType(todays[i].type)+'</div>'+
                                 '</a>';
                             $("#organAgenda").append(done);
                         }else{
@@ -349,10 +349,10 @@
                         if(tomorrows[i].status == 1){
                             var done = ' <a class="weui-cell weui-cell_access " href="javascript:;" >'+
                                 '<div class="doneDiv">&radic;</div>'+
-                                '<div class="weui-cell__bd adendaDone">'+
+                                '<div class="weui-cell__bd agendaDone">'+
                                 '<p>'+tomorrows[i].content+'</p><p>'+tomorrows[i].userName+" &bull; "+getHM(tomorrows[i].startTime)+'-'+getHM(tomorrows[i].endTime)+'</p>'+
                                 '</div>'+
-                                ' <div class="hint-val adendaDone">'+getAgendaType(tomorrows[i].type)+'</div>'+
+                                ' <div class="hint-val agendaDone">'+getAgendaType(tomorrows[i].type)+'</div>'+
                                 '</a>';
                             $("#organAgenda").append(done);
                         }else{

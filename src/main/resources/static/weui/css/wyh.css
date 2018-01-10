@@ -37,3 +37,19 @@
     left: 16px;
     top: 14px;
 }
+.btm_selected{
+    background-color:#1AAD19;
+}
+.weui-navbar__item{
+    font-family: '微软雅黑 Regular', '微软雅黑';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+}
+.weui-tab__bd-item{
+    position: relative;
+    top:-6px;
+}
+.weui-cells{
+    margin-top: 0;
+}
