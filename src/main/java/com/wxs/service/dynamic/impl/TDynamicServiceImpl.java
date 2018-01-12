@@ -18,6 +18,7 @@ import com.wxs.service.dynamic.ITDynamicService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wxs.core.util.BaseUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -153,9 +154,11 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
     public List<Map<String, Object>> buildDynamicList(Long loginUserId, List<Map<String, Object>> dynamicMsgs) {
         List<Map<String, Object>> dynamiList = Lists.newArrayList();
         dynamicMsgs.stream().forEach(dyn -> {
-            String studentName = dyn.get("realName")==null?"":dyn.get("realName").toString();
-            String dynamicType = dyn.get("dynamicType")==null?"":dyn.get("dynamicType").toString();
-            dyn.put("dynamicType",studentName + dictionaryService.getDynamicType().get(dynamicType)); //后去从字段中取值
+            //String studentName = dyn.get("studentName")==null?"":dyn.get("studentName").toString();
+            String dynamicType = dyn.get("dynamicType")==null?"0":dyn.get("dynamicType").toString();
+            dyn.put("dynamicTypeName",dictionaryService.getDynamicType().get(dynamicType));
+            //dyn.put("studentName",studentName);
+            dyn.put("dynamicType",dynamicType); //后去从字段中取值
             if (loginUserId != null && loginUserId != 0) {
                 Long dynUserId = Long.parseLong(dyn.get("userId").toString());
                 String power = dyn.get("power").toString(); //动态权限0：公开，1：仅好友 2：仅自己
@@ -207,14 +210,35 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         dyn.put("organ",organMap);
         Long dynamicId = Long.parseLong(dyn.get("id").toString());
         List<TDynamicImg> dyimgs = dynamicImgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
-        dyn.put("dyImgs", dyimgs); //图集
+        List<Map<String,Object>> dyImgList = Lists.newArrayList();
+        dyimgs.stream().forEach(dyimg->{
+            dyImgList.add(ImmutableMap.of("id",dyimg.getId(),"image",dyimg.getThumbImgUrl()));
+        });
+        dyn.put("dyImgs", dyImgList); //图集
         TDynamicVideo dyvideo = new TDynamicVideo();
         dyvideo.setDynamicId(dynamicId);
         dyn.put("dyVideo", dynamicVideoMapper.selectOne(dyvideo)==null?"": dynamicVideoMapper.selectOne(dyvideo)); //视频
         List<TLike> likes = likeMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
-        dyn.put("likes", likes);
+        List<Map<String,Object>> likeList = Lists.newArrayList();
+        likes.stream().forEach(like->{
+            likeList.add(ImmutableMap.of("userId",like.getCreateUserId(),"name",like.getCreateUserName()));
+        });
+        dyn.put("likes", likeList);
         List<TDynamicComment> comments = dynamicCommentMapper.selectByMap(ImmutableMap.of("dynamicId", dynamicId));
-        dyn.put("comments", comments);
+        List<Map<String,Object>> commentsList = Lists.newArrayList();
+        comments.stream().forEach(comment->{
+            Map<String,Object> map = Maps.newHashMap();
+            map.put("fromUserName",comment.getFromUserName());
+            map.put("toUserName",comment.getToUserName());
+            map.put("fromUserId",comment.getFromUserId());
+            map.put("toUserId",comment.getToUserId());
+            map.put("toId",comment.getToId());
+            map.put("content",comment.getContent());
+            map.put("commentType",comment.getCommentType());
+            commentsList.add(map);
+
+        });
+        dyn.put("comments", commentsList);
         return dyn;
     }
 

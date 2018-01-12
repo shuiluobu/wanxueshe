@@ -97,7 +97,16 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     }
 
     public List<Map<String, Object>> isEndMyCourses(Long userId, Integer isEnd) {
-        return studentCourseMapper.getMyCourses(ImmutableMap.of("userId", userId, "isEnd", isEnd));
+        List<Map<String,Object>> list = studentCourseMapper.getMyCourses(ImmutableMap.of("userId", userId, "isEnd", isEnd));
+        list.stream().forEach(map->{
+            if (map.get("subjectType") != null) {
+                String subjectType = map.get("subjectType").toString();
+                map.put("subjectType", dictionaryService.getSubjectTypeValue(subjectType, "1"));
+            } else {
+                map.put("subjectType","");
+            }
+        });
+        return list;
     }
 
     @Override

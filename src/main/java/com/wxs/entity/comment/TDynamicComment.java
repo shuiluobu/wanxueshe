@@ -28,8 +28,10 @@ public class TDynamicComment extends Model<TDynamicComment> {
      * 评论给谁
      */
 	private Long toUserId;
+	private Long toId; //回复哪条评论的
 	private String fromUserName;
 	private String toUserName;
+	private String commentType; //评论类型
     /**
      * 评论内容
      */
@@ -123,12 +125,28 @@ public class TDynamicComment extends Model<TDynamicComment> {
 		this.coordinate = coordinate;
 	}
 
+	public Long getToId() {
+		return toId;
+	}
+
+	public void setToId(Long toId) {
+		this.toId = toId;
+	}
+
 	public Integer getStatus() {
 		return status;
 	}
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getCommentType() {
+		return commentType;
+	}
+
+	public void setCommentType(String commentType) {
+		this.commentType = commentType;
 	}
 
 	@Override
