@@ -34,6 +34,11 @@ public interface TClassLessonMapper extends BaseMapper<TClassLesson> {
             " and l.beginTime>#{beginTime} and l.beginTime<=#{endTime} and c.userId=#{userId}")
     @ResultType(Map.class)
     List<Map<String,Object>> getTodayCourseLesson(@Param("beginTime") String beginTime,@Param("endTime") String endTime,@Param("userId") Long userId);
-
+    //获取某课程的所有课时以及课时完成情况
+    @Select("select t.*,a.status ifDone  " +
+            "from t_class_lesson t  " +
+            "left join t_organ_agenda a on a.lessonId = t.id and a.courseId = t.courseId  " +
+            "where t.courseId = #{courseId} order by t.lessonSeq desc")
+    List<TClassLesson> allByCourseId(@Param("courseId") Long courseId );
 
 }

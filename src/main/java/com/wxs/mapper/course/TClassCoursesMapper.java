@@ -38,6 +38,15 @@ public interface TClassCoursesMapper extends BaseMapper<TClassCourse> {
     @Select("select DATE_FORMAT(beginTime,'%Y年%m月%d日') beginTime,DATE_FORMAT(endTime,'%Y年%m月%d日') endTime from t_class_course where courseCateId=#{courseCateId}")
     @ResultType(Map.class)
     public List<Map<String,Object>> getCoursePlans(@Param("courseCateId") Long courseCateId);
+    //获取某课程 所有学生的 完成情况
+    @Select("select t.studentId,count(*) total,  " +
+            "count(case when  (t.scheduleStatus = 1 ) then t.studentId  end ) done,a.studentName,a.headImg  " +
+            "from t_student_lessones t  " +
+            "left join t_organ_student a on a.id = t.studentId  " +
+            "where t.courseId = #{courseId}  " +
+            "group by t.studentId")
+    @ResultType(Map.class)
+    List<Map<String,Object>> stuCourseDoneInfo (@Param("courseId") Long courseId);
 
 
 }

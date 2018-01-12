@@ -41,4 +41,9 @@ public class TClassServiceImpl extends ServiceImpl<TClassMapper, TClass> impleme
     public List<TClass> searchClass(Long teacherId,Long organId,String className,String classType) {
         return classMapper.searchClass(teacherId,organId,className,classType);
     }
+
+    @Override
+    public TClass classInfo(Long classId) {
+        return classMapper.classInfo(classId);
+    }
 }

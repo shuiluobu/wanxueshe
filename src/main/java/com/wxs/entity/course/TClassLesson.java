@@ -94,6 +94,9 @@ public class TClassLesson extends Model<TClassLesson> {
 	private Integer limit = 10;  //分页查询  每页条数
 	@TableField(exist = false)
 	private Integer pageStartIndex; //分页查询 起始下表
+	@TableField(exist = false)
+	private Integer ifDone;      //课时是否已上过了
+
 
 
 	public Long getId() {
@@ -258,6 +261,14 @@ public class TClassLesson extends Model<TClassLesson> {
 
 	public void setPageStartIndex(Integer pageStartIndex) {
 		this.pageStartIndex = pageStartIndex;
+	}
+
+	public Integer getIfDone() {
+		return ifDone;
+	}
+
+	public void setIfDone(Integer ifDone) {
+		this.ifDone = ifDone;
 	}
 
 	@Override

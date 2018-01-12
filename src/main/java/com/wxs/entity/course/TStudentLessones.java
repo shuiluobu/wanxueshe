@@ -36,6 +36,7 @@ public class TStudentLessones extends Model<TStudentLessones> {
      * 调课后保存老的Id
      */
 	private Long oldId;
+	//额外字段
 
 
 	public Long getId() {

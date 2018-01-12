@@ -2,10 +2,13 @@ package com.wxs.companyWX.controller.course;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.wxs.entity.course.TClass;
+import com.wxs.entity.course.TClassCourse;
 import com.wxs.entity.course.TClassLesson;
 import com.wxs.service.common.IDictionaryService;
+import com.wxs.service.course.ITClassCoursesService;
 import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITClassService;
+import com.wxs.service.course.ITCourseCategoryService;
 import com.wxs.util.Result;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.wxs.core.util.BaseUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +34,34 @@ public class CClassController {
     private ITClassLessonService classLessonService;
     @Autowired
     private IDictionaryService dictionaryService;
+    @Autowired
+    private ITClassCoursesService classCoursesService;
+    @Autowired
+    private ITCourseCategoryService courseCategoryService;
+
+
+
+    @RequestMapping("/classInfo")
+    public Result classInfo(Long classId){
+        Map resultMap = new HashMap();
+        try{
+            //获取班级信息
+            TClass tClass = classService.classInfo(classId);
+            resultMap.put("tClass",tClass);
+            //课程
+            TClassCourse classCourse = classCoursesService.selectById(tClass.getCourseId());
+            if(classCourse != null){
+                resultMap.put("courseCategory",courseCategoryService.selectById(classCourse.getCourseCateId()));
+            }
+            return Result.of(resultMap);
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     /**
      * @Description : 根据 班级名称，机构Id,类型(我的班级,不限-所属机构的),用户Id  搜索 班级
      * @return com.wxs.util.Result
@@ -47,6 +79,7 @@ public class CClassController {
         }
         return null;
     }
+
     /**
      * @Description :  教师Id+机构Id+班级类型+班级名称  混合搜索班级
      * @return com.wxs.util.Result

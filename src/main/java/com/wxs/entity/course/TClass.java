@@ -97,6 +97,8 @@ public class TClass extends Model<TClass> {
 	@TableField(exist = false)
 	private String organName;   //所属教育机构名称
 	@TableField(exist = false)
+	private Integer organLevel;  //机构级别
+	@TableField(exist = false)
 	private Integer page = 1;       //分页查询  页码
 	@TableField(exist = false)
 	private Integer limit = 10;  //分页查询  每页条数
@@ -231,6 +233,14 @@ public class TClass extends Model<TClass> {
 
 	public void setOrganName(String organName) {
 		this.organName = organName;
+	}
+
+	public Integer getOrganLevel() {
+		return organLevel;
+	}
+
+	public void setOrganLevel(Integer organLevel) {
+		this.organLevel = organLevel;
 	}
 
 	public Integer getPage() {
