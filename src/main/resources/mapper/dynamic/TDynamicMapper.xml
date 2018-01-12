@@ -25,6 +25,9 @@
         <include refid="querySql"></include>
         <where>
             d.`status`=0
+            <if test="dynamicId!=null">
+                d.id = #{dynamicId}
+            </if>
             <if test="power!=null">
                 AND d.power in (#{power})
             </if>

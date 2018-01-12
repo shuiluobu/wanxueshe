@@ -60,6 +60,8 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         return buildDynamicList(loginUserId, dynamicMsgs);
     }
 
+
+
     @Override
     public List<Map<String, Object>> getDynamicmListByTeacherId(Long loginUserId, Long teacherUserId) {
         String power = "0,1"; //权限管理
@@ -202,10 +204,13 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
     }
     @Override
     public Map<String,Object> buildOneDynamic(Map<String,Object> dyn){
-        Long organId = Long.parseLong(dyn.get("organId").toString());
+
         Map<String,Object> organMap = Maps.newHashMap();
-        organMap.put("organId",organId);
-        organMap.put("organName",new TOrganization().selectById(organId).getOrganName());
+        if(dyn.get("organId")!=null && !dyn.get("organId").toString().equals("")){
+            Long organId = Long.parseLong(dyn.get("organId").toString());
+            organMap.put("organId",organId);
+            organMap.put("organName",new TOrganization().selectById(organId).getOrganName());
+        }
         dyn.remove("organId");
         dyn.put("organ",organMap);
         Long dynamicId = Long.parseLong(dyn.get("id").toString());

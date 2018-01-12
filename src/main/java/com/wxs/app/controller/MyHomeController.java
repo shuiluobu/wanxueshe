@@ -120,31 +120,32 @@ public class MyHomeController extends BaseWxController {
 
     @RequestMapping(value = "/saveMyGrowth")
     public Result saveMyGrowth(@RequestParam(value = "sessionId", required = true) String sessionId,
-                               @RequestParam MultipartFile[] imageOrVideos,
+                               @RequestParam(value = "mediaUrls",required = false) List<String> mediaUrls,
                                HttpServletRequest request) throws IOException {
         //保存我的作业
-        Long userId = 0L;
+        Long userId = 1L;
         String mediaType = request.getParameter("mediaType"); //文件类型，IMG 图片，VIDEO 小视频
-        List<String> mediaUrls = getImageOrVideoUrls(imageOrVideos);
+
         String content = request.getParameter("content");
         Integer power = Integer.parseInt(request.getParameter("power")); //是否公开
         Long studentId = Long.parseLong(request.getParameter("studentId"));
-        Long workId = Long.parseLong(request.getParameter("workId"));
         TDynamic dynamic = new TDynamic();
         dynamic.setPower(power); //权限
         dynamic.setContent(content);
         dynamic.setStudentId(studentId);
         dynamic.setUserId(userId); //用户
-        return Result.of(studentService.saveMygrowth(mediaUrls, mediaType, dynamic, workId));
+        return Result.of(studentService.saveMygrowth(mediaUrls, mediaType, dynamic));
     }
 
     @RequestMapping(value = "/sendComment")
     public Result sendComment(@RequestParam(value = "sessionId", required = true) String sessionId,
                               @RequestParam String content, @RequestParam Long dynamicId) {
         //我的学员
-        Long userId = 0L;
+        Long userId = 1L;
         return Result.of(dynamicService.saveComment(userId, dynamicId, content));
     }
+
+
 
     @RequestMapping(value = "/saveStudent")
     public Result saveStudent(@RequestParam(value = "sessionId", required = true) String sessionId,
@@ -154,21 +155,22 @@ public class MyHomeController extends BaseWxController {
                               @RequestParam(required = false, value = "parentType", defaultValue = "1") Integer parentType) {
         try {
             String originalFilename = file.getOriginalFilename();
-            String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
-            String headImgUrl = imgUploadPath + "userStudentImg/" + BaseUtil.uuid() + "." + suffix;
-            File newFile = new File(headImgUrl);
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+            String targetFileUrl = imgUploadPath + "userStudentImg/";
+            String headImgUrl = targetFileUrl + BaseUtil.uuid() + "." + suffix;
+            File newFile = new File(targetFileUrl);
             if (!newFile.exists() || !newFile.isDirectory()) {
                 newFile.mkdirs();//会创建所有的目录
             }
             file.transferTo(new File(headImgUrl));
             //我的学员
-            Long userId = 0L;
+            Long userId = 1L;
             TStudent student = new TStudent();
             if (studentId != null) {
                 student.setId(studentId);
             }
             student.setRealName(studentName);
-            student.setHeadImg(headImgUrl);
+            student.setHeadImg(headImgUrl.replace(imgUploadPath,""));
             student.setUserId(userId);
             student.setParentType(parentType);
             return Result.of(studentService.saveStudent(student));

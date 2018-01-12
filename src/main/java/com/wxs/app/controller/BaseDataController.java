@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.wxs.core.util.BaseUtil;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("app/data")
-public class BaseDataController {
+public class BaseDataController extends BaseWxController {
     @Autowired
     public IDictionaryService dictionaryService;
     @Autowired
@@ -56,6 +57,12 @@ public class BaseDataController {
     public Result studentInfoByUserId(@RequestParam(value = "sessionId", required = true) String sessionId) {
         Long userId = 1L;
         return Result.of(studentService.queryStuInfoByUserId(userId));
+    }
+
+    @RequestMapping(value = "/uploadImage")
+    public Result uploadImage( @RequestParam MultipartFile imageOrVideo){
+        String mediaUrl = getImageOrVideoUrls(imageOrVideo);
+        return Result.of(mediaUrl);
     }
 
 }

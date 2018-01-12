@@ -70,26 +70,28 @@ public class BaseWxController {
     public static Long coursesId = 1L;
     public static Long lessionId = 1L;
     public static Long organId = 1L;
-    public static Long teacherId =1L;
+    public static Long teacherId = 1L;
 
-    public List<String> getImageOrVideoUrls(MultipartFile[] imageOrVideos) {
-        List<String> mediaUrls = new ArrayList<>();
-        try{
-            for (MultipartFile imageOrVideo : imageOrVideos) {
-                String originalFilename = imageOrVideo.getOriginalFilename();
-                String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
-                String newFileName = BaseUtil.uuid() + suffix; //uuid +后缀
-                String mediaFilePath = imgUploadPath + "dynamic" + "/" + BaseUtil.toShortDate(new Date()) + "/" + newFileName;
-                File targetFile = new File(mediaFilePath); //新图片路径
-                if (!targetFile.exists() || !targetFile.isDirectory()) {
-                    targetFile.mkdirs();
-                }
-                imageOrVideo.transferTo(targetFile);   //内存数据读入磁盘
-                mediaUrls.add(mediaFilePath);
+    public String getImageOrVideoUrls(MultipartFile imageOrVideo) {
+        String newFileName = null;
+        String targetFolderUrl = null;
+        String newFileNameUrl = null;
+        try {
+            // for (MultipartFile imageOrVideo : imageOrVideos) {
+            String originalFilename = imageOrVideo.getOriginalFilename();
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+            newFileName = BaseUtil.uuid() + "." + suffix; //uuid +后缀
+            targetFolderUrl = "dynamic" + "/" + BaseUtil.toShortDate(new Date());
+            newFileNameUrl = imgUploadPath + targetFolderUrl + "/" + newFileName;
+            File targetFolder = new File(imgUploadPath +targetFolderUrl); //新图片路径
+            if (!targetFolder.exists() || !targetFolder.isDirectory()) {
+                targetFolder.mkdirs();
             }
-        }catch (Exception e){
+            imageOrVideo.transferTo(new File(newFileNameUrl));  //内存数据读入磁盘
+            // }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return mediaUrls;
+        return targetFolderUrl  + "/" + newFileName;
     }
 }

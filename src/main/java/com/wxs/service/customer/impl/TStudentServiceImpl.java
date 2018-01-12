@@ -73,7 +73,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
         studentInfo.put("studentId",student.getId());
         studentInfo.put("realName",student.getRealName());
         studentInfo.put("headImg",student.getHeadImg());
-        studentInfo.put("parentType", ImmutableMap.of(student.getParentType(),parentTypeMap.get(student.getParentType().toString())));
+        studentInfo.put("parentType", ImmutableMap.of("key",student.getParentType(),"value",parentTypeMap.get(student.getParentType().toString())));
         return studentInfo;
     }
 
@@ -111,23 +111,12 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
 
     @Override
     @Transactional
-    public Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId) {
+    public Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamic dynamic) {
+        Map<String,Object> result = Maps.newHashMap();
         try {
-            TClassWork classWork = new TClassWork().selectById(workId);
-            TClassCourse course = new TClassCourse().selectById(classWork.getCourseId());
-            dynamic.setCourseId(classWork.getCourseId()); //班级
-            dynamic.setClassLessonId(classWork.getLessonId()); //课节
-            dynamic.setOrganId(course.getOrganizationId()); //机构
-            dynamic.setCourseId(course.getId()); //课程
             dynamic.setDynamicType(EnuDynamicTypeCode.DYNAMIC_TYPE_MYGROWTH.getTypeCode());//类型为个人成长
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
-            TStudentWork studentTask = new TStudentWork();
-            studentTask.setWorkId(workId);
-            studentTask.setDynamicId(dynamic.getId());
-            studentTask.setStudentId(dynamic.getStudentId());
-            studentTask.setCreateTime(new Date());
-            studentTask.insert();//保存作业
             if (mediaType.equals("IMG")) {
                 for (String mediaUrl : mediaUrls) {
                     TDynamicImg dyimg = new TDynamicImg();
@@ -145,12 +134,17 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
                 dyvideo.setVideoUrl(mediaUrl);
                 dyvideo.insert(); //动态小视频
             }
-            Map<String, Object> dynMap = BaseUtil.convertBeanToMap(dynamic);
-            return dynamicmsgService.buildOneDynamic(dynMap);
+            //Map<String, Object> dynMap = BaseUtil.convertBeanToMap(dynamic);
+            result.put("success",true);
+            result.put("message","保存成功");
+            return result;
         } catch (Exception e) {
+            result.put("success",false);
+            result.put("message","系统故障，请稍候重试");
             e.printStackTrace();
+            return result;
         }
-        return null;
+        //return null;
     }
 
     @Override
@@ -170,7 +164,6 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             result.put("message", "保存成功");
         }
         result.put("success", true);
-
         return result;
     }
 

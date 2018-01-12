@@ -46,12 +46,12 @@ public class MyClassWorkController extends BaseWxController {
 
     @RequestMapping(value = "/saveWork")
     public Result saveWork(@RequestParam(value = "sessionId", required = true) String sessionId,
-                           @RequestParam MultipartFile[] imageOrVideos, HttpServletRequest request) throws IOException {
+                          HttpServletRequest request) throws IOException {
         //保存我的作业
 
         Long userId = 0L;
         String mediaType = request.getParameter("mediaType"); //文件类型，IMG 图片，VIDEO 小视频
-        List<String> mediaUrls = getImageOrVideoUrls(imageOrVideos);
+        List<String> mediaUrls = null;
         String content = request.getParameter("content");
         Integer power = Integer.parseInt(request.getParameter("power")); //是否公开
         Long studentId = Long.parseLong(request.getParameter("studentId"));
