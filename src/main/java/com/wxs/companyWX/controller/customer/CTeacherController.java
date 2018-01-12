@@ -1,5 +1,7 @@
 package com.wxs.companyWX.controller.customer;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.wxs.entity.customer.TTeacher;
 import com.wxs.service.customer.ITTeacherService;
 import com.wxs.util.Result;
 import org.apache.log4j.Logger;
@@ -24,6 +26,19 @@ public class CTeacherController {
     public Result searchByName(String name, Long organId){
         try{
             return Result.of(teacherService.searchByName(organId,name));
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping("/AllOfOrgan")
+    public Result AllOfOrgan(Long organId){
+        try{
+            EntityWrapper<TTeacher> ew = new EntityWrapper<>();
+            ew.eq("organizationId",organId);
+            return Result.of(teacherService.selectList(ew));
         }catch (Exception e){
             log.error(BaseUtil.getExceptionStackTrace(e));
             e.printStackTrace();

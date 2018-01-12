@@ -28,7 +28,7 @@
     height: 13px;
     width: 13px;
     border-width: 2px 2px 0 0;
-    border-color: #C8C8CD;
+    border-color: #333333;
     border-style: solid;
     -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
     transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
@@ -52,4 +52,7 @@
 }
 .weui-cells{
     margin-top: 0;
+}
+.comment-blue{
+    color: #0066CC;
 }

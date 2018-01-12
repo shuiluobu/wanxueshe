@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>搜索班级</title>
+    <style>
+        body{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+        }
+        .head div{
+            position: absolute;
+            left:40px;
+            top: 10px;
+            height:20px;
+            line-height: 20px;
+            width: 100%;
+        }
+        .head input{
+            border-left-width:0px;
+            border-top-width:0px;
+            border-right-width:0px;
+            border-bottom: 1px solid #797979
+        }
+        .recently_search{
+            background-color: #F2F2F2;
+            margin-top: 45px;
+        }
+        .recently_search p{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #999999;
+        }
+        .tag{
+            height: 25px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .tag div{
+            display: inline;
+            margin-right: 5px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border: 1px solid #797979;
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            padding: 2px 5px;
+            background-color: #CCCCCC;
+        }
+        .clean{
+            height:42px;
+            line-height:42px;
+            text-align: center;
+            background-color: #CCCCCC;
+            margin: 15px 10px;
+        }
+        .class_div{
+            display: inline-block;
+            background-color: #F2F2F2;
+            font-family: 'Arial Normal', 'Arial';
+            font-size: 13px;
+            color: #333333;
+            text-align: center;
+            line-height: normal;
+        }
+        .class_font{
+            font-size: 18px;
+            color: #666666;
+        }
+        .detail_font{
+            font-size: 12px;
+            color: #666666;
+        }
+        .table_cell{
+            display: table;
+            width: 100%;
+        }
+        .table_cell div{
+            display: table-cell;
+            width: 50%;
+            border: 1px solid rgba(242, 242, 242, 1);
+            font-size: 12px;
+            color: #333333;
+            text-align: center;
+            line-height: normal;
+        }
+        .notDoneDiv{
+            border: 1px solid #797979;
+            width: 20px;
+            height: 20px;
+            float: left;
+            margin-right: 20px;
+        }
+        .weui-cells:before{
+            border-top: 1px solid #FFFFFF;
+        }
+        .weui-cells .weui-cell:before{
+            border-top: 1px solid #FFFFFF;
+        }
+        .weui-cells .weui-cell{
+            padding-left: 10px;
+        }
+        .font_16{
+            font-size: 16px;
+        }
+        .font_12{
+            font-size: 12px;
+        }
+        .class_detail{
+            border-bottom: 10px solid #F2F2F2;
+        }
+
+    </style>
+</head>
+<body>
+<!-- 搜索   start -->
+<div class="head">
+    <a href="javascript:void(0);" class="return"></a>
+    <div>
+        <input style="width: calc(100% - 95px);height: 100%"></input>
+        <p style="width: 40px;height: 100%;display: inline" onclick="search()">搜索</p>
+    </div>
+</div>
+<!-- 最近搜索   S -->
+<div  class="recently_search">
+    <p style="padding-left: 10px;">最近搜索</p>
+    <div id="recent_class" style="padding-left: 10px;">
+        <!--<div class="tag">-->
+            <!--<div>积木</div>-->
+            <!--<div>搭建</div>-->
+            <!--<div>初级</div>-->
+            <!--<div>钢琴</div>-->
+        <!--</div>-->
+        <!--<div class="tag">-->
+            <!--<div>班级</div>-->
+            <!--<div>名称</div>-->
+            <!--<div>1</div>-->
+            <!--<div>2</div>-->
+        <!--</div>-->
+    </div>
+    <div class="clean" onclick="clearRecent();">清除搜索记录</div>
+    </div>
+</div>
+<!-- 最近搜索   E -->
+<!-- 搜索   end -->
+<div class="weui-panel">
+
+    <div class="weui-panel__bd" style="font-size: 13px" id="classList">
+        <!-- oneUnit S-->
+        <!--<div class="class_detail">-->
+            <!--<div style="padding-left: 10px;">-->
+                <!--<div class="class_div">班课</div>-->
+                <!--<p  class="class_font" style="display: inline">暑假基础培训一班</p>-->
+                <!--<p class="detail_font">授课老师：<span>张老师</span></p>-->
+                <!--<p class="detail_font">教授课程：<span>机器人启蒙</span>&nbsp;&nbsp;&nbsp;<span>32</span>课时</p>-->
+            <!--</div>-->
+            <!--<div class="table_cell">-->
+                <!--<div>学员 : <span>23</span></div>-->
+                <!--<div>课时已完成/剩余：<span>1/21</span></div>-->
+            <!--</div>-->
+            <!--<div class="weui-cells">-->
+                <!--<div class="weui-cell">-->
+                    <!--<div class="weui-cell__bd detail_font">-->
+                        <!--<p>最近排课计划：</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="weui-cell">-->
+                    <!--<div class="notDoneDiv"></div>-->
+                    <!--<div class="weui-cell__bd">-->
+                        <!--<p class="font_16">积木搭建基础-2/3课时</p>-->
+                        <!--<p class="font_12"><span>张老师</span> &bull; <span>10:00-11:00</span></p>-->
+                    <!--</div>-->
+                    <!--<div class="hint-val font_12">教务</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!-- oneUnit E-->
+
+
+    </div>
+
+</div>
+
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    $(function () {
+        //加载最近搜索
+        var recentSClass = localStorage.getItem("recent_STeachers");
+        if(recentSClass != null){
+            recentSClass = recentSClass.split(",");
+        }
+        recentSearchPage(recentSClass);
+    });
+    
+    function search() {
+        var name = $(".head input").val().trim();
+        if(name.length == 0){
+            return;
+        }
+        //存入最近搜索
+        memory(name);
+        searchClass(null,globalOrganId,name,null,$("#classList"));
+    }
+    //清除最近班级搜索
+    function  clearRecent() {
+        localStorage.removeItem("recent_STeachers");
+        $.toast('清除成功!','text',800,function(){
+            //提示完成后执行方法
+        });
+        recentSearchPage(null);
+    }
+    
+    //localStorage 存储搜索过的
+    function memory(name) {
+        var nameArr = localStorage.getItem("recent_STeachers");
+        if(nameArr == null){
+            nameArr = new Array();
+            nameArr.push(name);
+            localStorage.setItem("recent_STeachers",nameArr);
+        }else{
+            nameArr = nameArr.split(",");
+            if(!contains(nameArr,name)){
+                nameArr.push(name);
+                localStorage.setItem("recent_STeachers",nameArr);
+            }
+        }
+        recentSearchPage(nameArr);
+    }
+    //动态变化 最近搜索页面
+    function recentSearchPage(nameArr) {
+        $("#recent_class").empty();
+        if(nameArr){
+            var div = '<div class="tag">';
+            for(var i=0;i<nameArr.length;i++){
+                div += '<div>'+nameArr[i]+'</div>';
+                if((i+1) % 4 == 0 || (i+1) == nameArr.length){
+                    div += '</div>';
+                    $("#recent_class").append(div);
+                    div = '<div class="tag">';
+                }
+            }
+        }
+    }
+    //搜索班级
+    function searchClass(teacherId,organId,className,classType,tab) {
+
+        $.ajax("/cClass/searchClass",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                teacherId:teacherId,
+                organId:organId,
+                className:className,
+                classType:classType
+            },
+            success:function(json){
+                tab.empty();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div class="class_detail">'+
+                            '<div style="padding-left: 10px;">'+
+                            '<div class="class_div">'+list[i].classType+'</div>'+
+                            '<p  class="class_font" style="display: inline"> '+list[i].className+'</p>'+
+                            '<p class="detail_font">授课老师：<span>'+list[i].teacherName+'</span></p>'+
+                            '<p class="detail_font">教授课程：<span>'+list[i].courseName+'</span>&nbsp;&nbsp;&nbsp;<span>'+list[i].totalLessonNum+'</span>课时</p>'+
+                            '</div>'+
+                            '<div class="table_cell">'+
+                            '<div>学员 : <span>'+list[i].realQty+'</span></div>'+
+                            '<div>课时已完成/剩余：<span>'+list[i].doneLessonNum+'/'+list[i].totalLessonNum+'</span></div>'+
+                            '</div>';
+                        //如果有接下来的课程，才显示最近课程安排
+                        if(list[i].nextLessonName){
+                            div+= '<div class="weui-cells">'+
+                                '<div class="weui-cell">'+
+                                '<div class="weui-cell__bd detail_font">'+
+                                '<p>最近排课计划：</p>'+
+                                '</div>'+
+                                '</div>'+
+                                '<div class="weui-cell">'+
+                                '<div class="notDoneDiv"></div>'+
+                                '<div class="weui-cell__bd">'+
+                                '<p class="font_16">'+list[i].courseName+'-'+list[i].nextLessonName+'</p>'+
+                                '<p class="font_12"><span>'+list[i].teacherName+'</span> &bull; <span>'+getHM(list[i].nextLessonSTime)+'-'+getHM(list[i].nextLessonETime)+'</span></p>'+
+                                '</div>'+
+                                '<div class="hint-val font_12">教务</div>'+
+                                '</div>'+
+                                '</div>';
+                        }
+                        div+='</div>';
+                        tab.append(div);
+                    }
+                }
+            }
+        });
+
+    }
+</script>
+</html>

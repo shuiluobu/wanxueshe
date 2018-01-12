@@ -3498,12 +3498,12 @@ if (typeof define === 'function' && define.amd) {
     });
   }
 
-  $.toast = function(text, style, callback) {
+  $.toast = function(text, style, duration,callback) {
     if(typeof style === "function") {
       callback = style;
     }
     var className, iconClassName = 'weui-icon-success-no-circle';
-    var duration = toastDefaults.duration;
+    // var duration = toastDefaults.duration; //weui默认显示时间
     if(style == "cancel") {
       className = "weui-toast_cancel";
       iconClassName = 'weui-icon-cancel'
@@ -3516,7 +3516,6 @@ if (typeof define === 'function' && define.amd) {
       duration = style
     }
     show('<i class="' + iconClassName + ' weui-icon_toast"></i><p class="weui-toast_content">' + (text || "已经完成") + '</p>', className);
-
     setTimeout(function() {
       hide(callback);
     }, duration);

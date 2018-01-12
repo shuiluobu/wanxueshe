@@ -1,5 +1,5 @@
 <script type="text/javascript" src="/weui/js/jquery.min.js"></script>
-<script type="text/javascript" src="/weui/js/jquery-weui.min.js"></script>
+<script type="text/javascript" src="/weui/js/jquery-weui.js"></script>
 <script>
     //前端用户
     var frontUser; //全局用户
@@ -96,9 +96,33 @@
 
         }
     }
+    //contains /判断某数据是否包含某元素
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //contains
+//    Array.prototype.contains = function (obj) {
+//        var i = this.length;
+//        while (i--) {
+//            if (this[i] === obj) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
     //底部导航栏 切换选中
 //    $(".weui-fixed-btm div").click(function () {
 //        $(this).siblings().removeClass("btm_selected");
 //        $(this).addClass("btm_selected");
 //    });
+    //获取时间的 时分 HH:mm
+    function getHM(paraTime){
+        return paraTime == null?"":paraTime.substring(11,16);
+    }
 </script>

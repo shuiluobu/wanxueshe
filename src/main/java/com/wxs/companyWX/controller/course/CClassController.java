@@ -48,19 +48,19 @@ public class CClassController {
         return null;
     }
     /**
-     * @Description : 或者 某教师 的 所有班级
+     * @Description :  教师Id+机构Id+班级类型+班级名称  混合搜索班级
      * @return com.wxs.util.Result
      * @Author : wyh
      * @Creation Date : 17:14 2018/1/10
      * @Params : [teacherId]
      **/
-    @RequestMapping("/allMyClass")
-    public Result allMyClass(Long teacherId){
+    @RequestMapping("/searchClass")
+    public Result searchClass(Long teacherId,Long organId,String className,String classType){
 
         try{
             EntityWrapper<TClass> ew = new EntityWrapper<>();
             ew.eq("teacherId",teacherId);
-            List<TClass> classList = classService.allMyClass(teacherId);
+            List<TClass> classList = classService.searchClass(teacherId,organId,className,classType);
             if(classList.size() >0){
                 Map<String,String> classTypeMap = dictionaryService.getClassType();
                 TClassLesson classLesson = null;

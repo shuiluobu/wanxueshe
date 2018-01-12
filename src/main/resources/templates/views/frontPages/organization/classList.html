@@ -97,16 +97,16 @@
 <div class="head">
     <a href="javascript:void(0);" class="return"></a><span>班级</span>
     <div class="right">
-        <a href="javascript:void(0);"><img src="/weui/images/wyh/search.png"></a>
+        <a href="/organization/viewsTransfer?view=searchClass"><img src="/weui/images/wyh/search.png"></a>
     </div>
 </div>
 
 <div class="weui-tab" style="margin-top: 45px;width: 100%;">
     <div class="weui-navbar">
-        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+        <a class="weui-navbar__item " href="#tab1">
             我的班级
         </a>
-        <a class="weui-navbar__item" href="#tab2">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab2">
             全部班级
         </a>
         <a class="weui-navbar__item " href="#tab3">
@@ -117,7 +117,7 @@
         <!--</a>-->
     </div>
     <div class="weui-tab__bd">
-        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+        <div id="tab1" class="weui-tab__bd-item">
             <!-- oneUnit S-->
             <!--<div class="class_detail">-->
                 <!--<div style="padding-left: 10px;">-->
@@ -149,64 +149,26 @@
             <!-- oneUnit E-->
 
         </div>
-        <div id="tab2" class="weui-tab__bd-item">
+        <div id="tab2" class="weui-tab__bd-item weui-tab__bd-item--active">
 
             <div class="weui-cells weui-cells_checkbox">
 
                 <div class="search_div"><input placeholder="班级搜索"></div>
 
-                <div style="border-bottom: 5px solid #F2F2F2;">
-                    <label class="weui-cell weui-check__label" style="border-bottom: 1px solid #F2F2F2;">
-                        <div class="weui-cell__bd">
-                            <p>我的班级</p>
-                        </div>
-                        <div class="weui-cell__hd">
-                            <input type="radio" class="weui-check" name="checkbox_classBelong" value="1"  checked >
-                            <i class="weui-icon-checked"></i>
-                        </div>
-                    </label>
+                <div id="teacher_list" style="border-bottom: 5px solid #F2F2F2;" hidden>
                     <label class="weui-cell weui-check__label">
                         <div class="weui-cell__bd">
                             <p>不限</p>
                         </div>
                         <div class="weui-cell__hd">
-                            <input type="radio" class="weui-check" name="checkbox_classBelong" value="0">
+                            <input type="radio" class="weui-check" name="checkbox_classBelong" value="" checked>
                             <i class="weui-icon-checked"></i>
                         </div>
                     </label>
                 </div>
 
-                <div>
+                <div id="tab2_list">
 
-                    <!-- oneUnit S-->
-                    <div class="class_detail">
-                        <div style="padding-left: 10px;">
-                            <div class="class_div">班课</div>
-                            <p  class="class_font" style="display: inline">暑假基础培训一班</p>
-                            <p class="detail_font">授课老师：<span>张老师</span></p>
-                            <p class="detail_font">教授课程：<span>机器人启蒙</span>&nbsp;&nbsp;&nbsp;<span>32</span>课时</p>
-                        </div>
-                        <div class="table_cell">
-                            <div>学员 : <span>23</span></div>
-                            <div>课时已完成/剩余：<span>1/21</span></div>
-                        </div>
-                        <div class="weui-cells">
-                            <div class="weui-cell">
-                                <div class="weui-cell__bd detail_font">
-                                    <p>最近排课计划：</p>
-                                </div>
-                            </div>
-                            <div class="weui-cell">
-                                <div class="notDoneDiv"></div>
-                                <div class="weui-cell__bd">
-                                    <p class="font_16">积木搭建基础-2/3课时</p>
-                                    <p class="font_12"><span>张老师</span> &bull; <span>10:00-11:00</span></p>
-                                </div>
-                                <div class="hint-val font_12">教务</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- oneUnit E-->
 
                 </div>
 
@@ -249,37 +211,9 @@
                     </label>
                 </div>
 
-                <div >
+                <div id="tab3_list">
 
-                    <!-- oneUnit S-->
-                    <div class="class_detail">
-                        <div style="padding-left: 10px;">
-                            <div class="class_div">班课</div>
-                            <p  class="class_font" style="display: inline">暑假基础培训一班</p>
-                            <p class="detail_font">授课老师：<span>张老师</span></p>
-                            <p class="detail_font">教授课程：<span>机器人启蒙</span>&nbsp;&nbsp;&nbsp;<span>32</span>课时</p>
-                        </div>
-                        <div class="table_cell">
-                            <div>学员 : <span>23</span></div>
-                            <div>课时已完成/剩余：<span>1/21</span></div>
-                        </div>
-                        <div class="weui-cells">
-                            <div class="weui-cell">
-                                <div class="weui-cell__bd detail_font">
-                                    <p>最近排课计划：</p>
-                                </div>
-                            </div>
-                            <div class="weui-cell">
-                                <div class="notDoneDiv"></div>
-                                <div class="weui-cell__bd">
-                                    <p class="font_16">积木搭建基础-2/3课时</p>
-                                    <p class="font_12"><span>张老师</span> &bull; <span>10:00-11:00</span></p>
-                                </div>
-                                <div class="hint-val font_12">教务</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- oneUnit E-->
+
 
                 </div>
 
@@ -348,56 +282,149 @@
 <#include "/frontPages/common/version.html"/>
 <script>
     $(function () {
-        //获取我的所有班级
-        $.ajax("/cClass/allMyClass",{
+
+        //获取所有的老师
+        $.ajax("/cTeacher/AllOfOrgan",{
             async : false,
             type: 'post',
             dataType: 'json',
             data:{
-                teacherId:globalTeacherId
+                organId:globalOrganId
             },
             success:function(json){
-//                $("#tab1").empty();
                 if(json.data){
                     var list = json.data;
+                    var realName;
                     for(var i=0;i<list.length;i++){
-                        var div = '<div class="class_detail">'+
-                                        '<div style="padding-left: 10px;">'+
-                                            '<div class="class_div">'+list[i].classType+'</div>'+
-                                            '<p  class="class_font" style="display: inline"> '+list[i].className+'</p>'+
-                                            '<p class="detail_font">授课老师：<span>'+list[i].teacherName+'</span></p>'+
-                                            '<p class="detail_font">教授课程：<span>'+list[i].courseName+'</span>&nbsp;&nbsp;&nbsp;<span>'+list[i].totalLessonNum+'</span>课时</p>'+
+                        if(list[i].id == globalTeacherId){
+                            realName = '我的班级';
+                        }else{
+                            realName = list[i].realName;
+                        }
+                        var label = '<label class="weui-cell weui-check__label">'+
+                                        '<div class="weui-cell__bd">'+
+                                             '<p>'+realName+'</p>'+
                                         '</div>'+
-                                        '<div class="table_cell">'+
-                                            '<div>学员 : <span>'+list[i].realQty+'</span></div>'+
-                                            '<div>课时已完成/剩余：<span>'+list[i].doneLessonNum+'/'+list[i].totalLessonNum+'</span></div>'+
+                                        '<div class="weui-cell__hd">'+
+                                            '<input type="radio" class="weui-check" name="checkbox_classBelong" value="'+list[i].id+'">'+
+                                            '<i class="weui-icon-checked"></i>'+
                                         '</div>'+
-                                        '<div class="weui-cells">'+
-                                            '<div class="weui-cell">'+
-                                            '<div class="weui-cell__bd detail_font">'+
-                                            '<p>最近排课计划：</p>'+
-                                            '</div>'+
-                                            '</div>'+
-                                        '<div class="weui-cell">'+
-                                            '<div class="notDoneDiv"></div>'+
-                                            '<div class="weui-cell__bd">'+
-                                            '<p class="font_16">'+list[i].courseName+'-'+list[i].nextLessonName+'</p>'+
-                                            '<p class="font_12"><span>'+frontUser.teacherName+'</span> &bull; <span>'+getHM(list[i].nextLessonSTime)+'-'+getHM(list[i].nextLessonETime)+'</span></p>'+
-                                            '</div>'+
-                                            '<div class="hint-val font_12">教务</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-                        $("#tab1").append(div);
+                                    '</label>';
+                        $("#teacher_list").append(label);
                     }
                 }
             }
         });
+
+
+        //获取我的所有班级
+        searchClass(globalTeacherId,null,null,null,$("#tab1"));
+        //班级类型--不限
+        searchClass(null,globalOrganId,null,null,$("#tab3_list"));
+        //班级搜索输入框 时间
+        $("#tab2 .search_div input").click(function () {
+            $("#teacher_list").toggle();
+            var teacherName = $("input[name='checkbox_classBelong']:checked").parent().prev().find("p").text();
+            $("#tab2 .search_div input").val(teacherName);
+           var teacherId = $("input[name='checkbox_classBelong']:checked").val().trim();
+           //某老师的班级
+           if(teacherId != ""){
+            searchClass(teacherId,null,null,null,$("#tab2_list"));
+           }
+           //不限
+            if(teacherId == ""){
+                searchClass(null,globalOrganId,null,null,$("#tab2_list"));
+            }
+        });
+        //老师选择搜索事件
+        $("input[name='checkbox_classBelong']").change(function () {
+            var teacherName = $(this).parent().prev().find("p").text();
+            var teacherId = $("input[name='checkbox_classBelong']:checked").val().trim();
+            //某老师的班级
+            if(teacherId != ""){
+                searchClass(teacherId,null,null,null,$("#tab2_list"));
+            }
+            //不限
+            if(teacherId == ""){
+                searchClass(null,globalOrganId,null,null,$("#tab2_list"));
+            }
+            $("#tab2 .search_div input").val(teacherName);
+            $("#teacher_list").toggle();
+        });
+        //班级类型 选择搜索事件
+        $("input[name='checkbox_classType']").change(function () {
+            var classType = $("input[name='checkbox_classType']:checked").val().trim();
+            //某老师的班级
+            if(classType != ""){
+                searchClass(null,globalOrganId,null,classType,$("#tab3_list"));
+            }
+            //不限
+            if(classType == ""){
+                searchClass(null,globalOrganId,null,null,$("#tab3_list"));
+            }
+            $("#teacher_list").toggle();
+        });
+
+
     });
 
+    function searchClass(teacherId,organId,className,classType,tab) {
+
+        $.ajax("/cClass/searchClass",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                teacherId:teacherId,
+                organId:organId,
+                className:className,
+                classType:classType
+            },
+            success:function(json){
+                tab.empty();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div class="class_detail">'+
+                            '<div style="padding-left: 10px;">'+
+                            '<div class="class_div">'+list[i].classType+'</div>'+
+                            '<p  class="class_font" style="display: inline"> '+list[i].className+'</p>'+
+                            '<p class="detail_font">授课老师：<span>'+list[i].teacherName+'</span></p>'+
+                            '<p class="detail_font">教授课程：<span>'+list[i].courseName+'</span>&nbsp;&nbsp;&nbsp;<span>'+list[i].totalLessonNum+'</span>课时</p>'+
+                            '</div>'+
+                            '<div class="table_cell">'+
+                            '<div>学员 : <span>'+list[i].realQty+'</span></div>'+
+                            '<div>课时已完成/剩余：<span>'+list[i].doneLessonNum+'/'+list[i].totalLessonNum+'</span></div>'+
+                            '</div>';
+                        //如果有接下来的课程，才显示最近课程安排
+                        if(list[i].nextLessonName){
+                            div+= '<div class="weui-cells">'+
+                            '<div class="weui-cell">'+
+                            '<div class="weui-cell__bd detail_font">'+
+                            '<p>最近排课计划：</p>'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="weui-cell">'+
+                            '<div class="notDoneDiv"></div>'+
+                            '<div class="weui-cell__bd">'+
+                            '<p class="font_16">'+list[i].courseName+'-'+list[i].nextLessonName+'</p>'+
+                            '<p class="font_12"><span>'+list[i].teacherName+'</span> &bull; <span>'+getHM(list[i].nextLessonSTime)+'-'+getHM(list[i].nextLessonETime)+'</span></p>'+
+                            '</div>'+
+                            '<div class="hint-val font_12">教务</div>'+
+                            '</div>'+
+                            '</div>';
+                        }
+                        div+='</div>';
+                        tab.append(div);
+                    }
+                }
+            }
+        });
+        
+    }
     //获取时间的 时分 HH:mm
     function getHM(paraTime){
-        return paraTime.substring(11,16);
+        return paraTime == null?"":paraTime.substring(11,16);
     }
 </script>
 </html>
