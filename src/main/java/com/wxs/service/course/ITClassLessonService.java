@@ -26,4 +26,7 @@ public interface ITClassLessonService extends IService<TClassLesson> {
 	public List<Map<String,Object>> getTodayCourseLesson(Long userId);
 	public List<Map<String,Object>> getNextDayCourseLesson(Long userId);
 	List<Map<String,Object>> getCourseByTime(String beginTime,Long userId);
+	//获取某课程的所有课时以及课时完成情况
+	List<TClassLesson> allByCourseId(Long courseId );
+
 }

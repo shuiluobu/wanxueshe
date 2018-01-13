@@ -287,6 +287,11 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
         return mapList;
     }
 
+    @Override
+    public List<Map<String, Object>> stuCourseDoneInfo(Long courseId) {
+        return coursesMapper.stuCourseDoneInfo(courseId);
+    }
+
     public static LinkedHashMap<String, String> getWeekDateOfCycle(String beginDate, String endDate) {
         int days = (int) (BaseUtil.toDate(endDate).getTime() - BaseUtil.toDate(beginDate).getTime()) / (1000 * 60 * 60 * 24) + 1;
         Calendar startTime = Calendar.getInstance();

@@ -30,6 +30,14 @@ public interface TClassMapper extends BaseMapper<TClass> {
     //获取某教师的 所有班级
     List<TClass> searchClass(@Param("teacherId") Long teacherId,@Param("organId")Long organId,
                              @Param("className")String className,@Param("classType")String classType);
+    //班级详情信息
+    @Select("select t.*,a.courseName,b.realName teacherName,l.organName,l.leval organLevel " +
+            "from t_class t " +
+            "left join t_class_course a on a.id = t.courseId " +
+            "left join t_teacher b on b.id = t.teacherId " +
+            "left join t_organization l on l.id = t.organId " +
+            "where t.id= #{classId}")
+    TClass classInfo(@Param("classId") Long classId);
 
 
 

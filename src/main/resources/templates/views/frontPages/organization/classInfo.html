@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>班级详情</title>
+    <style>
+        .tag{
+            height: 25px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .tag div{
+            display: inline;
+            margin-left: 5px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border: 1px solid #797979;
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            padding: 2px 5px;
+        }
+        .test_b{
+            margin-top: 3px;
+            width: 10px;
+            height: 5px;
+            background: inherit;
+            background-color: rgba(51, 51, 51, 1);
+            border: none;
+            border-radius: 2px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            display: block;
+            font-family: 'Arial Normal', 'Arial';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 13px;
+            color: #333333;
+            text-align: center;
+            line-height: normal;
+        }
+        .test_s{
+            margin-top: 3px;
+            width: 5px;
+            height: 5px;
+            background: inherit;
+            background-color: #CCCCCC;
+            border: none;
+            border-radius: 2px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            display: block;
+            font-family: 'Arial Normal', 'Arial';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 13px;
+            color: #CCCCCC;
+            text-align: center;
+            line-height: normal;
+        }
+        .search_table td{
+            padding: 0 2px;
+            font-size: 20px;
+            height: 100%;
+            line-height: 100%;
+        }
+        .courseDone{
+            color: #999999;
+        }
+        .doneDiv{
+            border-radius:40px 40px 40px 40px;
+            /*border: 1px solid #797979;*/
+            width: 25px;
+            height: 25px;
+            float: left;
+            margin-right: 20px;
+            text-align: center;
+            color: white;
+            background-color: #666666;
+        }
+        .notDoneDiv{
+            border: 1px solid #797979;
+            width: 20px;
+            height: 20px;
+            float: left;
+            margin-right: 20px;
+        }
+        .record_div {
+            border-left: 1px solid #a5a5a5;
+            padding:0px 10px 0px 19px;
+            margin:0 15px;
+        }
+        .record_div p{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+        }
+
+        .record_div .record_time{
+            float: right;
+            margin-top: 10px;
+        }
+        .record_div .record_p{
+            position: relative;
+            padding:10px 0;
+        }
+        .record_div .record_p:before{
+            content: url("/weui/images/wyh/right.png");
+            width: 20px;
+            height: 20px;
+            background:white;
+            border: 1px solid;
+            border-radius:  50%;
+            display: inline-block;
+            position: absolute;
+            left: -31px;
+            top: 10px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        .comment-blue{
+            color: #0066CC;
+        }
+        .thisFont-small{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #666666;
+        }
+        .thisFont-small p{
+            padding-left: 25px;
+            margin: 5px 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="head">
+    <a href="javascript:void(0);" class="return"></a><span>学员</span>
+</div>
+<div style="margin-top: 45px;width: 100%;">
+    <div style="text-align: center;" id="INCNB">
+        <img  style="height: 100px;width: 100px;padding-top: 12px;" src="/weui/images/wyh/class_default.png"/>
+        <p>&nbsp;</p>
+        <p>课程 : <span></span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;老师 : <span></span></p>
+    </div>
+</div>
+
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item " href="#tab1">
+            课时
+        </a>
+        <a class="weui-navbar__item " href="#tab2">
+            学员
+        </a>
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab3">
+            课程介绍
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item">
+            <!-- 课时   start -->
+            <div class="weui-cells"  style="margin-top: 0">
+
+                <a class="weui-cell weui-cell_access" href="javascript:;" style="background-color: #F2F2F2;">
+                    <div class="weui-cell__bd" id="totalAndDone">
+                        <p><span></span>个课时，<span></span>个已完成</p>
+                    </div>
+                </a>
+
+                <div id="courseList">
+
+                    <!--<a class="weui-cell weui-cell_access courseDone" href="javascript:;">-->
+                        <!--<div class="doneDiv"><img src="/weui/images/wyh/right.png"/></div>-->
+                        <!--<div class="weui-cell__bd">-->
+                            <!--<p>积木搭建基础-2/3课时</p>-->
+                            <!--<hr style="width:100%;">-->
+                            <!--<p>2017-12-10 10:00-11:00</p>-->
+                        <!--</div>-->
+                        <!--<div class="hint-val">教务</div>-->
+                    <!--</a>-->
+
+                    <!--<a class="weui-cell weui-cell_access" href="javascript:;">-->
+                        <!--<div class="notDoneDiv"></div>-->
+                        <!--<div class="weui-cell__bd">-->
+                            <!--<p>积木搭建基础-2/3课时</p>-->
+                            <!--<p>2017-12-10 10:00-11:00</p>-->
+                        <!--</div>-->
+                        <!--<div class="hint-val">教务</div>-->
+                    <!--</a>-->
+
+                </div>
+
+            </div>
+            <!-- 课时   end -->
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+                <div class="weui-panel" >
+                    <div class="weui-panel__bd" style="font-size: 13px" id="studentList">
+
+                        <!--<div class="weui-media-box weui-media-box_appmsg ">-->
+                            <!--<div class="weui-media-box__hd ">-->
+                            <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+                            <!--</div>-->
+                            <!--<div class="weui-media-box__bd">-->
+                                <!--<p class="comment-blue">王同学</p>-->
+                                <!--<p>完成<span>1</span>课时、剩余<span>12</span>课时</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+
+
+                    </div>
+            </div>
+
+            <!-- 图片放大  S -->
+            <div class="weui-gallery" id="gallery" >
+                <span class="weui-gallery__img"  id="galleryImg" style="background-image:url(/weui/images/pic_160.png);bottom: 0px;"></span>
+            </div>
+        </div>
+        <div id="tab3" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="weui-cell">
+                <div class="weui-cell__bd thisFont-small" id="courseInfo">
+                    <p>
+                        <img src="/weui/images/wyh/courseIcon.png" style="position: absolute;left: 15px;">
+                        所属课程 : <span></span>
+                    </p>
+                    <p>
+                        <img src="/weui/images/wyh/GPS.png" style="position: absolute;left: 15px;">
+                        所属机构 : <span></span>&nbsp;&nbsp;&nbsp;<span style="background-color: #666666;color: #FFFFFF"></span>
+                    </p>
+                    <p>课       时 : <span></span>课时</p>
+                    <p>授课老师 : <span></span></p>
+                    <p>课时计划 : <span></span>&nbsp;&nbsp;-&nbsp;&nbsp;<span></span></p>
+                    <div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    var classId;
+    var courseName;
+    var teacherName;
+    var courseStartTime;
+    var courseEndTime;
+    var organName;
+    var organLevel;
+    $(function () {
+        classId = 1;
+        //获取班级的资料
+        $.ajax("/cClass/classInfo",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                classId:classId
+            },
+            success:function(json){
+                if(json.data.tClass){
+                    var cla = json.data.tClass;
+                    //班级名称
+                    $("#INCNB p").eq(0).text(cla.className);
+                    //课程名称
+                    $("#INCNB span").eq(0).text(cla.courseName);
+                    courseName = cla.courseName;
+                    //教课老师
+                    $("#INCNB span").eq(1).text(cla.teacherName);
+                    teacherName = cla.teacherName;
+                    organName = cla.organName;
+                    organLevel = cla.organLevel;
+                    //课时完成情况
+                    lessonsDoneInfo(cla.courseId);
+                    //班级学员
+                    studentDoneInfo(cla.courseId);
+
+                }
+                if(json.data.courseCategory){
+                    var cc = json.data.courseCategory;
+                    //班级头像-课程大分类的封面
+                    $("#INCNB img").attr("src",cc.cover);
+                    //课程介绍-所属课程
+                    $("#courseInfo span").eq(0).text(cc.courseCategoryName+'-'+courseName);
+                    //课程介绍-所属机构
+                    $("#courseInfo span").eq(1).text(organName);
+                    //课程介绍-机构登记
+                    if(organLevel == 0){
+                        $("#courseInfo span").eq(2).text('未认证');
+                    }
+                    if(organLevel == 1){
+                        $("#courseInfo span").eq(2).text('已认证');
+                    }
+                    //课程介绍-总课时
+                    $("#courseInfo span").eq(3).text(cc.canQty);
+                    //课程介绍-授课老师
+                    $("#courseInfo span").eq(4).text(teacherName);
+                    //课程介绍-课时计划
+                    $("#courseInfo span").eq(5).text(courseStartTime);
+                    $("#courseInfo span").eq(6).text(courseEndTime);
+                    //课程介绍- 富文本内容
+                    $("#courseInfo div").html(cc.courseRemark);
+
+                }
+
+            }
+        });
+
+
+
+        //预览图片
+        var  $gallery = $("#gallery"), $galleryImg = $("#galleryImg"), $uploaderFiles = $("#uploaderFiles");
+
+        //图片放大
+        $uploaderFiles.on("click", "li", function(){
+            $galleryImg.attr("style", this.getAttribute("style"));
+            $gallery.fadeIn(100);
+        });
+        //关闭 图片放大
+        $gallery.on("click", function(){
+            $gallery.fadeOut(100);
+        });
+
+
+    });
+
+    //课程的课时完成情况
+    function lessonsDoneInfo(courseId) {
+        $.ajax("/cClassLesson/allByCourseId",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                courseId:courseId
+            },
+            success:function(json){
+                if(json.data){
+                    $("#courseList").empty();
+                    var list = json.data;
+                    var doneCount = 0;
+                    for(var i=0;i<list.length;i++){
+                        if(i == 0){
+                            courseEndTime = getYMD(list[i].endTime);
+                        }
+                        if( (i+1) == list.length){
+                            courseStartTime = getYMD(list[i].beginTime);
+                        }
+                        var status = list[i].ifDone;
+                        var start = '';
+                        var div;
+                        var hr = '';
+                        if(status ==  1){
+                            start = '<a class="weui-cell weui-cell_access courseDone" href="javascript:;">';
+                            div = '<div class="doneDiv"><img src="/weui/images/wyh/right.png"/></div>';
+                            hr =  '<hr style="width:100%;">';
+                            doneCount++;
+                        }else{
+                            start = '<a class="weui-cell weui-cell_access" href="javascript:;">';
+                            div = '<div class="notDoneDiv"></div>';
+                        }
+                        var a = start +div +
+                                    '<div class="weui-cell__bd">'+
+                                    '<p>'+courseName+'-'+list[i].lessonName+'</p>'+
+                                    hr+
+                                    '<p>'+getYMD(list[i].beginTime)+' '+getHM(list[i].beginTime)+'-'+getHM(list[i].endTime)+'</p>'+
+                                    '</div>'+
+                                    '<div class="hint-val">教务</div>'+
+                                '</a>';
+                        $("#courseList").append(a);
+                    }
+                    //总课时数
+                    $("#totalAndDone span").eq(0).text(list.length);
+                    //已完成数
+                    $("#totalAndDone span").eq(1).text(doneCount);
+
+                }
+            }
+        });
+    }
+    
+    function studentDoneInfo(courseId) {
+        $.ajax("/cClassCourse/stuCourseDoneInfo",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                courseId:courseId
+            },
+            success:function(json){
+                $("#studentList").empty();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div class="weui-media-box weui-media-box_appmsg  id="'+list[i].studentId+'">'+
+                                        '<div class="weui-media-box__hd ">'+
+                                        '<img class="weui-media-box__thumb" src="'+list[i].headImg+'">'+
+                                        '</div>'+
+                                        '<div class="weui-media-box__bd">'+
+                                        '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                                        '<p>完成<span>'+list[i].done+'</span>课时、剩余<span>'+(list[i].total - list[i].done)+'</span>课时</p>'+
+                                        '</div>'+
+                                    '</div>';
+                        $("#studentList").append(div);
+                    }
+                    $("#studentList div[class='weui-media-box']").click(function () {
+                       var studentId = $(this).attr("id");
+                       console.log(studentId);
+                    });
+                }
+            }
+        })
+    }
+
+    //获取时间的 时分 HH:mm
+    function getHM(paraTime){
+        return paraTime == null ? "" : paraTime.substring(11,16);
+    }
+    //获取时间的 年月日 yy-MM-dd
+    function getYMD(paraTime){
+        return paraTime == null ? "" : paraTime.substring(0,10);
+    }
+</script>
+</html>

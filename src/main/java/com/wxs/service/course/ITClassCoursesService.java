@@ -58,4 +58,7 @@ public interface ITClassCoursesService extends IService<TClassCourse> {
      * @return
      */
     //List<Map<String,Object>> getUserCourseInfo(Long organId,Integer page,Integer endType);
+
+    //获取某课程 所有学生的 完成情况
+    List<Map<String,Object>> stuCourseDoneInfo (Long courseId);
 }

@@ -246,6 +246,11 @@
                     div = '<div class="tag">';
                 }
             }
+            $(".tag div").click(function () {
+               var name = $(this).text();
+               $(".head input").val(name);
+               searchClass(null,globalOrganId,name,null,$("#classList"));
+            });
         }
     }
     //搜索班级

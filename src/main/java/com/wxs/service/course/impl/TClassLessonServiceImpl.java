@@ -125,5 +125,10 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
         return classLessonMapper.getTodayCourseLesson(beginTime,endTIme,userId);
     }
 
+    @Override
+    public List<TClassLesson> allByCourseId(Long courseId) {
+        return classLessonMapper.allByCourseId(courseId);
+    }
+
 
 }

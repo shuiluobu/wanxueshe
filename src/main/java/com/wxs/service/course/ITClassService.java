@@ -24,5 +24,8 @@ public interface ITClassService extends IService<TClass> {
     List<TClass> searchByName(String name, Long organId,Integer type,Long userId);
     //获取某教师的 所有班级
     List<TClass> searchClass(Long teacherId,Long organId,String className,String classType);
+    //班级详情信息
+    TClass classInfo(Long classId);
+
 	
 }
