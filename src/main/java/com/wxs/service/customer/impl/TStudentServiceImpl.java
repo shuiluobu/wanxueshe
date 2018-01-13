@@ -110,10 +110,10 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = { Exception.class })
     public Map<String, Object> saveMygrowth(List<String> mediaUrls, String mediaType, TDynamic dynamic) {
         Map<String,Object> result = Maps.newHashMap();
-        try {
+       // try {
             dynamic.setDynamicType(EnuDynamicTypeCode.DYNAMIC_TYPE_MYGROWTH.getTypeCode());//类型为个人成长
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
@@ -140,12 +140,12 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             result.put("success",true);
             result.put("message","保存成功");
             return result;
-        } catch (Exception e) {
-            result.put("success",false);
-            result.put("message","系统故障，请稍候重试");
-            e.printStackTrace();
-            return result;
-        }
+//        } catch (Exception e) {
+//            result.put("success",false);
+//            result.put("message","系统故障，请稍候重试");
+//            e.printStackTrace();
+//            return result;
+//        }
         //return null;
     }
 

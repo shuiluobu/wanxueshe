@@ -152,8 +152,9 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = { Exception.class })
     public Map<String, Object> addCourseByApp(Long userId, Map param) {
+        Map<String,Object> result = Maps.newHashMap();
         String subjectType = param.get("types").toString();
         String courseName = param.get("courseName").toString();
 
@@ -269,8 +270,9 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
                 remindMessage.insert(); //保存提醒
             }
         }
-
-        return null;
+        result.put("success",true);
+        result.put("message","保存课程成功");
+        return result;
     }
 
     @Override
