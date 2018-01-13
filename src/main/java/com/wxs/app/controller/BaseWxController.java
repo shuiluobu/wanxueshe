@@ -81,8 +81,8 @@ public class BaseWxController {
             String originalFilename = imageOrVideo.getOriginalFilename();
             String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
             newFileName = BaseUtil.uuid() + "." + suffix; //uuid +后缀
-            targetFolderUrl = "dynamic" + "/" + BaseUtil.toShortDate(new Date());
-            newFileNameUrl = imgUploadPath + targetFolderUrl + "/" + newFileName;
+            targetFolderUrl = "dynamic" + "/" + BaseUtil.toShortDate(new Date()) + "/";
+            newFileNameUrl = imgUploadPath + targetFolderUrl  + newFileName;
             File targetFolder = new File(imgUploadPath +targetFolderUrl); //新图片路径
             if (!targetFolder.exists() || !targetFolder.isDirectory()) {
                 targetFolder.mkdirs();
@@ -92,6 +92,6 @@ public class BaseWxController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return targetFolderUrl  + "/" + newFileName;
+        return targetFolderUrl  + newFileName;
     }
 }

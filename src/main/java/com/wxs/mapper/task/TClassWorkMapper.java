@@ -24,7 +24,7 @@ public interface TClassWorkMapper extends BaseMapper<TClassWork> {
             "DATE_FORMAT(k.endTime,'%Y-%m-%d') dayTime," +
             "DATE_FORMAT(k.endTime,'%H:%i') hourTime," +
             "DATE_FORMAT(k.createTime,'%Y-%m-%d %H:%i:%s') createTime," +
-            "c.status,c.teacherId,k.courseId,c.organizationId organ FROM t_class_work k," +
+            "c.teacherId,k.courseId,c.organizationId organ FROM t_class_work k," +
             "t_class_course c " +
             "WHERE k.courseId = c.id  " +
             "AND k.id=#{workId}")
@@ -32,7 +32,7 @@ public interface TClassWorkMapper extends BaseMapper<TClassWork> {
     public Map<String,Object> getClassWork(@Param("workId") Long workId);
     @Select("select w.workName," +
             "completion," +
-            "w.id as workId," +
+            "s.id as workId," +
             "DATE_FORMAT(w.endTime,'%Y-%m-%d %H:%i') endTime " +
             "from t_class_work w,t_student_work s " +
             " where s.workId=w.id and s.userId=#{userId}")

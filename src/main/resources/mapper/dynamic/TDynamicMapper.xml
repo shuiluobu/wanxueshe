@@ -21,15 +21,15 @@
         <result column="studentId" property="studentId"/>
         <result column="status" property="status"/>
     </resultMap>
-    <select id="getDynamicmsgByParam" resultType="java.util.HashMap" parameterType="map">
+    <select id="getDynamicmsgByParam" resultType="java.util.HashMap" parameterType="java.util.HashMap">
         <include refid="querySql"></include>
         <where>
             d.`status`=0
-            <if test="dynamicId!=null">
-                d.id = #{dynamicId}
+            <if test="dynamicIds!=null">
+               AND d.id in (${dynamicIds})
             </if>
             <if test="power!=null">
-                AND d.power in (#{power})
+                AND d.power in (${power})
             </if>
             <if test="userId!=null">
                 AND d.userId = #{userId}

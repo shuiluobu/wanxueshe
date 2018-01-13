@@ -6,7 +6,8 @@ package com.wxs.enu;
  */
 public enum EnumClassworkCompletion {
     NOT_HAND_IN("NOT_HAND_IN","未提交"),
-    SUBMITTED("SUBMITTED","已提交");
+    SUBMITTED("SUBMITTED","已提交"),
+     FINISHED("FINISHED","已完成");
     ;
 
     private String typeCode; //类型编号

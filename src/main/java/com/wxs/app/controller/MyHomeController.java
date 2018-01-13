@@ -28,7 +28,7 @@ public class MyHomeController extends BaseWxController {
     @RequestMapping(value = "/view")
     public Result view(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的提醒
-        Long userId = 1L; //之后需要从session中获取
+
         return Result.of(parentService.getParentOutline(null, userId));
     }
 
@@ -36,14 +36,14 @@ public class MyHomeController extends BaseWxController {
     @RequestMapping(value = "/reminds")
     public Result reminds(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的提醒
-        Long userId = 1L; //之后需要从session中获取
+
         return Result.of(remindMessageService.getRemindMsgByFromUid(userId));
     }
 
     @RequestMapping(value = "/friends")
     public Result friends(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的好友列表
-        Long userId = 1L; //之后需要从session中获取
+
         return Result.of(followUserService.getMyFriendInfos(userId));
     }
 
@@ -56,7 +56,7 @@ public class MyHomeController extends BaseWxController {
     @RequestMapping(value = "/shields")
     public Result shields(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的好友列表
-        Long userId = 1L; //之后需要从session中获取
+
         return Result.of(followUserService.getMyShieldInfos(userId));
     }
 
@@ -76,14 +76,14 @@ public class MyHomeController extends BaseWxController {
     }
 
     @RequestMapping(value = "/getMySelfInfo")
-    public Result getMySelfInfo(@RequestParam(value = "sessionId", required = true) String sessionId,
-                                @RequestParam(value = "studentId", required = true) Long studentId) {
+    public Result getMySelfInfo(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的学员
         Long userId = 1L;
         Map<String,Object> myselfMap = Maps.newHashMap();
         TFrontUser user = new TFrontUser().selectById(userId);
         myselfMap.put("userId",userId);
-        myselfMap.put("sex","");
+        myselfMap.put("sex",user.getSex()==null?1 : user.getSex());
+        myselfMap.put("nickName",user.getNickName());
         myselfMap.put("headImg",user.getHeadImg());
         myselfMap.put("mobilePhone",user.getMobilePhone());
         return Result.of(myselfMap);
@@ -193,18 +193,19 @@ public class MyHomeController extends BaseWxController {
                              @RequestParam(required = true, value = "sex", defaultValue = "1") int sex,
                              @RequestParam(required = true, value = "mobilePhone", defaultValue = "") String mobilePhone) {
         //我的学员
-        Long userId = 0L;
+
 
         try {
             String originalFilename = file.getOriginalFilename();
-            String suffix = originalFilename.substring(originalFilename.indexOf(".") + 1);
-            String headImgUrl = imgUploadPath + "userLogoImg/" + userId + file.getName() + "." + suffix;
-            File newFile = new File(headImgUrl);
-            if (!newFile.exists() || !newFile.isDirectory()) {
-                newFile.mkdirs();//会创建所有的目录
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+            String targeFileUrl = imgUploadPath + "userLogoImg/";
+            String headImgUrl =  targeFileUrl+ userId + file.getName() + "." + suffix;
+            File targetFolderFile = new File(targeFileUrl);
+            if (!targetFolderFile.exists() || !targetFolderFile.isDirectory()) {
+                targetFolderFile.mkdirs();//会创建所有的目录
             }
             file.transferTo(new File(headImgUrl));
-            return Result.of(frontUserService.editUserInfoByMySelf(userId, nickName, headImgUrl, sex, mobilePhone));
+            return Result.of(frontUserService.editUserInfoByMySelf(userId, nickName, headImgUrl.replace(imgUploadPath,""), sex, mobilePhone));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -217,7 +218,7 @@ public class MyHomeController extends BaseWxController {
                                    @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
 
         //添加好友的请求
-        Long userId = 1L;
+
         return Result.of(followUserService.sendAddFriendReq(userId, friendId));
     }
 
@@ -225,7 +226,7 @@ public class MyHomeController extends BaseWxController {
     public Result addFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
                             @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId,
                             @RequestParam(required = true, value = "isAgree", defaultValue = "") Integer isAgree) {
-        Long userId = 1L;
+
         if (isAgree == 1) {
             //表示同意
             return Result.of(followUserService.addUserFriend(userId, friendId));
@@ -239,7 +240,7 @@ public class MyHomeController extends BaseWxController {
     @RequestMapping(value = "/delFriend")
     public Result delFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
                             @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
-        Long userId = 1L;
+
         //删除好友
         return Result.of(followUserService.updateFollowUser(userId, friendId, "30"));
     }
@@ -247,7 +248,7 @@ public class MyHomeController extends BaseWxController {
     @RequestMapping(value = "/shieldFriend")
     public Result shieldFriend(@RequestParam(value = "sessionId", required = true) String sessionId,
                                @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId) {
-        Long userId = 1L;
+
 
         return Result.of(followUserService.updateFollowUser(userId, friendId, "20"));
     }

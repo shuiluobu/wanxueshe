@@ -16,6 +16,7 @@
 		<result column="city" property="city" />
 		<result column="userType" property="userType" />
 		<result column="level" property="level" />
+		<result column="sex" property="sex"/>
 		<result column="introduce" property="introduce" />
 		<result column="headImg" property="headImg" />
 		<result column="status" property="status" />

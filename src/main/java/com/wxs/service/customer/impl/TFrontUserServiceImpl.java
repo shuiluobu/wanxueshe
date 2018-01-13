@@ -77,6 +77,7 @@ public class TFrontUserServiceImpl extends ServiceImpl<TFrontUserMapper, TFrontU
         user.setNickName(nickName);
         user.setMobilePhone(mobilePhone);
         user.setHeadImg(headImg);
+        user.setSex(gener);
         baseMapper.updateById(user);
         result.put("success", true);
         result.put("message", "保存成功");

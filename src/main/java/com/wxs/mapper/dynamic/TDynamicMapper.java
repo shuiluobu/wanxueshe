@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public interface TDynamicMapper extends BaseMapper<TDynamic> {
     public List<Map<String, Object>> getDynamicmsgByParam(Map<String, Object> param);
-    public List<Map<String,Object>> getFriendDynamicmsgByUserId(Long userId);
+    public List<Map<String,Object>> getFriendDynamicmsgByUserId(@Param("userId") Long userId);
 
     public List<Map<String, Object>> getNearByDynamicms(@Param("studentIds") List<Long> studentIds,@Param("latitude") double latitude, @Param("longitude") double longitude, @Param("range") double range);
     public List<Map<String,Object>> getNewestDynamicmByOrganId(@Param("organId") Long organId);

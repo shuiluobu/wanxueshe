@@ -26,4 +26,6 @@ public interface ITDynamicService extends IService<TDynamic> {
 	Map<String,Object> buildOneDynamic(Map<String,Object> dyn);
 	Boolean saveComment(Long userId,Long dynamicId,String content);
 	Map<String,Object> queryDynamicOfWork(Long dynamicId);
+	List<Map<String,Object>> getDynamicDetailOfWork(Long loginUserId,String dynamicIds);
+
 }

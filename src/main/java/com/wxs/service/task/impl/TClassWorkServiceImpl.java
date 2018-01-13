@@ -14,6 +14,7 @@ import com.wxs.entity.organ.TOrganization;
 import com.wxs.entity.task.TClassWork;
 import com.wxs.entity.task.TStudentWork;
 import com.wxs.enu.EnuDynamicTypeCode;
+import com.wxs.enu.EnumClassworkCompletion;
 import com.wxs.mapper.task.TClassWorkMapper;
 import com.wxs.service.dynamic.ITDynamicService;
 import com.wxs.service.common.IDictionaryService;
@@ -47,36 +48,39 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
 
     /**
      * 获取用户作业的基本信息，主要是我的功能里的《我的作业》用
+     *
      * @param userId
      * @return
      */
     @Override
-    public List<Map<String,Object>> getClassWorkInfosByUserId(Long userId){
-        List<Map<String,Object>> list = classWorkMapper.getMyClassWorkInfo(userId);
-        Map<String,String> completionMap = dictionaryService.getWorkcompletionStatus();
-        list.stream().forEach(map->{
-            String completion = map.get("completion")==null?"":map.get("completion").toString();
-            map.put("completion",completionMap.get(completion)==null?"":completionMap.get(completion));
+    public List<Map<String, Object>> getClassWorkInfosByUserId(Long userId) {
+        List<Map<String, Object>> list = classWorkMapper.getMyClassWorkInfo(userId);
+        Map<String, String> completionMap = dictionaryService.getWorkcompletionStatus();
+        list.stream().forEach(map -> {
+            String completion = map.get("completion") == null ? "NOT_HAND_IN" : map.get("completion").toString();
+            map.put("completion", completionMap.get(completion) == null ? "未提交" : completionMap.get(completion));
         });
         return list;
     }
 
-    public Map<String, Object> getClassWorkOutline(Long sWorkId,Long userId) {
+    public Map<String, Object> getClassWorkOutline(Long sWorkId, Long userId) {
         TStudentWork studentWork = new TStudentWork().selectById(sWorkId);
         Long workId = studentWork.getWorkId();
         TStudent student = new TStudent().selectById(studentWork.getStudentId());
         Map<String, Object> classTask = classWorkMapper.getClassWork(workId);
+        classTask.put("sWorkId", sWorkId); //自己学生作业对应的主键ID
         Long teacherId = Long.parseLong(classTask.get("teacherId").toString());
-        classTask.put("teacherName",new TTeacher().selectById(teacherId).getTeacherName());
+        classTask.put("teacherName", new TTeacher().selectById(teacherId).getTeacherName());
         Long organId = Long.parseLong(classTask.get("organ").toString());
         Long dynamicId = Long.parseLong(classTask.get("dynamicId").toString());
-        classTask.put("workContent",dynamicService.queryDynamicOfWork(dynamicId));
+        classTask.put("workContent", dynamicService.queryDynamicOfWork(dynamicId));
         classTask.put("studentName", student.getRealName());
-        classTask.put("studentId",student.getId());
+        classTask.put("studentId", student.getId());
         TOrganization organ = new TOrganization().selectById(organId); //todo 从缓存中获取
-        classTask.put("organ", ImmutableMap.of("organId",organ.getId(),"organName",organ.getOrganName(),"leval",organ.getLeval()==1?"已认证":""));
+        classTask.put("organ", ImmutableMap.of("organId", organ.getId(), "organName", organ.getOrganName(), "leval", organ.getLeval() == 1 ? "已认证" : ""));
         TClassCourse course = new TClassCourse().selectById(Long.parseLong(classTask.get("courseId").toString()));
-        classTask.put("courseName",course.getCourseName());
+        classTask.put("courseName", course.getCourseName());
+        classTask.put("completion", studentWork.getCompletion() == null ? "NOT_HAND_IN" : studentWork.getCompletion());//完成情况
         return classTask;
     }
 //    @Override
@@ -94,46 +98,60 @@ public class TClassWorkServiceImpl extends ServiceImpl<TClassWorkMapper, TClassW
 
     @Override
     @Transactional
-    public Map<String, Object> saveStudentWork(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long workId) {
+    public Map<String, Object> saveStudentWork(List<String> mediaUrls, String mediaType, TDynamic dynamic, Long sWorkId) {
+        Map<String, Object> result = Maps.newHashMap();
         try {
-            TClassWork classWork = new TClassWork().selectById(workId);
+            TStudentWork studentWork = new TStudentWork().selectById(sWorkId);
+            TClassWork classWork = new TClassWork().selectById(studentWork.getWorkId());
             TClassCourse course = new TClassCourse().selectById(classWork.getCourseId());
+            //提交作业的内容，是一种动态
             dynamic.setClassLessonId(classWork.getLessonId()); //课节
+            dynamic.setStudentId(studentWork.getStudentId());
             dynamic.setOrganId(course.getOrganizationId()); //机构
             dynamic.setCourseId(classWork.getCourseId()); //课程
             dynamic.setClassLessonId(classWork.getLessonId());
             dynamic.setDynamicType(EnuDynamicTypeCode.DYNAMIC_TYPE_MYWORK.getTypeCode());//类型为作业
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
-            TStudentWork studentWork = new TStudentWork();
-            studentWork.setWorkId(workId);
+            // 更新作业
             studentWork.setDynamicId(dynamic.getId());
             studentWork.setStudentId(dynamic.getStudentId());
             studentWork.setCreateTime(new Date());
-            studentWork.insert();//保存作业
-            if(mediaType.equals("IMG")){
-                for (String mediaUrl : mediaUrls) {
-                    TDynamicImg dyimg = new TDynamicImg();
-                    dyimg.setDynamicId(dynamic.getId());
-                    dyimg.setStatus(0);
-                    dyimg.setCreateTime(new Date());
-                    dyimg.setOriginalImgUrl(mediaUrl);
-                    dyimg.insert(); //动态图片保存
+            studentWork.setCompletion(EnumClassworkCompletion.SUBMITTED.getTypeCode()); //已提交作业
+            studentWork.updateById();//保存作业
+            if (mediaUrls != null && mediaUrls.size() > 0) {
+                if (mediaType.equals("IMG")) {
+                    for (String mediaUrl : mediaUrls) {
+                        TDynamicImg dyimg = new TDynamicImg();
+                        dyimg.setDynamicId(dynamic.getId());
+                        dyimg.setStatus(0);
+                        dyimg.setCreateTime(new Date());
+                        dyimg.setOriginalImgUrl(mediaUrl);
+                        dyimg.setThumbImgUrl(mediaUrl);
+                        dyimg.insert(); //动态图片保存
+                    }
+                } else {
+                    String mediaUrl = mediaUrls.get(0);
+                    TDynamicVideo dyvideo = new TDynamicVideo();
+                    dyvideo.setDynamicId(dynamic.getId());
+                    dyvideo.setCreateTime(new Date());
+                    dyvideo.setVideoUrl(mediaUrl);
+                    dyvideo.insert(); //动态小视频
                 }
-            } else {
-                String mediaUrl = mediaUrls.get(0);
-                TDynamicVideo dyvideo = new TDynamicVideo();
-                dyvideo.setDynamicId(dynamic.getId());
-                dyvideo.setCreateTime(new Date());
-                dyvideo.setVideoUrl(mediaUrl);
-                dyvideo.insert(); //动态小视频
             }
-            Map<String, Object> dynMap = BaseUtil.convertBeanToMap(dynamic);
-            return dynamicService.buildOneDynamic(dynMap);
+            result.put("success", true);
+            result.put("dynamicId", dynamic.getId());
+            result.put("workId", classWork.getId());
+            result.put("sworkId", studentWork.getId());
+            System.out.println("返回结果:" + BaseUtil.toJson(result));
+            return result;
         } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", e.getMessage());
+            result.put("dynamicId", 0);
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
 

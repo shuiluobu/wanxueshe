@@ -59,7 +59,7 @@ public class TFrontUser extends Model<TFrontUser> {
      */
 	private String city;
     /**
-     * 用户类型 1:家长，2:老师，3:机构
+     * 用户类型 1:家长，2:老师
      */
 	private Integer userType;
     /**
@@ -74,6 +74,8 @@ public class TFrontUser extends Model<TFrontUser> {
      * 头像
      */
 	private String headImg;
+
+	private Integer sex;
 	/**
 	 * 状态: 0：禁用，1：启用
 	 */
@@ -135,6 +137,14 @@ public class TFrontUser extends Model<TFrontUser> {
 
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
+	}
+
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
 	}
 
 	public String getWxCode() {

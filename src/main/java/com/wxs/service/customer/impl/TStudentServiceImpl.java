@@ -89,7 +89,7 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             Map<String, Object> studentMap = Maps.newHashMap();
             studentMap.put("realName", tStudent.getRealName());
             studentMap.put("studentId", tStudent.getId());
-            studentMap.put("parentType", parentTypeMap.get(tStudent.getParentType().toString()) == null ? "保密" : parentTypeMap.get(tStudent.getParentType().toString()));
+            studentMap.put("parentType", ImmutableMap.of("key",tStudent.getParentType(),"value",parentTypeMap.get(tStudent.getParentType().toString()) == null ? "保密" : parentTypeMap.get(tStudent.getParentType().toString())));
             studentMap.put("courseCount", studentCourseMapper.getStudentCourseCount(tStudent.getId()));
             studentMapList.add(studentMap);
         });
@@ -118,13 +118,15 @@ public class TStudentServiceImpl extends ServiceImpl<TStudentMapper, TStudent> i
             dynamic.setStatus(0);
             dynamic.insert(); //保存动态
             if (mediaType.equals("IMG")) {
-                for (String mediaUrl : mediaUrls) {
-                    TDynamicImg dyimg = new TDynamicImg();
-                    dyimg.setDynamicId(dynamic.getId());
-                    dyimg.setStatus(0);
-                    dyimg.setCreateTime(new Date());
-                    dyimg.setOriginalImgUrl(mediaUrl);
-                    dyimg.insert(); //动态图片保存
+                if(mediaUrls!=null && mediaUrls.size()>0){
+                    for (String mediaUrl : mediaUrls) {
+                        TDynamicImg dyimg = new TDynamicImg();
+                        dyimg.setDynamicId(dynamic.getId());
+                        dyimg.setStatus(0);
+                        dyimg.setCreateTime(new Date());
+                        dyimg.setOriginalImgUrl(mediaUrl);
+                        dyimg.insert(); //动态图片保存
+                    }
                 }
             } else {
                 String mediaUrl = mediaUrls.get(0);

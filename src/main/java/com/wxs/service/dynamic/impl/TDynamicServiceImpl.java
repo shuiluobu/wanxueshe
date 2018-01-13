@@ -217,7 +217,7 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         List<TDynamicImg> dyimgs = dynamicImgMapper.selectList(new EntityWrapper().eq("dynamicId", dynamicId));
         List<Map<String,Object>> dyImgList = Lists.newArrayList();
         dyimgs.stream().forEach(dyimg->{
-            dyImgList.add(ImmutableMap.of("id",dyimg.getId(),"image",dyimg.getThumbImgUrl()));
+            dyImgList.add(ImmutableMap.of("id",dyimg.getId(),"image",dyimg.getThumbImgUrl()==null?dyimg.getOriginalImgUrl():dyimg.getThumbImgUrl()));
         });
         dyn.put("dyImgs", dyImgList); //图集
         TDynamicVideo dyvideo = new TDynamicVideo();
@@ -266,5 +266,12 @@ public class TDynamicServiceImpl extends ServiceImpl<TDynamicMapper, TDynamic> i
         contentMap.put("text",dynamic.getContent());
         contentMap.put("images",dynamicImgMapper.getImgsByDynamicId(dynamicId));
         return contentMap;
+    }
+
+    @Override
+    public List<Map<String,Object>> getDynamicDetailOfWork(Long loginUserId,String dynamicIds){
+
+        List<Map<String, Object>> dynamicMsgs = dynamicMapper.getDynamicmsgByParam(ImmutableMap.of("dynamicIds",dynamicIds));
+        return buildDynamicList(loginUserId, dynamicMsgs);
     }
 }

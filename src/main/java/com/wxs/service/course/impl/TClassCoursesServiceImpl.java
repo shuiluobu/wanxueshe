@@ -73,6 +73,7 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
             organMap.put("organId", organization.getId());
             result.put("courseName", category.getCourseCategoryName());
             result.put("organ", organMap);
+            result.put("leval","");
             result.put("coursePlans", coursesMapper.getCoursePlans(category.getId())); //课时计划
             result.put("canQty", category.getCanQty()); //课时
             result.put("coverImg", category.getCover()); //封面头像图
