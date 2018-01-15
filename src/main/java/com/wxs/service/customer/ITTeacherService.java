@@ -25,4 +25,20 @@ public interface ITTeacherService extends IService<TTeacher> {
     List<TTeacher> searchByName(Long organId,String name);
 
     List<Map<String,Object>> getFollowTeachInfoByUserId(Long userId);
+
+    /**
+     * 用户关注老师
+     * @param userId
+     * @param teacherId
+     * @return
+     */
+    Map<String,Object> followTeacher(Long userId,Long teacherId);
+
+    /**
+     * 用户取消关注该老师
+     * @param userId
+     * @param teacherId
+     * @return
+     */
+    Map<String,Object> unFollowTeacher(Long userId,Long teacherId);
 }

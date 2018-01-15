@@ -27,5 +27,9 @@ public interface ITOrganizationService extends IService<TOrganization> {
     List<Map<String,Object>> getFollowOrganInfoByUserId(Long userId);
 
     List<Map<String,Object>> choicenessPhotos(Long organId,int page,int rows);
+
+    Map<String, Object> followOrgan(Long organId, Long loginUserId);
+
+    Map<String, Object> unFollowOrgan(Long organId, Long loginUserId);
 	
 }

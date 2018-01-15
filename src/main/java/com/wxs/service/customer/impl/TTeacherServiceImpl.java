@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wxs.core.util.BaseUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -75,6 +76,48 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
             bean.put("leval",leval.equals("1")?"已认证":"未认证");
         });
         return list;
+    }
+
+    @Override
+    public Map<String,Object> followTeacher(Long userId,Long teacherId){
+        Map<String,Object> result = Maps.newHashMap();
+        TFollowTeacher followTeacher = new TFollowTeacher().selectOne("teacherId={0}  and userId={1}",teacherId,userId);
+        if(followTeacher!=null){
+            if(followTeacher.getStatus()!=null && followTeacher.getStatus()==1){
+                followTeacher.setUpdateTime(new Date());
+                followTeacher.setStatus(0);
+                followTeacher.updateById();
+            }
+            result.put("success",true);
+            result.put("message","已经关注该老师");
+        } else  {
+            followTeacher = new TFollowTeacher();
+            followTeacher.setCreateTime(new Date());
+            followTeacher.setStatus(0);
+            followTeacher.setUserId(userId);
+            followTeacher.setTeacherId(teacherId);
+            followTeacher.insert();
+            result.put("success",true);
+            result.put("message","关注成功");
+        }
+       return result;
+    }
+    public Map<String,Object> unFollowTeacher(Long userId,Long teacherId){
+        Map<String,Object> result = Maps.newHashMap();
+        TFollowTeacher followTeacher = new TFollowTeacher().selectOne("teacherId={0} and status=0 and userId={1}",teacherId,userId);
+        if(followTeacher!=null){
+            if(followTeacher.getStatus()!=null && followTeacher.getStatus()==1){
+                followTeacher.setUpdateTime(new Date());
+                followTeacher.setStatus(1);
+                followTeacher.updateById();
+            }
+            result.put("success",true);
+            result.put("message","取消关注成功");
+        } else  {
+            result.put("success",false);
+            result.put("message","取消关注失败");
+        }
+        return result;
     }
 
     @Override

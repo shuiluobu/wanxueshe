@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wxs.entity.comment.TDynamicImg;
 import com.wxs.entity.course.TStudentCourse;
+import com.wxs.entity.customer.TFollowTeacher;
+import com.wxs.entity.organ.TFollowOrgan;
 import com.wxs.entity.organ.TOrganization;
 import com.wxs.mapper.course.TClassCoursesMapper;
 import com.wxs.mapper.course.TStudentCourseMapper;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wxs.core.util.BaseUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -122,6 +125,50 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
     public List<Map<String,Object>> choicenessPhotos(Long organId,int page,int rows){
         int offset = (page-1) * rows;
         return  dynamicImgMapper.getChoicenessPhotosByOrganId(organId,offset,rows);
+    }
+
+    @Override
+    public Map<String, Object> followOrgan(Long organId, Long loginUserId) {
+        Map<String,Object> result = Maps.newHashMap();
+        TFollowOrgan followOrgan = new TFollowOrgan().selectOne("organId={0}  and userId={1}",organId,loginUserId);
+        if(followOrgan!=null){
+            if(followOrgan.getStatus()!=null && followOrgan.getStatus()==1){
+                followOrgan.setUpdateTime(new Date());
+                followOrgan.setStatus(0);
+                followOrgan.updateById();
+            }
+            result.put("success",true);
+            result.put("message","已经关注该老师");
+        } else  {
+            followOrgan = new TFollowOrgan();
+            followOrgan.setCreateTime(new Date());
+            followOrgan.setStatus(0);
+            followOrgan.setUserId(loginUserId);
+            followOrgan.setOrganId(organId);
+            followOrgan.insert();
+            result.put("success",true);
+            result.put("message","关注成功");
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> unFollowOrgan(Long organId, Long loginUserId) {
+        Map<String,Object> result = Maps.newHashMap();
+        TFollowOrgan followOrgan = new TFollowOrgan().selectOne("organId={0} and status=0 and userId={1}",organId,loginUserId);
+        if(followOrgan!=null){
+            if(followOrgan.getStatus()!=null && followOrgan.getStatus()==1){
+                followOrgan.setUpdateTime(new Date());
+                followOrgan.setStatus(1);
+                followOrgan.updateById();
+            }
+            result.put("success",true);
+            result.put("message","取消关注成功");
+        } else  {
+            result.put("success",false);
+            result.put("message","取消关注失败");
+        }
+        return result;
     }
 
 

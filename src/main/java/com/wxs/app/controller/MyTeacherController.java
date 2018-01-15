@@ -53,4 +53,20 @@ public class MyTeacherController extends BaseWxController{
         Long userId =1L;
         return Result.of(teacherService.getOrganFllowUserList(teacherId,userId));
     }
+
+    @RequestMapping(value = "/fllowTeacher")
+    public Result fllowTeacher(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                          @PathVariable("teacherId") Long teacherId){
+        //关注该老师
+        Long userId =1L;
+        return Result.of(teacherService.followTeacher(teacherId,userId));
+    }
+
+    @RequestMapping(value = "/unFllowTeacher")
+    public Result unFllowTeacher(@RequestParam(value = "sessionId" ,required = true) String sessionId,
+                               @PathVariable("teacherId") Long teacherId){
+        //取消关注该老师
+        Long userId =1L;
+        return Result.of(teacherService.unFollowTeacher(teacherId,userId));
+    }
 }

@@ -78,5 +78,13 @@ public class OrganController extends BaseWxController {
         return Result.of(dynamicService.getNewestDynamicByOrganId(userId, organId));
     }
 
+    @RequestMapping(value = "/fllowOrgan")
+    public Result fllowOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,
+                          @PathVariable("organId") Long organId) {
+        //关注机构的用户列表
+        Long userId = 1L;
+        return Result.of(organizationService.getOrganFllowUserList(organId, userId));
+    }
+
 
 }

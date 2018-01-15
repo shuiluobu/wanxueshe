@@ -160,8 +160,6 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
 
         String organName = param.get("organName").toString();
         String way = param.get("way").toString(); //周期或者单次
-        String beginDays = "";
-        String endDays = "";
         Integer remindMin = Integer.parseInt(param.get("remindTime").toString()); //提前积分中提醒
         String remindWay = param.get("remindWay").toString();
         String courseAddress = param.get("courseAddress").toString();
@@ -172,17 +170,20 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
         String students[] = StringUtils.split(param.get("students").toString(), ","); //学员
         Long organId = param.get("organId") != null ? Long.parseLong(param.get("organId").toString()) : null;
         List<Map<String, Object>> lessonList = BaseUtil.parseJson(courseDates, List.class);
-        if (way.equals("0")) {
-            //单次
-            Map smap = lessonList.get(0);
-            beginDays = smap.get("day").toString() + " " + smap.get("beginTime").toString();
-            Map emap = lessonList.get(lessonList.size() - 1); //最后一个
-            endDays = emap.get("day").toString() + " " + emap.get("endTime").toString();
-        } else {
-            //周期
-            beginDays = param.get("beginDays") == null ? "" : param.get("beginDays").toString();
-            endDays = param.get("endDays") == null ? "" : param.get("endDays").toString();
-        }
+//        if (way.equals("0")) {
+//            //单次
+//            Map smap = lessonList.get(0);
+//            beginDay = smap.get("day").toString() + " " + smap.get("beginTime").toString();
+//            Map emap = lessonList.get(lessonList.size() - 1); //最后一个
+//            endDay = emap.get("day").toString() + " " + emap.get("endTime").toString();
+//        } else {
+//            //周期
+//            for(Map smap : lessonList){
+//                beginDay = smap.get("")
+//            }
+//            beginDays = param.get("beginDays") == null ? "" : param.get("beginDays").toString();
+//            endDays = param.get("endDays") == null ? "" : param.get("endDays").toString();
+//        }
 
         TOrganization organ = null;
         if (organId != null) {
@@ -225,50 +226,64 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
         }
 
         int i = 1;
-        for (Map lessonMap : lessonList) {
-            List<String> lessonDays = Lists.newArrayList();
-            if (lessonMap.get("day") != null) {
-                lessonDays.add(lessonMap.get("day").toString());
-            } else {
-                //如果是按每周，则需要便利都星期几上课
-                LinkedHashMap<String, String> map = getWeekDateOfCycle(beginDays, endDays);
-                String[] weeks = StringUtils.split(param.get("week").toString() + ",");
-                for (String key : map.keySet()) {
-                    String value = map.get(key);
-                    for (String week : weeks) {
-                        if (value.equals(week)) {
-                            lessonDays.add(key);
+        List<Map<String,String>> lessonDays = Lists.newArrayList();
+        if(way.equals("0")){
+            //单次
+            String day = param.get("day").toString();
+            String beginTime = day + " " + param.get("beginTime").toString();
+            String endTime = day + " " +param.get("endTime").toString();
+            lessonDays.add(ImmutableMap.of("beginTime",beginTime,"endTime",endTime));
+        } else {
+            //周期
+            for (Map lessonMap : lessonList) {
+                String beginDays = "";
+                String endDays = "";
+                String beginTime = lessonMap.get("beginTime").toString();
+                String endTime = lessonMap.get("endTime").toString();
+                if (lessonMap.get("day") != null) {
+                    String day = lessonMap.get("day").toString();
+                    lessonDays.add(ImmutableMap.of("beginTime",day + " " + beginTime,"endTime",day+" " +endTime));
+                } else {
+                    //如果是按每周，则需要便利都星期几上课
+                    LinkedHashMap<String, String> map = getWeekDateOfCycle(beginDays, endDays);
+                    String[] weeks = StringUtils.split(param.get("weeks").toString() + ",");
+                    for (String key : map.keySet()) {
+                        String value = map.get(key);
+                        for (String week : weeks) {
+                            if (value.equals(week)) {
+                                lessonDays.add(ImmutableMap.of("beginTime",key + " " + beginTime,"endTime",key+" " +endTime));
+                            }
                         }
                     }
                 }
             }
+        }
 
-            for (String day : lessonDays) {
-                String beginTime = day + param.get("beginTime").toString();
-                String endTime = day + param.get("endTime").toString();
-                TClassLesson classLesson = new TClassLesson();
-                classLesson.setBeginTime(BaseUtil.toDate(beginTime));
-                classLesson.setEndTime(BaseUtil.toDate(endTime));
-                classLesson.setCourseId(classCourse.getId());
-                classLesson.setLessonName(courseName + i);
-                classLesson.setLessonSeq(i);
-                classLesson.setContent("");
-                classLesson.setStatus(0);
-                classLesson.insert(); //保存课时
-                i++;
-                TRemindMessage remindMessage = new TRemindMessage();
-                remindMessage.setCreateTime(new Date());
-                remindMessage.setRemindTime(new Date(classLesson.getBeginTime().getTime() - remindMin * 60 * 1000)); //提醒时间
-                remindMessage.setUserId(userId);
-                remindMessage.setFromUserId(0L);
-                remindMessage.setRemindMedia(remindWay); //提醒媒介
-                remindMessage.setTile(classLesson.getLessonName() + "提醒");
-                remindMessage.setMessageContent(BaseUtil.toJson(classLesson));
-                remindMessage.setReadStatus(0);
-                remindMessage.setJmsType("queue");
-                remindMessage.setStatus(0);
-                remindMessage.insert(); //保存提醒
-            }
+        for (Map<String,String> lessonTime : lessonDays) {
+            String beginTime = lessonTime.get("beginTime").toString();
+            String endTime = lessonTime.get("endTime").toString();
+            TClassLesson classLesson = new TClassLesson();
+            classLesson.setBeginTime(BaseUtil.toDate(beginTime));
+            classLesson.setEndTime(BaseUtil.toDate(endTime));
+            classLesson.setCourseId(classCourse.getId());
+            classLesson.setLessonName(courseName + i);
+            classLesson.setLessonSeq(i);
+            classLesson.setContent("");
+            classLesson.setStatus(0);
+            classLesson.insert(); //保存课时
+            i++;
+            TRemindMessage remindMessage = new TRemindMessage();
+            remindMessage.setCreateTime(new Date());
+            remindMessage.setRemindTime(new Date(classLesson.getBeginTime().getTime() - remindMin * 60 * 1000)); //提醒时间
+            remindMessage.setUserId(userId);
+            remindMessage.setFromUserId(0L);
+            remindMessage.setRemindMedia(remindWay); //提醒媒介
+            remindMessage.setTile(classLesson.getLessonName() + "提醒");
+            remindMessage.setMessageContent(BaseUtil.toJson(classLesson));
+            remindMessage.setReadStatus(0);
+            remindMessage.setJmsType("queue");
+            remindMessage.setStatus(0);
+            remindMessage.insert(); //保存提醒
         }
         result.put("success",true);
         result.put("message","保存课程成功");
