@@ -34,7 +34,7 @@
 <div class="head"><a href="javascript:void(0);" class="return"></a><span>新建待办</span></div>
 <!-- 标题头 E -->
 
-<div class="weui-cells weui-cells_form" style="padding: 20px 0;background-color: #F2F2F2">
+<div class="weui-cells weui-cells_form" style="padding-top: 45px;background-color: #F2F2F2">
 
     <div class="weui-cell" style="background-color: #F2F2F2">
         <div class="weui-cell__hd"><label for="" class="weui-label" style="width: 120px">任务信息</label></div>
@@ -110,8 +110,6 @@
 <script>
     //教务待办Id
     var agendaId;
-    //作业发布的学生Id
-    var studentIds;
     $(function(){
 
         //选择的学生Id
@@ -131,8 +129,6 @@
             $(".weui-cells input").eq(2).val(localStorage.getItem("teacherName"))
         };
 
-        //要发布的学员Id,从上个页面获取
-        studentIds = getParmVal("paramOne");
         agendaId = getParmVal("itemId");
 
         //完成时间选择
@@ -147,7 +143,7 @@
 
         //跳转到选择学生页面
         $(".weui-cells a").eq(1).click(function () {
-            window.location = "/organization/viewsTransfer?view=selectStudent";
+            window.location = "/organization/viewsTransfer?view=selectStudent&paramOne=newAgenda";
         });
         //跳转到选择学生页面
         $(".weui-cells a").eq(2).click(function () {

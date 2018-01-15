@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
     <#include "/frontPages/common/header.html"/>
-    <title>选择学生</title>
+    <title>选择学员</title>
     <style>
+        body{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+        }
         .head div{
             position: absolute;
             left:40px;
@@ -18,6 +23,42 @@
             border-right-width:0px;
             border-bottom: 1px solid #797979
         }
+        .recently_search{
+            background-color: #F2F2F2;
+        }
+        .recently_search p{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #999999;
+        }
+        .tag{
+            height: 25px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .tag div{
+            display: inline;
+            margin-right: 5px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border: 1px solid #797979;
+            font-family: '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            padding: 2px 5px;
+            background-color: #CCCCCC;
+        }
+        .clean{
+            height:42px;
+            line-height:42px;
+            text-align: center;
+            background-color: #CCCCCC;
+            margin: 15px 10px;
+        }
     </style>
 </head>
 <body>
@@ -26,10 +67,38 @@
     <a href="javascript:void(0);" class="return"></a>
     <div>
         <input style="width: calc(100% - 95px);height: 100%"></input>
-        <button style="width: 40px;height: 100%;background-color: #FFFFFF;" onclick="search()">搜索</button>
+        <p style="width: 40px;height: 100%;display: inline" onclick="search()">搜索</p>
     </div>
 </div>
-<!-- 搜索   end -->
+<div class="weui-cells weui-cells_form" style="margin-top: 45px;">
+    <div class="weui-cell weui-cell_switch">
+        <div class="weui-cell__bd">是否只查询需补课学员</div>
+        <div class="weui-cell__ft">
+            <input class="weui-switch" type="checkbox">
+        </div>
+    </div>
+</div>
+<!-- 最近搜索   S -->
+<div  class="recently_search">
+    <p style="padding-left: 10px;">最近搜索</p>
+    <div id="recent_student" style="padding-left: 10px;">
+        <!--<div class="tag">-->
+        <!--<div>积木</div>-->
+        <!--<div>搭建</div>-->
+        <!--<div>初级</div>-->
+        <!--<div>钢琴</div>-->
+        <!--</div>-->
+        <!--<div class="tag">-->
+        <!--<div>班级</div>-->
+        <!--<div>名称</div>-->
+        <!--<div>1</div>-->
+        <!--<div>2</div>-->
+        <!--</div>-->
+    </div>
+    <div class="clean" onclick="clearRecent();">清除搜索记录</div>
+</div>
+</div>
+<!-- 最近搜索   E -->
 <div class="weui-panel" style="margin-top: 45px;">
 
     <div class="weui-panel__bd" style="font-size: 13px" id="studentList">
@@ -52,18 +121,88 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
+    var returnPage;
     $(function () {
-        $(".head input").keyup(function () {
-            search();
-        });
+        returnPage = getParmVal("paramOne");
+        //加载最近搜索
+        var recentSStudent = localStorage.getItem("recent_SStudents");
+        if(recentSStudent != null){
+            recentSStudent = recentSStudent.split(",");
+        }
+        recentSearchPage(recentSStudent);
     });
-    
+
+    //搜索按钮 事件
     function search() {
         var name = $(".head input").val().trim();
         if(name.length == 0){
+            $.toast('请输入学员名字!','text',800,function(){
+                //提示完成后执行方法
+            });
             return;
         }
+        var flag = $(".weui-switch").is(':checked');
+        //存入最近搜索
+        memory(name);
+        if(flag){
+            searchMULStudent(name);
+        }else{
+            searchStudent(name);
+        }
+    }
 
+    //清除最近班级搜索
+    function  clearRecent() {
+        localStorage.removeItem("recent_SStudents");
+        $.toast('清除成功!','text',800,function(){
+            //提示完成后执行方法
+        });
+        recentSearchPage(null);
+    }
+
+    //localStorage 存储搜索过的
+    function memory(name) {
+        var nameArr = localStorage.getItem("recent_SStudents");
+        if(nameArr == null){
+            nameArr = new Array();
+            nameArr.push(name);
+            localStorage.setItem("recent_SStudents",nameArr);
+        }else{
+            nameArr = nameArr.split(",");
+            if(!contains(nameArr,name)){
+                nameArr.push(name);
+                localStorage.setItem("recent_SStudents",nameArr);
+            }
+        }
+        recentSearchPage(nameArr);
+    }
+    //动态变化 最近搜索页面
+    function recentSearchPage(nameArr) {
+        $("#recent_student").empty();
+        if(nameArr){
+            var div = '<div class="tag">';
+            for(var i=0;i<nameArr.length;i++){
+                div += '<div>'+nameArr[i]+'</div>';
+                if((i+1) % 4 == 0 || (i+1) == nameArr.length){
+                    div += '</div>';
+                    $("#recent_student").append(div);
+                    div = '<div class="tag">';
+                }
+            }
+            $(".tag div").click(function () {
+                var name = $(this).text();
+                $(".head input").val(name);
+                var flag = $(".weui-switch").is(':checked');
+                if(flag){
+                    searchMULStudent(name);
+                }else{
+                    searchStudent(name);
+                }
+            });
+        }
+    }
+    //搜索学员
+    function searchStudent(name) {
         $.ajax("/cStudent/searchByName",{
             async : false,
             type: 'post',
@@ -73,16 +212,16 @@
                 organId:globalOrganId
             },
             success:function(json){
+                $("#studentList").empty();
                 if(json.data){
                     var list = json.data;
-                    $("#studentList").empty();
                     for(var i=0;i<list.length;i++){
                         var div = '<div class="weui-media-box weui-media-box_appmsg" id="'+list[i].id+'">'+
                             '<div class="weui-media-box__hd ">'+
                             '<img class="weui-media-box__thumb" src="'+list[i].headImg+'">'+
                             '</div>'+
                             '<div class="weui-media-box__bd">'+
-                            '<p class="comment-blue">'+list[i].realName+'</p>'+
+                            '<p class="comment-blue">'+list[i].studentName+'</p>'+
                             '<p>未报名</p>'+
                             '</div>'+
                             '</div>';
@@ -94,12 +233,58 @@
                         //存入localStorage
                         localStorage.setItem("studentId",studentId);
                         localStorage.setItem("studentName",studentName);
-                        window.location ="/organization/viewsTransfer?view=newAgenda";
+                        window.location ="/organization/viewsTransfer?view="+returnPage;
                     });
 
                 }
             }
         });
+
     }
+
+    //搜索需补课的学员
+    function searchMULStudent(name) {
+        $.ajax("/cStudent/canMULessonStus",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                studentName:name,
+                organId:globalOrganId
+            },
+            success:function(json){
+                $("#studentList").empty();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div class="weui-media-box weui-media-box_appmsg" id="'+list[i].id+'">'+
+                            '<div class="weui-media-box__hd ">'+
+                            '<img class="weui-media-box__thumb" src="'+list[i].headImg+'">'+
+                            '</div>'+
+                            '<div class="weui-media-box__bd">'+
+                            '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                            '<p>请假<span>'+list[i].canNum+'</span>课时</p>'+
+                            '</div>'+
+                            '</div>';
+                        $("#studentList").append(div);
+                    }
+                    $(".weui-media-box").click(function (){
+                        var studentId = $(this).attr("id");
+                        var studentName = $(this).find("p").eq(0).text();
+                        //存入localStorage
+                        localStorage.setItem("studentId",studentId);
+                        localStorage.setItem("studentName",studentName);
+                        window.location ="/organization/viewsTransfer?view="+returnPage;
+                    });
+
+                }
+            }
+        });
+
+    }
+</script>
+<script>
+
+
 </script>
 </html>

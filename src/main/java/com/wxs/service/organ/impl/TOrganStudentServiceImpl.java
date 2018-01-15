@@ -1,5 +1,6 @@
 package com.wxs.service.organ.impl;
 
+import com.wxs.entity.course.TClassLesson;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganStudent;
 import com.wxs.mapper.organ.TOrganStudentMapper;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -38,4 +40,10 @@ public class TOrganStudentServiceImpl extends ServiceImpl<TOrganStudentMapper, T
     public List<TOrganStudent> getAllByOrganId(Long organId) {
         return organStudentMapper.getAllByOrganId(organId);
     }
+
+    @Override
+    public List<Map<String, Object>> canMULessonStus(Long organId, String studentName) {
+        return organStudentMapper.canMULessonStus(organId,studentName);
+    }
+
 }

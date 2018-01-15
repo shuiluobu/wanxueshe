@@ -3,6 +3,7 @@ package com.wxs.mapper.course;
 import com.wxs.entity.course.TClassLesson;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
@@ -40,5 +41,15 @@ public interface TClassLessonMapper extends BaseMapper<TClassLesson> {
             "left join t_organ_agenda a on a.lessonId = t.id and a.courseId = t.courseId  " +
             "where t.courseId = #{courseId} order by t.lessonSeq desc")
     List<TClassLesson> allByCourseId(@Param("courseId") Long courseId );
+    //获取某学生的 所有 缺课课时
+    @Select("select b.id,a.courseName,b.lessonName,b.beginTime,b.endTime,l.realName shouldTearcherName " +
+            "from t_organ_task t " +
+            "left join t_class_course a on a.id= t.courseId " +
+            "left join t_class_lesson b on b.id = t.lessonId " +
+            "left join t_teacher l on l.id = b.shouldTearcherId " +
+            "where t.type = 1 and t.status = 2 " +
+            "and t.studentId = #{studentId}")
+    @ResultMap("BaseResultMap")
+    List<TClassLesson> shouldMULessons(@Param("studentId") Long studentId);
 
 }

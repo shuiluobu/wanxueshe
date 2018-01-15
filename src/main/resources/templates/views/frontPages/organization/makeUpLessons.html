@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <link rel="stylesheet" href="/letterSort/css/lanren.css">
+    <title>补课</title>
+    <style>
+        .head .right{
+            position: absolute;
+            right: 5px;
+            top: 0;
+            width: 100px;
+            height: 45px;
+        }
+        .right a{
+            float: right;
+            padding-right: 20px;
+        }
+        .this_button{
+            height:42px;
+            line-height:42px;
+            text-align: center;
+            background-color: #CCCCCC;
+            margin: 15px 10px;
+        }
+        .title{
+            height: 40px;
+            line-height: 40px;
+            margin-left: 10px;
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #999999;
+        }
+        .remove{
+            float: right;
+            color: #0066CC;;
+        }
+        .class_detail{
+            border-bottom: 10px solid #F2F2F2;
+        }
+        .class_div{
+            display: inline-block;
+            background-color: #F2F2F2;
+            font-family: 'Arial Normal', 'Arial';
+            font-size: 13px;
+            color: #333333;
+            text-align: center;
+            line-height: normal;
+        }
+        .class_font{
+            font-size: 18px;
+            color: #666666;
+        }
+        .detail_font{
+            font-size: 12px;
+            color: #666666;
+        }
+        .table_cell{
+            display: table;
+            width: 100%;
+        }
+        .table_cell div{
+            display: table-cell;
+            width: 50%;
+            border: 1px solid rgba(242, 242, 242, 1);
+            font-size: 12px;
+            color: #333333;
+            text-align: center;
+            line-height: normal;
+        }
+
+        .notDoneDiv{
+            position: relative;
+            left: -66px;
+            top: 10px;
+            border: 1px solid #797979;
+            width: 20px;
+            height: 20px;
+            float: left;
+            margin-right: 10px;
+            background-color: #F2F2F2;
+        }
+        .notDoneDiv_done{
+            background-color: #666666;
+        }
+
+        .weui-cells:before{
+            border-top: 1px solid #FFFFFF;
+        }
+        .weui-cells .weui-cell:before{
+            border-top: 1px solid #FFFFFF;
+        }
+        .weui-cells .weui-cell{
+            padding-left: 10px;
+        }
+        .font_16{
+            font-size: 16px;
+        }
+        .font_12{
+            font-size: 12px;
+        }
+        .bottom_div{
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            color: #1E1E1E;
+            height: 60px;
+            line-height:60px;
+            border-top: 1px solid #F2F2F2;
+        }
+    </style>
+</head>
+<body>
+<div class="head">
+    <a href="javascript:void(0);" class="return"></a><span>补课</span>
+    <div class="right">
+        <a href="javascript:void(0);"><img src="/weui/images/wyh/threePoint.png"></a>
+    </div>
+</div>
+
+<div class="weui-tab" style="margin-top: 45px;">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item " href="#tab1">
+            补课办理
+        </a>
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab2">
+            补课学员
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item" style="background-color: #F2F2F2;">
+            <p class="title">学员信息</p>
+            <div class="weui-panel__bd" style="font-size: 13px;background-color: #FFFFFF" id="studentList">
+                <!-- demo S-->
+                <div class="weui-media-box weui-media-box_appmsg ">
+
+                    <div class="weui-media-box__hd ">
+                     <img class="weui-media-box__thumb" src="/images/userface1.jpg">
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <p class = "comment-blue">王同学</p>
+                        <p>请假<span>2</span>课时</p>
+                    </div>
+                    <div class="remove">移除</div>
+                </div>
+                <!-- demo E-->
+
+                <!-- demo S-->
+                <div class="weui-media-box weui-media-box_appmsg ">
+                    <div class="weui-media-box__hd ">
+                        <img class="weui-media-box__thumb" src="/images/userface1.jpg">
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <p class = "comment-blue">王同学</p>
+                        <p>请假<span>3</span>课时</p>
+                    </div>
+                    <div class="remove">移除</div>
+                </div>
+                <!-- demo E-->
+
+
+            </div>
+            <div class="this_button" onclick="addStudent();">添加学员</div>
+            <p class="title">课程信息</p>
+            <div style="background-color: #FFFFFF">
+                 <!-- demo S-->
+                <div class="class_detail">
+                    <div style="padding-left: 10px;">
+                        <div class="class_div">班课</div>
+                        <p  class="class_font" style="display: inline">暑假基础培训一班</p>
+                        <p class="detail_font">授课老师：<span>张老师</span></p>
+                        <p class="detail_font">教授课程：<span>机器人启蒙</span>&nbsp;&nbsp;&nbsp;<span>32</span>课时</p>
+                    </div>
+                    <div class="table_cell">
+                        <div>学员 : <span>23</span></div>
+                        <div>课时已完成/剩余：<span>1/21</span></div>
+                    </div>
+                    <div class="weui-cells">
+                        <div class="weui-cell">
+                            <div class="weui-cell__bd detail_font">
+                                <p>最近排课计划：</p>
+                            </div>
+                        </div>
+                        <div class="weui-cell">
+                            <div class="notDoneDiv"></div>
+                            <div class="weui-cell__bd">
+                                <p class="font_16">积木搭建基础-2/3课时</p>
+                                <p class="font_12"><span>张老师</span> &bull; <span>10:00-11:00</span></p>
+                            </div>
+                            <div class="hint-val font_12">教务</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- demo S-->
+
+            </div>
+            <div class="this_button" >添加课程信息</div>
+            <div>
+                <div class="this_button" style="background-color: #CCCCCC;color: #FFFFFF">办理</div>
+                <div class="this_button" style="background-color: #FFFFFF">取消</div>
+            </div>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item weui-tab__bd-item--active letterSort">
+            <div id="letter" ></div>
+            <div class="sort_box">
+                <!-- demo S -->
+                <!--<div class="sort_list">-->
+                    <!--<div class="notDoneDiv"></div>-->
+                    <!--<div class="num_logo" style="left: 50px;"><img src="/letterSort/images/img.png" /></div>-->
+                    <!--<div class="name_div">-->
+                        <!--<p class="num_name">王</p>-->
+                        <!--<p>描述</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!-- demo E -->
+            </div>
+            <div class="initials">
+                <ul>
+                    <li><img src="/letterSort/images/068.png"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="bottom_div">
+            <a style="margin-left: 15px;">已选<span>0</span>/<span>0</span></a>
+            <a style="float: right;margin-right: 50px;" class="comment-blue">补课</a>
+        </div>
+    </div>
+</div>
+
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    $(function () {
+        //获取 机构的 可办理 补课 的 学生以及其缺课数量
+        $.ajax("/cStudent/canMULessonStus",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                organId:globalOrganId
+            },
+            success:function(json){
+                $(".sort_box").empty();
+                if(json.data){
+                    var list = json.data;
+                    $(".bottom_div span").eq(1).text(list.length);
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div class="sort_list" id="'+list[i].studentId+'">'+
+                                    '<div class="notDoneDiv"></div>'+
+                                    '<div class="num_logo" style="left: 50px;"><img src="'+list[i].headImg+'" /></div>'+
+                                    '<div class="name_div">'+
+                                        '<p class="num_name">'+list[i].studentName+'</p>'+
+                                        '<p>请假<span>'+list[i].canNum+'</span>课时</p>'+
+                                    '</div>'+
+                                '</div>';
+                        $(".sort_box").append(div);
+                    }
+                    $(".sort_list").click(function () {
+                        var studentId = $(this).attr("id");
+                        var studentName = $(this).find(".num_name").text();
+                        window.location = '/organization/viewsTransfer?view=studentMakeUpLesson&paramOne='+studentId+'&paramTwo='+studentName;
+                    })
+
+                }
+            }
+        });
+
+
+
+        $(".notDoneDiv").click(function (e) {
+           $(this).toggleClass("notDoneDiv_done");
+           var selectedNums = $(".notDoneDiv_done").length;
+           $(".bottom_div span").eq(0).text(selectedNums);
+           window.event? window.event.cancelBubble = true : e.stopPropagation();
+        });
+        
+    });
+    
+    //添加学员
+    function addStudent() {
+        window.location = "/organization/viewsTransfer?view=selectStudent&paramOne=makeUpLessons";
+    }
+</script>
+<script src="/letterSort/js/jquery.charfirst.pinyin.js"></script>
+<script src="/letterSort/js/sort.js"></script>
+</html>
