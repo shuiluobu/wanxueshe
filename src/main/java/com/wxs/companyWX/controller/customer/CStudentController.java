@@ -5,6 +5,7 @@ import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganParent;
 import com.wxs.entity.organ.TOrganStudent;
 import com.wxs.entity.organ.TStudentImpressTag;
+import com.wxs.service.course.ITClassLessonService;
 import com.wxs.service.course.ITStudentCourseService;
 import com.wxs.service.customer.ITTeacherService;
 import com.wxs.service.organ.ITOrganParentService;
@@ -42,6 +43,8 @@ public class CStudentController {
     private ITStudentGroupingService studentGroupingService;
     @Autowired
     private ITTeacherService teacherService;
+    @Autowired
+    private ITClassLessonService classLessonService;
 
     /**
      * @Description : 根据学生姓名  搜索学生
@@ -140,4 +143,40 @@ public class CStudentController {
         }
         return Result.of("删除学生成功!");
     }
+    /**
+     * @Description : organId + studentName 获取某机构的 可办理 补课 的 学生以及其缺课数量
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 15:23 2018/1/15
+     * @Params : [organId, name]
+     **/
+    @RequestMapping("/canMULessonStus")
+    public Result canMULessonStus(Long organId,String studentName){
+
+        try{
+            return Result.of(organStudentService.canMULessonStus(organId,studentName));
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * @Description : 获取某学生的 所有 缺课课时  MULessons = make up lessons(补课)
+     * @return com.wxs.util.Result
+     * @Author : wyh
+     * @Creation Date : 16:15 2018/1/15
+     * @Params : [studentId]
+     **/
+    @RequestMapping("/shouldMULessons")
+    public Result shouldMULessons(Long studentId){
+        try{
+            return Result.of(classLessonService.shouldMULessons(studentId));
+        }catch (Exception e){
+            log.error(BaseUtil.getExceptionStackTrace(e));
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

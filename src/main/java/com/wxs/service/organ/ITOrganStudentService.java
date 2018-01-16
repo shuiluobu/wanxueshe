@@ -1,10 +1,12 @@
 package com.wxs.service.organ;
 
+import com.wxs.entity.course.TClassLesson;
 import com.wxs.entity.customer.TTeacher;
 import com.wxs.entity.organ.TOrganStudent;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -22,5 +24,8 @@ public interface ITOrganStudentService extends IService<TOrganStudent> {
     List<TOrganStudent> searchByName(String name, Long organId);
     //根据 教育机构Id  获取其下 所有学生
     List<TOrganStudent> getAllByOrganId(Long organId);
+    //organId + studentName 获取M某机构的 可办理 补课 的 学生以及其缺课数量
+    List<Map<String,Object>> canMULessonStus(Long organId, String studentName);
+
 	
 }

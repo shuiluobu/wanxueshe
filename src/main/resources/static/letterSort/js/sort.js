@@ -20,17 +20,18 @@ $(function(){
                 LetterBox.fadeOut();
             },1000);
 
-            var _index = _this.index()
+            var _index = _this.index();
             if(_index==0){
-                $('html,body').animate({scrollTop: '0px'}, 300);//点击第一个滚到顶部
+                $('.letterSort').animate({scrollTop: '0px'}, 300);//点击第一个滚到顶部
+                // $('html,body').animate({scrollTop: '0px'}, 300);//点击第一个滚到顶部
             }else if(_index==27){
                 var DefaultTop=$('#default').position().top;
-                $('html,body').animate({scrollTop: DefaultTop+'px'}, 300);//点击最后一个滚到#号
+                $('.letterSort').animate({scrollTop: DefaultTop+'px'}, 300);//点击最后一个滚到#号
             }else{
                 var letter = _this.text();
                 if($('#'+letter).length>0){
                     var LetterTop = $('#'+letter).position().top;
-                    $('html,body').animate({scrollTop: LetterTop-45+'px'}, 300);
+                    $('.letterSort').animate({scrollTop: LetterTop+'px'}, 300);
                 }
             }
         })

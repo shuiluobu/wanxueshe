@@ -29,5 +29,17 @@
 		</if>
 
 	</select>
+	
+	<select id="canMULessonStus" resultType="java.util.Map">
+		select t.studentId,b.studentName,b.headImg,count(t.studentId) canNum
+		from t_organ_task t
+		inner join t_organ_agenda a on a.id = t.agendaId
+		left join t_organ_student b on b.id = t.studentId
+		where t.type = 1 and t.status = 2 and a.organId = #{organId}
+		<if test=" studentName != null and !''.equals(studentName)">
+			and b.studentName like concat('%',#{studentName},'%')
+		</if>
+		group by t.studentId
+	</select>
 
 </mapper>

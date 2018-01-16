@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>补课信息</title>
+    <style>
+        body{
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+        }
+        .head .right{
+            position: absolute;
+            right: 5px;
+            top: 0;
+            width: 100px;
+            height: 45px;
+        }
+        .right a{
+            float: right;
+            padding-right: 20px;
+        }
+        .MULessons_title{
+            height: 40px;
+            line-height: 40px;
+            background-color: #F2F2F2;
+            font-size: 12px;
+            color: #999999;
+            padding-left: 10px;
+        }
+        .font_16{
+            font-size: 16px;
+        }
+        .font_12{
+            font-size: 12px;
+        }
+        #lessons div{
+            margin-left: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #F2F2F2;
+        }
+    </style>
+</head>
+<body>
+<div class="head">
+    <a href="javascript:void(0);" class="return"></a><span>补课信息</span>
+    <div class="right">
+        <a href="javascript:void(0);"><img src="/weui/images/wyh/threePoint.png"></a>
+    </div>
+</div>
+<p class="MULessons_title" style="margin-top: 45px;">缺课课时</p>
+<div id="lessons">
+    <!-- demo S -->
+    <!--<div>-->
+        <!--<p class="font_16"><span>机器人基础</span>-<span>1/3课时</span></p>-->
+        <!--<p class="font_12"><span>张老师</span> &bull; <span>10:00-11:00</span></p>-->
+    <!--</div>-->
+    <!-- demo E -->
+</div>
+</body>
+<#include "/frontPages/common/version.html"/>
+<script>
+    var studentId;
+    var studentName;
+    $(function () {
+        studentId = getParmVal("paramOne");
+        studentName = getUrlParam("paramTwo");
+        $(".head span").text('补课信息-'+studentName);
+        $.ajax("/cStudent/shouldMULessons",{
+            async : false,
+            type: 'post',
+            dataType: 'json',
+            data:{
+                studentId:studentId
+            },
+            success:function(json){
+                $("#lessons").empty();
+                if(json.data){
+                    var list = json.data;
+                    for(var i=0;i<list.length;i++){
+                        var div = '<div>'+
+                                    '<p class="font_16"><span>'+list[i].courseName+'</span>-<span>'+list[i].lessonName+'</span></p>'+
+                                    '<p class="font_12"><span>'+list[i].shouldTearcherName+'</span> &bull; <span>'+getHM(list[i].beginTime)+'-'+getHM(list[i].endTime)+'</span></p>'+
+                                  '</div>';
+                        $("#lessons").append(div);
+                    }
+                }
+            }
+        });
+    });
+</script>
+</html>

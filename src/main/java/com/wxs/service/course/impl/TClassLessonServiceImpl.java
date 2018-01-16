@@ -130,5 +130,10 @@ public class TClassLessonServiceImpl extends ServiceImpl<TClassLessonMapper, TCl
         return classLessonMapper.allByCourseId(courseId);
     }
 
+    @Override
+    public List<TClassLesson> shouldMULessons(Long studentId) {
+        return classLessonMapper.shouldMULessons(studentId);
+    }
+
 
 }
