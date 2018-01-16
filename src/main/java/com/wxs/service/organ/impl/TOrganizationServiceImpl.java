@@ -157,11 +157,12 @@ public class TOrganizationServiceImpl extends ServiceImpl<TOrganizationMapper, T
         Map<String,Object> result = Maps.newHashMap();
         TFollowOrgan followOrgan = new TFollowOrgan().selectOne("organId={0} and status=0 and userId={1}",organId,loginUserId);
         if(followOrgan!=null){
-            if(followOrgan.getStatus()!=null && followOrgan.getStatus()==1){
-                followOrgan.setUpdateTime(new Date());
-                followOrgan.setStatus(1);
-                followOrgan.updateById();
-            }
+//            if(followOrgan.getStatus()!=null && followOrgan.getStatus()!=1){
+//                followOrgan.setUpdateTime(new Date());
+//                followOrgan.setStatus(1);
+//                followOrgan.updateById();
+//            }
+            followOrgan.deleteById();
             result.put("success",true);
             result.put("message","取消关注成功");
         } else  {

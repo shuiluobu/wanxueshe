@@ -170,21 +170,6 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
         String students[] = StringUtils.split(param.get("students").toString(), ","); //学员
         Long organId = param.get("organId") != null ? Long.parseLong(param.get("organId").toString()) : null;
         List<Map<String, Object>> lessonList = BaseUtil.parseJson(courseDates, List.class);
-//        if (way.equals("0")) {
-//            //单次
-//            Map smap = lessonList.get(0);
-//            beginDay = smap.get("day").toString() + " " + smap.get("beginTime").toString();
-//            Map emap = lessonList.get(lessonList.size() - 1); //最后一个
-//            endDay = emap.get("day").toString() + " " + emap.get("endTime").toString();
-//        } else {
-//            //周期
-//            for(Map smap : lessonList){
-//                beginDay = smap.get("")
-//            }
-//            beginDays = param.get("beginDays") == null ? "" : param.get("beginDays").toString();
-//            endDays = param.get("endDays") == null ? "" : param.get("endDays").toString();
-//        }
-
         TOrganization organ = null;
         if (organId != null) {
             organ = new TOrganization().selectById(organId);
@@ -236,20 +221,23 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
         } else {
             //周期
             for (Map lessonMap : lessonList) {
-                String beginDays = "";
-                String endDays = "";
-                String beginTime = lessonMap.get("beginTime").toString();
-                String endTime = lessonMap.get("endTime").toString();
-                if (lessonMap.get("day") != null) {
+
+                String beginTime = lessonMap.get("startTime").toString()+":00";
+                String endTime = lessonMap.get("endTime").toString()+":00";
+                if (lessonMap.get("day") != null && !"".equals(lessonMap.get("day").toString())) {
                     String day = lessonMap.get("day").toString();
                     lessonDays.add(ImmutableMap.of("beginTime",day + " " + beginTime,"endTime",day+" " +endTime));
                 } else {
+                    String beginDays = lessonMap.get("beginDays").toString()+" 00:00:00";
+                    String endDays = lessonMap.get("endDays").toString()+" 00:00:00";
+                    String weeks = lessonMap.get("weeks").toString();
                     //如果是按每周，则需要便利都星期几上课
                     LinkedHashMap<String, String> map = getWeekDateOfCycle(beginDays, endDays);
-                    String[] weeks = StringUtils.split(param.get("weeks").toString() + ",");
+
+                    String[] weekArr = StringUtils.split(weeks,",");
                     for (String key : map.keySet()) {
                         String value = map.get(key);
-                        for (String week : weeks) {
+                        for (String week : weekArr) {
                             if (value.equals(week)) {
                                 lessonDays.add(ImmutableMap.of("beginTime",key + " " + beginTime,"endTime",key+" " +endTime));
                             }

@@ -79,13 +79,13 @@ public class MyHomeController extends BaseWxController {
     public Result getMySelfInfo(@RequestParam(value = "sessionId", required = true) String sessionId) {
         //我的学员
         Long userId = 1L;
-        Map<String,Object> myselfMap = Maps.newHashMap();
+        Map<String, Object> myselfMap = Maps.newHashMap();
         TFrontUser user = new TFrontUser().selectById(userId);
-        myselfMap.put("userId",userId);
-        myselfMap.put("sex",user.getSex()==null?1 : user.getSex());
-        myselfMap.put("nickName",user.getNickName());
-        myselfMap.put("headImg",user.getHeadImg());
-        myselfMap.put("mobilePhone",user.getMobilePhone());
+        myselfMap.put("userId", userId);
+        myselfMap.put("sex", user.getSex() == null ? 1 : user.getSex());
+        myselfMap.put("nickName", user.getNickName());
+        myselfMap.put("headImg", user.getHeadImg());
+        myselfMap.put("mobilePhone", user.getMobilePhone());
         return Result.of(myselfMap);
     }
 
@@ -120,7 +120,7 @@ public class MyHomeController extends BaseWxController {
 
     @RequestMapping(value = "/saveMyGrowth")
     public Result saveMyGrowth(@RequestParam(value = "sessionId", required = true) String sessionId,
-                               @RequestParam(value = "mediaUrls",required = false) List<String> mediaUrls,
+                               @RequestParam(value = "mediaUrls", required = false) List<String> mediaUrls,
                                HttpServletRequest request) throws IOException {
         //保存我的作业
         Long userId = 1L;
@@ -146,7 +146,6 @@ public class MyHomeController extends BaseWxController {
     }
 
 
-
     @RequestMapping(value = "/saveStudent")
     public Result saveStudent(@RequestParam(value = "sessionId", required = true) String sessionId,
                               @RequestParam(required = false, defaultValue = "") MultipartFile file,
@@ -170,7 +169,7 @@ public class MyHomeController extends BaseWxController {
                 student.setId(studentId);
             }
             student.setRealName(studentName);
-            student.setHeadImg(headImgUrl.replace(imgUploadPath,""));
+            student.setHeadImg(headImgUrl.replace(imgUploadPath, ""));
             student.setUserId(userId);
             student.setParentType(parentType);
             return Result.of(studentService.saveStudent(student));
@@ -199,13 +198,13 @@ public class MyHomeController extends BaseWxController {
             String originalFilename = file.getOriginalFilename();
             String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
             String targeFileUrl = imgUploadPath + "userLogoImg/";
-            String headImgUrl =  targeFileUrl+ userId + file.getName() + "." + suffix;
+            String headImgUrl = targeFileUrl + userId + file.getName() + "." + suffix;
             File targetFolderFile = new File(targeFileUrl);
             if (!targetFolderFile.exists() || !targetFolderFile.isDirectory()) {
                 targetFolderFile.mkdirs();//会创建所有的目录
             }
             file.transferTo(new File(headImgUrl));
-            return Result.of(frontUserService.editUserInfoByMySelf(userId, nickName, headImgUrl.replace(imgUploadPath,""), sex, mobilePhone));
+            return Result.of(frontUserService.editUserInfoByMySelf(userId, nickName, headImgUrl.replace(imgUploadPath, ""), sex, mobilePhone));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -227,14 +226,18 @@ public class MyHomeController extends BaseWxController {
                             @RequestParam(required = true, value = "friendId", defaultValue = "") Long friendId,
                             @RequestParam(required = true, value = "isAgree", defaultValue = "") Integer isAgree) {
 
-        if (isAgree == 1) {
+        if (isAgree == 1 || isAgree == 2) {
             //表示同意
-            return Result.of(followUserService.addUserFriend(userId, friendId));
+            return Result.of(followUserService.addUserFriend(userId, friendId, isAgree));
         } else {
             //表示不同意
+            Map<String, Object> result = Maps.newHashMap();
+            result.put("message", "对方不同意添加好友");
+            result.put("success", false);
+            return Result.of(result);
         }
         //同意请求后，添加好友
-        return null;
+
     }
 
     @RequestMapping(value = "/delFriend")

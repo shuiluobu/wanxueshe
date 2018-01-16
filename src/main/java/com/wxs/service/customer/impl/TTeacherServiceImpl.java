@@ -106,11 +106,12 @@ public class TTeacherServiceImpl extends ServiceImpl<TTeacherMapper, TTeacher> i
         Map<String,Object> result = Maps.newHashMap();
         TFollowTeacher followTeacher = new TFollowTeacher().selectOne("teacherId={0} and status=0 and userId={1}",teacherId,userId);
         if(followTeacher!=null){
-            if(followTeacher.getStatus()!=null && followTeacher.getStatus()==1){
-                followTeacher.setUpdateTime(new Date());
-                followTeacher.setStatus(1);
-                followTeacher.updateById();
-            }
+//            if(followTeacher.getStatus()==null || followTeacher.getStatus()!=1){
+//                followTeacher.setUpdateTime(new Date());
+//                followTeacher.setStatus(1);
+//                followTeacher.updateById();
+//            }
+            followTeacher.deleteById();
             result.put("success",true);
             result.put("message","取消关注成功");
         } else  {

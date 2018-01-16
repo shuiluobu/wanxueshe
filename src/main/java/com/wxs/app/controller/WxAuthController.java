@@ -33,6 +33,7 @@ public class WxAuthController extends BaseWxController{
 	@PassLogin
 	@RequestMapping(value = "/getSession", method = RequestMethod.GET, produces = "application/json")
 	public Map<String,Object> createSssion(@RequestParam(required = true,value = "code")String wxCode){
+		System.out.println("wxCode="+wxCode);
 		Map<String,Object> wxSessionMap = wxService.getWxSession(wxCode);
 		if(null == wxSessionMap){
 			return rtnParam(50010, null);

@@ -14,7 +14,7 @@
 
 	<select id="getOneFllowTeacherByUser" resultType="com.wxs.entity.customer.TFollowTeacher" >
 		SELECT f.* FROM t_follow_teacher f,t_teacher t
-		WHERE f.teacherId =t.id
+		WHERE (f.status = 0 or f.status is null) and f.teacherId =t.id
 		AND t.id = #{teacherId}
 		AND f.userId =#{userId}
 	</select>
