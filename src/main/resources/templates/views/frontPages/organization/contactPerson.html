@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <#include "/frontPages/common/header.html"/>
+    <title>联系人</title>
+    <style>
+        .head .right{
+            position: absolute;
+            right: 5px;
+            top: 0;
+            width: 100px;
+            height: 45px;
+        }
+        .right a{
+            float: right;
+            padding-right: 20px;
+        }
+        .weui-panel__bd img{
+            background-color: #CCCCCC;
+        }
+        .title{
+            height: 40px;
+            line-height: 40px;
+            margin-left: 10px;
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 12px;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+<div class="head">
+    <!--<a href="javascript:void(0);" class="return"></a>-->
+    <span>联系人</span>
+    <div class="right">
+        <a href="javascript:void(0);"><img src="/weui/images/wyh/threePoint.png"></a>
+    </div>
+</div>
+<div class="weui-panel__bd" style="font-size: 13px;background-color: #FFFFFF;margin-top: 45px;" id="studentList">
+    <!-- demo S-->
+    <div class="weui-media-box weui-media-box_appmsg">
+        <div class="weui-media-box__hd">
+            <img class="weui-media-box__thumb" src="/weui/images/wyh/defaultHeadImg.png">
+        </div>
+        <div class="weui-media-box__bd">
+            <p>学员</p>
+            <p><span>13</span>个</p>
+        </div>
+        <p class="title">课程信息</p>
+    </div>
+    <!-- demo E-->
+
+</div>
+</body>
+<#include "/frontPages/common/version.html"/>
+</html>
