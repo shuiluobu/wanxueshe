@@ -215,8 +215,8 @@ public class TClassCoursesServiceImpl extends ServiceImpl<TClassCoursesMapper, T
         if(way.equals("0")){
             //单次
             String day = param.get("day").toString();
-            String beginTime = day + " " + param.get("beginTime").toString();
-            String endTime = day + " " +param.get("endTime").toString();
+            String beginTime = day + " " + param.get("beginTime").toString()+":00";
+            String endTime = day + " " +param.get("endTime").toString()+":00";
             lessonDays.add(ImmutableMap.of("beginTime",beginTime,"endTime",endTime));
         } else {
             //周期
