@@ -27,7 +27,7 @@ public class OrganController extends BaseWxController {
     public Result view(@RequestParam(value = "sessionId", required = true) String sessionId,
                        @PathVariable("organId") Long organId) {
         //机构基本信息
-        Long userId = 0L;
+        Long userId = 1L;
         return Result.of(organizationService.getOrganOutline(organId, userId));
     }
 
@@ -80,10 +80,18 @@ public class OrganController extends BaseWxController {
 
     @RequestMapping(value = "/fllowOrgan")
     public Result fllowOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,
-                          @PathVariable("organId") Long organId) {
+                          @RequestParam("organId") Long organId) {
         //关注机构的用户列表
         Long userId = 1L;
-        return Result.of(organizationService.getOrganFllowUserList(organId, userId));
+        return Result.of(organizationService.followOrgan(organId, userId));
+    }
+
+    @RequestMapping(value = "/unFllowOrgan")
+    public Result unFllowOrgan(@RequestParam(value = "sessionId", required = true) String sessionId,
+                             @RequestParam("organId") Long organId) {
+        //关注机构的用户列表
+        Long userId = 1L;
+        return Result.of(organizationService.unFollowOrgan(organId, userId));
     }
 
 

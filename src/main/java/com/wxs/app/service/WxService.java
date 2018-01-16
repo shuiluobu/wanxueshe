@@ -37,6 +37,7 @@ public class WxService {
         sb.append("&js_code=").append(wxCode);
         sb.append("&grant_type=").append(wxAuth.getGrantType());
         String res = HttpRequest.sendGet(wxAuth.getSessionHost(), sb.toString());
+        System.out.println(res);
         if (res == null || res.equals("")) {
             return null;
         }

@@ -32,7 +32,7 @@ public interface TFollowOrganMapper extends BaseMapper<TFollowOrgan> {
     @ResultType(int.class)
     public int getOrganFllowCount(Long organId);
 
-    @Select("select * from t_follow_organ where userId=#{userId} and organId=${organId}")
+    @Select("select * from t_follow_organ where  (status=0 or status is null) and userId=#{userId} and organId=${organId}")
     @ResultType(TFollowOrgan.class)
     public TFollowOrgan getFllowByUserId(@Param("userId") Long userId, @Param("organId") Long organId);
 

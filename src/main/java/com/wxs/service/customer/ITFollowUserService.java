@@ -21,7 +21,7 @@ public interface ITFollowUserService extends IService<TFollowUser> {
     public List<Map<String, Object>> getMyShieldInfos(Long userId);
     public List<Long> geFriendIdsByUserId(Long userId);
     Map<String,Object> sendAddFriendReq(Long userId,Long friendId);
-    Map<String, Object> addUserFriend(Long userId, Long friendId);
+    Map<String, Object> addUserFriend(Long userId, Long friendId,Integer isAgree);
     TFollowUser getOneFollowUser(Long userId,Long friendId,String relationType);
     Map<String,Object> updateFollowUser(Long userId,Long friendId,String relationType);
 }

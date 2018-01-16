@@ -94,26 +94,34 @@ public class TFollowUserServiceImpl extends ServiceImpl<TFollowUserMapper, TFoll
         return result;
     }
     @Override
-    public Map<String, Object> addUserFriend(Long userId, Long friendId) {
+    public Map<String, Object> addUserFriend(Long userId, Long friendId,Integer isAgree) {
         Map<String, Object> result = Maps.newHashMap();
         //20表示朋友
         TFollowUser friend = getOneFollowUser(userId,friendId,null);
         if(friend!=null){
-            if(!friend.getRelationType().equals(relationType_20)){
-                result.put("message", "添加好友成功");
-                result.put("success",false);
-            } else {
-                friend.setRelationType(relationType_10);
-                followUserMapper.updateById(friend);
-            }
+           if(isAgree==1){
+               friend.setRelationType(relationType_10);
+               result.put("message", "添加好友成功");
+           } else if(isAgree==2) {
+               friend.setRelationType(relationType_20);
+               result.put("message", "已屏蔽该用户");
+           }
+            followUserMapper.updateById(friend);
+            result.put("success",true);
         } else {
              friend = new TFollowUser();
              friend.setUserId(userId);
              friend.setFuserId(friendId);
+            if(isAgree==1){
+                friend.setRelationType(relationType_10);
+                result.put("message", "添加好友成功");
+            } else if(isAgree==2) {
+                friend.setRelationType(relationType_20);
+                result.put("message", "已屏蔽该用户");
+            }
              friend.setRelationType(relationType_10);
              friend.insert();
         }
-        result.put("message", "添加好友成功");
         result.put("success",true);
         return result;
     }
