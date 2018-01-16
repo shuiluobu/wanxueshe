@@ -125,44 +125,29 @@
 
 <div class="weui-tab" style="margin-top: 45px;">
     <div class="weui-navbar">
-        <a class="weui-navbar__item " href="#tab1">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
             补课办理
         </a>
-        <a class="weui-navbar__item weui-bar__item--on" href="#tab2">
+        <a class="weui-navbar__item " href="#tab2">
             补课学员
         </a>
     </div>
     <div class="weui-tab__bd">
-        <div id="tab1" class="weui-tab__bd-item" style="background-color: #F2F2F2;">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active" style="background-color: #F2F2F2;">
             <p class="title">学员信息</p>
             <div class="weui-panel__bd" style="font-size: 13px;background-color: #FFFFFF" id="studentList">
                 <!-- demo S-->
-                <div class="weui-media-box weui-media-box_appmsg ">
-
-                    <div class="weui-media-box__hd ">
-                     <img class="weui-media-box__thumb" src="/images/userface1.jpg">
-                    </div>
-                    <div class="weui-media-box__bd">
-                        <p class = "comment-blue">王同学</p>
-                        <p>请假<span>2</span>课时</p>
-                    </div>
-                    <div class="remove">移除</div>
-                </div>
+                <!--<div class="weui-media-box weui-media-box_appmsg">-->
+                    <!--<div class="weui-media-box__hd">-->
+                     <!--<img class="weui-media-box__thumb" src="/images/userface1.jpg">-->
+                    <!--</div>-->
+                    <!--<div class="weui-media-box__bd">-->
+                        <!--<p class = "comment-blue">王同学</p>-->
+                        <!--<p>请假<span>2</span>课时</p>-->
+                    <!--</div>-->
+                    <!--<div class="remove">移除</div>-->
+                <!--</div>-->
                 <!-- demo E-->
-
-                <!-- demo S-->
-                <div class="weui-media-box weui-media-box_appmsg ">
-                    <div class="weui-media-box__hd ">
-                        <img class="weui-media-box__thumb" src="/images/userface1.jpg">
-                    </div>
-                    <div class="weui-media-box__bd">
-                        <p class = "comment-blue">王同学</p>
-                        <p>请假<span>3</span>课时</p>
-                    </div>
-                    <div class="remove">移除</div>
-                </div>
-                <!-- demo E-->
-
 
             </div>
             <div class="this_button" onclick="addStudent();">添加学员</div>
@@ -205,7 +190,7 @@
                 <div class="this_button" style="background-color: #FFFFFF">取消</div>
             </div>
         </div>
-        <div id="tab2" class="weui-tab__bd-item weui-tab__bd-item--active letterSort">
+        <div id="tab2" class="weui-tab__bd-item  letterSort">
             <div id="letter" ></div>
             <div class="sort_box">
                 <!-- demo S -->
@@ -224,10 +209,10 @@
                     <li><img src="/letterSort/images/068.png"></li>
                 </ul>
             </div>
-        </div>
-        <div class="bottom_div">
-            <a style="margin-left: 15px;">已选<span>0</span>/<span>0</span></a>
-            <a style="float: right;margin-right: 50px;" class="comment-blue">补课</a>
+            <div class="bottom_div">
+                <a style="margin-left: 15px;">已选<span>0</span>/<span>0</span></a>
+                <a style="float: right;margin-right: 50px;" class="comment-blue">补课</a>
+            </div>
         </div>
     </div>
 </div>
@@ -235,7 +220,21 @@
 </body>
 <#include "/frontPages/common/version.html"/>
 <script>
+    var selectedStuArr;
     $(function () {
+//        selectedStuArr = [{studentId:1,studentName:"王一贺",headImg:"/images/userface1.jpg",canNum:1},
+//            {studentId:2,studentName:"王大贺",headImg:"/images/userface2.jpg",canNum:2}];
+//        var selectedStuJson = JSON.stringify(selectedStuArr);
+//        localStorage.setItem('selectedStuJson',selectedStuJson);
+        //从 localStorage中取出 selectedStuJson
+        if(localStorage.getItem('selectedStuJson')){
+            selectedStuArr = JSON.parse(localStorage.getItem('selectedStuJson'));
+        }
+        //获取在 选择学生页面 选择的 学生信息
+        if(getUrlParam('paramOne')){
+            pushToArr(getUrlParam('paramOne'));
+        }
+        selectedStus();
         //获取 机构的 可办理 补课 的 学生以及其缺课数量
         $.ajax("/cStudent/canMULessonStus",{
             async : false,
@@ -284,6 +283,68 @@
     //添加学员
     function addStudent() {
         window.location = "/organization/viewsTransfer?view=selectStudent&paramOne=makeUpLessons";
+    }
+    //加载选择的学生
+    function selectedStus() {
+        $("#studentList").empty();
+        if(selectedStuArr.length > 0){
+            for(var i=0;i<selectedStuArr.length;i++){
+                var div= '<div class="weui-media-box weui-media-box_appmsg" id="'+selectedStuArr[i].studentId+'">'+
+                            '<div class="weui-media-box__hd">'+
+                                '<img class="weui-media-box__thumb" src="'+selectedStuArr[i].headImg+'">'+
+                            '</div>'+
+                            '<div class="weui-media-box__bd">'+
+                                '<p class = "comment-blue">'+selectedStuArr[i].studentName+'</p>'+
+                                '<p>请假<span>'+selectedStuArr[i].canNum+'</span>课时</p>'+
+                            '</div>'+
+                            '<div class="remove">移除</div>'+
+                        '</div>';
+                $("#studentList").append(div);
+            }
+            $(".remove").click(function () {
+                var studentId = $(this).parent().attr("id");
+                removeSelectedStu(studentId);
+            });
+        }
+        
+    }
+    //将选中的学生加入到arr中
+    function pushToArr(selectedStu) {
+        var arr = selectedStu.split(',');
+        var studentId = arr[0];
+        //检测是否已有了
+        if(checkIfHave(studentId)){
+            return;
+        }else{
+            selectedStuArr.push({studentId:studentId,studentName:arr[1],headImg:arr[2],canNum:arr[3]});
+        }
+    }
+    //检测选中的学生数组里是否已有了该学生
+    function checkIfHave(studentId) {
+        if(selectedStuArr){
+            for(var i=0;i<selectedStuArr.length;i++){
+                if(selectedStuArr[i].studentId == studentId)
+                    return true;
+            }
+        }else{
+            return false;
+        }
+    }
+    //移除某学生
+    function removeSelectedStu(studentId) {
+        if(selectedStuArr){
+            for(var i=0;i<selectedStuArr.length;i++){
+                if(selectedStuArr[i].studentId == studentId)
+                    selectedStuArr.splice(i,1);
+            }
+        var selectedStuJson = JSON.stringify(selectedStuArr);
+        localStorage.setItem('selectedStuJson',selectedStuJson);
+
+        }
+        $.toast('移除成功!','text',800,function(){
+            //提示完成后执行方法
+        });
+        selectedStus();
     }
 </script>
 <script src="/letterSort/js/jquery.charfirst.pinyin.js"></script>

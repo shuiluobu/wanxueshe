@@ -124,6 +124,9 @@
     var returnPage;
     $(function () {
         returnPage = getParmVal("paramOne");
+        if(returnPage == 'makeUpLessons'){
+            $(".weui-switch").attr('checked','checked');
+        }
         //加载最近搜索
         var recentSStudent = localStorage.getItem("recent_SStudents");
         if(recentSStudent != null){
@@ -257,24 +260,26 @@
                 if(json.data){
                     var list = json.data;
                     for(var i=0;i<list.length;i++){
-                        var div = '<div class="weui-media-box weui-media-box_appmsg" id="'+list[i].id+'">'+
-                            '<div class="weui-media-box__hd ">'+
-                            '<img class="weui-media-box__thumb" src="'+list[i].headImg+'">'+
-                            '</div>'+
-                            '<div class="weui-media-box__bd">'+
-                            '<p class="comment-blue">'+list[i].studentName+'</p>'+
-                            '<p>请假<span>'+list[i].canNum+'</span>课时</p>'+
-                            '</div>'+
-                            '</div>';
+                        var div = '<div class="weui-media-box weui-media-box_appmsg" id="'+list[i].studentId+'">'+
+                                    '<div class="weui-media-box__hd ">'+
+                                         '<img class="weui-media-box__thumb" src="'+list[i].headImg+'">'+
+                                    '</div>'+
+                                    '<div class="weui-media-box__bd">'+
+                                        '<p class="comment-blue">'+list[i].studentName+'</p>'+
+                                        '<p>请假<span>'+list[i].canNum+'</span>课时</p>'+
+                                    '</div>'+
+                                '</div>';
                         $("#studentList").append(div);
                     }
                     $(".weui-media-box").click(function (){
                         var studentId = $(this).attr("id");
                         var studentName = $(this).find("p").eq(0).text();
-                        //存入localStorage
-                        localStorage.setItem("studentId",studentId);
-                        localStorage.setItem("studentName",studentName);
-                        window.location ="/organization/viewsTransfer?view="+returnPage;
+                        var headImg = $(this).find('img').attr('src');
+                        var canNum = $(this).find('span').text();
+                        console.log(studentId+" ---"+studentName+" ---"+headImg+" ---"+canNum);
+                        var paramOne = [studentId,studentName,headImg,canNum];
+                        paramOne = paramOne.join(',');
+                        window.location ="/organization/viewsTransfer?view="+returnPage+"&paramOne="+paramOne;
                     });
 
                 }
